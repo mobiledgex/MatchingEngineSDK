@@ -1,0 +1,625 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPPermission"
+provides-nominal:
+- "18request_permission12SPPermissionV"
+provides-member:
+- ["18request_permission12SPPermissionV", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- !private "ABAddressBook"
+- !private "ABAddressBookCreateWithOptions"
+- !private "ABAddressBookGetAuthorizationStatus"
+- !private "ABAddressBookRequestAccessWithCompletion"
+- !private "AVAudioSession"
+- !private "AVAuthorizationStatus"
+- !private "AVCaptureDevice"
+- !private "AVMediaType"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- !private "CFError"
+- !private "CLLocationManager"
+- !private "CNContactStore"
+- !private "DispatchQueue"
+- !private "EKAuthorizationStatus"
+- !private "EKEntityType"
+- !private "EKEventStore"
+- !private "Error"
+- !private "MPMediaLibrary"
+- !private "PHAuthorizationStatus"
+- !private "PHPhotoLibrary"
+- !private "SFSpeechRecognizer"
+- "SPPermission"
+- !private "SPPermissionAlwaysAuthorizationLocationHandler"
+- "SPPermissionInterface"
+- !private "SPPermissionLocationWithBackgroundHandler"
+- "SPPermissionType"
+- !private "SPPermissionWhenInUseAuthorizationLocationHandler"
+- !private "StringLiteralType"
+- !private "UIApplication"
+- !private "UIUserNotificationSettings"
+- !private "UNUserNotificationCenter"
+- !private "fatalError"
+depends-member:
+- !private ["So21ABAuthorizationStatusV", "authorized"]
+- !private ["So14AVAudioSessionC", "recordPermission"]
+- !private ["So14AVAudioSessionC", "requestRecordPermission"]
+- !private ["So14AVAudioSessionC", "sharedInstance"]
+- !private ["So21AVAuthorizationStatusV", "authorized"]
+- !private ["So15AVCaptureDeviceC", "authorizationStatus"]
+- !private ["So15AVCaptureDeviceC", "requestAccess"]
+- !private ["So11AVMediaTypea", "video"]
+- !private ["SK", "init"]
+- !private ["SK", "init"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["So21CLAuthorizationStatusV", "authorizedAlways"]
+- !private ["So21CLAuthorizationStatusV", "authorizedWhenInUse"]
+- !private ["So17CLLocationManagerC", "authorizationStatus"]
+- !private ["So25CLLocationManagerDelegateP", "init"]
+- !private ["So25CLLocationManagerDelegateP", "requestPermission"]
+- !private ["So25CLLocationManagerDelegateP", "shared"]
+- !private ["So21CNAuthorizationStatusV", "authorized"]
+- !private ["So14CNContactStoreC", "authorizationStatus"]
+- !private ["So14CNContactStoreC", "init"]
+- !private ["So14CNContactStoreC", "requestAccess"]
+- !private ["So12CNEntityTypeV", "contacts"]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "async"]
+- !private ["s7CVarArgP", "authorizationStatus"]
+- !private ["s7CVarArgP", "current"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "isRegisteredForRemoteNotifications"]
+- !private ["s7CVarArgP", "main"]
+- !private ["s7CVarArgP", "recordPermission"]
+- !private ["s7CVarArgP", "registerForRemoteNotifications"]
+- !private ["s7CVarArgP", "registerUserNotificationSettings"]
+- !private ["s7CVarArgP", "requestAccess"]
+- !private ["s7CVarArgP", "requestAuthorization"]
+- !private ["s7CVarArgP", "requestPermission"]
+- !private ["s7CVarArgP", "requestRecordPermission"]
+- !private ["s7CVarArgP", "shared"]
+- !private ["s7CVarArgP", "sharedInstance"]
+- !private ["Sl", "init"]
+- !private ["Sl", "init"]
+- !private ["SL", "init"]
+- !private ["SL", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "async"]
+- !private ["s28CustomDebugStringConvertibleP", "authorizationStatus"]
+- !private ["s28CustomDebugStringConvertibleP", "current"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "isRegisteredForRemoteNotifications"]
+- !private ["s28CustomDebugStringConvertibleP", "main"]
+- !private ["s28CustomDebugStringConvertibleP", "recordPermission"]
+- !private ["s28CustomDebugStringConvertibleP", "registerForRemoteNotifications"]
+- !private ["s28CustomDebugStringConvertibleP", "registerUserNotificationSettings"]
+- !private ["s28CustomDebugStringConvertibleP", "requestAccess"]
+- !private ["s28CustomDebugStringConvertibleP", "requestAuthorization"]
+- !private ["s28CustomDebugStringConvertibleP", "requestPermission"]
+- !private ["s28CustomDebugStringConvertibleP", "requestRecordPermission"]
+- !private ["s28CustomDebugStringConvertibleP", "shared"]
+- !private ["s28CustomDebugStringConvertibleP", "sharedInstance"]
+- !private ["s28CustomDebugStringConvertibleP", "takeRetainedValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "takeRetainedValue"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "async"]
+- !private ["s23CustomStringConvertibleP", "authorizationStatus"]
+- !private ["s23CustomStringConvertibleP", "current"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "isRegisteredForRemoteNotifications"]
+- !private ["s23CustomStringConvertibleP", "main"]
+- !private ["s23CustomStringConvertibleP", "recordPermission"]
+- !private ["s23CustomStringConvertibleP", "registerForRemoteNotifications"]
+- !private ["s23CustomStringConvertibleP", "registerUserNotificationSettings"]
+- !private ["s23CustomStringConvertibleP", "requestAccess"]
+- !private ["s23CustomStringConvertibleP", "requestAuthorization"]
+- !private ["s23CustomStringConvertibleP", "requestPermission"]
+- !private ["s23CustomStringConvertibleP", "requestRecordPermission"]
+- !private ["s23CustomStringConvertibleP", "shared"]
+- !private ["s23CustomStringConvertibleP", "sharedInstance"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["Se", "init"]
+- !private ["Se", "init"]
+- !private ["Se", "takeRetainedValue"]
+- !private ["So18OS_dispatch_objectC", "async"]
+- !private ["So18OS_dispatch_objectC", "main"]
+- !private ["So17OS_dispatch_queueC", "async"]
+- !private ["So17OS_dispatch_queueC", "main"]
+- ["So21EKAuthorizationStatusV", "authorized"]
+- !private ["So12EKEntityTypeV", "event"]
+- !private ["So12EKEntityTypeV", "reminder"]
+- !private ["So12EKEventStoreC", "authorizationStatus"]
+- !private ["So12EKEventStoreC", "init"]
+- !private ["So12EKEventStoreC", "requestAccess"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SE", "init"]
+- !private ["SE", "init"]
+- !private ["SE", "takeRetainedValue"]
+- ["SQ", "Always"]
+- ["SQ", "AlwaysWithBackground"]
+- ["SQ", "WhenInUse"]
+- ["SQ", ""]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "alert"]
+- !private ["SQ", "async"]
+- !private ["SQ", "authorizationStatus"]
+- ["SQ", "authorized"]
+- !private ["SQ", "authorizedAlways"]
+- !private ["SQ", "authorizedWhenInUse"]
+- !private ["SQ", "badge"]
+- ["SQ", "calendar"]
+- ["SQ", "camera"]
+- ["SQ", "contacts"]
+- !private ["SQ", "current"]
+- !private ["SQ", "event"]
+- !private ["SQ", "granted"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "init"]
+- !private ["SQ", "init"]
+- !private ["SQ", "isRegisteredForRemoteNotifications"]
+- ["SQ", "locationAlways"]
+- ["SQ", "locationWhenInUse"]
+- ["SQ", "locationWithBackground"]
+- !private ["SQ", "main"]
+- ["SQ", "mediaLibrary"]
+- ["SQ", "microphone"]
+- ["SQ", "notification"]
+- ["SQ", "photoLibrary"]
+- !private ["SQ", "recordPermission"]
+- !private ["SQ", "registerForRemoteNotifications"]
+- !private ["SQ", "registerUserNotificationSettings"]
+- !private ["SQ", "reminder"]
+- ["SQ", "reminders"]
+- !private ["SQ", "requestAccess"]
+- !private ["SQ", "requestAuthorization"]
+- !private ["SQ", "requestPermission"]
+- !private ["SQ", "requestRecordPermission"]
+- !private ["SQ", "shared"]
+- !private ["SQ", "sharedInstance"]
+- !private ["SQ", "sound"]
+- ["SQ", "speech"]
+- !private ["SQ", "takeRetainedValue"]
+- !private ["SQ", "video"]
+- !private ["s25ExpressibleByArrayLiteralP", "alert"]
+- !private ["s25ExpressibleByArrayLiteralP", "badge"]
+- !private ["s25ExpressibleByArrayLiteralP", "sound"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "takeRetainedValue"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- ["SH", "Always"]
+- ["SH", "AlwaysWithBackground"]
+- ["SH", "WhenInUse"]
+- ["SH", ""]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "async"]
+- !private ["SH", "authorizationStatus"]
+- ["SH", "authorized"]
+- !private ["SH", "authorizedAlways"]
+- !private ["SH", "authorizedWhenInUse"]
+- ["SH", "calendar"]
+- ["SH", "camera"]
+- ["SH", "contacts"]
+- !private ["SH", "current"]
+- !private ["SH", "event"]
+- !private ["SH", "granted"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "init"]
+- !private ["SH", "init"]
+- !private ["SH", "isRegisteredForRemoteNotifications"]
+- ["SH", "locationAlways"]
+- ["SH", "locationWhenInUse"]
+- ["SH", "locationWithBackground"]
+- !private ["SH", "main"]
+- ["SH", "mediaLibrary"]
+- ["SH", "microphone"]
+- ["SH", "notification"]
+- ["SH", "photoLibrary"]
+- !private ["SH", "recordPermission"]
+- !private ["SH", "registerForRemoteNotifications"]
+- !private ["SH", "registerUserNotificationSettings"]
+- !private ["SH", "reminder"]
+- ["SH", "reminders"]
+- !private ["SH", "requestAccess"]
+- !private ["SH", "requestAuthorization"]
+- !private ["SH", "requestPermission"]
+- !private ["SH", "requestRecordPermission"]
+- !private ["SH", "shared"]
+- !private ["SH", "sharedInstance"]
+- ["SH", "speech"]
+- !private ["SH", "takeRetainedValue"]
+- !private ["SH", "video"]
+- !private ["s6HasherV", "combine"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["So14MPMediaLibraryC", "authorizationStatus"]
+- !private ["So14MPMediaLibraryC", "requestAuthorization"]
+- !private ["So33MPMediaLibraryAuthorizationStatusV", "authorized"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["So8NSCodingP", "authorizationStatus"]
+- !private ["So8NSCodingP", "requestAuthorization"]
+- !private ["So8NSObjectC", "async"]
+- !private ["So8NSObjectC", "authorizationStatus"]
+- !private ["So8NSObjectC", "current"]
+- !private ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "isRegisteredForRemoteNotifications"]
+- !private ["So8NSObjectC", "main"]
+- !private ["So8NSObjectC", "recordPermission"]
+- !private ["So8NSObjectC", "registerForRemoteNotifications"]
+- !private ["So8NSObjectC", "registerUserNotificationSettings"]
+- !private ["So8NSObjectC", "requestAccess"]
+- !private ["So8NSObjectC", "requestAuthorization"]
+- !private ["So8NSObjectC", "requestPermission"]
+- !private ["So8NSObjectC", "requestRecordPermission"]
+- !private ["So8NSObjectC", "shared"]
+- !private ["So8NSObjectC", "sharedInstance"]
+- !private ["So8NSObjectP", "async"]
+- !private ["So8NSObjectP", "authorizationStatus"]
+- !private ["So8NSObjectP", "current"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "isRegisteredForRemoteNotifications"]
+- !private ["So8NSObjectP", "main"]
+- !private ["So8NSObjectP", "recordPermission"]
+- !private ["So8NSObjectP", "registerForRemoteNotifications"]
+- !private ["So8NSObjectP", "registerUserNotificationSettings"]
+- !private ["So8NSObjectP", "requestAccess"]
+- !private ["So8NSObjectP", "requestAuthorization"]
+- !private ["So8NSObjectP", "requestPermission"]
+- !private ["So8NSObjectP", "requestRecordPermission"]
+- !private ["So8NSObjectP", "shared"]
+- !private ["So8NSObjectP", "sharedInstance"]
+- !private ["So14NSSecureCodingP", "authorizationStatus"]
+- !private ["So14NSSecureCodingP", "requestAuthorization"]
+- !private ["So9OS_objectC", "async"]
+- !private ["So9OS_objectC", "main"]
+- !private ["s9OptionSetP", "alert"]
+- !private ["s9OptionSetP", "badge"]
+- !private ["s9OptionSetP", "sound"]
+- !private ["Sq", "takeRetainedValue"]
+- !private ["So21PHAuthorizationStatusV", "authorized"]
+- !private ["So14PHPhotoLibraryC", "authorizationStatus"]
+- !private ["So14PHPhotoLibraryC", "requestAuthorization"]
+- !private ["Sm", "init"]
+- !private ["Sm", "init"]
+- !private ["SY", "alert"]
+- ["SY", "authorized"]
+- !private ["SY", "authorizedAlways"]
+- !private ["SY", "authorizedWhenInUse"]
+- !private ["SY", "badge"]
+- ["SY", "calendar"]
+- ["SY", "camera"]
+- ["SY", "contacts"]
+- !private ["SY", "event"]
+- !private ["SY", "granted"]
+- ["SY", "locationAlways"]
+- ["SY", "locationWhenInUse"]
+- ["SY", "locationWithBackground"]
+- ["SY", "mediaLibrary"]
+- ["SY", "microphone"]
+- ["SY", "notification"]
+- ["SY", "photoLibrary"]
+- !private ["SY", "reminder"]
+- ["SY", "reminders"]
+- !private ["SY", "sound"]
+- ["SY", "speech"]
+- !private ["SY", "video"]
+- !private ["So30AVAudioSessionRecordPermissionV", "granted"]
+- !private ["So18SFSpeechRecognizerC", "authorizationStatus"]
+- !private ["So18SFSpeechRecognizerC", "requestAuthorization"]
+- !private ["So37SFSpeechRecognizerAuthorizationStatusV", "authorized"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "Always"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "AlwaysWithBackground"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "WhenInUse"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "__derived_enum_equals"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "deinit"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "hash"]
+- ["18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO", "hashValue"]
+- !private ["18request_permission12SPPermissionV", "ABAddressBook"]
+- !private ["18request_permission12SPPermissionV", "ABAddressBookCreateWithOptions"]
+- !private ["18request_permission12SPPermissionV", "ABAddressBookGetAuthorizationStatus"]
+- !private ["18request_permission12SPPermissionV", "ABAddressBookRequestAccessWithCompletion"]
+- !private ["18request_permission12SPPermissionV", "AVAudioSession"]
+- !private ["18request_permission12SPPermissionV", "AVAuthorizationStatus"]
+- !private ["18request_permission12SPPermissionV", "AVCaptureDevice"]
+- !private ["18request_permission12SPPermissionV", "AVMediaType"]
+- ["18request_permission12SPPermissionV", "Bool"]
+- !private ["18request_permission12SPPermissionV", "CFError"]
+- !private ["18request_permission12SPPermissionV", "CLLocationManager"]
+- !private ["18request_permission12SPPermissionV", "CNContactStore"]
+- !private ["18request_permission12SPPermissionV", "DispatchQueue"]
+- !private ["18request_permission12SPPermissionV", "EKAuthorizationStatus"]
+- !private ["18request_permission12SPPermissionV", "EKEntityType"]
+- !private ["18request_permission12SPPermissionV", "EKEventStore"]
+- !private ["18request_permission12SPPermissionV", "Error"]
+- !private ["18request_permission12SPPermissionV", "MPMediaLibrary"]
+- !private ["18request_permission12SPPermissionV", "PHAuthorizationStatus"]
+- !private ["18request_permission12SPPermissionV", "PHPhotoLibrary"]
+- !private ["18request_permission12SPPermissionV", "SFSpeechRecognizer"]
+- !private ["18request_permission12SPPermissionV", "SPBluetoothPermission"]
+- !private ["18request_permission12SPPermissionV", "SPCalendarPermission"]
+- !private ["18request_permission12SPPermissionV", "SPCameraPermission"]
+- !private ["18request_permission12SPPermissionV", "SPContactsPermission"]
+- !private ["18request_permission12SPPermissionV", "SPLocationPermission"]
+- !private ["18request_permission12SPPermissionV", "SPMediaLibraryPermission"]
+- !private ["18request_permission12SPPermissionV", "SPMicrophonePermission"]
+- !private ["18request_permission12SPPermissionV", "SPNotificationPermission"]
+- !private ["18request_permission12SPPermissionV", "SPPermissionAlwaysAuthorizationLocationHandler"]
+- ["18request_permission12SPPermissionV", "SPPermissionInterface"]
+- !private ["18request_permission12SPPermissionV", "SPPermissionLocationWithBackgroundHandler"]
+- ["18request_permission12SPPermissionV", "SPPermissionType"]
+- !private ["18request_permission12SPPermissionV", "SPPermissionWhenInUseAuthorizationLocationHandler"]
+- !private ["18request_permission12SPPermissionV", "SPPhotoLibraryPermission"]
+- !private ["18request_permission12SPPermissionV", "SPRemindersPermission"]
+- !private ["18request_permission12SPPermissionV", "SPSpeechPermission"]
+- !private ["18request_permission12SPPermissionV", "UIApplication"]
+- !private ["18request_permission12SPPermissionV", "UIUserNotificationSettings"]
+- !private ["18request_permission12SPPermissionV", "UNUserNotificationCenter"]
+- !private ["18request_permission12SPPermissionV", "fatalError"]
+- !private ["18request_permission12SPPermissionV", "getManagerForPermission"]
+- !private ["18request_permission12SPPermissionV", "init"]
+- ["18request_permission12SPPermissionV", "isAllow"]
+- ["18request_permission12SPPermissionV", "request"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "deinit"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "init"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "requestPermission"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "shared"]
+- !private ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "init"]
+- !private ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "shared"]
+- ["18request_permission16SPPermissionTypeO", "calendar"]
+- ["18request_permission16SPPermissionTypeO", "camera"]
+- ["18request_permission16SPPermissionTypeO", "contacts"]
+- ["18request_permission16SPPermissionTypeO", "locationAlways"]
+- ["18request_permission16SPPermissionTypeO", "locationWhenInUse"]
+- ["18request_permission16SPPermissionTypeO", "locationWithBackground"]
+- ["18request_permission16SPPermissionTypeO", "mediaLibrary"]
+- ["18request_permission16SPPermissionTypeO", "microphone"]
+- ["18request_permission16SPPermissionTypeO", "notification"]
+- ["18request_permission16SPPermissionTypeO", "photoLibrary"]
+- ["18request_permission16SPPermissionTypeO", "reminders"]
+- ["18request_permission16SPPermissionTypeO", "speech"]
+- !private ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "deinit"]
+- !private ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "init"]
+- !private ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "requestPermission"]
+- !private ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "shared"]
+- !private ["ST", "init"]
+- !private ["ST", "init"]
+- !private ["s10SetAlgebraP", "alert"]
+- !private ["s10SetAlgebraP", "badge"]
+- !private ["s10SetAlgebraP", "sound"]
+- !private ["s12StaticStringV", "init"]
+- !private ["s12StaticStringV", "init"]
+- !private ["SS", "init"]
+- !private ["SS", "init"]
+- !private ["Sy", "init"]
+- !private ["Sy", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["So13UIApplicationC", "isRegisteredForRemoteNotifications"]
+- !private ["So13UIApplicationC", "registerForRemoteNotifications"]
+- !private ["So13UIApplicationC", "registerUserNotificationSettings"]
+- !private ["So13UIApplicationC", "shared"]
+- !private ["So30UIPasteConfigurationSupportingP", "isRegisteredForRemoteNotifications"]
+- !private ["So30UIPasteConfigurationSupportingP", "registerForRemoteNotifications"]
+- !private ["So30UIPasteConfigurationSupportingP", "registerUserNotificationSettings"]
+- !private ["So30UIPasteConfigurationSupportingP", "shared"]
+- !private ["So11UIResponderC", "isRegisteredForRemoteNotifications"]
+- !private ["So11UIResponderC", "registerForRemoteNotifications"]
+- !private ["So11UIResponderC", "registerUserNotificationSettings"]
+- !private ["So11UIResponderC", "shared"]
+- !private ["So30UIResponderStandardEditActionsP", "isRegisteredForRemoteNotifications"]
+- !private ["So30UIResponderStandardEditActionsP", "registerForRemoteNotifications"]
+- !private ["So30UIResponderStandardEditActionsP", "registerUserNotificationSettings"]
+- !private ["So30UIResponderStandardEditActionsP", "shared"]
+- !private ["So23UIUserActivityRestoringP", "isRegisteredForRemoteNotifications"]
+- !private ["So23UIUserActivityRestoringP", "registerForRemoteNotifications"]
+- !private ["So23UIUserActivityRestoringP", "registerUserNotificationSettings"]
+- !private ["So23UIUserActivityRestoringP", "shared"]
+- !private ["So26UIUserNotificationSettingsC", "init"]
+- !private ["So22UIUserNotificationTypeV", "alert"]
+- !private ["So22UIUserNotificationTypeV", "badge"]
+- !private ["So22UIUserNotificationTypeV", "sound"]
+- !private ["So22UNAuthorizationOptionsV", "alert"]
+- !private ["So22UNAuthorizationOptionsV", "badge"]
+- !private ["So22UNAuthorizationOptionsV", "sound"]
+- !private ["So24UNUserNotificationCenterC", "current"]
+- !private ["So24UNUserNotificationCenterC", "requestAuthorization"]
+- !private ["s9UnmanagedV", "takeRetainedValue"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "video"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "async"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "authorizationStatus"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "current"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "isRegisteredForRemoteNotifications"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "main"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "recordPermission"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "registerForRemoteNotifications"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "registerUserNotificationSettings"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestAccess"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestAuthorization"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestPermission"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestRecordPermission"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "shared"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "sharedInstance"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "takeRetainedValue"]
+- !private ["s21_ObjectiveCBridgeableP", "video"]
+- !private ["s20_SwiftNewtypeWrapperP", "video"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "init"]
+depends-nominal:
+- !private "So21ABAuthorizationStatusV"
+- !private "So14AVAudioSessionC"
+- !private "So21AVAuthorizationStatusV"
+- !private "So15AVCaptureDeviceC"
+- !private "So11AVMediaTypea"
+- !private "SK"
+- !private "Sb"
+- !private "So21CLAuthorizationStatusV"
+- !private "So17CLLocationManagerC"
+- !private "So25CLLocationManagerDelegateP"
+- !private "So21CNAuthorizationStatusV"
+- !private "So14CNContactStoreC"
+- !private "So12CNEntityTypeV"
+- !private "s7CVarArgP"
+- !private "Sl"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "So18OS_dispatch_objectC"
+- !private "So17OS_dispatch_queueC"
+- "So21EKAuthorizationStatusV"
+- !private "So12EKEntityTypeV"
+- !private "So12EKEventStoreC"
+- !private "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s6HasherV"
+- !private "s25LosslessStringConvertibleP"
+- !private "So14MPMediaLibraryC"
+- !private "So33MPMediaLibraryAuthorizationStatusV"
+- !private "s10MirrorPathP"
+- !private "So8NSCodingP"
+- !private "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- !private "So9OS_objectC"
+- !private "s9OptionSetP"
+- !private "Sq"
+- !private "So21PHAuthorizationStatusV"
+- !private "So14PHPhotoLibraryC"
+- !private "Sm"
+- "SY"
+- !private "So30AVAudioSessionRecordPermissionV"
+- !private "So18SFSpeechRecognizerC"
+- !private "So37SFSpeechRecognizerAuthorizationStatusV"
+- "18request_permission12SPPermissionV20SPLocationPermission33_CDD25BBF6A6CAD20EACDAB53682965D3LLV0D4TypeO"
+- "18request_permission12SPPermissionV"
+- !private "18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC"
+- !private "18request_permission41SPPermissionLocationWithBackgroundHandlerC"
+- "18request_permission16SPPermissionTypeO"
+- !private "18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC"
+- !private "ST"
+- !private "s10SetAlgebraP"
+- !private "s12StaticStringV"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "So13UIApplicationC"
+- !private "So30UIPasteConfigurationSupportingP"
+- !private "So11UIResponderC"
+- !private "So30UIResponderStandardEditActionsP"
+- !private "So23UIUserActivityRestoringP"
+- !private "So26UIUserNotificationSettingsC"
+- !private "So22UIUserNotificationTypeV"
+- !private "So22UNAuthorizationOptionsV"
+- !private "So24UNUserNotificationCenterC"
+- !private "s9UnmanagedV"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s20_SwiftNewtypeWrapperP"
+- !private "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "0e5ae67dd25082ff29b05680c4b8ee57"

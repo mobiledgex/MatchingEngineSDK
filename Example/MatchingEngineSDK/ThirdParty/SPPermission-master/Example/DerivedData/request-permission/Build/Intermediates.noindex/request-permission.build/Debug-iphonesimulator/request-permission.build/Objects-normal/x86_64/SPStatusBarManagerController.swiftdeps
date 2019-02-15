@@ -1,0 +1,447 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPStatusBarManagerController"
+- "SPStatusBarManagerTableController"
+- "SPStatusBarManagerNavigationController"
+provides-nominal:
+- "18request_permission28SPStatusBarManagerControllerC"
+- "18request_permission33SPStatusBarManagerTableControllerC"
+- "18request_permission38SPStatusBarManagerNavigationControllerC"
+provides-member:
+- ["18request_permission28SPStatusBarManagerControllerC", ""]
+- ["18request_permission33SPStatusBarManagerTableControllerC", ""]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", ""]
+provides-dynamic-lookup:
+- "preferredStatusBarStyle"
+- "preferredStatusBarUpdateAnimation"
+- "prefersStatusBarHidden"
+- "viewWillAppear"
+depends-top-level:
+- "Bool"
+- "BooleanLiteralType"
+- !private "FloatLiteralType"
+- "SPStatusBar"
+- "SPStatusBarManagerController"
+- "SPStatusBarManagerNavigationController"
+- "SPStatusBarManagerTableController"
+- "UINavigationController"
+- "UIStatusBarAnimation"
+- "UIStatusBarStyle"
+- "UITableViewController"
+- !private "UIView"
+- "UIViewController"
+- !private "Void"
+depends-member:
+- !private ["So15CALayerDelegateP", "animate"]
+- !private ["s7CVarArgP", "UIView"]
+- ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "animate"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "isHiddenStatusBar"]
+- !private ["s7CVarArgP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["s7CVarArgP", "statusBar"]
+- !private ["s7CVarArgP", "viewWillAppear"]
+- !private ["s28CustomDebugStringConvertibleP", "UIView"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "animate"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "isHiddenStatusBar"]
+- !private ["s28CustomDebugStringConvertibleP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["s28CustomDebugStringConvertibleP", "statusBar"]
+- !private ["s28CustomDebugStringConvertibleP", "viewWillAppear"]
+- !private ["s23CustomStringConvertibleP", "UIView"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "animate"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "isHiddenStatusBar"]
+- !private ["s23CustomStringConvertibleP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["s23CustomStringConvertibleP", "statusBar"]
+- !private ["s23CustomStringConvertibleP", "viewWillAppear"]
+- !private ["SQ", "UIView"]
+- ["SQ", ""]
+- !private ["SQ", "animate"]
+- ["SQ", "dark"]
+- !private ["SQ", "default"]
+- !private ["SQ", "init"]
+- !private ["SQ", "init"]
+- !private ["SQ", "isHiddenStatusBar"]
+- ["SQ", "light"]
+- !private ["SQ", "lightContent"]
+- !private ["SQ", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["SQ", "slide"]
+- !private ["SQ", "statusBar"]
+- !private ["SQ", "viewWillAppear"]
+- !private ["SH", "UIView"]
+- ["SH", ""]
+- !private ["SH", "animate"]
+- ["SH", "dark"]
+- !private ["SH", "default"]
+- !private ["SH", "init"]
+- !private ["SH", "init"]
+- !private ["SH", "isHiddenStatusBar"]
+- ["SH", "light"]
+- !private ["SH", "lightContent"]
+- !private ["SH", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["SH", "slide"]
+- !private ["SH", "statusBar"]
+- !private ["SH", "viewWillAppear"]
+- !private ["So8NSCodingP", "UIView"]
+- ["So8NSCodingP", ""]
+- !private ["So8NSCodingP", "animate"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "isHiddenStatusBar"]
+- !private ["So8NSCodingP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So8NSCodingP", "statusBar"]
+- !private ["So8NSCodingP", "viewWillAppear"]
+- !private ["So26NSExtensionRequestHandlingP", "UIView"]
+- ["So26NSExtensionRequestHandlingP", ""]
+- !private ["So26NSExtensionRequestHandlingP", "init"]
+- !private ["So26NSExtensionRequestHandlingP", "init"]
+- !private ["So26NSExtensionRequestHandlingP", "isHiddenStatusBar"]
+- !private ["So26NSExtensionRequestHandlingP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So26NSExtensionRequestHandlingP", "statusBar"]
+- !private ["So26NSExtensionRequestHandlingP", "viewWillAppear"]
+- ["So8NSObjectC", "Bool"]
+- ["So8NSObjectC", "SPStatusBar"]
+- ["So8NSObjectC", "UIStatusBarAnimation"]
+- ["So8NSObjectC", "UIStatusBarStyle"]
+- !private ["So8NSObjectC", "UIView"]
+- !private ["So8NSObjectC", "Void"]
+- !private ["So8NSObjectC", "animate"]
+- ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "isHiddenStatusBar"]
+- ["So8NSObjectC", "preferredStatusBarStyle"]
+- ["So8NSObjectC", "preferredStatusBarUpdateAnimation"]
+- ["So8NSObjectC", "prefersStatusBarHidden"]
+- !private ["So8NSObjectC", "setNeedsStatusBarAppearanceUpdate"]
+- ["So8NSObjectC", "statusBar"]
+- ["So8NSObjectC", "viewWillAppear"]
+- !private ["So8NSObjectP", "UIView"]
+- ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "animate"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "isHiddenStatusBar"]
+- !private ["So8NSObjectP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So8NSObjectP", "statusBar"]
+- !private ["So8NSObjectP", "viewWillAppear"]
+- !private ["SY", "default"]
+- !private ["SY", "lightContent"]
+- !private ["SY", "slide"]
+- ["18request_permission11SPStatusBarO", "dark"]
+- ["18request_permission11SPStatusBarO", "light"]
+- ["18request_permission28SPStatusBarManagerControllerC", "Bool"]
+- ["18request_permission28SPStatusBarManagerControllerC", "SPStatusBar"]
+- ["18request_permission28SPStatusBarManagerControllerC", "UIStatusBarAnimation"]
+- ["18request_permission28SPStatusBarManagerControllerC", "UIStatusBarStyle"]
+- !private ["18request_permission28SPStatusBarManagerControllerC", "UIView"]
+- !private ["18request_permission28SPStatusBarManagerControllerC", "Void"]
+- ["18request_permission28SPStatusBarManagerControllerC", "init"]
+- ["18request_permission28SPStatusBarManagerControllerC", "isHiddenStatusBar"]
+- ["18request_permission28SPStatusBarManagerControllerC", "preferredStatusBarStyle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "preferredStatusBarUpdateAnimation"]
+- ["18request_permission28SPStatusBarManagerControllerC", "prefersStatusBarHidden"]
+- !private ["18request_permission28SPStatusBarManagerControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["18request_permission28SPStatusBarManagerControllerC", "statusBar"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "Bool"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "SPStatusBar"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "UIStatusBarAnimation"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "UIStatusBarStyle"]
+- !private ["18request_permission38SPStatusBarManagerNavigationControllerC", "UIView"]
+- !private ["18request_permission38SPStatusBarManagerNavigationControllerC", "Void"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "init"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "isHiddenStatusBar"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "preferredStatusBarStyle"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "preferredStatusBarUpdateAnimation"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "prefersStatusBarHidden"]
+- !private ["18request_permission38SPStatusBarManagerNavigationControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "statusBar"]
+- ["18request_permission38SPStatusBarManagerNavigationControllerC", "viewWillAppear"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "Bool"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "SPStatusBar"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "UIStatusBarAnimation"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "UIStatusBarStyle"]
+- !private ["18request_permission33SPStatusBarManagerTableControllerC", "UIView"]
+- !private ["18request_permission33SPStatusBarManagerTableControllerC", "Void"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "init"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "isHiddenStatusBar"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "preferredStatusBarStyle"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "preferredStatusBarUpdateAnimation"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "prefersStatusBarHidden"]
+- !private ["18request_permission33SPStatusBarManagerTableControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["18request_permission33SPStatusBarManagerTableControllerC", "statusBar"]
+- !private ["So29UIAccessibilityIdentificationP", "animate"]
+- !private ["So12UIAppearanceP", "animate"]
+- !private ["So21UIAppearanceContainerP", "UIView"]
+- ["So21UIAppearanceContainerP", ""]
+- !private ["So21UIAppearanceContainerP", "animate"]
+- !private ["So21UIAppearanceContainerP", "init"]
+- !private ["So21UIAppearanceContainerP", "init"]
+- !private ["So21UIAppearanceContainerP", "isHiddenStatusBar"]
+- !private ["So21UIAppearanceContainerP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So21UIAppearanceContainerP", "statusBar"]
+- !private ["So21UIAppearanceContainerP", "viewWillAppear"]
+- !private ["So18UIContentContainerP", "UIView"]
+- ["So18UIContentContainerP", ""]
+- !private ["So18UIContentContainerP", "init"]
+- !private ["So18UIContentContainerP", "init"]
+- !private ["So18UIContentContainerP", "isHiddenStatusBar"]
+- !private ["So18UIContentContainerP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So18UIContentContainerP", "statusBar"]
+- !private ["So18UIContentContainerP", "viewWillAppear"]
+- !private ["So17UICoordinateSpaceP", "animate"]
+- !private ["So13UIDynamicItemP", "animate"]
+- !private ["So18UIFocusEnvironmentP", "UIView"]
+- ["So18UIFocusEnvironmentP", ""]
+- !private ["So18UIFocusEnvironmentP", "animate"]
+- !private ["So18UIFocusEnvironmentP", "init"]
+- !private ["So18UIFocusEnvironmentP", "init"]
+- !private ["So18UIFocusEnvironmentP", "isHiddenStatusBar"]
+- !private ["So18UIFocusEnvironmentP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So18UIFocusEnvironmentP", "statusBar"]
+- !private ["So18UIFocusEnvironmentP", "viewWillAppear"]
+- !private ["So11UIFocusItemP", "animate"]
+- !private ["So20UIFocusItemContainerP", "animate"]
+- ["So22UINavigationControllerC", "Bool"]
+- ["So22UINavigationControllerC", "SPStatusBar"]
+- ["So22UINavigationControllerC", "UIStatusBarAnimation"]
+- ["So22UINavigationControllerC", "UIStatusBarStyle"]
+- !private ["So22UINavigationControllerC", "UIView"]
+- !private ["So22UINavigationControllerC", "Void"]
+- ["So22UINavigationControllerC", ""]
+- ["So22UINavigationControllerC", "init"]
+- !private ["So22UINavigationControllerC", "init"]
+- ["So22UINavigationControllerC", "isHiddenStatusBar"]
+- ["So22UINavigationControllerC", "preferredStatusBarStyle"]
+- ["So22UINavigationControllerC", "preferredStatusBarUpdateAnimation"]
+- ["So22UINavigationControllerC", "prefersStatusBarHidden"]
+- !private ["So22UINavigationControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["So22UINavigationControllerC", "statusBar"]
+- ["So22UINavigationControllerC", "viewWillAppear"]
+- !private ["So30UIPasteConfigurationSupportingP", "UIView"]
+- ["So30UIPasteConfigurationSupportingP", ""]
+- !private ["So30UIPasteConfigurationSupportingP", "animate"]
+- !private ["So30UIPasteConfigurationSupportingP", "init"]
+- !private ["So30UIPasteConfigurationSupportingP", "init"]
+- !private ["So30UIPasteConfigurationSupportingP", "isHiddenStatusBar"]
+- !private ["So30UIPasteConfigurationSupportingP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So30UIPasteConfigurationSupportingP", "statusBar"]
+- !private ["So30UIPasteConfigurationSupportingP", "viewWillAppear"]
+- ["So11UIResponderC", "Bool"]
+- ["So11UIResponderC", "SPStatusBar"]
+- ["So11UIResponderC", "UIStatusBarAnimation"]
+- ["So11UIResponderC", "UIStatusBarStyle"]
+- !private ["So11UIResponderC", "UIView"]
+- !private ["So11UIResponderC", "Void"]
+- !private ["So11UIResponderC", "animate"]
+- ["So11UIResponderC", "init"]
+- !private ["So11UIResponderC", "init"]
+- ["So11UIResponderC", "isHiddenStatusBar"]
+- ["So11UIResponderC", "preferredStatusBarStyle"]
+- ["So11UIResponderC", "preferredStatusBarUpdateAnimation"]
+- ["So11UIResponderC", "prefersStatusBarHidden"]
+- !private ["So11UIResponderC", "setNeedsStatusBarAppearanceUpdate"]
+- ["So11UIResponderC", "statusBar"]
+- ["So11UIResponderC", "viewWillAppear"]
+- !private ["So30UIResponderStandardEditActionsP", "UIView"]
+- ["So30UIResponderStandardEditActionsP", ""]
+- !private ["So30UIResponderStandardEditActionsP", "animate"]
+- !private ["So30UIResponderStandardEditActionsP", "init"]
+- !private ["So30UIResponderStandardEditActionsP", "init"]
+- !private ["So30UIResponderStandardEditActionsP", "isHiddenStatusBar"]
+- !private ["So30UIResponderStandardEditActionsP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So30UIResponderStandardEditActionsP", "statusBar"]
+- !private ["So30UIResponderStandardEditActionsP", "viewWillAppear"]
+- !private ["So20UIScrollViewDelegateP", "UIView"]
+- ["So20UIScrollViewDelegateP", ""]
+- !private ["So20UIScrollViewDelegateP", "init"]
+- !private ["So20UIScrollViewDelegateP", "init"]
+- !private ["So20UIScrollViewDelegateP", "isHiddenStatusBar"]
+- !private ["So20UIScrollViewDelegateP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So20UIScrollViewDelegateP", "statusBar"]
+- !private ["So16UIStateRestoringP", "UIView"]
+- ["So16UIStateRestoringP", ""]
+- !private ["So16UIStateRestoringP", "init"]
+- !private ["So16UIStateRestoringP", "init"]
+- !private ["So16UIStateRestoringP", "isHiddenStatusBar"]
+- !private ["So16UIStateRestoringP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So16UIStateRestoringP", "statusBar"]
+- !private ["So16UIStateRestoringP", "viewWillAppear"]
+- !private ["So20UIStatusBarAnimationV", "slide"]
+- !private ["So16UIStatusBarStyleV", "default"]
+- !private ["So16UIStatusBarStyleV", "lightContent"]
+- ["So21UITableViewControllerC", "Bool"]
+- ["So21UITableViewControllerC", "SPStatusBar"]
+- ["So21UITableViewControllerC", "UIStatusBarAnimation"]
+- ["So21UITableViewControllerC", "UIStatusBarStyle"]
+- !private ["So21UITableViewControllerC", "UIView"]
+- !private ["So21UITableViewControllerC", "Void"]
+- ["So21UITableViewControllerC", ""]
+- ["So21UITableViewControllerC", "init"]
+- !private ["So21UITableViewControllerC", "init"]
+- ["So21UITableViewControllerC", "isHiddenStatusBar"]
+- ["So21UITableViewControllerC", "preferredStatusBarStyle"]
+- ["So21UITableViewControllerC", "preferredStatusBarUpdateAnimation"]
+- ["So21UITableViewControllerC", "prefersStatusBarHidden"]
+- !private ["So21UITableViewControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["So21UITableViewControllerC", "statusBar"]
+- !private ["So21UITableViewDataSourceP", "UIView"]
+- ["So21UITableViewDataSourceP", ""]
+- !private ["So21UITableViewDataSourceP", "init"]
+- !private ["So21UITableViewDataSourceP", "init"]
+- !private ["So21UITableViewDataSourceP", "isHiddenStatusBar"]
+- !private ["So21UITableViewDataSourceP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So21UITableViewDataSourceP", "statusBar"]
+- !private ["So19UITableViewDelegateP", "UIView"]
+- ["So19UITableViewDelegateP", ""]
+- !private ["So19UITableViewDelegateP", "init"]
+- !private ["So19UITableViewDelegateP", "init"]
+- !private ["So19UITableViewDelegateP", "isHiddenStatusBar"]
+- !private ["So19UITableViewDelegateP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So19UITableViewDelegateP", "statusBar"]
+- !private ["So18UITraitEnvironmentP", "UIView"]
+- ["So18UITraitEnvironmentP", ""]
+- !private ["So18UITraitEnvironmentP", "animate"]
+- !private ["So18UITraitEnvironmentP", "init"]
+- !private ["So18UITraitEnvironmentP", "init"]
+- !private ["So18UITraitEnvironmentP", "isHiddenStatusBar"]
+- !private ["So18UITraitEnvironmentP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So18UITraitEnvironmentP", "statusBar"]
+- !private ["So18UITraitEnvironmentP", "viewWillAppear"]
+- !private ["So23UIUserActivityRestoringP", "UIView"]
+- ["So23UIUserActivityRestoringP", ""]
+- !private ["So23UIUserActivityRestoringP", "animate"]
+- !private ["So23UIUserActivityRestoringP", "init"]
+- !private ["So23UIUserActivityRestoringP", "init"]
+- !private ["So23UIUserActivityRestoringP", "isHiddenStatusBar"]
+- !private ["So23UIUserActivityRestoringP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["So23UIUserActivityRestoringP", "statusBar"]
+- !private ["So23UIUserActivityRestoringP", "viewWillAppear"]
+- !private ["So6UIViewC", "animate"]
+- ["So16UIViewControllerC", "Bool"]
+- ["So16UIViewControllerC", "SPStatusBar"]
+- ["So16UIViewControllerC", "UIStatusBarAnimation"]
+- ["So16UIViewControllerC", "UIStatusBarStyle"]
+- !private ["So16UIViewControllerC", "UIView"]
+- !private ["So16UIViewControllerC", "Void"]
+- ["So16UIViewControllerC", ""]
+- ["So16UIViewControllerC", "init"]
+- !private ["So16UIViewControllerC", "init"]
+- ["So16UIViewControllerC", "isHiddenStatusBar"]
+- ["So16UIViewControllerC", "preferredStatusBarStyle"]
+- ["So16UIViewControllerC", "preferredStatusBarUpdateAnimation"]
+- ["So16UIViewControllerC", "prefersStatusBarHidden"]
+- !private ["So16UIViewControllerC", "setNeedsStatusBarAppearanceUpdate"]
+- ["So16UIViewControllerC", "statusBar"]
+- ["So16UIViewControllerC", "viewWillAppear"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "animate"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "UIView"]
+- ["10Foundation27_KeyValueCodingAndObservingP", ""]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "animate"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "isHiddenStatusBar"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "setNeedsStatusBarAppearanceUpdate"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "statusBar"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "viewWillAppear"]
+depends-nominal:
+- !private "So15CALayerDelegateP"
+- "s7CVarArgP"
+- "s28CustomDebugStringConvertibleP"
+- "s23CustomStringConvertibleP"
+- "SQ"
+- "SH"
+- "So8NSCodingP"
+- "So26NSExtensionRequestHandlingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "SY"
+- "18request_permission11SPStatusBarO"
+- "18request_permission28SPStatusBarManagerControllerC"
+- "18request_permission38SPStatusBarManagerNavigationControllerC"
+- "18request_permission33SPStatusBarManagerTableControllerC"
+- !private "So29UIAccessibilityIdentificationP"
+- !private "So12UIAppearanceP"
+- "So21UIAppearanceContainerP"
+- "So18UIContentContainerP"
+- !private "So17UICoordinateSpaceP"
+- !private "So13UIDynamicItemP"
+- "So18UIFocusEnvironmentP"
+- !private "So11UIFocusItemP"
+- !private "So20UIFocusItemContainerP"
+- "So22UINavigationControllerC"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- "So20UIScrollViewDelegateP"
+- "So16UIStateRestoringP"
+- !private "So20UIStatusBarAnimationV"
+- !private "So16UIStatusBarStyleV"
+- "So21UITableViewControllerC"
+- "So21UITableViewDataSourceP"
+- "So19UITableViewDelegateP"
+- "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- !private "So6UIViewC"
+- "So16UIViewControllerC"
+- !private "s37_DefaultCustomPlaygroundQuickLookableP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "5eea0b7fc857f3b434ac62068cc5d9eb"

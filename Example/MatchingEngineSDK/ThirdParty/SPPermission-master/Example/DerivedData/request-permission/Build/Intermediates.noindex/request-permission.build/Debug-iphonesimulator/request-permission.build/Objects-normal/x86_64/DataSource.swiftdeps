@@ -1,0 +1,668 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+provides-nominal:
+- "18request_permission14ViewControllerC"
+provides-member:
+- ["18request_permission14ViewControllerC", ""]
+provides-dynamic-lookup:
+- "allowTitle"
+- "allowedTitle"
+- "cancelTitle"
+- "deniedSubtitle"
+- "deniedTitle"
+- "description"
+- "dialogComment"
+- "dialogSubtitle"
+- "dialogTitle"
+- "image"
+- "name"
+- "settingsTitle"
+- "showCloseButton"
+depends-top-level:
+- "Bool"
+- !private "BooleanLiteralType"
+- "SPPermissionDialogDataSource"
+- "SPPermissionType"
+- "String"
+- !private "StringLiteralType"
+- "UIImage"
+- "ViewController"
+depends-member:
+- !private ["SK", "init"]
+- !private ["SK", "init"]
+- ["s7CVarArgP", "allowTitle"]
+- ["s7CVarArgP", "allowedTitle"]
+- ["s7CVarArgP", "bottomComment"]
+- ["s7CVarArgP", "cancelTitle"]
+- ["s7CVarArgP", "deniedSubtitle"]
+- ["s7CVarArgP", "deniedTitle"]
+- ["s7CVarArgP", "description"]
+- ["s7CVarArgP", "dialogComment"]
+- ["s7CVarArgP", "dialogSubtitle"]
+- ["s7CVarArgP", "dialogTitle"]
+- ["s7CVarArgP", "dragEnabled"]
+- ["s7CVarArgP", "image"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- ["s7CVarArgP", "name"]
+- ["s7CVarArgP", "settingsTitle"]
+- ["s7CVarArgP", "showCloseButton"]
+- !private ["Sl", "init"]
+- !private ["Sl", "init"]
+- !private ["SL", "init"]
+- !private ["SL", "init"]
+- ["s28CustomDebugStringConvertibleP", "allowTitle"]
+- ["s28CustomDebugStringConvertibleP", "allowedTitle"]
+- ["s28CustomDebugStringConvertibleP", "bottomComment"]
+- ["s28CustomDebugStringConvertibleP", "cancelTitle"]
+- ["s28CustomDebugStringConvertibleP", "deniedSubtitle"]
+- ["s28CustomDebugStringConvertibleP", "deniedTitle"]
+- ["s28CustomDebugStringConvertibleP", "description"]
+- ["s28CustomDebugStringConvertibleP", "dialogComment"]
+- ["s28CustomDebugStringConvertibleP", "dialogSubtitle"]
+- ["s28CustomDebugStringConvertibleP", "dialogTitle"]
+- ["s28CustomDebugStringConvertibleP", "dragEnabled"]
+- ["s28CustomDebugStringConvertibleP", "image"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "name"]
+- ["s28CustomDebugStringConvertibleP", "settingsTitle"]
+- ["s28CustomDebugStringConvertibleP", "showCloseButton"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- ["s23CustomStringConvertibleP", "allowTitle"]
+- ["s23CustomStringConvertibleP", "allowedTitle"]
+- ["s23CustomStringConvertibleP", "bottomComment"]
+- ["s23CustomStringConvertibleP", "cancelTitle"]
+- ["s23CustomStringConvertibleP", "deniedSubtitle"]
+- ["s23CustomStringConvertibleP", "deniedTitle"]
+- ["s23CustomStringConvertibleP", "description"]
+- ["s23CustomStringConvertibleP", "dialogComment"]
+- ["s23CustomStringConvertibleP", "dialogSubtitle"]
+- ["s23CustomStringConvertibleP", "dialogTitle"]
+- ["s23CustomStringConvertibleP", "dragEnabled"]
+- ["s23CustomStringConvertibleP", "image"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- ["s23CustomStringConvertibleP", "name"]
+- ["s23CustomStringConvertibleP", "settingsTitle"]
+- ["s23CustomStringConvertibleP", "showCloseButton"]
+- !private ["Se", "init"]
+- !private ["Se", "init"]
+- !private ["SE", "init"]
+- !private ["SE", "init"]
+- ["SQ", "allowTitle"]
+- ["SQ", "allowedTitle"]
+- ["SQ", "bottomComment"]
+- ["SQ", "calendar"]
+- ["SQ", "camera"]
+- ["SQ", "cancelTitle"]
+- ["SQ", "contacts"]
+- ["SQ", "deniedSubtitle"]
+- ["SQ", "deniedTitle"]
+- ["SQ", "description"]
+- ["SQ", "dialogComment"]
+- ["SQ", "dialogSubtitle"]
+- ["SQ", "dialogTitle"]
+- ["SQ", "dragEnabled"]
+- ["SQ", "image"]
+- !private ["SQ", "init"]
+- !private ["SQ", "init"]
+- ["SQ", "locationAlways"]
+- ["SQ", "locationWhenInUse"]
+- ["SQ", "locationWithBackground"]
+- ["SQ", "mediaLibrary"]
+- ["SQ", "microphone"]
+- ["SQ", "name"]
+- ["SQ", "notification"]
+- ["SQ", "photoLibrary"]
+- ["SQ", "reminders"]
+- ["SQ", "settingsTitle"]
+- ["SQ", "showCloseButton"]
+- ["SQ", "speech"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- ["SH", "allowTitle"]
+- ["SH", "allowedTitle"]
+- ["SH", "bottomComment"]
+- ["SH", "calendar"]
+- ["SH", "camera"]
+- ["SH", "cancelTitle"]
+- ["SH", "contacts"]
+- ["SH", "deniedSubtitle"]
+- ["SH", "deniedTitle"]
+- ["SH", "description"]
+- ["SH", "dialogComment"]
+- ["SH", "dialogSubtitle"]
+- ["SH", "dialogTitle"]
+- ["SH", "dragEnabled"]
+- ["SH", "image"]
+- !private ["SH", "init"]
+- !private ["SH", "init"]
+- ["SH", "locationAlways"]
+- ["SH", "locationWhenInUse"]
+- ["SH", "locationWithBackground"]
+- ["SH", "mediaLibrary"]
+- ["SH", "microphone"]
+- ["SH", "name"]
+- ["SH", "notification"]
+- ["SH", "photoLibrary"]
+- ["SH", "reminders"]
+- ["SH", "settingsTitle"]
+- ["SH", "showCloseButton"]
+- ["SH", "speech"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- ["So8NSCodingP", "allowTitle"]
+- ["So8NSCodingP", "allowedTitle"]
+- ["So8NSCodingP", "bottomComment"]
+- ["So8NSCodingP", "cancelTitle"]
+- ["So8NSCodingP", "deniedSubtitle"]
+- ["So8NSCodingP", "deniedTitle"]
+- ["So8NSCodingP", "description"]
+- ["So8NSCodingP", "dialogComment"]
+- ["So8NSCodingP", "dialogSubtitle"]
+- ["So8NSCodingP", "dialogTitle"]
+- ["So8NSCodingP", "dragEnabled"]
+- ["So8NSCodingP", "image"]
+- ["So8NSCodingP", "name"]
+- ["So8NSCodingP", "settingsTitle"]
+- ["So8NSCodingP", "showCloseButton"]
+- ["So26NSExtensionRequestHandlingP", "allowTitle"]
+- ["So26NSExtensionRequestHandlingP", "allowedTitle"]
+- ["So26NSExtensionRequestHandlingP", "bottomComment"]
+- ["So26NSExtensionRequestHandlingP", "cancelTitle"]
+- ["So26NSExtensionRequestHandlingP", "deniedSubtitle"]
+- ["So26NSExtensionRequestHandlingP", "deniedTitle"]
+- ["So26NSExtensionRequestHandlingP", "description"]
+- ["So26NSExtensionRequestHandlingP", "dialogComment"]
+- ["So26NSExtensionRequestHandlingP", "dialogSubtitle"]
+- ["So26NSExtensionRequestHandlingP", "dialogTitle"]
+- ["So26NSExtensionRequestHandlingP", "dragEnabled"]
+- ["So26NSExtensionRequestHandlingP", "image"]
+- ["So26NSExtensionRequestHandlingP", "name"]
+- ["So26NSExtensionRequestHandlingP", "settingsTitle"]
+- ["So26NSExtensionRequestHandlingP", "showCloseButton"]
+- ["So8NSObjectC", "Bool"]
+- ["So8NSObjectC", "SPPermissionType"]
+- ["So8NSObjectC", "String"]
+- ["So8NSObjectC", "UIImage"]
+- ["So8NSObjectC", "allowTitle"]
+- ["So8NSObjectC", "allowedTitle"]
+- ["So8NSObjectC", "bottomComment"]
+- ["So8NSObjectC", "cancelTitle"]
+- ["So8NSObjectC", "deniedSubtitle"]
+- ["So8NSObjectC", "deniedTitle"]
+- ["So8NSObjectC", "description"]
+- ["So8NSObjectC", "dialogComment"]
+- ["So8NSObjectC", "dialogSubtitle"]
+- ["So8NSObjectC", "dialogTitle"]
+- ["So8NSObjectC", "dragEnabled"]
+- ["So8NSObjectC", "dragToDismiss"]
+- ["So8NSObjectC", "image"]
+- ["So8NSObjectC", "name"]
+- ["So8NSObjectC", "settingsTitle"]
+- ["So8NSObjectC", "showCloseButton"]
+- ["So8NSObjectP", "allowTitle"]
+- ["So8NSObjectP", "allowedTitle"]
+- ["So8NSObjectP", "bottomComment"]
+- ["So8NSObjectP", "cancelTitle"]
+- ["So8NSObjectP", "deniedSubtitle"]
+- ["So8NSObjectP", "deniedTitle"]
+- ["So8NSObjectP", "description"]
+- ["So8NSObjectP", "dialogComment"]
+- ["So8NSObjectP", "dialogSubtitle"]
+- ["So8NSObjectP", "dialogTitle"]
+- ["So8NSObjectP", "dragEnabled"]
+- ["So8NSObjectP", "image"]
+- ["So8NSObjectP", "name"]
+- ["So8NSObjectP", "settingsTitle"]
+- ["So8NSObjectP", "showCloseButton"]
+- !private ["Sm", "init"]
+- !private ["Sm", "init"]
+- ["SY", "calendar"]
+- ["SY", "camera"]
+- ["SY", "contacts"]
+- ["SY", "locationAlways"]
+- ["SY", "locationWhenInUse"]
+- ["SY", "locationWithBackground"]
+- ["SY", "mediaLibrary"]
+- ["SY", "microphone"]
+- ["SY", "notification"]
+- ["SY", "photoLibrary"]
+- ["SY", "reminders"]
+- ["SY", "speech"]
+- ["18request_permission12SPControllerC", "Bool"]
+- ["18request_permission12SPControllerC", "SPPermissionType"]
+- ["18request_permission12SPControllerC", "String"]
+- ["18request_permission12SPControllerC", "UIImage"]
+- ["18request_permission12SPControllerC", "allowTitle"]
+- ["18request_permission12SPControllerC", "allowedTitle"]
+- ["18request_permission12SPControllerC", "bottomComment"]
+- ["18request_permission12SPControllerC", "cancelTitle"]
+- ["18request_permission12SPControllerC", "deniedSubtitle"]
+- ["18request_permission12SPControllerC", "deniedTitle"]
+- ["18request_permission12SPControllerC", "description"]
+- ["18request_permission12SPControllerC", "dialogComment"]
+- ["18request_permission12SPControllerC", "dialogSubtitle"]
+- ["18request_permission12SPControllerC", "dialogTitle"]
+- ["18request_permission12SPControllerC", "dragEnabled"]
+- ["18request_permission12SPControllerC", "dragToDismiss"]
+- ["18request_permission12SPControllerC", "image"]
+- ["18request_permission12SPControllerC", "name"]
+- ["18request_permission12SPControllerC", "settingsTitle"]
+- ["18request_permission12SPControllerC", "showCloseButton"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "allowTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "allowedTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "bottomComment"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "cancelTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "deniedSubtitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "deniedTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "description"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "dialogComment"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "dialogSubtitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "dialogTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "dragEnabled"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "image"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "name"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "settingsTitle"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "showCloseButton"]
+- ["18request_permission28SPPermissionDialogDataSourceP", ""]
+- ["18request_permission28SPPermissionDialogDataSourceP", "allowTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "allowedTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "bottomComment"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "cancelTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "deniedSubtitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "deniedTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "description"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "dialogComment"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "dialogSubtitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "dialogTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "dragEnabled"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "image"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "name"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "settingsTitle"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "showCloseButton"]
+- ["18request_permission26SPPermissionDialogDelegateP", "allowTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "allowedTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "bottomComment"]
+- ["18request_permission26SPPermissionDialogDelegateP", "cancelTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "deniedSubtitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "deniedTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "description"]
+- ["18request_permission26SPPermissionDialogDelegateP", "dialogComment"]
+- ["18request_permission26SPPermissionDialogDelegateP", "dialogSubtitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "dialogTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "dragEnabled"]
+- ["18request_permission26SPPermissionDialogDelegateP", "image"]
+- ["18request_permission26SPPermissionDialogDelegateP", "name"]
+- ["18request_permission26SPPermissionDialogDelegateP", "settingsTitle"]
+- ["18request_permission26SPPermissionDialogDelegateP", "showCloseButton"]
+- ["18request_permission16SPPermissionTypeO", "calendar"]
+- ["18request_permission16SPPermissionTypeO", "camera"]
+- ["18request_permission16SPPermissionTypeO", "contacts"]
+- ["18request_permission16SPPermissionTypeO", "locationAlways"]
+- ["18request_permission16SPPermissionTypeO", "locationWhenInUse"]
+- ["18request_permission16SPPermissionTypeO", "locationWithBackground"]
+- ["18request_permission16SPPermissionTypeO", "mediaLibrary"]
+- ["18request_permission16SPPermissionTypeO", "microphone"]
+- ["18request_permission16SPPermissionTypeO", "notification"]
+- ["18request_permission16SPPermissionTypeO", "photoLibrary"]
+- ["18request_permission16SPPermissionTypeO", "reminders"]
+- ["18request_permission16SPPermissionTypeO", "speech"]
+- ["18request_permission28SPStatusBarManagerControllerC", "Bool"]
+- ["18request_permission28SPStatusBarManagerControllerC", "SPPermissionType"]
+- ["18request_permission28SPStatusBarManagerControllerC", "String"]
+- ["18request_permission28SPStatusBarManagerControllerC", "UIImage"]
+- ["18request_permission28SPStatusBarManagerControllerC", "allowTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "allowedTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "bottomComment"]
+- ["18request_permission28SPStatusBarManagerControllerC", "cancelTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "deniedSubtitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "deniedTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "description"]
+- ["18request_permission28SPStatusBarManagerControllerC", "dialogComment"]
+- ["18request_permission28SPStatusBarManagerControllerC", "dialogSubtitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "dialogTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "dragEnabled"]
+- ["18request_permission28SPStatusBarManagerControllerC", "dragToDismiss"]
+- ["18request_permission28SPStatusBarManagerControllerC", "image"]
+- ["18request_permission28SPStatusBarManagerControllerC", "name"]
+- ["18request_permission28SPStatusBarManagerControllerC", "settingsTitle"]
+- ["18request_permission28SPStatusBarManagerControllerC", "showCloseButton"]
+- !private ["ST", "init"]
+- !private ["ST", "init"]
+- !private ["SS", "init"]
+- !private ["SS", "init"]
+- !private ["Sy", "init"]
+- !private ["Sy", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- ["So21UIAppearanceContainerP", "allowTitle"]
+- ["So21UIAppearanceContainerP", "allowedTitle"]
+- ["So21UIAppearanceContainerP", "bottomComment"]
+- ["So21UIAppearanceContainerP", "cancelTitle"]
+- ["So21UIAppearanceContainerP", "deniedSubtitle"]
+- ["So21UIAppearanceContainerP", "deniedTitle"]
+- ["So21UIAppearanceContainerP", "description"]
+- ["So21UIAppearanceContainerP", "dialogComment"]
+- ["So21UIAppearanceContainerP", "dialogSubtitle"]
+- ["So21UIAppearanceContainerP", "dialogTitle"]
+- ["So21UIAppearanceContainerP", "dragEnabled"]
+- ["So21UIAppearanceContainerP", "image"]
+- ["So21UIAppearanceContainerP", "name"]
+- ["So21UIAppearanceContainerP", "settingsTitle"]
+- ["So21UIAppearanceContainerP", "showCloseButton"]
+- ["So18UIContentContainerP", "allowTitle"]
+- ["So18UIContentContainerP", "allowedTitle"]
+- ["So18UIContentContainerP", "bottomComment"]
+- ["So18UIContentContainerP", "cancelTitle"]
+- ["So18UIContentContainerP", "deniedSubtitle"]
+- ["So18UIContentContainerP", "deniedTitle"]
+- ["So18UIContentContainerP", "description"]
+- ["So18UIContentContainerP", "dialogComment"]
+- ["So18UIContentContainerP", "dialogSubtitle"]
+- ["So18UIContentContainerP", "dialogTitle"]
+- ["So18UIContentContainerP", "dragEnabled"]
+- ["So18UIContentContainerP", "image"]
+- ["So18UIContentContainerP", "name"]
+- ["So18UIContentContainerP", "settingsTitle"]
+- ["So18UIContentContainerP", "showCloseButton"]
+- ["So18UIFocusEnvironmentP", "allowTitle"]
+- ["So18UIFocusEnvironmentP", "allowedTitle"]
+- ["So18UIFocusEnvironmentP", "bottomComment"]
+- ["So18UIFocusEnvironmentP", "cancelTitle"]
+- ["So18UIFocusEnvironmentP", "deniedSubtitle"]
+- ["So18UIFocusEnvironmentP", "deniedTitle"]
+- ["So18UIFocusEnvironmentP", "description"]
+- ["So18UIFocusEnvironmentP", "dialogComment"]
+- ["So18UIFocusEnvironmentP", "dialogSubtitle"]
+- ["So18UIFocusEnvironmentP", "dialogTitle"]
+- ["So18UIFocusEnvironmentP", "dragEnabled"]
+- ["So18UIFocusEnvironmentP", "image"]
+- ["So18UIFocusEnvironmentP", "name"]
+- ["So18UIFocusEnvironmentP", "settingsTitle"]
+- ["So18UIFocusEnvironmentP", "showCloseButton"]
+- ["So30UIPasteConfigurationSupportingP", "allowTitle"]
+- ["So30UIPasteConfigurationSupportingP", "allowedTitle"]
+- ["So30UIPasteConfigurationSupportingP", "bottomComment"]
+- ["So30UIPasteConfigurationSupportingP", "cancelTitle"]
+- ["So30UIPasteConfigurationSupportingP", "deniedSubtitle"]
+- ["So30UIPasteConfigurationSupportingP", "deniedTitle"]
+- ["So30UIPasteConfigurationSupportingP", "description"]
+- ["So30UIPasteConfigurationSupportingP", "dialogComment"]
+- ["So30UIPasteConfigurationSupportingP", "dialogSubtitle"]
+- ["So30UIPasteConfigurationSupportingP", "dialogTitle"]
+- ["So30UIPasteConfigurationSupportingP", "dragEnabled"]
+- ["So30UIPasteConfigurationSupportingP", "image"]
+- ["So30UIPasteConfigurationSupportingP", "name"]
+- ["So30UIPasteConfigurationSupportingP", "settingsTitle"]
+- ["So30UIPasteConfigurationSupportingP", "showCloseButton"]
+- ["So11UIResponderC", "Bool"]
+- ["So11UIResponderC", "SPPermissionType"]
+- ["So11UIResponderC", "String"]
+- ["So11UIResponderC", "UIImage"]
+- ["So11UIResponderC", "allowTitle"]
+- ["So11UIResponderC", "allowedTitle"]
+- ["So11UIResponderC", "bottomComment"]
+- ["So11UIResponderC", "cancelTitle"]
+- ["So11UIResponderC", "deniedSubtitle"]
+- ["So11UIResponderC", "deniedTitle"]
+- ["So11UIResponderC", "description"]
+- ["So11UIResponderC", "dialogComment"]
+- ["So11UIResponderC", "dialogSubtitle"]
+- ["So11UIResponderC", "dialogTitle"]
+- ["So11UIResponderC", "dragEnabled"]
+- ["So11UIResponderC", "dragToDismiss"]
+- ["So11UIResponderC", "image"]
+- ["So11UIResponderC", "name"]
+- ["So11UIResponderC", "settingsTitle"]
+- ["So11UIResponderC", "showCloseButton"]
+- ["So30UIResponderStandardEditActionsP", "allowTitle"]
+- ["So30UIResponderStandardEditActionsP", "allowedTitle"]
+- ["So30UIResponderStandardEditActionsP", "bottomComment"]
+- ["So30UIResponderStandardEditActionsP", "cancelTitle"]
+- ["So30UIResponderStandardEditActionsP", "deniedSubtitle"]
+- ["So30UIResponderStandardEditActionsP", "deniedTitle"]
+- ["So30UIResponderStandardEditActionsP", "description"]
+- ["So30UIResponderStandardEditActionsP", "dialogComment"]
+- ["So30UIResponderStandardEditActionsP", "dialogSubtitle"]
+- ["So30UIResponderStandardEditActionsP", "dialogTitle"]
+- ["So30UIResponderStandardEditActionsP", "dragEnabled"]
+- ["So30UIResponderStandardEditActionsP", "image"]
+- ["So30UIResponderStandardEditActionsP", "name"]
+- ["So30UIResponderStandardEditActionsP", "settingsTitle"]
+- ["So30UIResponderStandardEditActionsP", "showCloseButton"]
+- ["So16UIStateRestoringP", "allowTitle"]
+- ["So16UIStateRestoringP", "allowedTitle"]
+- ["So16UIStateRestoringP", "bottomComment"]
+- ["So16UIStateRestoringP", "cancelTitle"]
+- ["So16UIStateRestoringP", "deniedSubtitle"]
+- ["So16UIStateRestoringP", "deniedTitle"]
+- ["So16UIStateRestoringP", "description"]
+- ["So16UIStateRestoringP", "dialogComment"]
+- ["So16UIStateRestoringP", "dialogSubtitle"]
+- ["So16UIStateRestoringP", "dialogTitle"]
+- ["So16UIStateRestoringP", "dragEnabled"]
+- ["So16UIStateRestoringP", "image"]
+- ["So16UIStateRestoringP", "name"]
+- ["So16UIStateRestoringP", "settingsTitle"]
+- ["So16UIStateRestoringP", "showCloseButton"]
+- ["So18UITraitEnvironmentP", "allowTitle"]
+- ["So18UITraitEnvironmentP", "allowedTitle"]
+- ["So18UITraitEnvironmentP", "bottomComment"]
+- ["So18UITraitEnvironmentP", "cancelTitle"]
+- ["So18UITraitEnvironmentP", "deniedSubtitle"]
+- ["So18UITraitEnvironmentP", "deniedTitle"]
+- ["So18UITraitEnvironmentP", "description"]
+- ["So18UITraitEnvironmentP", "dialogComment"]
+- ["So18UITraitEnvironmentP", "dialogSubtitle"]
+- ["So18UITraitEnvironmentP", "dialogTitle"]
+- ["So18UITraitEnvironmentP", "dragEnabled"]
+- ["So18UITraitEnvironmentP", "image"]
+- ["So18UITraitEnvironmentP", "name"]
+- ["So18UITraitEnvironmentP", "settingsTitle"]
+- ["So18UITraitEnvironmentP", "showCloseButton"]
+- ["So23UIUserActivityRestoringP", "allowTitle"]
+- ["So23UIUserActivityRestoringP", "allowedTitle"]
+- ["So23UIUserActivityRestoringP", "bottomComment"]
+- ["So23UIUserActivityRestoringP", "cancelTitle"]
+- ["So23UIUserActivityRestoringP", "deniedSubtitle"]
+- ["So23UIUserActivityRestoringP", "deniedTitle"]
+- ["So23UIUserActivityRestoringP", "description"]
+- ["So23UIUserActivityRestoringP", "dialogComment"]
+- ["So23UIUserActivityRestoringP", "dialogSubtitle"]
+- ["So23UIUserActivityRestoringP", "dialogTitle"]
+- ["So23UIUserActivityRestoringP", "dragEnabled"]
+- ["So23UIUserActivityRestoringP", "image"]
+- ["So23UIUserActivityRestoringP", "name"]
+- ["So23UIUserActivityRestoringP", "settingsTitle"]
+- ["So23UIUserActivityRestoringP", "showCloseButton"]
+- ["So16UIViewControllerC", "Bool"]
+- ["So16UIViewControllerC", "SPPermissionType"]
+- ["So16UIViewControllerC", "String"]
+- ["So16UIViewControllerC", "UIImage"]
+- ["So16UIViewControllerC", "allowTitle"]
+- ["So16UIViewControllerC", "allowedTitle"]
+- ["So16UIViewControllerC", "bottomComment"]
+- ["So16UIViewControllerC", "cancelTitle"]
+- ["So16UIViewControllerC", "deniedSubtitle"]
+- ["So16UIViewControllerC", "deniedTitle"]
+- ["So16UIViewControllerC", "description"]
+- ["So16UIViewControllerC", "dialogComment"]
+- ["So16UIViewControllerC", "dialogSubtitle"]
+- ["So16UIViewControllerC", "dialogTitle"]
+- ["So16UIViewControllerC", "dragEnabled"]
+- ["So16UIViewControllerC", "dragToDismiss"]
+- ["So16UIViewControllerC", "image"]
+- ["So16UIViewControllerC", "name"]
+- ["So16UIViewControllerC", "settingsTitle"]
+- ["So16UIViewControllerC", "showCloseButton"]
+- ["18request_permission14ViewControllerC", "Bool"]
+- ["18request_permission14ViewControllerC", "SPPermissionType"]
+- ["18request_permission14ViewControllerC", "String"]
+- ["18request_permission14ViewControllerC", "UIImage"]
+- ["18request_permission14ViewControllerC", "allowTitle"]
+- ["18request_permission14ViewControllerC", "allowedTitle"]
+- ["18request_permission14ViewControllerC", "bottomComment"]
+- ["18request_permission14ViewControllerC", "cancelTitle"]
+- ["18request_permission14ViewControllerC", "deinit"]
+- ["18request_permission14ViewControllerC", "deniedSubtitle"]
+- ["18request_permission14ViewControllerC", "deniedTitle"]
+- ["18request_permission14ViewControllerC", "description"]
+- ["18request_permission14ViewControllerC", "dialogComment"]
+- ["18request_permission14ViewControllerC", "dialogSubtitle"]
+- ["18request_permission14ViewControllerC", "dialogTitle"]
+- ["18request_permission14ViewControllerC", "dragEnabled"]
+- ["18request_permission14ViewControllerC", "dragToDismiss"]
+- ["18request_permission14ViewControllerC", "image"]
+- ["18request_permission14ViewControllerC", "name"]
+- ["18request_permission14ViewControllerC", "settingsTitle"]
+- ["18request_permission14ViewControllerC", "showCloseButton"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "allowTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "allowedTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "bottomComment"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "cancelTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "deniedSubtitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "deniedTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "description"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "dialogComment"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "dialogSubtitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "dialogTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "dragEnabled"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "image"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "name"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "settingsTitle"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "showCloseButton"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "init"]
+depends-nominal:
+- !private "SK"
+- "s7CVarArgP"
+- !private "Sl"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SE"
+- "SQ"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- "So8NSCodingP"
+- "So26NSExtensionRequestHandlingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "Sm"
+- "SY"
+- "18request_permission12SPControllerC"
+- "18request_permission29SPPermissionDialogColorSourceP"
+- "18request_permission28SPPermissionDialogDataSourceP"
+- "18request_permission26SPPermissionDialogDelegateP"
+- "18request_permission16SPPermissionTypeO"
+- "18request_permission28SPStatusBarManagerControllerC"
+- !private "ST"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "So21UIAppearanceContainerP"
+- "So18UIContentContainerP"
+- "So18UIFocusEnvironmentP"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- "So16UIStateRestoringP"
+- "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- "So16UIViewControllerC"
+- "18request_permission14ViewControllerC"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "9c8e0f5bf81650149fc108907d055fd2"

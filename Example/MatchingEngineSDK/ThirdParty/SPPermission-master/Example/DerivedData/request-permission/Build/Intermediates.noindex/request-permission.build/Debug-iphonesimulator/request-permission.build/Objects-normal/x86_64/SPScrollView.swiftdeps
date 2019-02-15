@@ -1,0 +1,372 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPScrollView"
+provides-nominal:
+- "18request_permission12SPScrollViewC"
+provides-member:
+- ["18request_permission12SPScrollViewC", ""]
+provides-dynamic-lookup:
+- "touchesShouldCancel"
+depends-top-level:
+- !private "!"
+- !private "&&"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- "CastingPrecedence"
+- !private "FloatLiteralType"
+- !private "IntegerLiteralType"
+- "NSCoder"
+- "SPScrollView"
+- !private "StringLiteralType"
+- !private "UIControl"
+- "UIScrollView"
+- !private "UISlider"
+- !private "UISwitch"
+- !private "UITextInput"
+- "UIView"
+depends-member:
+- !private ["Sb", "_getBuiltinLogicValue"]
+- ["So15CALayerDelegateP", ""]
+- !private ["So15CALayerDelegateP", "commonInit"]
+- !private ["So15CALayerDelegateP", "contentInsetAdjustmentBehavior"]
+- !private ["So15CALayerDelegateP", "delaysContentTouches"]
+- !private ["So15CALayerDelegateP", "init"]
+- !private ["So15CALayerDelegateP", "touchesShouldCancel"]
+- !private ["So6CGRectV", "zero"]
+- ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "commonInit"]
+- !private ["s7CVarArgP", "contentInsetAdjustmentBehavior"]
+- !private ["s7CVarArgP", "delaysContentTouches"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "touchesShouldCancel"]
+- !private ["So42UIScrollViewContentInsetAdjustmentBehaviorV", "never"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "commonInit"]
+- !private ["s28CustomDebugStringConvertibleP", "contentInsetAdjustmentBehavior"]
+- !private ["s28CustomDebugStringConvertibleP", "delaysContentTouches"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "touchesShouldCancel"]
+- !private ["s28CustomDebugStringConvertibleP", "zero"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "zero"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "zero"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "commonInit"]
+- !private ["s23CustomStringConvertibleP", "contentInsetAdjustmentBehavior"]
+- !private ["s23CustomStringConvertibleP", "delaysContentTouches"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "touchesShouldCancel"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["Se", "zero"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SE", "zero"]
+- ["SQ", ""]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "commonInit"]
+- !private ["SQ", "contentInsetAdjustmentBehavior"]
+- !private ["SQ", "delaysContentTouches"]
+- !private ["SQ", "init"]
+- !private ["SQ", "never"]
+- !private ["SQ", "touchesShouldCancel"]
+- !private ["SQ", "zero"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- ["SH", ""]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "commonInit"]
+- !private ["SH", "contentInsetAdjustmentBehavior"]
+- !private ["SH", "delaysContentTouches"]
+- !private ["SH", "init"]
+- !private ["SH", "never"]
+- !private ["SH", "touchesShouldCancel"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- ["So8NSCodingP", ""]
+- !private ["So8NSCodingP", "commonInit"]
+- !private ["So8NSCodingP", "contentInsetAdjustmentBehavior"]
+- !private ["So8NSCodingP", "delaysContentTouches"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "touchesShouldCancel"]
+- ["So8NSObjectC", "Bool"]
+- ["So8NSObjectC", "NSCoder"]
+- !private ["So8NSObjectC", "UIControl"]
+- !private ["So8NSObjectC", "UISlider"]
+- !private ["So8NSObjectC", "UISwitch"]
+- !private ["So8NSObjectC", "UITextInput"]
+- ["So8NSObjectC", "UIView"]
+- ["So8NSObjectC", "commonInit"]
+- !private ["So8NSObjectC", "contentInsetAdjustmentBehavior"]
+- !private ["So8NSObjectC", "delaysContentTouches"]
+- ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "touchesShouldCancel"]
+- ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "commonInit"]
+- !private ["So8NSObjectP", "contentInsetAdjustmentBehavior"]
+- !private ["So8NSObjectP", "delaysContentTouches"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "touchesShouldCancel"]
+- !private ["SY", "never"]
+- ["18request_permission12SPScrollViewC", "Bool"]
+- ["18request_permission12SPScrollViewC", "NSCoder"]
+- !private ["18request_permission12SPScrollViewC", "UIControl"]
+- !private ["18request_permission12SPScrollViewC", "UISlider"]
+- !private ["18request_permission12SPScrollViewC", "UISwitch"]
+- !private ["18request_permission12SPScrollViewC", "UITextInput"]
+- ["18request_permission12SPScrollViewC", "UIView"]
+- ["18request_permission12SPScrollViewC", "commonInit"]
+- !private ["18request_permission12SPScrollViewC", "contentInsetAdjustmentBehavior"]
+- !private ["18request_permission12SPScrollViewC", "delaysContentTouches"]
+- ["18request_permission12SPScrollViewC", "init"]
+- ["18request_permission12SPScrollViewC", "touchesShouldCancel"]
+- !private ["s12StaticStringV", "init"]
+- !private ["s12StaticStringV", "init"]
+- ["So29UIAccessibilityIdentificationP", ""]
+- !private ["So29UIAccessibilityIdentificationP", "commonInit"]
+- !private ["So29UIAccessibilityIdentificationP", "contentInsetAdjustmentBehavior"]
+- !private ["So29UIAccessibilityIdentificationP", "delaysContentTouches"]
+- !private ["So29UIAccessibilityIdentificationP", "init"]
+- !private ["So29UIAccessibilityIdentificationP", "touchesShouldCancel"]
+- ["So12UIAppearanceP", ""]
+- !private ["So12UIAppearanceP", "commonInit"]
+- !private ["So12UIAppearanceP", "contentInsetAdjustmentBehavior"]
+- !private ["So12UIAppearanceP", "delaysContentTouches"]
+- !private ["So12UIAppearanceP", "init"]
+- !private ["So12UIAppearanceP", "touchesShouldCancel"]
+- ["So21UIAppearanceContainerP", ""]
+- !private ["So21UIAppearanceContainerP", "commonInit"]
+- !private ["So21UIAppearanceContainerP", "contentInsetAdjustmentBehavior"]
+- !private ["So21UIAppearanceContainerP", "delaysContentTouches"]
+- !private ["So21UIAppearanceContainerP", "init"]
+- !private ["So21UIAppearanceContainerP", "touchesShouldCancel"]
+- ["So17UICoordinateSpaceP", ""]
+- !private ["So17UICoordinateSpaceP", "commonInit"]
+- !private ["So17UICoordinateSpaceP", "contentInsetAdjustmentBehavior"]
+- !private ["So17UICoordinateSpaceP", "delaysContentTouches"]
+- !private ["So17UICoordinateSpaceP", "init"]
+- !private ["So17UICoordinateSpaceP", "touchesShouldCancel"]
+- ["So13UIDynamicItemP", ""]
+- !private ["So13UIDynamicItemP", "commonInit"]
+- !private ["So13UIDynamicItemP", "contentInsetAdjustmentBehavior"]
+- !private ["So13UIDynamicItemP", "delaysContentTouches"]
+- !private ["So13UIDynamicItemP", "init"]
+- !private ["So13UIDynamicItemP", "touchesShouldCancel"]
+- ["So18UIFocusEnvironmentP", ""]
+- !private ["So18UIFocusEnvironmentP", "commonInit"]
+- !private ["So18UIFocusEnvironmentP", "contentInsetAdjustmentBehavior"]
+- !private ["So18UIFocusEnvironmentP", "delaysContentTouches"]
+- !private ["So18UIFocusEnvironmentP", "init"]
+- !private ["So18UIFocusEnvironmentP", "touchesShouldCancel"]
+- ["So11UIFocusItemP", ""]
+- !private ["So11UIFocusItemP", "commonInit"]
+- !private ["So11UIFocusItemP", "contentInsetAdjustmentBehavior"]
+- !private ["So11UIFocusItemP", "delaysContentTouches"]
+- !private ["So11UIFocusItemP", "init"]
+- !private ["So11UIFocusItemP", "touchesShouldCancel"]
+- ["So20UIFocusItemContainerP", ""]
+- !private ["So20UIFocusItemContainerP", "commonInit"]
+- !private ["So20UIFocusItemContainerP", "contentInsetAdjustmentBehavior"]
+- !private ["So20UIFocusItemContainerP", "delaysContentTouches"]
+- !private ["So20UIFocusItemContainerP", "init"]
+- !private ["So20UIFocusItemContainerP", "touchesShouldCancel"]
+- ["So30UIFocusItemScrollableContainerP", ""]
+- !private ["So30UIFocusItemScrollableContainerP", "commonInit"]
+- !private ["So30UIFocusItemScrollableContainerP", "contentInsetAdjustmentBehavior"]
+- !private ["So30UIFocusItemScrollableContainerP", "delaysContentTouches"]
+- !private ["So30UIFocusItemScrollableContainerP", "init"]
+- !private ["So30UIFocusItemScrollableContainerP", "touchesShouldCancel"]
+- ["So30UIPasteConfigurationSupportingP", ""]
+- !private ["So30UIPasteConfigurationSupportingP", "commonInit"]
+- !private ["So30UIPasteConfigurationSupportingP", "contentInsetAdjustmentBehavior"]
+- !private ["So30UIPasteConfigurationSupportingP", "delaysContentTouches"]
+- !private ["So30UIPasteConfigurationSupportingP", "init"]
+- !private ["So30UIPasteConfigurationSupportingP", "touchesShouldCancel"]
+- ["So11UIResponderC", "Bool"]
+- ["So11UIResponderC", "NSCoder"]
+- !private ["So11UIResponderC", "UIControl"]
+- !private ["So11UIResponderC", "UISlider"]
+- !private ["So11UIResponderC", "UISwitch"]
+- !private ["So11UIResponderC", "UITextInput"]
+- ["So11UIResponderC", "UIView"]
+- ["So11UIResponderC", "commonInit"]
+- !private ["So11UIResponderC", "contentInsetAdjustmentBehavior"]
+- !private ["So11UIResponderC", "delaysContentTouches"]
+- ["So11UIResponderC", "init"]
+- ["So11UIResponderC", "touchesShouldCancel"]
+- ["So30UIResponderStandardEditActionsP", ""]
+- !private ["So30UIResponderStandardEditActionsP", "commonInit"]
+- !private ["So30UIResponderStandardEditActionsP", "contentInsetAdjustmentBehavior"]
+- !private ["So30UIResponderStandardEditActionsP", "delaysContentTouches"]
+- !private ["So30UIResponderStandardEditActionsP", "init"]
+- !private ["So30UIResponderStandardEditActionsP", "touchesShouldCancel"]
+- ["So12UIScrollViewC", "Bool"]
+- ["So12UIScrollViewC", "NSCoder"]
+- !private ["So12UIScrollViewC", "UIControl"]
+- !private ["So12UIScrollViewC", "UISlider"]
+- !private ["So12UIScrollViewC", "UISwitch"]
+- !private ["So12UIScrollViewC", "UITextInput"]
+- ["So12UIScrollViewC", "UIView"]
+- ["So12UIScrollViewC", ""]
+- ["So12UIScrollViewC", "commonInit"]
+- !private ["So12UIScrollViewC", "contentInsetAdjustmentBehavior"]
+- !private ["So12UIScrollViewC", "delaysContentTouches"]
+- ["So12UIScrollViewC", "init"]
+- ["So12UIScrollViewC", "touchesShouldCancel"]
+- ["So18UITraitEnvironmentP", ""]
+- !private ["So18UITraitEnvironmentP", "commonInit"]
+- !private ["So18UITraitEnvironmentP", "contentInsetAdjustmentBehavior"]
+- !private ["So18UITraitEnvironmentP", "delaysContentTouches"]
+- !private ["So18UITraitEnvironmentP", "init"]
+- !private ["So18UITraitEnvironmentP", "touchesShouldCancel"]
+- ["So23UIUserActivityRestoringP", ""]
+- !private ["So23UIUserActivityRestoringP", "commonInit"]
+- !private ["So23UIUserActivityRestoringP", "contentInsetAdjustmentBehavior"]
+- !private ["So23UIUserActivityRestoringP", "delaysContentTouches"]
+- !private ["So23UIUserActivityRestoringP", "init"]
+- !private ["So23UIUserActivityRestoringP", "touchesShouldCancel"]
+- ["So6UIViewC", "Bool"]
+- ["So6UIViewC", "NSCoder"]
+- !private ["So6UIViewC", "UIControl"]
+- !private ["So6UIViewC", "UISlider"]
+- !private ["So6UIViewC", "UISwitch"]
+- !private ["So6UIViewC", "UITextInput"]
+- ["So6UIViewC", "UIView"]
+- ["So6UIViewC", "commonInit"]
+- !private ["So6UIViewC", "contentInsetAdjustmentBehavior"]
+- !private ["So6UIViewC", "delaysContentTouches"]
+- ["So6UIViewC", "init"]
+- ["So6UIViewC", "touchesShouldCancel"]
+- ["s37_DefaultCustomPlaygroundQuickLookableP", ""]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "commonInit"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "contentInsetAdjustmentBehavior"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "delaysContentTouches"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "init"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "touchesShouldCancel"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- ["10Foundation27_KeyValueCodingAndObservingP", ""]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "commonInit"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "contentInsetAdjustmentBehavior"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "delaysContentTouches"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "touchesShouldCancel"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "zero"]
+depends-nominal:
+- !private "Sb"
+- "So15CALayerDelegateP"
+- !private "So6CGRectV"
+- "s7CVarArgP"
+- !private "So42UIScrollViewContentInsetAdjustmentBehaviorV"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SE"
+- "SQ"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- "So8NSCodingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "SY"
+- "18request_permission12SPScrollViewC"
+- !private "s12StaticStringV"
+- "So29UIAccessibilityIdentificationP"
+- "So12UIAppearanceP"
+- "So21UIAppearanceContainerP"
+- "So17UICoordinateSpaceP"
+- "So13UIDynamicItemP"
+- "So18UIFocusEnvironmentP"
+- "So11UIFocusItemP"
+- "So20UIFocusItemContainerP"
+- "So30UIFocusItemScrollableContainerP"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- "So12UIScrollViewC"
+- "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- "So6UIViewC"
+- "s37_DefaultCustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "b69457234dac3402be3fb51cc3b729f1"

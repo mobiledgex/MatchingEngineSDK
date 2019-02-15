@@ -1,0 +1,587 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPMail"
+provides-nominal:
+- "18request_permission6SPMailV"
+provides-member:
+- ["18request_permission6SPMailV", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "!="
+- !private "??"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- !private "CharacterSet"
+- !private "Dictionary"
+- "Error"
+- "MFMailComposeResult"
+- "MFMailComposeViewController"
+- "MFMailComposeViewControllerDelegate"
+- "NSObject"
+- "SPMail"
+- "String"
+- !private "StringLiteralType"
+- "UIApplication"
+- "UIViewController"
+- !private "URL"
+- !private "convertToUIApplicationOpenExternalURLOptionsKeyDictionary"
+depends-member:
+- !private ["SK", "addingPercentEncoding"]
+- !private ["SK", "init"]
+- !private ["SK", "init"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["So15CNKeyDescriptorP", "addingPercentEncoding"]
+- ["s7CVarArgP", "OpenExternalURLOptionsKey"]
+- ["s7CVarArgP", "SPMailSingltone"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "addingPercentEncoding"]
+- !private ["s7CVarArgP", "canOpenURL"]
+- !private ["s7CVarArgP", "canSendMail"]
+- !private ["s7CVarArgP", "dismiss"]
+- ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- ["s7CVarArgP", "mailComposeController"]
+- !private ["s7CVarArgP", "mailComposeDelegate"]
+- !private ["s7CVarArgP", "map"]
+- !private ["s7CVarArgP", "open"]
+- !private ["s7CVarArgP", "present"]
+- !private ["s7CVarArgP", "setMessageBody"]
+- !private ["s7CVarArgP", "setSubject"]
+- !private ["s7CVarArgP", "setToRecipients"]
+- !private ["s7CVarArgP", "shared"]
+- !private ["s7CVarArgP", "sharedInstance"]
+- !private ["10Foundation12CharacterSetV", "urlQueryAllowed"]
+- !private ["Sl", "addingPercentEncoding"]
+- !private ["Sl", "init"]
+- !private ["Sl", "init"]
+- !private ["Sl", "map"]
+- !private ["SL", "addingPercentEncoding"]
+- !private ["SL", "init"]
+- !private ["SL", "init"]
+- ["s28CustomDebugStringConvertibleP", "OpenExternalURLOptionsKey"]
+- ["s28CustomDebugStringConvertibleP", "SPMailSingltone"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "addingPercentEncoding"]
+- !private ["s28CustomDebugStringConvertibleP", "canOpenURL"]
+- !private ["s28CustomDebugStringConvertibleP", "canSendMail"]
+- !private ["s28CustomDebugStringConvertibleP", "dismiss"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "mailComposeController"]
+- !private ["s28CustomDebugStringConvertibleP", "mailComposeDelegate"]
+- !private ["s28CustomDebugStringConvertibleP", "map"]
+- !private ["s28CustomDebugStringConvertibleP", "open"]
+- !private ["s28CustomDebugStringConvertibleP", "present"]
+- !private ["s28CustomDebugStringConvertibleP", "setMessageBody"]
+- !private ["s28CustomDebugStringConvertibleP", "setSubject"]
+- !private ["s28CustomDebugStringConvertibleP", "setToRecipients"]
+- !private ["s28CustomDebugStringConvertibleP", "shared"]
+- !private ["s28CustomDebugStringConvertibleP", "sharedInstance"]
+- !private ["s28CustomDebugStringConvertibleP", "urlQueryAllowed"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "addingPercentEncoding"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "addingPercentEncoding"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "map"]
+- ["s23CustomStringConvertibleP", "OpenExternalURLOptionsKey"]
+- ["s23CustomStringConvertibleP", "SPMailSingltone"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "addingPercentEncoding"]
+- !private ["s23CustomStringConvertibleP", "canOpenURL"]
+- !private ["s23CustomStringConvertibleP", "canSendMail"]
+- !private ["s23CustomStringConvertibleP", "dismiss"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- ["s23CustomStringConvertibleP", "mailComposeController"]
+- !private ["s23CustomStringConvertibleP", "mailComposeDelegate"]
+- !private ["s23CustomStringConvertibleP", "map"]
+- !private ["s23CustomStringConvertibleP", "open"]
+- !private ["s23CustomStringConvertibleP", "present"]
+- !private ["s23CustomStringConvertibleP", "setMessageBody"]
+- !private ["s23CustomStringConvertibleP", "setSubject"]
+- !private ["s23CustomStringConvertibleP", "setToRecipients"]
+- !private ["s23CustomStringConvertibleP", "shared"]
+- !private ["s23CustomStringConvertibleP", "sharedInstance"]
+- !private ["s23CustomStringConvertibleP", "urlQueryAllowed"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["Se", "addingPercentEncoding"]
+- !private ["Se", "init"]
+- !private ["Se", "init"]
+- !private ["Se", "map"]
+- !private ["Se", "urlQueryAllowed"]
+- !private ["SD", "init"]
+- !private ["SD", "map"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SE", "addingPercentEncoding"]
+- !private ["SE", "init"]
+- !private ["SE", "init"]
+- !private ["SE", "map"]
+- !private ["SE", "urlQueryAllowed"]
+- ["SQ", "OpenExternalURLOptionsKey"]
+- ["SQ", "SPMailSingltone"]
+- !private ["SQ", ""]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "addingPercentEncoding"]
+- !private ["SQ", "canOpenURL"]
+- !private ["SQ", "canSendMail"]
+- !private ["SQ", "dismiss"]
+- ["SQ", "init"]
+- !private ["SQ", "init"]
+- ["SQ", "mailComposeController"]
+- !private ["SQ", "mailComposeDelegate"]
+- !private ["SQ", "map"]
+- !private ["SQ", "open"]
+- !private ["SQ", "present"]
+- !private ["SQ", "setMessageBody"]
+- !private ["SQ", "setSubject"]
+- !private ["SQ", "setToRecipients"]
+- !private ["SQ", "shared"]
+- !private ["SQ", "sharedInstance"]
+- !private ["SQ", "urlQueryAllowed"]
+- !private ["s25ExpressibleByArrayLiteralP", "urlQueryAllowed"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "map"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "addingPercentEncoding"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "addingPercentEncoding"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "addingPercentEncoding"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- ["SH", "OpenExternalURLOptionsKey"]
+- ["SH", "SPMailSingltone"]
+- !private ["SH", ""]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "addingPercentEncoding"]
+- !private ["SH", "canOpenURL"]
+- !private ["SH", "canSendMail"]
+- !private ["SH", "dismiss"]
+- ["SH", "init"]
+- !private ["SH", "init"]
+- ["SH", "mailComposeController"]
+- !private ["SH", "mailComposeDelegate"]
+- !private ["SH", "map"]
+- !private ["SH", "open"]
+- !private ["SH", "present"]
+- !private ["SH", "setMessageBody"]
+- !private ["SH", "setSubject"]
+- !private ["SH", "setToRecipients"]
+- !private ["SH", "shared"]
+- !private ["SH", "sharedInstance"]
+- !private ["SH", "urlQueryAllowed"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "addingPercentEncoding"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["So27MFMailComposeViewControllerC", "canSendMail"]
+- !private ["So27MFMailComposeViewControllerC", "dismiss"]
+- !private ["So27MFMailComposeViewControllerC", "init"]
+- !private ["So27MFMailComposeViewControllerC", "mailComposeDelegate"]
+- !private ["So27MFMailComposeViewControllerC", "setMessageBody"]
+- !private ["So27MFMailComposeViewControllerC", "setSubject"]
+- !private ["So27MFMailComposeViewControllerC", "setToRecipients"]
+- ["So35MFMailComposeViewControllerDelegateP", "SPMailSingltone"]
+- !private ["So35MFMailComposeViewControllerDelegateP", ""]
+- ["So35MFMailComposeViewControllerDelegateP", "init"]
+- ["So35MFMailComposeViewControllerDelegateP", "mailComposeController"]
+- !private ["So35MFMailComposeViewControllerDelegateP", "sharedInstance"]
+- !private ["s10MirrorPathP", "addingPercentEncoding"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["So8NSCodingP", "addingPercentEncoding"]
+- !private ["So8NSCodingP", "canSendMail"]
+- !private ["So8NSCodingP", "dismiss"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "mailComposeDelegate"]
+- !private ["So8NSCodingP", "present"]
+- !private ["So8NSCodingP", "setMessageBody"]
+- !private ["So8NSCodingP", "setSubject"]
+- !private ["So8NSCodingP", "setToRecipients"]
+- !private ["So9NSCopyingP", "addingPercentEncoding"]
+- !private ["So26NSExtensionRequestHandlingP", "canSendMail"]
+- !private ["So26NSExtensionRequestHandlingP", "dismiss"]
+- !private ["So26NSExtensionRequestHandlingP", "init"]
+- !private ["So26NSExtensionRequestHandlingP", "mailComposeDelegate"]
+- !private ["So26NSExtensionRequestHandlingP", "present"]
+- !private ["So26NSExtensionRequestHandlingP", "setMessageBody"]
+- !private ["So26NSExtensionRequestHandlingP", "setSubject"]
+- !private ["So26NSExtensionRequestHandlingP", "setToRecipients"]
+- !private ["So21NSItemProviderReadingP", "addingPercentEncoding"]
+- !private ["So21NSItemProviderWritingP", "addingPercentEncoding"]
+- !private ["So16NSMutableCopyingP", "addingPercentEncoding"]
+- ["So8NSObjectC", "Error"]
+- ["So8NSObjectC", "MFMailComposeResult"]
+- ["So8NSObjectC", "MFMailComposeViewController"]
+- ["So8NSObjectC", "OpenExternalURLOptionsKey"]
+- ["So8NSObjectC", "SPMailSingltone"]
+- !private ["So8NSObjectC", ""]
+- !private ["So8NSObjectC", "addingPercentEncoding"]
+- !private ["So8NSObjectC", "canOpenURL"]
+- !private ["So8NSObjectC", "canSendMail"]
+- !private ["So8NSObjectC", "dismiss"]
+- ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "mailComposeController"]
+- !private ["So8NSObjectC", "mailComposeDelegate"]
+- !private ["So8NSObjectC", "open"]
+- !private ["So8NSObjectC", "present"]
+- !private ["So8NSObjectC", "setMessageBody"]
+- !private ["So8NSObjectC", "setSubject"]
+- !private ["So8NSObjectC", "setToRecipients"]
+- !private ["So8NSObjectC", "shared"]
+- ["So8NSObjectC", "sharedInstance"]
+- ["So8NSObjectP", "OpenExternalURLOptionsKey"]
+- ["So8NSObjectP", "SPMailSingltone"]
+- !private ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "addingPercentEncoding"]
+- !private ["So8NSObjectP", "canOpenURL"]
+- !private ["So8NSObjectP", "canSendMail"]
+- !private ["So8NSObjectP", "dismiss"]
+- ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "init"]
+- ["So8NSObjectP", "mailComposeController"]
+- !private ["So8NSObjectP", "mailComposeDelegate"]
+- !private ["So8NSObjectP", "open"]
+- !private ["So8NSObjectP", "present"]
+- !private ["So8NSObjectP", "setMessageBody"]
+- !private ["So8NSObjectP", "setSubject"]
+- !private ["So8NSObjectP", "setToRecipients"]
+- !private ["So8NSObjectP", "shared"]
+- !private ["So8NSObjectP", "sharedInstance"]
+- !private ["So14NSSecureCodingP", "addingPercentEncoding"]
+- !private ["So8NSStringC", "addingPercentEncoding"]
+- !private ["So38UIApplicationOpenExternalURLOptionsKeya", "init"]
+- !private ["Sm", "addingPercentEncoding"]
+- !private ["Sm", "init"]
+- !private ["Sm", "init"]
+- !private ["SY", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "urlQueryAllowed"]
+- ["18request_permission6SPMailV", "Bool"]
+- !private ["18request_permission6SPMailV", "CharacterSet"]
+- ["18request_permission6SPMailV", "Error"]
+- ["18request_permission6SPMailV", "MFMailComposeResult"]
+- ["18request_permission6SPMailV", "MFMailComposeViewController"]
+- ["18request_permission6SPMailV", "MFMailComposeViewControllerDelegate"]
+- ["18request_permission6SPMailV", "NSObject"]
+- ["18request_permission6SPMailV", "SPMailSingltone"]
+- ["18request_permission6SPMailV", "String"]
+- !private ["18request_permission6SPMailV", "UIApplication"]
+- ["18request_permission6SPMailV", "UIViewController"]
+- !private ["18request_permission6SPMailV", "URL"]
+- ["18request_permission6SPMailV", "canSendEmail"]
+- !private ["18request_permission6SPMailV", "convertToUIApplicationOpenExternalURLOptionsKeyDictionary"]
+- ["18request_permission6SPMailV", "dialog"]
+- !private ["18request_permission6SPMailV", "init"]
+- ["18request_permission6SPMailV", "openApp"]
+- !private ["ST", "addingPercentEncoding"]
+- !private ["ST", "init"]
+- !private ["ST", "init"]
+- !private ["ST", "map"]
+- !private ["s10SetAlgebraP", "urlQueryAllowed"]
+- !private ["SS", "addingPercentEncoding"]
+- !private ["SS", "init"]
+- !private ["SS", "init"]
+- !private ["Sy", "addingPercentEncoding"]
+- !private ["Sy", "init"]
+- !private ["Sy", "init"]
+- !private ["s16TextOutputStreamP", "addingPercentEncoding"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s20TextOutputStreamableP", "addingPercentEncoding"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["So21UIAppearanceContainerP", "canSendMail"]
+- !private ["So21UIAppearanceContainerP", "dismiss"]
+- !private ["So21UIAppearanceContainerP", "init"]
+- !private ["So21UIAppearanceContainerP", "mailComposeDelegate"]
+- !private ["So21UIAppearanceContainerP", "present"]
+- !private ["So21UIAppearanceContainerP", "setMessageBody"]
+- !private ["So21UIAppearanceContainerP", "setSubject"]
+- !private ["So21UIAppearanceContainerP", "setToRecipients"]
+- ["So13UIApplicationC", "OpenExternalURLOptionsKey"]
+- !private ["So13UIApplicationC", "canOpenURL"]
+- !private ["So13UIApplicationC", "open"]
+- !private ["So13UIApplicationC", "shared"]
+- !private ["So18UIContentContainerP", "canSendMail"]
+- !private ["So18UIContentContainerP", "dismiss"]
+- !private ["So18UIContentContainerP", "init"]
+- !private ["So18UIContentContainerP", "mailComposeDelegate"]
+- !private ["So18UIContentContainerP", "present"]
+- !private ["So18UIContentContainerP", "setMessageBody"]
+- !private ["So18UIContentContainerP", "setSubject"]
+- !private ["So18UIContentContainerP", "setToRecipients"]
+- !private ["So18UIFocusEnvironmentP", "canSendMail"]
+- !private ["So18UIFocusEnvironmentP", "dismiss"]
+- !private ["So18UIFocusEnvironmentP", "init"]
+- !private ["So18UIFocusEnvironmentP", "mailComposeDelegate"]
+- !private ["So18UIFocusEnvironmentP", "present"]
+- !private ["So18UIFocusEnvironmentP", "setMessageBody"]
+- !private ["So18UIFocusEnvironmentP", "setSubject"]
+- !private ["So18UIFocusEnvironmentP", "setToRecipients"]
+- !private ["So22UINavigationControllerC", "canSendMail"]
+- !private ["So22UINavigationControllerC", "dismiss"]
+- !private ["So22UINavigationControllerC", "init"]
+- !private ["So22UINavigationControllerC", "mailComposeDelegate"]
+- !private ["So22UINavigationControllerC", "setMessageBody"]
+- !private ["So22UINavigationControllerC", "setSubject"]
+- !private ["So22UINavigationControllerC", "setToRecipients"]
+- ["So30UIPasteConfigurationSupportingP", "OpenExternalURLOptionsKey"]
+- !private ["So30UIPasteConfigurationSupportingP", "canOpenURL"]
+- !private ["So30UIPasteConfigurationSupportingP", "canSendMail"]
+- !private ["So30UIPasteConfigurationSupportingP", "dismiss"]
+- !private ["So30UIPasteConfigurationSupportingP", "init"]
+- !private ["So30UIPasteConfigurationSupportingP", "mailComposeDelegate"]
+- !private ["So30UIPasteConfigurationSupportingP", "open"]
+- !private ["So30UIPasteConfigurationSupportingP", "present"]
+- !private ["So30UIPasteConfigurationSupportingP", "setMessageBody"]
+- !private ["So30UIPasteConfigurationSupportingP", "setSubject"]
+- !private ["So30UIPasteConfigurationSupportingP", "setToRecipients"]
+- !private ["So30UIPasteConfigurationSupportingP", "shared"]
+- ["So11UIResponderC", "OpenExternalURLOptionsKey"]
+- !private ["So11UIResponderC", "canOpenURL"]
+- !private ["So11UIResponderC", "canSendMail"]
+- !private ["So11UIResponderC", "dismiss"]
+- !private ["So11UIResponderC", "init"]
+- !private ["So11UIResponderC", "mailComposeDelegate"]
+- !private ["So11UIResponderC", "open"]
+- !private ["So11UIResponderC", "present"]
+- !private ["So11UIResponderC", "setMessageBody"]
+- !private ["So11UIResponderC", "setSubject"]
+- !private ["So11UIResponderC", "setToRecipients"]
+- !private ["So11UIResponderC", "shared"]
+- ["So30UIResponderStandardEditActionsP", "OpenExternalURLOptionsKey"]
+- !private ["So30UIResponderStandardEditActionsP", "canOpenURL"]
+- !private ["So30UIResponderStandardEditActionsP", "canSendMail"]
+- !private ["So30UIResponderStandardEditActionsP", "dismiss"]
+- !private ["So30UIResponderStandardEditActionsP", "init"]
+- !private ["So30UIResponderStandardEditActionsP", "mailComposeDelegate"]
+- !private ["So30UIResponderStandardEditActionsP", "open"]
+- !private ["So30UIResponderStandardEditActionsP", "present"]
+- !private ["So30UIResponderStandardEditActionsP", "setMessageBody"]
+- !private ["So30UIResponderStandardEditActionsP", "setSubject"]
+- !private ["So30UIResponderStandardEditActionsP", "setToRecipients"]
+- !private ["So30UIResponderStandardEditActionsP", "shared"]
+- !private ["So16UIStateRestoringP", "canSendMail"]
+- !private ["So16UIStateRestoringP", "dismiss"]
+- !private ["So16UIStateRestoringP", "init"]
+- !private ["So16UIStateRestoringP", "mailComposeDelegate"]
+- !private ["So16UIStateRestoringP", "present"]
+- !private ["So16UIStateRestoringP", "setMessageBody"]
+- !private ["So16UIStateRestoringP", "setSubject"]
+- !private ["So16UIStateRestoringP", "setToRecipients"]
+- !private ["So18UITraitEnvironmentP", "canSendMail"]
+- !private ["So18UITraitEnvironmentP", "dismiss"]
+- !private ["So18UITraitEnvironmentP", "init"]
+- !private ["So18UITraitEnvironmentP", "mailComposeDelegate"]
+- !private ["So18UITraitEnvironmentP", "present"]
+- !private ["So18UITraitEnvironmentP", "setMessageBody"]
+- !private ["So18UITraitEnvironmentP", "setSubject"]
+- !private ["So18UITraitEnvironmentP", "setToRecipients"]
+- ["So23UIUserActivityRestoringP", "OpenExternalURLOptionsKey"]
+- !private ["So23UIUserActivityRestoringP", "canOpenURL"]
+- !private ["So23UIUserActivityRestoringP", "canSendMail"]
+- !private ["So23UIUserActivityRestoringP", "dismiss"]
+- !private ["So23UIUserActivityRestoringP", "init"]
+- !private ["So23UIUserActivityRestoringP", "mailComposeDelegate"]
+- !private ["So23UIUserActivityRestoringP", "open"]
+- !private ["So23UIUserActivityRestoringP", "present"]
+- !private ["So23UIUserActivityRestoringP", "setMessageBody"]
+- !private ["So23UIUserActivityRestoringP", "setSubject"]
+- !private ["So23UIUserActivityRestoringP", "setToRecipients"]
+- !private ["So23UIUserActivityRestoringP", "shared"]
+- !private ["So16UIViewControllerC", "canSendMail"]
+- !private ["So16UIViewControllerC", "dismiss"]
+- !private ["So16UIViewControllerC", "init"]
+- !private ["So16UIViewControllerC", "mailComposeDelegate"]
+- !private ["So16UIViewControllerC", "present"]
+- !private ["So16UIViewControllerC", "setMessageBody"]
+- !private ["So16UIViewControllerC", "setSubject"]
+- !private ["So16UIViewControllerC", "setToRecipients"]
+- !private ["10Foundation3URLV", "init"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "addingPercentEncoding"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "addingPercentEncoding"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "addingPercentEncoding"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "addingPercentEncoding"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "addingPercentEncoding"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "addingPercentEncoding"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "map"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "OpenExternalURLOptionsKey"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "SPMailSingltone"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", ""]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "addingPercentEncoding"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "canOpenURL"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "canSendMail"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "dismiss"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "mailComposeController"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "mailComposeDelegate"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "open"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "present"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "setMessageBody"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "setSubject"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "setToRecipients"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "shared"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "sharedInstance"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "addingPercentEncoding"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "map"]
+- !private ["s21_ObjectiveCBridgeableP", "urlQueryAllowed"]
+- !private ["s20_SwiftNewtypeWrapperP", "init"]
+- !private ["s16_SwiftStringViewP", "addingPercentEncoding"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "init"]
+depends-nominal:
+- !private "SK"
+- !private "Sb"
+- !private "So15CNKeyDescriptorP"
+- "s7CVarArgP"
+- !private "10Foundation12CharacterSetV"
+- !private "Sl"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SD"
+- !private "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "So27MFMailComposeViewControllerC"
+- "So35MFMailComposeViewControllerDelegateP"
+- !private "s10MirrorPathP"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So26NSExtensionRequestHandlingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "So38UIApplicationOpenExternalURLOptionsKeya"
+- !private "Sm"
+- !private "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- "18request_permission6SPMailV"
+- !private "ST"
+- !private "s10SetAlgebraP"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "So21UIAppearanceContainerP"
+- "So13UIApplicationC"
+- !private "So18UIContentContainerP"
+- !private "So18UIFocusEnvironmentP"
+- !private "So22UINavigationControllerC"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- !private "So16UIStateRestoringP"
+- !private "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- !private "So16UIViewControllerC"
+- !private "10Foundation3URLV"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s34_ExpressibleByFileReferenceLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s20_SwiftNewtypeWrapperP"
+- !private "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "54db8ca0239cf5c3174588197fef885b"

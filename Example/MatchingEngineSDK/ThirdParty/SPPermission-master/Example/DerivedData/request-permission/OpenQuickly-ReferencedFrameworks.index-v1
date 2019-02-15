@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>SafariServices</string>
+	<string>AVFoundation</string>
+	<string>StoreKit</string>
+	<string>MediaPlayer</string>
+	<string>AVKit</string>
+	<string>MapKit</string>
+	<string>Speech</string>
+	<string>Contacts</string>
+	<string>UserNotifications</string>
+	<string>Photos</string>
+	<string>LocalAuthentication</string>
+	<string>Foundation</string>
+	<string>UIKit</string>
+	<string>MessageUI</string>
+	<string>HealthKit</string>
+	<string>EventKit</string>
+	<string>CoreSpotlight</string>
+	<string>MobileCoreServices</string>
+</array>
+</plist>
