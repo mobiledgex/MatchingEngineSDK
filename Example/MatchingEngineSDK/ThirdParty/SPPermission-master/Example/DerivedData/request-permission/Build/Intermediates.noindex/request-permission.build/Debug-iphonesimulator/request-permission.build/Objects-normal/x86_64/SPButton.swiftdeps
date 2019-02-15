@@ -1,0 +1,502 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPButton"
+provides-nominal:
+- "18request_permission8SPButtonC"
+provides-member:
+- ["18request_permission8SPButtonC", ""]
+provides-dynamic-lookup:
+- "layoutSubviews"
+depends-top-level:
+- !private "!="
+- !private "=="
+- "AssignmentPrecedence"
+- "Bool"
+- "BooleanLiteralType"
+- !private "CGRect"
+- !private "FloatLiteralType"
+- !private "IntegerLiteralType"
+- "NSCoder"
+- "SPButton"
+- "SPGradientView"
+- !private "StringLiteralType"
+- "UIButton"
+depends-member:
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["So15CALayerDelegateP", "CGRect"]
+- ["So15CALayerDelegateP", ""]
+- !private ["So15CALayerDelegateP", "commonInit"]
+- !private ["So15CALayerDelegateP", "gradientView"]
+- !private ["So15CALayerDelegateP", "init"]
+- !private ["So15CALayerDelegateP", "insertSubview"]
+- !private ["So15CALayerDelegateP", "isUserInteractionEnabled"]
+- !private ["So15CALayerDelegateP", "layoutSubviews"]
+- !private ["So15CALayerDelegateP", "round"]
+- !private ["So15CALayerDelegateP", "setEqualsBoundsFromSuperview"]
+- !private ["So15CALayerDelegateP", "superview"]
+- !private ["So6CGRectV", "zero"]
+- !private ["s7CVarArgP", "CGRect"]
+- ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "commonInit"]
+- !private ["s7CVarArgP", "gradientView"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "insertSubview"]
+- !private ["s7CVarArgP", "isUserInteractionEnabled"]
+- !private ["s7CVarArgP", "layoutSubviews"]
+- !private ["s7CVarArgP", "round"]
+- !private ["s7CVarArgP", "setEqualsBoundsFromSuperview"]
+- !private ["s7CVarArgP", "superview"]
+- !private ["s28CustomDebugStringConvertibleP", "CGRect"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "commonInit"]
+- !private ["s28CustomDebugStringConvertibleP", "gradientView"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "insertSubview"]
+- !private ["s28CustomDebugStringConvertibleP", "isUserInteractionEnabled"]
+- !private ["s28CustomDebugStringConvertibleP", "layoutSubviews"]
+- !private ["s28CustomDebugStringConvertibleP", "round"]
+- !private ["s28CustomDebugStringConvertibleP", "setEqualsBoundsFromSuperview"]
+- !private ["s28CustomDebugStringConvertibleP", "superview"]
+- !private ["s28CustomDebugStringConvertibleP", "zero"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "zero"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "zero"]
+- !private ["s23CustomStringConvertibleP", "CGRect"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "commonInit"]
+- !private ["s23CustomStringConvertibleP", "gradientView"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "insertSubview"]
+- !private ["s23CustomStringConvertibleP", "isUserInteractionEnabled"]
+- !private ["s23CustomStringConvertibleP", "layoutSubviews"]
+- !private ["s23CustomStringConvertibleP", "round"]
+- !private ["s23CustomStringConvertibleP", "setEqualsBoundsFromSuperview"]
+- !private ["s23CustomStringConvertibleP", "superview"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["Se", "zero"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SE", "zero"]
+- !private ["SQ", "CGRect"]
+- ["SQ", ""]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "commonInit"]
+- !private ["SQ", "gradientView"]
+- !private ["SQ", "init"]
+- !private ["SQ", "insertSubview"]
+- !private ["SQ", "isUserInteractionEnabled"]
+- !private ["SQ", "layoutSubviews"]
+- !private ["SQ", "round"]
+- !private ["SQ", "setEqualsBoundsFromSuperview"]
+- !private ["SQ", "superview"]
+- !private ["SQ", "zero"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["SH", "CGRect"]
+- ["SH", ""]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "commonInit"]
+- !private ["SH", "gradientView"]
+- !private ["SH", "init"]
+- !private ["SH", "insertSubview"]
+- !private ["SH", "isUserInteractionEnabled"]
+- !private ["SH", "layoutSubviews"]
+- !private ["SH", "round"]
+- !private ["SH", "setEqualsBoundsFromSuperview"]
+- !private ["SH", "superview"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["So8NSCodingP", "CGRect"]
+- ["So8NSCodingP", ""]
+- !private ["So8NSCodingP", "commonInit"]
+- !private ["So8NSCodingP", "gradientView"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "insertSubview"]
+- !private ["So8NSCodingP", "isUserInteractionEnabled"]
+- !private ["So8NSCodingP", "layoutSubviews"]
+- !private ["So8NSCodingP", "round"]
+- !private ["So8NSCodingP", "setEqualsBoundsFromSuperview"]
+- !private ["So8NSCodingP", "superview"]
+- ["So8NSObjectC", "Bool"]
+- !private ["So8NSObjectC", "CGRect"]
+- ["So8NSObjectC", "NSCoder"]
+- ["So8NSObjectC", "SPGradientView"]
+- ["So8NSObjectC", "commonInit"]
+- ["So8NSObjectC", "gradientView"]
+- ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "insertSubview"]
+- !private ["So8NSObjectC", "isUserInteractionEnabled"]
+- ["So8NSObjectC", "layoutSubviews"]
+- ["So8NSObjectC", "round"]
+- !private ["So8NSObjectC", "setEqualsBoundsFromSuperview"]
+- !private ["So8NSObjectC", "superview"]
+- !private ["So8NSObjectP", "CGRect"]
+- ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "commonInit"]
+- !private ["So8NSObjectP", "gradientView"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "insertSubview"]
+- !private ["So8NSObjectP", "isUserInteractionEnabled"]
+- !private ["So8NSObjectP", "layoutSubviews"]
+- !private ["So8NSObjectP", "round"]
+- !private ["So8NSObjectP", "setEqualsBoundsFromSuperview"]
+- !private ["So8NSObjectP", "superview"]
+- ["18request_permission8SPButtonC", "Bool"]
+- !private ["18request_permission8SPButtonC", "CGRect"]
+- ["18request_permission8SPButtonC", "NSCoder"]
+- ["18request_permission8SPButtonC", "SPGradientView"]
+- ["18request_permission8SPButtonC", "commonInit"]
+- ["18request_permission8SPButtonC", "gradientView"]
+- ["18request_permission8SPButtonC", "init"]
+- !private ["18request_permission8SPButtonC", "insertSubview"]
+- ["18request_permission8SPButtonC", "layoutSubviews"]
+- ["18request_permission8SPButtonC", "round"]
+- !private ["18request_permission14SPGradientViewC", "deinit"]
+- !private ["18request_permission14SPGradientViewC", "isUserInteractionEnabled"]
+- !private ["18request_permission14SPGradientViewC", "setEqualsBoundsFromSuperview"]
+- !private ["18request_permission14SPGradientViewC", "superview"]
+- !private ["18request_permission6SPViewC", "isUserInteractionEnabled"]
+- !private ["18request_permission6SPViewC", "setEqualsBoundsFromSuperview"]
+- !private ["18request_permission6SPViewC", "superview"]
+- !private ["s12StaticStringV", "init"]
+- !private ["s12StaticStringV", "init"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "CGRect"]
+- ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", ""]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "commonInit"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "gradientView"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "init"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "insertSubview"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "layoutSubviews"]
+- !private ["So48UIAccessibilityContentSizeCategoryImageAdjustingP", "round"]
+- !private ["So29UIAccessibilityIdentificationP", "CGRect"]
+- ["So29UIAccessibilityIdentificationP", ""]
+- !private ["So29UIAccessibilityIdentificationP", "commonInit"]
+- !private ["So29UIAccessibilityIdentificationP", "gradientView"]
+- !private ["So29UIAccessibilityIdentificationP", "init"]
+- !private ["So29UIAccessibilityIdentificationP", "insertSubview"]
+- !private ["So29UIAccessibilityIdentificationP", "isUserInteractionEnabled"]
+- !private ["So29UIAccessibilityIdentificationP", "layoutSubviews"]
+- !private ["So29UIAccessibilityIdentificationP", "round"]
+- !private ["So29UIAccessibilityIdentificationP", "setEqualsBoundsFromSuperview"]
+- !private ["So29UIAccessibilityIdentificationP", "superview"]
+- !private ["So12UIAppearanceP", "CGRect"]
+- ["So12UIAppearanceP", ""]
+- !private ["So12UIAppearanceP", "commonInit"]
+- !private ["So12UIAppearanceP", "gradientView"]
+- !private ["So12UIAppearanceP", "init"]
+- !private ["So12UIAppearanceP", "insertSubview"]
+- !private ["So12UIAppearanceP", "isUserInteractionEnabled"]
+- !private ["So12UIAppearanceP", "layoutSubviews"]
+- !private ["So12UIAppearanceP", "round"]
+- !private ["So12UIAppearanceP", "setEqualsBoundsFromSuperview"]
+- !private ["So12UIAppearanceP", "superview"]
+- !private ["So21UIAppearanceContainerP", "CGRect"]
+- ["So21UIAppearanceContainerP", ""]
+- !private ["So21UIAppearanceContainerP", "commonInit"]
+- !private ["So21UIAppearanceContainerP", "gradientView"]
+- !private ["So21UIAppearanceContainerP", "init"]
+- !private ["So21UIAppearanceContainerP", "insertSubview"]
+- !private ["So21UIAppearanceContainerP", "isUserInteractionEnabled"]
+- !private ["So21UIAppearanceContainerP", "layoutSubviews"]
+- !private ["So21UIAppearanceContainerP", "round"]
+- !private ["So21UIAppearanceContainerP", "setEqualsBoundsFromSuperview"]
+- !private ["So21UIAppearanceContainerP", "superview"]
+- ["So8UIButtonC", "Bool"]
+- !private ["So8UIButtonC", "CGRect"]
+- ["So8UIButtonC", "NSCoder"]
+- ["So8UIButtonC", "SPGradientView"]
+- ["So8UIButtonC", ""]
+- ["So8UIButtonC", "commonInit"]
+- ["So8UIButtonC", "gradientView"]
+- ["So8UIButtonC", "init"]
+- !private ["So8UIButtonC", "insertSubview"]
+- ["So8UIButtonC", "layoutSubviews"]
+- ["So8UIButtonC", "round"]
+- ["So9UIControlC", "Bool"]
+- !private ["So9UIControlC", "CGRect"]
+- ["So9UIControlC", "NSCoder"]
+- ["So9UIControlC", "SPGradientView"]
+- ["So9UIControlC", "commonInit"]
+- ["So9UIControlC", "gradientView"]
+- ["So9UIControlC", "init"]
+- !private ["So9UIControlC", "insertSubview"]
+- ["So9UIControlC", "layoutSubviews"]
+- ["So9UIControlC", "round"]
+- !private ["So17UICoordinateSpaceP", "CGRect"]
+- ["So17UICoordinateSpaceP", ""]
+- !private ["So17UICoordinateSpaceP", "commonInit"]
+- !private ["So17UICoordinateSpaceP", "gradientView"]
+- !private ["So17UICoordinateSpaceP", "init"]
+- !private ["So17UICoordinateSpaceP", "insertSubview"]
+- !private ["So17UICoordinateSpaceP", "isUserInteractionEnabled"]
+- !private ["So17UICoordinateSpaceP", "layoutSubviews"]
+- !private ["So17UICoordinateSpaceP", "round"]
+- !private ["So17UICoordinateSpaceP", "setEqualsBoundsFromSuperview"]
+- !private ["So17UICoordinateSpaceP", "superview"]
+- !private ["So13UIDynamicItemP", "CGRect"]
+- ["So13UIDynamicItemP", ""]
+- !private ["So13UIDynamicItemP", "commonInit"]
+- !private ["So13UIDynamicItemP", "gradientView"]
+- !private ["So13UIDynamicItemP", "init"]
+- !private ["So13UIDynamicItemP", "insertSubview"]
+- !private ["So13UIDynamicItemP", "isUserInteractionEnabled"]
+- !private ["So13UIDynamicItemP", "layoutSubviews"]
+- !private ["So13UIDynamicItemP", "round"]
+- !private ["So13UIDynamicItemP", "setEqualsBoundsFromSuperview"]
+- !private ["So13UIDynamicItemP", "superview"]
+- !private ["So18UIFocusEnvironmentP", "CGRect"]
+- ["So18UIFocusEnvironmentP", ""]
+- !private ["So18UIFocusEnvironmentP", "commonInit"]
+- !private ["So18UIFocusEnvironmentP", "gradientView"]
+- !private ["So18UIFocusEnvironmentP", "init"]
+- !private ["So18UIFocusEnvironmentP", "insertSubview"]
+- !private ["So18UIFocusEnvironmentP", "isUserInteractionEnabled"]
+- !private ["So18UIFocusEnvironmentP", "layoutSubviews"]
+- !private ["So18UIFocusEnvironmentP", "round"]
+- !private ["So18UIFocusEnvironmentP", "setEqualsBoundsFromSuperview"]
+- !private ["So18UIFocusEnvironmentP", "superview"]
+- !private ["So11UIFocusItemP", "CGRect"]
+- ["So11UIFocusItemP", ""]
+- !private ["So11UIFocusItemP", "commonInit"]
+- !private ["So11UIFocusItemP", "gradientView"]
+- !private ["So11UIFocusItemP", "init"]
+- !private ["So11UIFocusItemP", "insertSubview"]
+- !private ["So11UIFocusItemP", "isUserInteractionEnabled"]
+- !private ["So11UIFocusItemP", "layoutSubviews"]
+- !private ["So11UIFocusItemP", "round"]
+- !private ["So11UIFocusItemP", "setEqualsBoundsFromSuperview"]
+- !private ["So11UIFocusItemP", "superview"]
+- !private ["So20UIFocusItemContainerP", "CGRect"]
+- ["So20UIFocusItemContainerP", ""]
+- !private ["So20UIFocusItemContainerP", "commonInit"]
+- !private ["So20UIFocusItemContainerP", "gradientView"]
+- !private ["So20UIFocusItemContainerP", "init"]
+- !private ["So20UIFocusItemContainerP", "insertSubview"]
+- !private ["So20UIFocusItemContainerP", "isUserInteractionEnabled"]
+- !private ["So20UIFocusItemContainerP", "layoutSubviews"]
+- !private ["So20UIFocusItemContainerP", "round"]
+- !private ["So20UIFocusItemContainerP", "setEqualsBoundsFromSuperview"]
+- !private ["So20UIFocusItemContainerP", "superview"]
+- !private ["So30UIPasteConfigurationSupportingP", "CGRect"]
+- ["So30UIPasteConfigurationSupportingP", ""]
+- !private ["So30UIPasteConfigurationSupportingP", "commonInit"]
+- !private ["So30UIPasteConfigurationSupportingP", "gradientView"]
+- !private ["So30UIPasteConfigurationSupportingP", "init"]
+- !private ["So30UIPasteConfigurationSupportingP", "insertSubview"]
+- !private ["So30UIPasteConfigurationSupportingP", "isUserInteractionEnabled"]
+- !private ["So30UIPasteConfigurationSupportingP", "layoutSubviews"]
+- !private ["So30UIPasteConfigurationSupportingP", "round"]
+- !private ["So30UIPasteConfigurationSupportingP", "setEqualsBoundsFromSuperview"]
+- !private ["So30UIPasteConfigurationSupportingP", "superview"]
+- ["So11UIResponderC", "Bool"]
+- !private ["So11UIResponderC", "CGRect"]
+- ["So11UIResponderC", "NSCoder"]
+- ["So11UIResponderC", "SPGradientView"]
+- ["So11UIResponderC", "commonInit"]
+- ["So11UIResponderC", "gradientView"]
+- ["So11UIResponderC", "init"]
+- !private ["So11UIResponderC", "insertSubview"]
+- !private ["So11UIResponderC", "isUserInteractionEnabled"]
+- ["So11UIResponderC", "layoutSubviews"]
+- ["So11UIResponderC", "round"]
+- !private ["So11UIResponderC", "setEqualsBoundsFromSuperview"]
+- !private ["So11UIResponderC", "superview"]
+- !private ["So30UIResponderStandardEditActionsP", "CGRect"]
+- ["So30UIResponderStandardEditActionsP", ""]
+- !private ["So30UIResponderStandardEditActionsP", "commonInit"]
+- !private ["So30UIResponderStandardEditActionsP", "gradientView"]
+- !private ["So30UIResponderStandardEditActionsP", "init"]
+- !private ["So30UIResponderStandardEditActionsP", "insertSubview"]
+- !private ["So30UIResponderStandardEditActionsP", "isUserInteractionEnabled"]
+- !private ["So30UIResponderStandardEditActionsP", "layoutSubviews"]
+- !private ["So30UIResponderStandardEditActionsP", "round"]
+- !private ["So30UIResponderStandardEditActionsP", "setEqualsBoundsFromSuperview"]
+- !private ["So30UIResponderStandardEditActionsP", "superview"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "CGRect"]
+- ["So35UISpringLoadedInteractionSupportingP", ""]
+- !private ["So35UISpringLoadedInteractionSupportingP", "commonInit"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "gradientView"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "init"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "insertSubview"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "layoutSubviews"]
+- !private ["So35UISpringLoadedInteractionSupportingP", "round"]
+- !private ["So18UITraitEnvironmentP", "CGRect"]
+- ["So18UITraitEnvironmentP", ""]
+- !private ["So18UITraitEnvironmentP", "commonInit"]
+- !private ["So18UITraitEnvironmentP", "gradientView"]
+- !private ["So18UITraitEnvironmentP", "init"]
+- !private ["So18UITraitEnvironmentP", "insertSubview"]
+- !private ["So18UITraitEnvironmentP", "isUserInteractionEnabled"]
+- !private ["So18UITraitEnvironmentP", "layoutSubviews"]
+- !private ["So18UITraitEnvironmentP", "round"]
+- !private ["So18UITraitEnvironmentP", "setEqualsBoundsFromSuperview"]
+- !private ["So18UITraitEnvironmentP", "superview"]
+- !private ["So23UIUserActivityRestoringP", "CGRect"]
+- ["So23UIUserActivityRestoringP", ""]
+- !private ["So23UIUserActivityRestoringP", "commonInit"]
+- !private ["So23UIUserActivityRestoringP", "gradientView"]
+- !private ["So23UIUserActivityRestoringP", "init"]
+- !private ["So23UIUserActivityRestoringP", "insertSubview"]
+- !private ["So23UIUserActivityRestoringP", "isUserInteractionEnabled"]
+- !private ["So23UIUserActivityRestoringP", "layoutSubviews"]
+- !private ["So23UIUserActivityRestoringP", "round"]
+- !private ["So23UIUserActivityRestoringP", "setEqualsBoundsFromSuperview"]
+- !private ["So23UIUserActivityRestoringP", "superview"]
+- ["So6UIViewC", "Bool"]
+- !private ["So6UIViewC", "CGRect"]
+- ["So6UIViewC", "NSCoder"]
+- ["So6UIViewC", "SPGradientView"]
+- ["So6UIViewC", "commonInit"]
+- ["So6UIViewC", "gradientView"]
+- ["So6UIViewC", "init"]
+- !private ["So6UIViewC", "insertSubview"]
+- !private ["So6UIViewC", "isUserInteractionEnabled"]
+- ["So6UIViewC", "layoutSubviews"]
+- ["So6UIViewC", "round"]
+- !private ["So6UIViewC", "setEqualsBoundsFromSuperview"]
+- !private ["So6UIViewC", "superview"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "CGRect"]
+- ["s37_DefaultCustomPlaygroundQuickLookableP", ""]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "commonInit"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "gradientView"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "init"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "insertSubview"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "isUserInteractionEnabled"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "layoutSubviews"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "round"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "setEqualsBoundsFromSuperview"]
+- !private ["s37_DefaultCustomPlaygroundQuickLookableP", "superview"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "CGRect"]
+- ["10Foundation27_KeyValueCodingAndObservingP", ""]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "commonInit"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "gradientView"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "insertSubview"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "isUserInteractionEnabled"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "layoutSubviews"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "round"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "setEqualsBoundsFromSuperview"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "superview"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "zero"]
+depends-nominal:
+- !private "Sb"
+- "So15CALayerDelegateP"
+- !private "So6CGRectV"
+- "s7CVarArgP"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SE"
+- "SQ"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- "So8NSCodingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- "18request_permission8SPButtonC"
+- !private "18request_permission14SPGradientViewC"
+- !private "18request_permission6SPViewC"
+- !private "s12StaticStringV"
+- "So48UIAccessibilityContentSizeCategoryImageAdjustingP"
+- "So29UIAccessibilityIdentificationP"
+- "So12UIAppearanceP"
+- "So21UIAppearanceContainerP"
+- "So8UIButtonC"
+- "So9UIControlC"
+- "So17UICoordinateSpaceP"
+- "So13UIDynamicItemP"
+- "So18UIFocusEnvironmentP"
+- "So11UIFocusItemP"
+- "So20UIFocusItemContainerP"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- "So35UISpringLoadedInteractionSupportingP"
+- "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- "So6UIViewC"
+- "s37_DefaultCustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "d6e43afc37bcb7d2945d82bef5fab0fb"

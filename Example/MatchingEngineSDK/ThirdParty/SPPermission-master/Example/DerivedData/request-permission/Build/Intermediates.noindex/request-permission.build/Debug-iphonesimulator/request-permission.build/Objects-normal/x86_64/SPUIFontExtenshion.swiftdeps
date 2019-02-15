@@ -1,0 +1,231 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+provides-nominal:
+- "So6UIFontC18request_permissionE8BoldTypeO"
+provides-member:
+- ["So6UIFontC", ""]
+- ["So6UIFontC18request_permissionE8BoldTypeO", ""]
+- ["So6UIFontC", "system"]
+- ["So6UIFontC", "BoldType"]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- "CGFloat"
+- "UIFont"
+depends-member:
+- ["So6UIFontC18request_permissionE8BoldTypeO", "Bold"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "DemiBold"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "Heavy"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "Light"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "Medium"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "None"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "Regular"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "UltraLight"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "__derived_enum_equals"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "deinit"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "hash"]
+- ["So6UIFontC18request_permissionE8BoldTypeO", "hashValue"]
+- !private ["s7CVarArgP", "UIFont"]
+- ["s7CVarArgP", "Weight"]
+- !private ["s7CVarArgP", "getBoldTypeBy"]
+- !private ["s7CVarArgP", "systemFont"]
+- !private ["SL", "bold"]
+- !private ["SL", "heavy"]
+- !private ["SL", "light"]
+- !private ["SL", "medium"]
+- !private ["SL", "regular"]
+- !private ["SL", "semibold"]
+- !private ["SL", "ultraLight"]
+- !private ["s28CustomDebugStringConvertibleP", "UIFont"]
+- ["s28CustomDebugStringConvertibleP", "Weight"]
+- !private ["s28CustomDebugStringConvertibleP", "getBoldTypeBy"]
+- !private ["s28CustomDebugStringConvertibleP", "systemFont"]
+- !private ["s23CustomStringConvertibleP", "UIFont"]
+- ["s23CustomStringConvertibleP", "Weight"]
+- !private ["s23CustomStringConvertibleP", "getBoldTypeBy"]
+- !private ["s23CustomStringConvertibleP", "systemFont"]
+- ["SQ", "Bold"]
+- ["SQ", "DemiBold"]
+- ["SQ", "Heavy"]
+- ["SQ", "Light"]
+- ["SQ", "Medium"]
+- ["SQ", "Regular"]
+- !private ["SQ", "UIFont"]
+- ["SQ", "UltraLight"]
+- ["SQ", "Weight"]
+- ["SQ", ""]
+- !private ["SQ", "bold"]
+- !private ["SQ", "getBoldTypeBy"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "heavy"]
+- !private ["SQ", "light"]
+- !private ["SQ", "medium"]
+- !private ["SQ", "regular"]
+- !private ["SQ", "semibold"]
+- !private ["SQ", "systemFont"]
+- !private ["SQ", "ultraLight"]
+- ["SH", "Bold"]
+- ["SH", "DemiBold"]
+- ["SH", "Heavy"]
+- ["SH", "Light"]
+- ["SH", "Medium"]
+- ["SH", "Regular"]
+- !private ["SH", "UIFont"]
+- ["SH", "UltraLight"]
+- ["SH", "Weight"]
+- ["SH", ""]
+- !private ["SH", "bold"]
+- !private ["SH", "getBoldTypeBy"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "heavy"]
+- !private ["SH", "light"]
+- !private ["SH", "medium"]
+- !private ["SH", "regular"]
+- !private ["SH", "semibold"]
+- !private ["SH", "systemFont"]
+- !private ["SH", "ultraLight"]
+- !private ["s6HasherV", "combine"]
+- !private ["So9NSCopyingP", "UIFont"]
+- ["So9NSCopyingP", "Weight"]
+- !private ["So9NSCopyingP", "getBoldTypeBy"]
+- !private ["So9NSCopyingP", "systemFont"]
+- ["So8NSObjectC", "BoldType"]
+- ["So8NSObjectC", "CGFloat"]
+- ["So8NSObjectC", "UIFont"]
+- ["So8NSObjectC", "Weight"]
+- ["So8NSObjectC", "getBoldTypeBy"]
+- ["So8NSObjectC", "system"]
+- !private ["So8NSObjectC", "systemFont"]
+- !private ["So8NSObjectP", "UIFont"]
+- ["So8NSObjectP", "Weight"]
+- !private ["So8NSObjectP", "getBoldTypeBy"]
+- !private ["So8NSObjectP", "systemFont"]
+- !private ["SY", "bold"]
+- !private ["SY", "heavy"]
+- !private ["SY", "light"]
+- !private ["SY", "medium"]
+- !private ["SY", "regular"]
+- !private ["SY", "semibold"]
+- !private ["SY", "ultraLight"]
+- ["So6UIFontC", "BoldType"]
+- ["So6UIFontC", "CGFloat"]
+- ["So6UIFontC", "UIFont"]
+- ["So6UIFontC", "Weight"]
+- !private ["So6UIFontC", "getBoldTypeBy"]
+- ["So6UIFontC", "system"]
+- !private ["So6UIFontC", "systemFont"]
+- !private ["So12UIFontWeighta", "bold"]
+- !private ["So12UIFontWeighta", "heavy"]
+- !private ["So12UIFontWeighta", "light"]
+- !private ["So12UIFontWeighta", "medium"]
+- !private ["So12UIFontWeighta", "regular"]
+- !private ["So12UIFontWeighta", "semibold"]
+- !private ["So12UIFontWeighta", "ultraLight"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "bold"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "heavy"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "light"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "medium"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "regular"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "semibold"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "ultraLight"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "UIFont"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "Weight"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "getBoldTypeBy"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "systemFont"]
+- !private ["s21_ObjectiveCBridgeableP", "bold"]
+- !private ["s21_ObjectiveCBridgeableP", "heavy"]
+- !private ["s21_ObjectiveCBridgeableP", "light"]
+- !private ["s21_ObjectiveCBridgeableP", "medium"]
+- !private ["s21_ObjectiveCBridgeableP", "regular"]
+- !private ["s21_ObjectiveCBridgeableP", "semibold"]
+- !private ["s21_ObjectiveCBridgeableP", "ultraLight"]
+- !private ["s20_SwiftNewtypeWrapperP", "bold"]
+- !private ["s20_SwiftNewtypeWrapperP", "heavy"]
+- !private ["s20_SwiftNewtypeWrapperP", "light"]
+- !private ["s20_SwiftNewtypeWrapperP", "medium"]
+- !private ["s20_SwiftNewtypeWrapperP", "regular"]
+- !private ["s20_SwiftNewtypeWrapperP", "semibold"]
+- !private ["s20_SwiftNewtypeWrapperP", "ultraLight"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "bold"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "heavy"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "light"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "medium"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "regular"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "semibold"]
+- !private ["5UIKit01_A23NumericRawRepresentableP", "ultraLight"]
+depends-nominal:
+- "So6UIFontC18request_permissionE8BoldTypeO"
+- "s7CVarArgP"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s23CustomStringConvertibleP"
+- "SQ"
+- "SH"
+- !private "s6HasherV"
+- "So9NSCopyingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "SY"
+- "So6UIFontC"
+- !private "So12UIFontWeighta"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s20_SwiftNewtypeWrapperP"
+- !private "5UIKit01_A23NumericRawRepresentableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "aba9a78abd8ada69d916e53c0dc77b55"

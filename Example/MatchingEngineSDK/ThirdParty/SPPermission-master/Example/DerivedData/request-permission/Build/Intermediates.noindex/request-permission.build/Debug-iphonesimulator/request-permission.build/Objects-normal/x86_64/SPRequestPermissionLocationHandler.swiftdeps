@@ -1,0 +1,348 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SPPermissionAlwaysAuthorizationLocationHandler"
+- "SPPermissionWhenInUseAuthorizationLocationHandler"
+- "SPPermissionLocationWithBackgroundHandler"
+provides-nominal:
+- "18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC"
+- "18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC"
+- "18request_permission41SPPermissionLocationWithBackgroundHandlerC"
+provides-member:
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", ""]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", ""]
+- ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", ""]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "SPPermissionAuthorizationHandlerCompletionBlock"]
+provides-dynamic-lookup:
+- "locationManager"
+depends-top-level:
+- !private "=="
+- "AssignmentPrecedence"
+- "Bool"
+- "BooleanLiteralType"
+- "CLAuthorizationStatus"
+- "CLLocationManager"
+- "CLLocationManagerDelegate"
+- "NSObject"
+- "SPPermissionAlwaysAuthorizationLocationHandler"
+- "SPPermissionLocationWithBackgroundHandler"
+- "SPPermissionWhenInUseAuthorizationLocationHandler"
+- "Void"
+- !private "||"
+depends-member:
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["So21CLAuthorizationStatusV", "authorizedAlways"]
+- ["So21CLAuthorizationStatusV", "authorizedWhenInUse"]
+- ["So21CLAuthorizationStatusV", "notDetermined"]
+- !private ["So17CLLocationManagerC", "allowsBackgroundLocationUpdates"]
+- !private ["So17CLLocationManagerC", "authorizationStatus"]
+- !private ["So17CLLocationManagerC", "delegate"]
+- !private ["So17CLLocationManagerC", "init"]
+- !private ["So17CLLocationManagerC", "requestAlwaysAuthorization"]
+- !private ["So17CLLocationManagerC", "requestWhenInUseAuthorization"]
+- !private ["So25CLLocationManagerDelegateP", "CLLocationManager"]
+- ["So25CLLocationManagerDelegateP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["So25CLLocationManagerDelegateP", ""]
+- !private ["So25CLLocationManagerDelegateP", "complectionHandler"]
+- !private ["So25CLLocationManagerDelegateP", "init"]
+- !private ["So25CLLocationManagerDelegateP", "init"]
+- !private ["So25CLLocationManagerDelegateP", "isAuthorized"]
+- ["So25CLLocationManagerDelegateP", "locationManager"]
+- ["So25CLLocationManagerDelegateP", "locationManagerDidPauseLocationUpdates"]
+- ["So25CLLocationManagerDelegateP", "locationManagerDidResumeLocationUpdates"]
+- ["So25CLLocationManagerDelegateP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["So25CLLocationManagerDelegateP", "requestPermission"]
+- !private ["So25CLLocationManagerDelegateP", "whenInUseNotRealChangeStatus"]
+- !private ["s7CVarArgP", "CLLocationManager"]
+- ["s7CVarArgP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "allowsBackgroundLocationUpdates"]
+- !private ["s7CVarArgP", "authorizationStatus"]
+- !private ["s7CVarArgP", "complectionHandler"]
+- !private ["s7CVarArgP", "delegate"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "isAuthorized"]
+- ["s7CVarArgP", "locationManager"]
+- ["s7CVarArgP", "locationManagerDidPauseLocationUpdates"]
+- ["s7CVarArgP", "locationManagerDidResumeLocationUpdates"]
+- ["s7CVarArgP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["s7CVarArgP", "requestAlwaysAuthorization"]
+- !private ["s7CVarArgP", "requestPermission"]
+- !private ["s7CVarArgP", "requestWhenInUseAuthorization"]
+- !private ["s7CVarArgP", "whenInUseNotRealChangeStatus"]
+- !private ["s28CustomDebugStringConvertibleP", "CLLocationManager"]
+- ["s28CustomDebugStringConvertibleP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "allowsBackgroundLocationUpdates"]
+- !private ["s28CustomDebugStringConvertibleP", "authorizationStatus"]
+- !private ["s28CustomDebugStringConvertibleP", "complectionHandler"]
+- !private ["s28CustomDebugStringConvertibleP", "delegate"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "isAuthorized"]
+- ["s28CustomDebugStringConvertibleP", "locationManager"]
+- ["s28CustomDebugStringConvertibleP", "locationManagerDidPauseLocationUpdates"]
+- ["s28CustomDebugStringConvertibleP", "locationManagerDidResumeLocationUpdates"]
+- ["s28CustomDebugStringConvertibleP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["s28CustomDebugStringConvertibleP", "requestAlwaysAuthorization"]
+- !private ["s28CustomDebugStringConvertibleP", "requestPermission"]
+- !private ["s28CustomDebugStringConvertibleP", "requestWhenInUseAuthorization"]
+- !private ["s28CustomDebugStringConvertibleP", "whenInUseNotRealChangeStatus"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "CLLocationManager"]
+- ["s23CustomStringConvertibleP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "allowsBackgroundLocationUpdates"]
+- !private ["s23CustomStringConvertibleP", "authorizationStatus"]
+- !private ["s23CustomStringConvertibleP", "complectionHandler"]
+- !private ["s23CustomStringConvertibleP", "delegate"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "isAuthorized"]
+- ["s23CustomStringConvertibleP", "locationManager"]
+- ["s23CustomStringConvertibleP", "locationManagerDidPauseLocationUpdates"]
+- ["s23CustomStringConvertibleP", "locationManagerDidResumeLocationUpdates"]
+- ["s23CustomStringConvertibleP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["s23CustomStringConvertibleP", "requestAlwaysAuthorization"]
+- !private ["s23CustomStringConvertibleP", "requestPermission"]
+- !private ["s23CustomStringConvertibleP", "requestWhenInUseAuthorization"]
+- !private ["s23CustomStringConvertibleP", "whenInUseNotRealChangeStatus"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SQ", "CLLocationManager"]
+- ["SQ", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["SQ", ""]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "allowsBackgroundLocationUpdates"]
+- !private ["SQ", "authorizationStatus"]
+- !private ["SQ", "authorizedAlways"]
+- ["SQ", "authorizedWhenInUse"]
+- !private ["SQ", "complectionHandler"]
+- !private ["SQ", "delegate"]
+- !private ["SQ", "init"]
+- !private ["SQ", "init"]
+- !private ["SQ", "isAuthorized"]
+- ["SQ", "locationManager"]
+- ["SQ", "locationManagerDidPauseLocationUpdates"]
+- ["SQ", "locationManagerDidResumeLocationUpdates"]
+- ["SQ", "locationManagerShouldDisplayHeadingCalibration"]
+- ["SQ", "notDetermined"]
+- !private ["SQ", "requestAlwaysAuthorization"]
+- !private ["SQ", "requestPermission"]
+- !private ["SQ", "requestWhenInUseAuthorization"]
+- !private ["SQ", "whenInUseNotRealChangeStatus"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["SH", "CLLocationManager"]
+- ["SH", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["SH", ""]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "allowsBackgroundLocationUpdates"]
+- !private ["SH", "authorizationStatus"]
+- !private ["SH", "authorizedAlways"]
+- ["SH", "authorizedWhenInUse"]
+- !private ["SH", "complectionHandler"]
+- !private ["SH", "delegate"]
+- !private ["SH", "init"]
+- !private ["SH", "init"]
+- !private ["SH", "isAuthorized"]
+- ["SH", "locationManager"]
+- ["SH", "locationManagerDidPauseLocationUpdates"]
+- ["SH", "locationManagerDidResumeLocationUpdates"]
+- ["SH", "locationManagerShouldDisplayHeadingCalibration"]
+- ["SH", "notDetermined"]
+- !private ["SH", "requestAlwaysAuthorization"]
+- !private ["SH", "requestPermission"]
+- !private ["SH", "requestWhenInUseAuthorization"]
+- !private ["SH", "whenInUseNotRealChangeStatus"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- ["So8NSObjectC", "Bool"]
+- ["So8NSObjectC", "CLAuthorizationStatus"]
+- ["So8NSObjectC", "CLLocationManager"]
+- ["So8NSObjectC", "SPPermissionAlwaysAuthorizationLocationHandler"]
+- ["So8NSObjectC", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["So8NSObjectC", "SPPermissionWhenInUseAuthorizationLocationHandler"]
+- ["So8NSObjectC", "Void"]
+- ["So8NSObjectC", ""]
+- !private ["So8NSObjectC", "allowsBackgroundLocationUpdates"]
+- !private ["So8NSObjectC", "authorizationStatus"]
+- ["So8NSObjectC", "complectionHandler"]
+- !private ["So8NSObjectC", "delegate"]
+- ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "isAuthorized"]
+- ["So8NSObjectC", "locationManager"]
+- ["So8NSObjectC", "locationManager.storage"]
+- ["So8NSObjectC", "locationManagerDidPauseLocationUpdates"]
+- ["So8NSObjectC", "locationManagerDidResumeLocationUpdates"]
+- ["So8NSObjectC", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["So8NSObjectC", "requestAlwaysAuthorization"]
+- ["So8NSObjectC", "requestPermission"]
+- !private ["So8NSObjectC", "requestWhenInUseAuthorization"]
+- ["So8NSObjectC", "shared"]
+- ["So8NSObjectC", "whenInUseNotRealChangeStatus"]
+- !private ["So8NSObjectP", "CLLocationManager"]
+- ["So8NSObjectP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "allowsBackgroundLocationUpdates"]
+- !private ["So8NSObjectP", "authorizationStatus"]
+- !private ["So8NSObjectP", "complectionHandler"]
+- !private ["So8NSObjectP", "delegate"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "isAuthorized"]
+- ["So8NSObjectP", "locationManager"]
+- ["So8NSObjectP", "locationManagerDidPauseLocationUpdates"]
+- ["So8NSObjectP", "locationManagerDidResumeLocationUpdates"]
+- ["So8NSObjectP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["So8NSObjectP", "requestAlwaysAuthorization"]
+- !private ["So8NSObjectP", "requestPermission"]
+- !private ["So8NSObjectP", "requestWhenInUseAuthorization"]
+- !private ["So8NSObjectP", "whenInUseNotRealChangeStatus"]
+- !private ["SY", "authorizedAlways"]
+- ["SY", "authorizedWhenInUse"]
+- ["SY", "notDetermined"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "Bool"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "CLAuthorizationStatus"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "CLLocationManager"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "SPPermissionAlwaysAuthorizationLocationHandler"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "Void"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", ""]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "complectionHandler"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "deinit"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "init"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "init"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "isAuthorized"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "locationManager"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "locationManager.storage"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "locationManagerDidPauseLocationUpdates"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "locationManagerDidResumeLocationUpdates"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "locationManagerShouldDisplayHeadingCalibration"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "requestPermission"]
+- ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "shared"]
+- !private ["18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC", "whenInUseNotRealChangeStatus"]
+- ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "SPPermissionAlwaysAuthorizationLocationHandler"]
+- !private ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "deinit"]
+- ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "init"]
+- !private ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "locationManager"]
+- ["18request_permission41SPPermissionLocationWithBackgroundHandlerC", "requestPermission"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "Bool"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "CLAuthorizationStatus"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "CLLocationManager"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "SPPermissionWhenInUseAuthorizationLocationHandler"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "Void"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "complectionHandler"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "deinit"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "init"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "isAuthorized"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "locationManager"]
+- !private ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "locationManager.storage"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "locationManagerDidPauseLocationUpdates"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "locationManagerDidResumeLocationUpdates"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "locationManagerShouldDisplayHeadingCalibration"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "requestPermission"]
+- ["18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC", "shared"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "CLLocationManager"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "SPPermissionAuthorizationHandlerCompletionBlock"]
+- ["10Foundation27_KeyValueCodingAndObservingP", ""]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "allowsBackgroundLocationUpdates"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "authorizationStatus"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "complectionHandler"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "delegate"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "isAuthorized"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "locationManager"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "locationManagerDidPauseLocationUpdates"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "locationManagerDidResumeLocationUpdates"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "locationManagerShouldDisplayHeadingCalibration"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestAlwaysAuthorization"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestPermission"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "requestWhenInUseAuthorization"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "whenInUseNotRealChangeStatus"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+depends-nominal:
+- !private "Sb"
+- "So21CLAuthorizationStatusV"
+- !private "So17CLLocationManagerC"
+- "So25CLLocationManagerDelegateP"
+- "s7CVarArgP"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "SE"
+- "SQ"
+- !private "s27ExpressibleByBooleanLiteralP"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- "SY"
+- "18request_permission46SPPermissionAlwaysAuthorizationLocationHandlerC"
+- "18request_permission41SPPermissionLocationWithBackgroundHandlerC"
+- "18request_permission49SPPermissionWhenInUseAuthorizationLocationHandlerC"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "8e089f7610171f9fdf498b9a1246dd09"

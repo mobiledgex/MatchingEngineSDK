@@ -1,0 +1,393 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+provides-nominal:
+- "18request_permission14ViewControllerC"
+provides-member:
+- ["18request_permission14ViewControllerC", ""]
+provides-dynamic-lookup:
+- "blackColor"
+- "whiteColor"
+depends-top-level:
+- "SPPermissionDialogColorSource"
+- "UIColor"
+- "ViewController"
+depends-member:
+- !private ["s7CVarArgP", "UIColor"]
+- ["s7CVarArgP", "baseColor"]
+- !private ["s7CVarArgP", "black"]
+- ["s7CVarArgP", "blackColor"]
+- ["s7CVarArgP", "grayColor"]
+- ["s7CVarArgP", "iconDarkColor"]
+- ["s7CVarArgP", "iconLightColor"]
+- ["s7CVarArgP", "iconMediumColor"]
+- ["s7CVarArgP", "iconWhiteColor"]
+- ["s7CVarArgP", "lightGrayColor"]
+- !private ["s7CVarArgP", "white"]
+- ["s7CVarArgP", "whiteColor"]
+- !private ["s28CustomDebugStringConvertibleP", "UIColor"]
+- ["s28CustomDebugStringConvertibleP", "baseColor"]
+- !private ["s28CustomDebugStringConvertibleP", "black"]
+- ["s28CustomDebugStringConvertibleP", "blackColor"]
+- ["s28CustomDebugStringConvertibleP", "grayColor"]
+- ["s28CustomDebugStringConvertibleP", "iconDarkColor"]
+- ["s28CustomDebugStringConvertibleP", "iconLightColor"]
+- ["s28CustomDebugStringConvertibleP", "iconMediumColor"]
+- ["s28CustomDebugStringConvertibleP", "iconWhiteColor"]
+- ["s28CustomDebugStringConvertibleP", "lightGrayColor"]
+- !private ["s28CustomDebugStringConvertibleP", "white"]
+- ["s28CustomDebugStringConvertibleP", "whiteColor"]
+- !private ["s23CustomStringConvertibleP", "UIColor"]
+- ["s23CustomStringConvertibleP", "baseColor"]
+- !private ["s23CustomStringConvertibleP", "black"]
+- ["s23CustomStringConvertibleP", "blackColor"]
+- ["s23CustomStringConvertibleP", "grayColor"]
+- ["s23CustomStringConvertibleP", "iconDarkColor"]
+- ["s23CustomStringConvertibleP", "iconLightColor"]
+- ["s23CustomStringConvertibleP", "iconMediumColor"]
+- ["s23CustomStringConvertibleP", "iconWhiteColor"]
+- ["s23CustomStringConvertibleP", "lightGrayColor"]
+- !private ["s23CustomStringConvertibleP", "white"]
+- ["s23CustomStringConvertibleP", "whiteColor"]
+- !private ["SQ", "UIColor"]
+- ["SQ", "baseColor"]
+- !private ["SQ", "black"]
+- ["SQ", "blackColor"]
+- ["SQ", "grayColor"]
+- ["SQ", "iconDarkColor"]
+- ["SQ", "iconLightColor"]
+- ["SQ", "iconMediumColor"]
+- ["SQ", "iconWhiteColor"]
+- ["SQ", "lightGrayColor"]
+- !private ["SQ", "white"]
+- ["SQ", "whiteColor"]
+- !private ["SH", "UIColor"]
+- ["SH", "baseColor"]
+- !private ["SH", "black"]
+- ["SH", "blackColor"]
+- ["SH", "grayColor"]
+- ["SH", "iconDarkColor"]
+- ["SH", "iconLightColor"]
+- ["SH", "iconMediumColor"]
+- ["SH", "iconWhiteColor"]
+- ["SH", "lightGrayColor"]
+- !private ["SH", "white"]
+- ["SH", "whiteColor"]
+- !private ["So8NSCodingP", "UIColor"]
+- ["So8NSCodingP", "baseColor"]
+- !private ["So8NSCodingP", "black"]
+- ["So8NSCodingP", "blackColor"]
+- ["So8NSCodingP", "grayColor"]
+- ["So8NSCodingP", "iconDarkColor"]
+- ["So8NSCodingP", "iconLightColor"]
+- ["So8NSCodingP", "iconMediumColor"]
+- ["So8NSCodingP", "iconWhiteColor"]
+- ["So8NSCodingP", "lightGrayColor"]
+- !private ["So8NSCodingP", "white"]
+- ["So8NSCodingP", "whiteColor"]
+- !private ["So9NSCopyingP", "black"]
+- !private ["So9NSCopyingP", "white"]
+- !private ["So26NSExtensionRequestHandlingP", "UIColor"]
+- ["So26NSExtensionRequestHandlingP", "baseColor"]
+- ["So26NSExtensionRequestHandlingP", "blackColor"]
+- ["So26NSExtensionRequestHandlingP", "grayColor"]
+- ["So26NSExtensionRequestHandlingP", "iconDarkColor"]
+- ["So26NSExtensionRequestHandlingP", "iconLightColor"]
+- ["So26NSExtensionRequestHandlingP", "iconMediumColor"]
+- ["So26NSExtensionRequestHandlingP", "iconWhiteColor"]
+- ["So26NSExtensionRequestHandlingP", "lightGrayColor"]
+- ["So26NSExtensionRequestHandlingP", "whiteColor"]
+- !private ["So21NSItemProviderReadingP", "black"]
+- !private ["So21NSItemProviderReadingP", "white"]
+- !private ["So21NSItemProviderWritingP", "black"]
+- !private ["So21NSItemProviderWritingP", "white"]
+- ["So8NSObjectC", "UIColor"]
+- ["So8NSObjectC", "baseColor"]
+- !private ["So8NSObjectC", "black"]
+- ["So8NSObjectC", "blackColor"]
+- ["So8NSObjectC", "grayColor"]
+- ["So8NSObjectC", "iconDarkColor"]
+- ["So8NSObjectC", "iconLightColor"]
+- ["So8NSObjectC", "iconMediumColor"]
+- ["So8NSObjectC", "iconWhiteColor"]
+- ["So8NSObjectC", "lightGrayColor"]
+- !private ["So8NSObjectC", "white"]
+- ["So8NSObjectC", "whiteColor"]
+- !private ["So8NSObjectP", "UIColor"]
+- ["So8NSObjectP", "baseColor"]
+- !private ["So8NSObjectP", "black"]
+- ["So8NSObjectP", "blackColor"]
+- ["So8NSObjectP", "grayColor"]
+- ["So8NSObjectP", "iconDarkColor"]
+- ["So8NSObjectP", "iconLightColor"]
+- ["So8NSObjectP", "iconMediumColor"]
+- ["So8NSObjectP", "iconWhiteColor"]
+- ["So8NSObjectP", "lightGrayColor"]
+- !private ["So8NSObjectP", "white"]
+- ["So8NSObjectP", "whiteColor"]
+- !private ["So14NSSecureCodingP", "black"]
+- !private ["So14NSSecureCodingP", "white"]
+- ["18request_permission12SPControllerC", "UIColor"]
+- ["18request_permission12SPControllerC", "baseColor"]
+- ["18request_permission12SPControllerC", "blackColor"]
+- ["18request_permission12SPControllerC", "grayColor"]
+- ["18request_permission12SPControllerC", "iconDarkColor"]
+- ["18request_permission12SPControllerC", "iconLightColor"]
+- ["18request_permission12SPControllerC", "iconMediumColor"]
+- ["18request_permission12SPControllerC", "iconWhiteColor"]
+- ["18request_permission12SPControllerC", "lightGrayColor"]
+- ["18request_permission12SPControllerC", "whiteColor"]
+- !private ["18request_permission29SPPermissionDialogColorSourceP", "UIColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", ""]
+- ["18request_permission29SPPermissionDialogColorSourceP", "baseColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "blackColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "grayColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "iconDarkColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "iconLightColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "iconMediumColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "iconWhiteColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "lightGrayColor"]
+- ["18request_permission29SPPermissionDialogColorSourceP", "whiteColor"]
+- !private ["18request_permission28SPPermissionDialogDataSourceP", "UIColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "baseColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "blackColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "grayColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "iconDarkColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "iconLightColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "iconMediumColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "iconWhiteColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "lightGrayColor"]
+- ["18request_permission28SPPermissionDialogDataSourceP", "whiteColor"]
+- !private ["18request_permission26SPPermissionDialogDelegateP", "UIColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "baseColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "blackColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "grayColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "iconDarkColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "iconLightColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "iconMediumColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "iconWhiteColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "lightGrayColor"]
+- ["18request_permission26SPPermissionDialogDelegateP", "whiteColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "UIColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "baseColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "blackColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "grayColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "iconDarkColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "iconLightColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "iconMediumColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "iconWhiteColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "lightGrayColor"]
+- ["18request_permission28SPStatusBarManagerControllerC", "whiteColor"]
+- !private ["So21UIAppearanceContainerP", "UIColor"]
+- ["So21UIAppearanceContainerP", "baseColor"]
+- ["So21UIAppearanceContainerP", "blackColor"]
+- ["So21UIAppearanceContainerP", "grayColor"]
+- ["So21UIAppearanceContainerP", "iconDarkColor"]
+- ["So21UIAppearanceContainerP", "iconLightColor"]
+- ["So21UIAppearanceContainerP", "iconMediumColor"]
+- ["So21UIAppearanceContainerP", "iconWhiteColor"]
+- ["So21UIAppearanceContainerP", "lightGrayColor"]
+- ["So21UIAppearanceContainerP", "whiteColor"]
+- !private ["So7UIColorC", "black"]
+- !private ["So7UIColorC", "white"]
+- !private ["So18UIContentContainerP", "UIColor"]
+- ["So18UIContentContainerP", "baseColor"]
+- ["So18UIContentContainerP", "blackColor"]
+- ["So18UIContentContainerP", "grayColor"]
+- ["So18UIContentContainerP", "iconDarkColor"]
+- ["So18UIContentContainerP", "iconLightColor"]
+- ["So18UIContentContainerP", "iconMediumColor"]
+- ["So18UIContentContainerP", "iconWhiteColor"]
+- ["So18UIContentContainerP", "lightGrayColor"]
+- ["So18UIContentContainerP", "whiteColor"]
+- !private ["So18UIFocusEnvironmentP", "UIColor"]
+- ["So18UIFocusEnvironmentP", "baseColor"]
+- ["So18UIFocusEnvironmentP", "blackColor"]
+- ["So18UIFocusEnvironmentP", "grayColor"]
+- ["So18UIFocusEnvironmentP", "iconDarkColor"]
+- ["So18UIFocusEnvironmentP", "iconLightColor"]
+- ["So18UIFocusEnvironmentP", "iconMediumColor"]
+- ["So18UIFocusEnvironmentP", "iconWhiteColor"]
+- ["So18UIFocusEnvironmentP", "lightGrayColor"]
+- ["So18UIFocusEnvironmentP", "whiteColor"]
+- !private ["So30UIPasteConfigurationSupportingP", "UIColor"]
+- ["So30UIPasteConfigurationSupportingP", "baseColor"]
+- ["So30UIPasteConfigurationSupportingP", "blackColor"]
+- ["So30UIPasteConfigurationSupportingP", "grayColor"]
+- ["So30UIPasteConfigurationSupportingP", "iconDarkColor"]
+- ["So30UIPasteConfigurationSupportingP", "iconLightColor"]
+- ["So30UIPasteConfigurationSupportingP", "iconMediumColor"]
+- ["So30UIPasteConfigurationSupportingP", "iconWhiteColor"]
+- ["So30UIPasteConfigurationSupportingP", "lightGrayColor"]
+- ["So30UIPasteConfigurationSupportingP", "whiteColor"]
+- ["So11UIResponderC", "UIColor"]
+- ["So11UIResponderC", "baseColor"]
+- ["So11UIResponderC", "blackColor"]
+- ["So11UIResponderC", "grayColor"]
+- ["So11UIResponderC", "iconDarkColor"]
+- ["So11UIResponderC", "iconLightColor"]
+- ["So11UIResponderC", "iconMediumColor"]
+- ["So11UIResponderC", "iconWhiteColor"]
+- ["So11UIResponderC", "lightGrayColor"]
+- ["So11UIResponderC", "whiteColor"]
+- !private ["So30UIResponderStandardEditActionsP", "UIColor"]
+- ["So30UIResponderStandardEditActionsP", "baseColor"]
+- ["So30UIResponderStandardEditActionsP", "blackColor"]
+- ["So30UIResponderStandardEditActionsP", "grayColor"]
+- ["So30UIResponderStandardEditActionsP", "iconDarkColor"]
+- ["So30UIResponderStandardEditActionsP", "iconLightColor"]
+- ["So30UIResponderStandardEditActionsP", "iconMediumColor"]
+- ["So30UIResponderStandardEditActionsP", "iconWhiteColor"]
+- ["So30UIResponderStandardEditActionsP", "lightGrayColor"]
+- ["So30UIResponderStandardEditActionsP", "whiteColor"]
+- !private ["So16UIStateRestoringP", "UIColor"]
+- ["So16UIStateRestoringP", "baseColor"]
+- ["So16UIStateRestoringP", "blackColor"]
+- ["So16UIStateRestoringP", "grayColor"]
+- ["So16UIStateRestoringP", "iconDarkColor"]
+- ["So16UIStateRestoringP", "iconLightColor"]
+- ["So16UIStateRestoringP", "iconMediumColor"]
+- ["So16UIStateRestoringP", "iconWhiteColor"]
+- ["So16UIStateRestoringP", "lightGrayColor"]
+- ["So16UIStateRestoringP", "whiteColor"]
+- !private ["So18UITraitEnvironmentP", "UIColor"]
+- ["So18UITraitEnvironmentP", "baseColor"]
+- ["So18UITraitEnvironmentP", "blackColor"]
+- ["So18UITraitEnvironmentP", "grayColor"]
+- ["So18UITraitEnvironmentP", "iconDarkColor"]
+- ["So18UITraitEnvironmentP", "iconLightColor"]
+- ["So18UITraitEnvironmentP", "iconMediumColor"]
+- ["So18UITraitEnvironmentP", "iconWhiteColor"]
+- ["So18UITraitEnvironmentP", "lightGrayColor"]
+- ["So18UITraitEnvironmentP", "whiteColor"]
+- !private ["So23UIUserActivityRestoringP", "UIColor"]
+- ["So23UIUserActivityRestoringP", "baseColor"]
+- ["So23UIUserActivityRestoringP", "blackColor"]
+- ["So23UIUserActivityRestoringP", "grayColor"]
+- ["So23UIUserActivityRestoringP", "iconDarkColor"]
+- ["So23UIUserActivityRestoringP", "iconLightColor"]
+- ["So23UIUserActivityRestoringP", "iconMediumColor"]
+- ["So23UIUserActivityRestoringP", "iconWhiteColor"]
+- ["So23UIUserActivityRestoringP", "lightGrayColor"]
+- ["So23UIUserActivityRestoringP", "whiteColor"]
+- ["So16UIViewControllerC", "UIColor"]
+- ["So16UIViewControllerC", "baseColor"]
+- ["So16UIViewControllerC", "blackColor"]
+- ["So16UIViewControllerC", "grayColor"]
+- ["So16UIViewControllerC", "iconDarkColor"]
+- ["So16UIViewControllerC", "iconLightColor"]
+- ["So16UIViewControllerC", "iconMediumColor"]
+- ["So16UIViewControllerC", "iconWhiteColor"]
+- ["So16UIViewControllerC", "lightGrayColor"]
+- ["So16UIViewControllerC", "whiteColor"]
+- ["18request_permission14ViewControllerC", "UIColor"]
+- ["18request_permission14ViewControllerC", "baseColor"]
+- ["18request_permission14ViewControllerC", "blackColor"]
+- ["18request_permission14ViewControllerC", "deinit"]
+- ["18request_permission14ViewControllerC", "grayColor"]
+- ["18request_permission14ViewControllerC", "iconDarkColor"]
+- ["18request_permission14ViewControllerC", "iconLightColor"]
+- ["18request_permission14ViewControllerC", "iconMediumColor"]
+- ["18request_permission14ViewControllerC", "iconWhiteColor"]
+- ["18request_permission14ViewControllerC", "lightGrayColor"]
+- ["18request_permission14ViewControllerC", "whiteColor"]
+- !private ["s26_ExpressibleByColorLiteralP", "black"]
+- !private ["s26_ExpressibleByColorLiteralP", "white"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "UIColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "baseColor"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "black"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "blackColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "grayColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "iconDarkColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "iconLightColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "iconMediumColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "iconWhiteColor"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "lightGrayColor"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "white"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "whiteColor"]
+depends-nominal:
+- "s7CVarArgP"
+- "s28CustomDebugStringConvertibleP"
+- "s23CustomStringConvertibleP"
+- "SQ"
+- "SH"
+- "So8NSCodingP"
+- !private "So9NSCopyingP"
+- "So26NSExtensionRequestHandlingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- "18request_permission12SPControllerC"
+- "18request_permission29SPPermissionDialogColorSourceP"
+- "18request_permission28SPPermissionDialogDataSourceP"
+- "18request_permission26SPPermissionDialogDelegateP"
+- "18request_permission28SPStatusBarManagerControllerC"
+- "So21UIAppearanceContainerP"
+- !private "So7UIColorC"
+- "So18UIContentContainerP"
+- "So18UIFocusEnvironmentP"
+- "So30UIPasteConfigurationSupportingP"
+- "So11UIResponderC"
+- "So30UIResponderStandardEditActionsP"
+- "So16UIStateRestoringP"
+- "So18UITraitEnvironmentP"
+- "So23UIUserActivityRestoringP"
+- "So16UIViewControllerC"
+- "18request_permission14ViewControllerC"
+- !private "s26_ExpressibleByColorLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/simd.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MediaPlayer.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Photos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Contacts.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/MapKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers/LocalAuthentication.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Photos.framework/Headers/Photos.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Contacts.framework/Headers/Contacts.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers/CoreSpotlight.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AVKit.framework/Headers/AVKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/EventKit.framework/Headers/EventKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "6011b0267e76c4caaa31529b039a21f5"

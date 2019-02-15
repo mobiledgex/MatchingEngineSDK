@@ -1,0 +1,23 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "875E90F856A7ECD659A448990F7DC8505D2CD50D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "875E90F856A7ECD659A448990F7DC8505D2CD50D" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "51FBEB12-AA1B-4AD4-A7EC-B6DCA9BA3DB2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "875E90F856A7ECD659A448990F7DC8505D2CD50D" : "edge-cloud-sampleapps\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "request-permission",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/MobiledgeXSDKDemo\/MobiledgeXSDKDemo.IOS\/ThirdParty\/SPPermission-master-3\/Example\/request-permission.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mobiledgex\/edge-cloud-sampleapps.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "875E90F856A7ECD659A448990F7DC8505D2CD50D"
+    }
+  ]
+}
