@@ -54,9 +54,10 @@ Steps:
 	pod 'MatchingEngineSDK'
 
 	pod 'Alamofire'
+    
 	pod 'NSLogger/Swift'
 
-2) pod install
+2) `pod install`
 
 
 3) Add the following Sources to your project
