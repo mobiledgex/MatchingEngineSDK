@@ -20,19 +20,19 @@ import Foundation
 
 import Alamofire
 import GoogleMaps
-import MatchingEngineSDK        // JT 19.01.30 for Future
+import MatchingEngineSDK
 import SwiftSocket //   connection latency
 
 
-public class Cloudlet: CustomStringConvertible // implements Serializable? todo?    // JT 19.02.11
+public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
 {
-    //  private var cl: Cloudlet?   // JT 19.02.11
+    //  private var cl: Cloudlet?
     
     private static let TAG: String = "Cloudlet"
     public static let BYTES_TO_MBYTES: Int = 1024 * 1024
     
     public var description: String {
-        return "<\(type(of: self)): CloudletName = \(mCloudletName)\n AppName = \(mAppName)\n CarrierName = \(mCarrierName)\n\n Latitude= \(mLatitude)\n mLongitude= \(mLongitude)\n\n Distance= \(mDistance)\n\n latencyMin= \(latencyMin)\n latencyAvg= \(latencyAvg)\n latencyMax= \(latencyMax)\n >"  // JT 19.02.11
+        return "<\(type(of: self)): CloudletName = \(mCloudletName)\n AppName = \(mAppName)\n CarrierName = \(mCarrierName)\n\n Latitude= \(mLatitude)\n mLongitude= \(mLongitude)\n\n Distance= \(mDistance)\n\n latencyMin= \(latencyMin)\n latencyAvg= \(latencyAvg)\n latencyMax= \(latencyMax)\n >"
         
 
     }
@@ -57,9 +57,9 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     
     var pings: [String] = [String]()
     var latencies = [Double]()
-    var future:Future<[String: AnyObject], Error>? // async result (captured by async?) // JT 19.01.16
+    var future:Future<[String: AnyObject], Error>? // async result (captured by async?)
     
-    private var mbps: Int64 = 0 // BigDecimal.valueOf(0);  // JT 18.10.23 todo?
+    private var mbps: Int64 = 0 // BigDecimal.valueOf(0);
     // var latencyTestProgress: Double = 0
     private var speedTestProgress: Double = 0 // 0-1  //  updating
     var startTime: Double = 0 // Int64
@@ -72,7 +72,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     
     private var mBaseUri: String = ""
     private var downloadUri: String = "" // rebuilt at runtime
-    private var socketdUri: String = "" // rebuilt at runtime   // JT 19.02.05
+    private var socketdUri: String = "" // rebuilt at runtime
     
     var hostName: String = ""
     var openPort: Int = 7777
@@ -80,7 +80,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     var latencyTestTaskRunning: Bool = false
     var speedTestTaskRunning: Bool = false
     private var uri: String = ""
-    private var theFQDN_prefix: String = "" // JT 19.01.30
+    private var theFQDN_prefix: String = ""
     
     init()
     {}
@@ -91,16 +91,16 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
          _ gpsLocation: CLLocationCoordinate2D,
          _ distance: Double,
          _ uri: String,
-         _ urlPrefix: String,   // JT 19.01.30
+         _ urlPrefix: String,
         _ marker: GMSMarker,
         _ numBytes: Int,
         _ numPackets: Int) // LatLng
     {
         Swift.print("Cloudlet contructor. cloudletName= \(cloudletName)")
         
-        update(cloudletName, appName, carrierName, gpsLocation, distance, uri, urlPrefix, marker, numBytes, numPackets) // JT 19.01.30
+        update(cloudletName, appName, carrierName, gpsLocation, distance, uri, urlPrefix, marker, numBytes, numPackets)
         
-        let autoStart = UserDefaults.standard.bool(forKey: "Latency Test Auto-Start")  // JT 19.01.30  // JT 19.02.05
+        let autoStart = UserDefaults.standard.bool(forKey: "Latency Test Auto-Start")
         
         if autoStart
         {
@@ -110,7 +110,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         }
         else
         {
-            // JT 19.02.06
+
         }
         
         if CloudletListHolder.getSingleton().getLatencyTestAutoStart()
@@ -130,7 +130,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                        _ gpsLocation: CLLocationCoordinate2D,
                        _ distance: Double,
                        _ uri: String,
-                       _ urlPrefix: String,   // JT 19.01.30
+                       _ urlPrefix: String,
         _ marker: GMSMarker,
         _ numBytes: Int,
         _ numPackets: Int) // # packets to ping
@@ -149,7 +149,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         mNumPackets = numPackets
         
         mBaseUri = uri
-        theFQDN_prefix = urlPrefix  // JT 19.01.30
+        theFQDN_prefix = urlPrefix
         setDownloadUri(uri)
         
         //    let numPings = Int(UserDefaults.standard.string(forKey: "Latency Test Packets") ?? "5")
@@ -158,7 +158,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     
     func runLatencyTest(numPings: Int)
     {
-        latencyTestTaskRunning = false //   // JT 19.02.05 cheat
+        latencyTestTaskRunning = false //
         
         if latencyTestTaskRunning
         {
@@ -168,8 +168,8 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         }
         latencyTestTaskRunning = true
         
-        let azure = uri.range(of: "azure") != nil   // JT 19.01.30  // JT 19.02.05
-        if uri != "" //&& // JT 19.01.30
+        let azure = uri.range(of: "azure") != nil
+        if uri != "" //&&
         {
             Swift.print("uri: \(uri)")
             // Ping several times
@@ -180,7 +180,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             {
                 if azure
                 {
-                    pings.append(socketdUri)    // JT 19.01.30
+                    pings.append(socketdUri)
                 }
                 else
                 {
@@ -196,7 +196,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         // post upateLatencies
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: nil)
         
-        dump()  // JT 19.02.05
+        dump()
     }
     
     deinit
@@ -213,34 +213,34 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             return
         }
         
-        Swift.print("0latencies \(self.latencies)")   // JT 19.01.30
+        Swift.print("0latencies \(self.latencies)")
         
         let host = pings.removeFirst()
         
         //  let latencyTestMethod = UserDefaults.standard.string(forKey: "LatencyTestMethod")
         
         var useSocket = false
-        Swift.print("uri \(uri)")   // JT 19.01.30
+        Swift.print("uri \(uri)")
         if ( uri.contains("azure"))
         {
-            useSocket = true    // JT 19.01.30  // JT 19.02.05
+            useSocket = true
         }
         
-        if useSocket    // &&  latencyTestMethod == "Socket"    // JT 19.02.05
+        if useSocket    // &&  latencyTestMethod == "Socket"
         {
-            future = GetSocketLatency(host, 7777)   // JT 19.01.30
+            future = GetSocketLatency(host, 7777)
             
             future!.on(success:
                 {
                     let d = $0 as [String: Any]
                     
                     print("GetSocketLatency: \(d["latency"])")
-                    let duration = Double(d["latency"] as! String  ) // JT 19.01.16
+                    let duration = Double(d["latency"] as! String  )
                     
                     // print("\(ping) latency (ms): \(latency)")
-                    self.latencies.append(duration! * 1000)  // JT 19.01.16  // JT 19.02.05
+                    self.latencies.append(duration! * 1000)
                     
-                    Swift.print("latencies \(self.latencies)")   // JT 19.01.30
+                    Swift.print("latencies \(self.latencies)")
                     
                     self.latencyMin = self.latencies.min()!
                     self.latencyMax = self.latencies.max()!
@@ -251,7 +251,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                     
                     self.latencyStddev = standardDeviation(arr: self.latencies)
                     
-                    Swift.print("•latencyMin \(self.latencyMin)")    // JT 19.02.05
+                    Swift.print("•latencyMin \(self.latencyMin)")
                     Swift.print("latencyMax \(self.latencyMax)")
                     Swift.print("latencyAvg \(self.latencyAvg)")
                     Swift.print("latencyStddev \(self.latencyStddev)")
@@ -260,7 +260,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: latencyMsg)
                     
-                    self.pingNext()  // JT 19.01.30 // JT 19.02.05
+                    self.pingNext()
                     
             },
                        failure: {
@@ -278,13 +278,13 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             
             pingOnce?.observer = { _, response in
                 let duration = response.duration
-                print("cloudlet latency: \(duration)")  // JT 19.01.28
+                print("cloudlet latency: \(duration)")
                 pingOnce?.stop()
                 
                 // print("\(ping) latency (ms): \(latency)")
-                self.latencies.append(response.duration * 1000) // JT 19.01.14
+                self.latencies.append(response.duration * 1000)
                 
-                Swift.print("latencies \(self.latencies)")   // JT 19.01.30
+                Swift.print("latencies \(self.latencies)")
                 
                 self.latencyMin = self.latencies.min()!
                 self.latencyMax = self.latencies.max()!
@@ -293,7 +293,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                 
                 self.latencyAvg = sumArray / Double(self.latencies.count)
                 
-                Swift.print("••latencyMin \(self.latencyMin)")    // JT 19.02.05
+                Swift.print("••latencyMin \(self.latencyMin)")
                 Swift.print("latencyMax \(self.latencyMax)")
                 Swift.print("latencyAvg \(self.latencyAvg)")
                 Swift.print("latencyStddev \(self.latencyStddev)")
@@ -302,10 +302,10 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                 
                 let latencyMsg = String(format: "%4.3f", self.latencyAvg)
                 
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: latencyMsg) // JT 19.02.05
-                self.pingNext()  // JT 19.01.30 // JT 19.02.05
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: latencyMsg)
+                self.pingNext()
             }
-            pingOnce?.start() // JT 19.01.14
+            pingOnce?.start()
         }
         
     }
@@ -319,9 +319,9 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     {
         if mCarrierName.caseInsensitiveCompare("TDG") == .orderedSame
         {
-            openPort = 443 // JT 18.11.16 unused
+            openPort = 443
             hostName = uri
-            //     hostName = theFQDN_prefix + uri   // JT 19.01.30
+            //     hostName = theFQDN_prefix + uri
             
             //       downloadUri = "https://\(hostName)/mobiledgexsdkdemohttp/getdata?numbytes=\(mNumBytes)"
             openPort = 7777
@@ -334,16 +334,16 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             downloadUri = "http://\(hostName):\(openPort)/getdata?numbytes=\(mNumBytes)"
             Swift.print("downloadUri1: \(downloadUri)") // DEBUG
             
-            socketdUri = hostName   // JT 19.01.30
+            socketdUri = hostName
         }
         else
         {
             openPort = 7777
-            hostName = theFQDN_prefix + uri   // JT 19.01.30
+            hostName = theFQDN_prefix + uri
             downloadUri = "http://\(hostName):\(openPort)/getdata?numbytes=\(mNumBytes)"
             Swift.print("downloadUri: \(downloadUri)") // DEBUG
             
-            socketdUri = hostName   // JT 19.01.30
+            socketdUri = hostName
         }
         self.uri = uri
     }
@@ -407,12 +407,12 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         
         if latencyTestMethod == CloudletListHolder.LatencyTestMethod.socket
         {
-            Swift.print("LatencyTestTaskSocket todo?") // JT 18.10.23
+            Swift.print("LatencyTestTaskSocket todo?")
             //  LatencyTestTaskSocket().execute();
         }
         else if latencyTestMethod == CloudletListHolder.LatencyTestMethod.ping
         {
-            Swift.print("LatencyTestTaskPing todo?") // JT 18.10.23
+            Swift.print("LatencyTestTaskPing todo?")
             // LatencyTestTaskPing().execute();
         }
         else
@@ -500,7 +500,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         return latencyStddev
     }
     
-    public func getMbps() -> Int64 // JT 18.10.23 BigDecimal
+    public func getMbps() -> Int64
     {
         return mbps
     }
@@ -573,7 +573,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             
             return
         }
-        speedTestTaskRunning = true //  // JT 19.01.14 todo how to reset this on cancel.
+        speedTestTaskRunning = true //
         
         setDownloadUri(mBaseUri) // so we have current B bytes to download appended
         Swift.print("doSpeedTest\n  \(downloadUri)") // DEBUG
@@ -599,7 +599,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                     
                     DispatchQueue.main.async
                         {
-                            CircularSpinner.hide() //   // JT 19.01.30
+                            CircularSpinner.hide() //
                     }
                     
                     return
@@ -618,7 +618,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         }
     }
     
-    func dump() // JT 19.02.05
+    func dump()
     {
         Swift.print("latencyMin \(latencyMin)")     // JT
         Swift.print("latencyAvg \(latencyAvg)")     // JT
@@ -652,28 +652,28 @@ func GetSocketLatency(_ host: String, _ port: Int32, _ postMsg: String? = nil)  
     {
         let time = measure1
         {
-            let client = TCPClient(address: host, port: port) // JT 19.01.16 SwiftSocket
+            let client = TCPClient(address: host, port: port)
 
-            let _ = client.connect( timeout: 10 )      // JT 19.02.05
+            let _ = client.connect( timeout: 10 )
 
-            client.close() // JT 19.01.16
+            client.close()
             
-            //                 promise.failure(value: ["latency": latencyMsg as AnyObject])  // JT 19.01.16
+            //                 promise.failure(value: ["latency": latencyMsg as AnyObject])
 
         }
 
- //       print("host: \(host)\n Latency \(time / 1000.0) ms") // JT 19.01.16
+ //       print("host: \(host)\n Latency \(time / 1000.0) ms")
         if time > 0
         {
-            let latencyMsg = String(format: "%4.2f", time  )    // JT 19.02.05 19.01.30
+            let latencyMsg = String(format: "%4.2f", time  )
             
             if postMsg != nil && postMsg != ""
             {
-                let latencyMsg2 = String(format: "%4.2f", time  ) // ms // JT 19.02.05
+                let latencyMsg2 = String(format: "%4.2f", time  ) // ms
 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: postMsg!), object: latencyMsg2)
             }
-            promise.succeed(value: ["latency": latencyMsg as AnyObject])  // JT 19.01.16
+            promise.succeed(value: ["latency": latencyMsg as AnyObject])
         }
         
         
@@ -687,7 +687,7 @@ func GetSocketLatency(_ host: String, _ port: Int32, _ postMsg: String? = nil)  
 func measure<T>(task: () -> T) -> Double
 {
     let startTime = CFAbsoluteTimeGetCurrent()
-    _ = task() // JT 19.01.16
+    _ = task()
     let endTime = CFAbsoluteTimeGetCurrent()
 
     let result = endTime - startTime
@@ -697,8 +697,8 @@ func measure<T>(task: () -> T) -> Double
 
 func measure1<T>(task: () -> T) -> Double
 {
-    let startTime = DispatchTime.now() // JT 19.01.16
-    _ = task() // JT 19.01.16
+    let startTime = DispatchTime.now()
+    _ = task()
     let endTime = DispatchTime.now()
 
     let nanoTime = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds

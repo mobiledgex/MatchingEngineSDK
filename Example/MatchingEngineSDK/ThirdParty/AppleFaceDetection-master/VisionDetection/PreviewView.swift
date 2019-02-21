@@ -10,12 +10,12 @@ import AVFoundation
 import UIKit
 import Vision
 
-//var lastFaceRect = CGRect(0,0,0,0)  // JT 18.11.27
+//var lastFaceRect = CGRect(0,0,0,0)
 
 class PreviewView: UIView
 {
-    private var maskLayerMexCloud = [CAShapeLayer]()    // face box // JT 19.02.04
-    private var maskLayerMexEdge = [CAShapeLayer]()     // JT 19.02.04
+    private var maskLayerMexCloud = [CAShapeLayer]()    // face box
+    private var maskLayerMexEdge = [CAShapeLayer]()
     private var maskLayer = [CAShapeLayer]()
 
     // MARK: AV capture properties
@@ -50,7 +50,7 @@ class PreviewView: UIView
         mask.frame = rect
         mask.cornerRadius = 10
         mask.opacity = 0.75
-        mask.borderColor = UIColor.yellow.cgColor   // JT 18.12.14 built in FD
+        mask.borderColor = UIColor.yellow.cgColor
         mask.borderWidth = 2.0
 
         maskLayer.append(mask)
@@ -59,9 +59,9 @@ class PreviewView: UIView
         return mask
     }
     
-    private func createLayer(in rect: CGRect, color: CGColor) -> CAShapeLayer // JT 18.12.17
+    private func createLayer(in rect: CGRect, color: CGColor) -> CAShapeLayer
     {
-       // Swift.print("createLayer \(color)") // JT 19.02.05
+       // Swift.print("createLayer \(color)")
         let mask = CAShapeLayer()
         
         mask.frame = rect
@@ -77,36 +77,36 @@ class PreviewView: UIView
     }
     
  
-    private func createLayerCloud(in rect: CGRect, color: CGColor = UIColor.orange.cgColor) -> CAShapeLayer   // JT 19.02.04
+    private func createLayerCloud(in rect: CGRect, color: CGColor = UIColor.orange.cgColor) -> CAShapeLayer
     {
-        Swift.print("createLayerCloud \(color)") // JT 19.02.05
+        Swift.print("createLayerCloud \(color)")
 
         let mask = CAShapeLayer()
         
         mask.frame = rect
         mask.cornerRadius = 10
         mask.opacity = 0.75
-        mask.borderColor = color  // JT 19.02.04
+        mask.borderColor = color
         mask.borderWidth = 3.0
         
-        maskLayerMexCloud.append(mask)   // JT 19.02.04
+        maskLayerMexCloud.append(mask)
         layer.insertSublayer(mask, at: 1)
         
         return mask
     }
     
-    private func createLayerEdge(in rect: CGRect, color: CGColor = UIColor.green.cgColor) -> CAShapeLayer   // JT 19.02.04
+    private func createLayerEdge(in rect: CGRect, color: CGColor = UIColor.green.cgColor) -> CAShapeLayer
     {
-        Swift.print("createLayerEdge \(color)") // JT 19.02.05
+        Swift.print("createLayerEdge \(color)")
 
         let mask = CAShapeLayer()
         mask.frame = rect
         mask.cornerRadius = 10
         mask.opacity = 0.75
-        mask.borderColor = color    // JT 18.12.13
+        mask.borderColor = color
         mask.borderWidth = 3.0
         
-        maskLayerMexEdge.append(mask)   // JT 19.02.04
+        maskLayerMexEdge.append(mask)
         layer.insertSublayer(mask, at: 1)
         
         return mask
@@ -128,8 +128,8 @@ class PreviewView: UIView
     {
         let transform = CGAffineTransform(scaleX: 1, y: 1).translatedBy(x: 0, y: 0)
         
-        let ratioW = frame.width   / (sentImageSize.width * 2)  // JT 18.11.28
-        let ratioH = frame.height   / (sentImageSize.height * 2)  // JT 18.11.28
+        let ratioW = frame.width   / (sentImageSize.width * 2)
+        let ratioH = frame.height   / (sentImageSize.height * 2)
         
         let translate = CGAffineTransform.identity.scaledBy(x: ratioW, y: ratioH)
         
@@ -143,42 +143,42 @@ class PreviewView: UIView
     {
         let facebounds = getFaceBounds(face:face)
         
-        let localProcessing = UserDefaults.standard.bool(forKey: "Local processing")    // JT 18.12.17
+        let localProcessing = UserDefaults.standard.bool(forKey: "Local processing")
         if localProcessing == true
         {
             _ = createLayer(in: facebounds, color: UIColor.yellow.cgColor  )    // local yellow
         }
      }
     
-    func drawFaceboundingBox2( rect:CGRect, hint sentImageSize: CGSize)    // JT 18.11.27
+    func drawFaceboundingBox2( rect:CGRect, hint sentImageSize: CGSize)
     {
 
         // The coordinates are normalized to the dimensions of the processed image, with the origin at the image's lower-left corner.
         let facebounds = getFaceBounds( rect: rect, hint: sentImageSize)
 
-        _ = createLayer(in: facebounds, color: UIColor.blue.cgColor  )    // JT 18.11.27 blue
+        _ = createLayer(in: facebounds, color: UIColor.blue.cgColor  )
     }
     
     
-    func drawFaceboundingBoxCloud( rect:CGRect, hint sentImageSize: CGSize)   -> CGRect  // JT 18.11.27
+    func drawFaceboundingBoxCloud( rect:CGRect, hint sentImageSize: CGSize)   -> CGRect
     {
         // The coordinates are normalized to the dimensions of the processed image, with the origin at the image's lower-left corner.
         let facebounds = getFaceBounds( rect: rect, hint: sentImageSize)
         
         _ = createLayerCloud(in: facebounds, color: UIColor.orange.cgColor  )    // green orange
         
-        return facebounds   // JT 18.12.14
+        return facebounds
    }
     
-    func drawFaceboundingBoxEdge( rect:CGRect, hint sentImageSize: CGSize)   -> CGRect   // JT 18.12.13
+    func drawFaceboundingBoxEdge( rect:CGRect, hint sentImageSize: CGSize)   -> CGRect
     {
         // The coordinates are normalized to the dimensions of the processed image, with the origin at the image's lower-left corner.
         let facebounds = getFaceBounds( rect: rect, hint: sentImageSize)
 
-        _ = createLayerEdge(in: facebounds, color: UIColor.green.cgColor    )       // JT 18.12.17
+        _ = createLayerEdge(in: facebounds, color: UIColor.green.cgColor    )
 
         
-        return facebounds   // JT 18.12.14
+        return facebounds
     }
 
     // MARK: -
@@ -268,7 +268,7 @@ class PreviewView: UIView
         maskLayer.removeAll()
     }
     
-    func removeMaskLayerMexCloud()      // JT 19.02.04
+    func removeMaskLayerMexCloud()
     {
         for mask in maskLayerMexCloud
         {
@@ -277,7 +277,7 @@ class PreviewView: UIView
         maskLayerMexCloud.removeAll()
     }
     
-    func removeMaskLayerMexEdge()      // JT 19.02.04
+    func removeMaskLayerMexEdge()
     {
         for mask in maskLayerMexEdge
         {

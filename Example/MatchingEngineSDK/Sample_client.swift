@@ -29,7 +29,7 @@ import UIKit
 import Alamofire
 import GoogleMaps
 
-import NSLogger // JT 19.01.07 dlog
+import NSLogger
 
 import MatchingEngineSDK    // SDK
 
@@ -61,11 +61,11 @@ private let DEF_FACE_HOST_EDGE = "facedetection.defaultedge.mobiledgex.net"
 // MARK: -
 
 
-func processAppInstList(_ d: [String: Any] )    // JT 19.01.31 hoist
+func processAppInstList(_ d: [String: Any] )
 {
     Swift.print("GetAppInstlist1 \(d)")
     
-    //  theMap!.clear()       // JT 18.11.12 todo main thread, where
+    //  theMap!.clear()
     
     var cloudlets = [String: Cloudlet]()
     Swift.print("~~~~~")
@@ -100,7 +100,7 @@ func processAppInstList(_ d: [String: Any] )    // JT 19.01.31 hoist
                 let loc = CLLocationCoordinate2D(
                     latitude: Double((gps["latitude"] as! NSNumber).stringValue)!,
                     longitude: Double((gps["longitude"] as! NSNumber).stringValue)!
-                )   // JT 19.01.01
+                )
                 Swift.print("\(loc)")
                 
                 Swift.print("\(Array(d.keys))\n")
@@ -111,10 +111,10 @@ func processAppInstList(_ d: [String: Any] )    // JT 19.01.31 hoist
                 let appName = dd[0]["AppName"] as! String
                 
                 let ports =  dd[0]["ports"] as! [[String: Any]]
-                Swift.print("ports \(ports)")   // JT 19.01.30
-                let portsDic = ports[0]     // JT 19.01.29
+                Swift.print("ports \(ports)")
+                let portsDic = ports[0]
                 
-                let theFQDN_prefix = portsDic["FQDN_prefix"] as! String    // JT 19.01.30
+                let theFQDN_prefix = portsDic["FQDN_prefix"] as! String
                 
                 
                 Swift.print("cloudlet uri: \(uri)")
@@ -140,7 +140,7 @@ func processAppInstList(_ d: [String: Any] )    // JT 19.01.31 hoist
                 
                 let i2 = textToImage(drawText: "M", inImage: resized, atPoint: CGPoint(x: 11, y: 4))
                 
-                marker?.icon = (cloudletName.contains("microsoft") || cloudletName.contains("azure") || carrierName.contains("azure")) ? i2 : resized    // JT 19.01.30 // JT 19.01.31
+                marker?.icon = (cloudletName.contains("microsoft") || cloudletName.contains("azure") || carrierName.contains("azure")) ? i2 : resized
                 
                 //                        init(_ cloudletName: String,
                 //                        _ appName: String,
@@ -157,7 +157,7 @@ func processAppInstList(_ d: [String: Any] )    // JT 19.01.31 hoist
                                         loc,
                                         distance,
                                         uri,
-                                        theFQDN_prefix, // JT 19.01.30
+                                        theFQDN_prefix,
                     marker!,
                     1_048_576,  // actually uses setting alue at run time
                     0)
@@ -305,7 +305,7 @@ public func updateLocSimLocation(_ lat: Double, _ lng: Double)
 
 
 
-func processFindCloudletResult(_ d: [String: Any])  // JT 19.01.31
+func processFindCloudletResult(_ d: [String: Any])
 {
     // Swift.print("\(#function)")
 
@@ -348,7 +348,7 @@ func processFindCloudletResult(_ d: [String: Any])  // JT 19.01.31
             let loc = CLLocationCoordinate2D(
                 latitude: Double((dd["latitude"] as! NSNumber).stringValue)!,
                 longitude: Double((dd["longitude"] as! NSNumber).stringValue)!
-            )   // JT 19.01.05
+            )
             
             theMap!.animate(toLocation: loc)
             SKToast.show(withMessage: "Found cloest cloudlet")
@@ -433,7 +433,7 @@ func doUserMarker(_ loc: CLLocationCoordinate2D)
 }
 
 // MARK: -
-public var faceRecognitionImages2 =  [(UIImage,String)]()  // image + service. one at a time   // JT 19.02.05
+public var faceRecognitionImages2 =  [(UIImage,String)]()  // image + service. one at a time
 
 class MexFaceRecognition
 {
@@ -453,7 +453,7 @@ class MexFaceRecognition
         
         let faceDetectionFuture = FaceDetectionCore(image, service, post: broadcast)
         
-        return faceDetectionFuture  // JT 19.02.05
+        return faceDetectionFuture
     }
     
     //  todo? pass in host
@@ -511,13 +511,13 @@ class MexFaceRecognition
             
             if faceDetectionStartTimes == nil   //
             {
-                faceDetectionStartTimes = [String:DispatchTime]()   // JT 19.02.11 todo threadsafe Dictionary
+                faceDetectionStartTimes = [String:DispatchTime]()
             }
             faceDetectionStartTimes![service] =  DispatchTime.now() //
             
 
-            let _ = pendingCount.increment()    // JT 19.02.05
-            //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT  // JT 19.02.05  // JT 19.02.06
+            let _ = pendingCount.increment()
+            //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
 
             let requestObj = Alamofire.request(urlStr,
                                                method: HTTPMethod.post,
@@ -530,7 +530,7 @@ class MexFaceRecognition
                     //    Swift.print("----\n")
                     //    Swift.print("\(response)")
                     //    debugPrint(response)
-                    let _ = pendingCount.decrement()    // JT 19.02.05
+                    let _ = pendingCount.decrement()
 
                     switch response.result
                     {
@@ -539,13 +539,13 @@ class MexFaceRecognition
                         let end = DispatchTime.now() // <<<<<<<<<<   end time
 
                         // Swift.print("")---
-                        print("•", terminator:"")   // JT 19.01.28
+                        print("•", terminator:"")
 
                         let d = data as! [String: Any]
                         let success = d["success"] as! String
                         if success == "true"
                         {
-                            print("Y.\(service) ", terminator:"")   // JT 19.01.28
+                            print("Y.\(service) ", terminator:"")
    // Swift.print("data: \(data)")
                             
                             let start =  self.faceDetectionStartTimes![service] //
@@ -560,7 +560,7 @@ class MexFaceRecognition
                             
                             let aa = d["rects"]
                             
-                            let msg =    "FaceDetection" + service   // JT 19.02.04
+                            let msg =    "FaceDetection" + service
 
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: msg), object: aa) //   draw blue rect around face  [[Int]]
                             
@@ -571,8 +571,8 @@ class MexFaceRecognition
                         }
                         else
                         {
-                            //        Logger.shared.log(.network, .info, postName + " request\n \(request) \n") // JT 19.01.04
-                            print("N.\(service) ", terminator:"")   // JT 19.01.28
+                            //        Logger.shared.log(.network, .info, postName + " request\n \(request) \n")
+                            print("N.\(service) ", terminator:"")
 
                         }
                      
@@ -585,14 +585,14 @@ class MexFaceRecognition
 
                     } // end sucess/failure
                     
-                  //  Swift.print("1=-- \(faceDetectCount.add(0))")  // JT  // JT 19.02.05
+                  //  Swift.print("1=-- \(faceDetectCount.add(0))")  // JT
                     
                     if faceDetectCount.decrement() == 0
                     {
-                        faceDetectCount = OSAtomicInt32(3)  // JT 19.02.05 next
+                        faceDetectCount = OSAtomicInt32(3)
                     }
                     
-                    //Swift.print("2=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT  // JT 19.02.05  // JT 19.02.06
+                    //Swift.print("2=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
                     
             }
             
@@ -614,9 +614,9 @@ class MexFaceRecognition
 
         if faceRecognitionImages2.count == 0    // we put 2 copys of same image and route to cloud/edge
         {
-            faceDetectCount = OSAtomicInt32(3)  // JT 19.02.05 next
+            faceDetectCount = OSAtomicInt32(3)
 
-            print("+", terminator:"")   // JT 19.01.28
+            print("+", terminator:"")
 
             return
         }
@@ -667,7 +667,7 @@ class MexFaceRecognition
     
     
     func FaceRecognition(_ image: UIImage?, _ service: String)
-        -> Future<[String: AnyObject], Error>   // JT 19.02.05
+        -> Future<[String: AnyObject], Error>
     {
         // Swift.print("\(#function)")
 
@@ -754,7 +754,7 @@ class MexFaceRecognition
                             
                             SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
                             
-                        //    let msg = "FaceRecognized" + service    // JT 19.02.04
+                        //    let msg = "FaceRecognized" + service
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
                             
                             
@@ -797,14 +797,14 @@ func getNetworkLatencyEdge()
     getNetworkLatency( DEF_FACE_HOST_EDGE, post: "latencyEdge")
 }
 
-func getNetworkLatencyCloud()   // JT 18.12.27 ? broken?
+func getNetworkLatencyCloud()
 {
     getNetworkLatency( DEF_FACE_HOST_CLOUD, post: "latencyCloud")
 }
 
 
 
-func getNetworkLatency(_ hostName:String, post name: String)    // JT 19.01.14
+func getNetworkLatency(_ hostName:String, post name: String)
 {
     //Swift.print("\(#function) \(hostName)")
     
@@ -812,10 +812,10 @@ func getNetworkLatency(_ hostName:String, post name: String)    // JT 19.01.14
     let  pingOnce = SwiftyPing(host: hostName, configuration: PingConfiguration(interval: 0.5, with: 5), queue: DispatchQueue.global())
     pingOnce?.observer = { (_, response) in
         let duration = response.duration
-       // print(duration)   // JT 19.01.28
+       // print(duration)
         pingOnce?.stop()
         
-        let latency = response.duration * 1000    // JT 19.01.14
+        let latency = response.duration * 1000
  
     //     print("\(hostName) latency (ms): \(latency)")
 
@@ -824,7 +824,7 @@ func getNetworkLatency(_ hostName:String, post name: String)    // JT 19.01.14
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: name), object: latencyMsg)
     }
-    pingOnce?.start()   // JT 19.01.14
+    pingOnce?.start()
     
     
 //    PlainPing.ping(hostName, withTimeout: 1.0, completionBlock:

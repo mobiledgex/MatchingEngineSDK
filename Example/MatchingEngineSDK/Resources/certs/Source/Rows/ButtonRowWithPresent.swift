@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType where VCType: UIViewController {
 

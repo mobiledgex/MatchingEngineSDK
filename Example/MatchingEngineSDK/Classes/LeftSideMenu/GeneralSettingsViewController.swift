@@ -44,7 +44,7 @@ class GeneralSettingsViewController: FormViewController
             Swift.print("DME Selection" + "\(row) \(row.value!)")
 
             UserDefaults.standard.set(row.value, forKey: "DME Selection")
-//  // JT 19.01.15
+//
 //            Demo (mexdemo) - mexdemo.dme.mobiledgex.net
 //                > DME API Reorg (tdg2) - tdg2.dme.mobiledgex.net
 //                    > Automation Testing (automationbonn) - automationbonn.dme.mobiledgex.net

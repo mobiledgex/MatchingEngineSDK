@@ -71,13 +71,13 @@ public class MexSDK
         if ((false)) // DEBUG
         {
             Swift.print("\(request)")
-            /// logw("•uri:\n\(uri)\n") // JT 18.11.26 log to file
+            /// logw("•uri:\n\(uri)\n")
         }
         LogMarker(postName)
 
-        Logger.shared.log(.network, .info, postName + " request\n \(request) \n") // JT 19.01.04
+        Logger.shared.log(.network, .info, postName + " request\n \(request) \n")
 
-        //  logw("•request:\n\(request)\n") // JT 18.11.26 log to file
+        //  logw("•request:\n\(request)\n")
         // --
         
         dealWithTrustPolicy(uri) // certs
@@ -185,7 +185,7 @@ public class MexSDK
         // let certificates = getCertificates()
         let certificates = ServerTrustPolicy.certificates() // alamo extension
         Swift.print("~~~certificates: \(certificates) ---")
-        //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )    // JT 19.01.05
+        //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )
         Logger.shared.log(.network, .info, " add these certificates to your curl below --cacert mex-ca.crt --cert mex-client.crt")
 
         let trustPolicy = ServerTrustPolicy.pinCertificates(
@@ -206,7 +206,7 @@ public class MexSDK
             MexSDK.shared.sessionManager = SessionManager(
                 configuration: .default,
                 serverTrustPolicyManager: policyManager
-            ) // JT 18.12.26
+            )
         }
         catch
         {
@@ -249,7 +249,7 @@ public class MexSDK
     ///
     /// - Returns: API Dictionary/json
 
-    public func createGetAppInstListRequest(carrierName: String, gpslocation: [String: Any], sessioncookie: String) -> [String: Any] // JT 18.12.26
+    public func createGetAppInstListRequest(carrierName: String, gpslocation: [String: Any], sessioncookie: String) -> [String: Any]
     {
         //   json findCloudletRequest;
         var appInstListRequest = [String: Any]() // Dictionary/json
@@ -275,7 +275,7 @@ public class MexSDK
     public func createVerifyLocationRequest(_ carrierName: String,
                                             _ gpslocation: [String: Any],
                                             _ verifyloctoken: String,
-                                            sessioncookie: String) // JT 18.12.26
+                                            sessioncookie: String)
         -> [String: Any] // json/Dictionary
     {
         var verifyLocationRequest = [String: Any]() // Dictionary/json
@@ -434,7 +434,7 @@ public class MexRegisterClient
 //    func createRegisterClientRequest()
 //        -> [String: Any] // Dictionary/json
 //    {
-//        let u = MexSDK.shared // JT 18.12.26
+//        let u = MexSDK.shared
 //
 //        var regClientRequest = [String: String]() // Dictionary/json regClientRequest
 //
@@ -552,7 +552,7 @@ public class MexGetAppInst
             carrierName: MexUtil.shared.carrierNameDefault_TDG,
             gpslocation: gpslocation,
             sessioncookie: MexRegisterClient.shared.sessioncookie
-        ) // JT 19.01.31
+        )
 
         // 🔵
         let urlStr = baseuri + MexUtil.shared.appinstlistAPI
@@ -673,7 +673,7 @@ public class MexVerifyLocation
 
                         let verifyLocToken = d["token"] as! String
 
-                        Logger.shared.log(.network, .info, " got verifyLocToken: \n \(verifyLocToken) used by verifyLocation  \n") // JT 19.01.05
+                        Logger.shared.log(.network, .info, " got verifyLocToken: \n \(verifyLocToken) used by verifyLocation  \n")
                         self.verifyLocation(verifyLocToken)
 
                     },
@@ -706,7 +706,7 @@ public class MexVerifyLocation
         return verifyLocationRequest
     }
 
-    private func getToken(_ uri: String) -> Future<[String: AnyObject], Error> // async // JT 19.01.31
+    private func getToken(_ uri: String) -> Future<[String: AnyObject], Error> // async
     {
         Swift.print("In Get Token")
 
@@ -715,7 +715,7 @@ public class MexVerifyLocation
         let promise = MexSDK.shared.postRequest(uri, [String: Any](), "GetToken") // async
         // NOTE special case: "GetToken" fails and its error result is parsed and returned as success
 
-        return promise // JT 19.01.31
+        return promise
     }
 
     func verifyLocation(_ tokenReply: String)
@@ -754,12 +754,12 @@ public class MexVerifyLocation
 
             // Swift.print("Verifylocation1 result \(d)")
 
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Verifylocation success"), object: d) // JT 19.01.31
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Verifylocation success"), object: d)
 
         },
                    failure: { print("Verifylocation failed with error: \($0)")
 
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Verifylocation failure"), object: nil) // JT 19.01.31
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Verifylocation failure"), object: nil)
         },
                    completion: { _ = $0 // print("completed with result: \($0)")
 

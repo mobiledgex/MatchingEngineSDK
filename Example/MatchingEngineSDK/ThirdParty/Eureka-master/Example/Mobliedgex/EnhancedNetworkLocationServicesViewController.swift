@@ -35,10 +35,10 @@ class EnhancedNetworkLocationServicesViewController : FormViewController
                     
                     Swift.print("Location Verification \(row) \(row.value)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Location Verification" )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Location Verification" )
                     
                 } .cellSetup { cell, row in
-                    row.subTitle = " Enhabced Newtwirk Location Services." // JT 18.11.04
+                    row.subTitle = " Enhabced Newtwirk Location Services."
             }
             
             <<< SwitchRow() {
@@ -48,11 +48,11 @@ class EnhancedNetworkLocationServicesViewController : FormViewController
                     
                     Swift.print("Network Switching Enabled \(row)")
                     
-                    UserDefaults.standard.set(row.value, forKey: "Network Switching Enabled" )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey: "Network Switching Enabled" )
 
                     
                 }.cellSetup { cell, row in
-                    row.subTitle = " Wifi to Cell network switching" // JT 18.11.04
+                    row.subTitle = " Wifi to Cell network switching"
         }
         
     }

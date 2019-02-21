@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 /// Specific type, Responsible for the options passed to a selector alert view controller
 public protocol AlertOptionsProviderRow: OptionsProviderRow {

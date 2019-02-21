@@ -25,7 +25,7 @@ import UIKit
 import GoogleMaps
 import GoogleSignIn
 
-import NSLogger // JT 19.01.07 instramentation
+import NSLogger
 
 
 @UIApplicationMain
@@ -33,8 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var services: Any? //   = GMSServices.sharedServices()
 
-    #warning ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")      // JT 19.02.11
-    //    #error ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")      // JT 19.02.11
+    #warning ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
+    //    #error ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
 
     // replace the following two values with your own
     //
@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         services = GMSServices.sharedServices()
 
         // rotate log
-  ////      Log.logger.rename(0)  // usage: logw("•• write to the log") // JT 19.01.28
+  ////      Log.logger.rename(0)  // usage: logw("•• write to the log")
 
         // ---
         // NSLogger options
@@ -73,14 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             case kLoggerOption_BrowseBonjour                        = 0x04
             case kLoggerOption_BrowseOnlyLocalDomain                = 0x08
             case kLoggerOption_UseSSL                                = 0x10
-        };  // JT 19.01.07
+        };
         
         let options:UInt32 =
             loggerOption.kLoggerOption_BufferLogsUntilConnection.rawValue
                 | loggerOption.kLoggerOption_BrowseBonjour.rawValue
                 |  loggerOption.kLoggerOption_BrowseOnlyLocalDomain.rawValue
         let lptr :OpaquePointer? = nil
-        LoggerSetOptions( lptr,  options)   // JT 19.01.04  -Dont capture console
+        LoggerSetOptions( lptr,  options)
         
         return true
     }

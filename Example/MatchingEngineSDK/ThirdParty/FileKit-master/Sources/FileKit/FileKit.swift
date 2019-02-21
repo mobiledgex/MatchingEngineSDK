@@ -15,7 +15,7 @@
  */
 
 import Foundation
-//import LoggerAPI  // JT 18.10.29
+//import LoggerAPI
 
 /// Utility providing path resolution and execution environment information
 public class FileKit {
@@ -41,7 +41,7 @@ public class FileKit {
             return URL(fileURLWithPath: "")
         }
 
- //       Log.debug("Running from Xcode or XCTest. Using project folder as pwd folder.")    // JT 18.10.29
+ //       Log.debug("Running from Xcode or XCTest. Using project folder as pwd folder.")
 
         return url
 

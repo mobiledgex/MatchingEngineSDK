@@ -326,7 +326,7 @@ open class CircularSpinner: UIView {
     // MARK: - actions
     @IBAction fileprivate func dismissButtonTapped(_ sender: UIButton?) {
         CircularSpinner.hide()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "dismissButtonTapped" ) , object: nil)  // JT 19.01.14
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "dismissButtonTapped" ) , object: nil)
 
     }
 }

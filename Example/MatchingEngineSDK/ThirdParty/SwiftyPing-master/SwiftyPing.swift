@@ -349,8 +349,8 @@ enum ICMPType: UInt8{
     }
     checksum = (checksum >> 16) + (checksum & 0xFFFF)
     checksum += checksum >> 16
- //   return ~UInt16(checksum)  // JT 19.01.28
-    return ~UInt16(checksum & 0xFFFF) // JT 19.01.28 overflow crash fix
+ //   return ~UInt16(checksum)
+    return ~UInt16(checksum & 0xFFFF)
 
 }
 

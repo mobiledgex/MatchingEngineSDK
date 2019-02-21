@@ -22,7 +22,7 @@ public class SKToast: NSObject {
     /// HUD Customization Properties
     fileprivate var messageFont              : UIFont            = UIFont.systemFont(ofSize  : 16, weight  : .regular)
     fileprivate var messageTextColor         : UIColor           = UIColor.white
-    fileprivate var toastViewBackgroundStyle : UIBlurEffect.Style = .dark   // JT 19.01.29
+    fileprivate var toastViewBackgroundStyle : UIBlurEffect.Style = .dark
     
     
     // MARK: - Singleton Accessors
@@ -131,11 +131,11 @@ public class SKToast: NSObject {
         
         if let statusMessage =  statusLabel?.text, statusMessage.count != 0 {
             
-            let attributes = [NSAttributedString.Key.font: statusLabel?.font]   // JT 19.01.29
+            let attributes = [NSAttributedString.Key.font: statusLabel?.font]
             let options: NSStringDrawingOptions = [.usesFontLeading, .usesLineFragmentOrigin]
             rectLabel = (statusLabel?.text?.boundingRect(with: CGSize(width: toastViewWidth-10, height: 300),
                                                          options: options, attributes: attributes as [NSAttributedString.Key : AnyObject],
-                                                         context: nil))!    // JT 19.01.29
+                                                         context: nil))!
             
             toastViewHeight = rectLabel.size.height + 18
             
@@ -155,7 +155,7 @@ public class SKToast: NSObject {
     // MARK: - ToastView Position
     @objc fileprivate func setToastViewPosistion(notification: NSNotification?) {
         var keyboardHeight: CGFloat = 0.0
-        if notification?.name == UIApplication.didChangeStatusBarOrientationNotification    // JT 19.01.29
+        if notification?.name == UIApplication.didChangeStatusBarOrientationNotification
         {
             setToastViewSize()
         }
@@ -166,7 +166,7 @@ public class SKToast: NSObject {
             {
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 
-                let t = UIResponder.keyboardWillShowNotification    // JT 19.01.29
+                let t = UIResponder.keyboardWillShowNotification
                 if (notification!.name == t ||
                     notification!.name == UIResponder.keyboardDidShowNotification)
                 {
@@ -224,12 +224,12 @@ public class SKToast: NSObject {
     
     // MARK: - Keyboard Notifications
     func registerForKeyboardNotificatoins() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)   // JT 19.01.29
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardDidHideNotification, object: nil)   // JT 19.01.29
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardWillShowNotification, object: nil)  // JT 19.01.29
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardDidShowNotification, object: nil)   // JT 19.01.29
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setToastViewPosistion), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     
@@ -242,7 +242,7 @@ public class SKToast: NSObject {
         self.shared.messageTextColor = color
     }
     
-    public static func backgroundStyle(_ backgroundStyle: UIBlurEffect.Style)   // JT 19.01.29
+    public static func backgroundStyle(_ backgroundStyle: UIBlurEffect.Style)
     {
         self.shared.toastViewBackgroundStyle = backgroundStyle
     }

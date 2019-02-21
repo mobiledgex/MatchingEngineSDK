@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 /// Generic options selector row that allows multiple selection.
 open class GenericMultipleSelectorRow<T, Cell: CellType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance, OptionsProviderRow

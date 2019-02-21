@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit // JT 18.11.12
+import UIKit
 
 public protocol InputTypeInitiable
 {
@@ -180,14 +180,14 @@ open class _FieldCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: E
             guard me.observingTitleText else { return }
             me.titleLabel?.removeObserver(me, forKeyPath: "text")
             me.observingTitleText = false
-        } // JT 19.01.28
+        }
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil)
         { [weak self] _ in
             guard let me = self else { return }
             guard !me.observingTitleText else { return }
             me.titleLabel?.addObserver(me, forKeyPath: "text", options: [.new, .old], context: nil)
             me.observingTitleText = true
-        } // JT 19.01.28
+        }
 
         NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil)
         { [weak self] _ in
@@ -217,7 +217,7 @@ open class _FieldCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: E
             titleLabel?.removeObserver(self, forKeyPath: "text")
         }
         imageView?.removeObserver(self, forKeyPath: "image")
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil) // JT 19.01.28
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
