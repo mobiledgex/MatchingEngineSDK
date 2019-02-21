@@ -101,7 +101,7 @@ extension ViewController: SPPermissionDialogDataSource {
         case .locationAlways:
             return "App will can check your location"
         case .locationWhenInUse:
-            return "App can check your location when in use"    // JT 19.01.15
+            return "App can check your location when in use"
         case .locationWithBackground:
             return "App will can check your location"
         case .mediaLibrary:

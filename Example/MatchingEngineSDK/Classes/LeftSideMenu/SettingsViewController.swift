@@ -78,7 +78,7 @@ class SettingsViewController: FormViewController
             cell.imageView?.image = UIImage(named: "ic_menu_recent_history")
         }
 
-            <<< ButtonRow("Face Detection Settings") // JT 18.11.03
+            <<< ButtonRow("Face Detection Settings")
         {
             $0.title = $0.tag
             $0.presentationMode = .segueName(segueName:

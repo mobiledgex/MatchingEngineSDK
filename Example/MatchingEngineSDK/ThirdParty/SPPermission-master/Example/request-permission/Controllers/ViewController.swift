@@ -27,7 +27,7 @@ class ViewController: SPController {
         SPAnimationAlpha.hideList(views: [self.presentButton, self.changeBackgroundButton])
 
         SPPermission.Dialog.request(
-            with: [.locationWhenInUse],  //.camera, .calendar, .microphone], // JT 19.01.15
+            with: [.locationWhenInUse],  //.camera, .calendar, .microphone],
             on: self,
             delegate: self,
             dataSource: self,

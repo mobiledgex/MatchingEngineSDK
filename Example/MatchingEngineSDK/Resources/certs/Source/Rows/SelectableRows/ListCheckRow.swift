@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
 

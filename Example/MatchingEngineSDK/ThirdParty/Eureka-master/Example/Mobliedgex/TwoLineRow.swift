@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Eureka   // JT 18.11.04
+import Eureka
 
 // Custom Cell with value type: Bool
 // The cell is defined using a .xib, so we can set outlets :)
@@ -16,7 +16,7 @@ public class TwoLineCell: Cell<String>, CellType
    // @IBOutlet weak var switchControl: UISwitch!
  //   @IBOutlet weak public var textLabel2: UILabel?
     @IBOutlet var textLabel2: UILabel!
-  //  @IBOutlet weak public var detailLabel2: UILabel? // JT 18.11.04
+  //  @IBOutlet weak public var detailLabel2: UILabel?
     @IBOutlet var detailLabel2: UILabel!
     
     public override func setup() {

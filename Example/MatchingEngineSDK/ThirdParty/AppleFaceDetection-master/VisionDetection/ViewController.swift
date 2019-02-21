@@ -458,8 +458,8 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate
 
         let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: exifOrientation, options: requestOptions)
 
-        let image = sampleBuffer.uiImage // JT 18.10.18
-        // JT 18.10.18 todo send to server
+        let image = sampleBuffer.uiImage
+
 
         do
         {

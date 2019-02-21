@@ -86,7 +86,7 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
             <<< LabelRow    //TextRow   //
         {
             $0.title = "Latency Min:"
-            $0.value = (UserDefaults.standard.string(forKey: "Latency Min:") ?? "9999") + " ms" // JT 19.02.06
+            $0.value = (UserDefaults.standard.string(forKey: "Latency Min:") ?? "9999") + " ms"
             $0.tag = "Latency Min:" //
 
         }.cellUpdate
@@ -101,7 +101,7 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
             $0.title = "Latency Avg:"
             $0.tag = "Latency Avg:" //
 
-            $0.value = (UserDefaults.standard.string(forKey: "Latency Avg:") ?? "0") + " ms"    // JT 19.02.06
+            $0.value = (UserDefaults.standard.string(forKey: "Latency Avg:") ?? "0") + " ms"
         }
         .cellUpdate
         { _, row in //
@@ -116,7 +116,7 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
             $0.title = "Latency Max:"
             $0.tag = "Latency Max:" //
 
-            $0.value = (UserDefaults.standard.string(forKey: "Latency Max:") ?? "0") + " ms" // JT 18.11.04
+            $0.value = (UserDefaults.standard.string(forKey: "Latency Max:") ?? "0") + " ms"
         }
         .cellUpdate
         { _, row in //
@@ -130,7 +130,7 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
             $0.title = "Latency Stddev:"
             $0.tag = "Latency Stddev:" //
 
-            $0.value = (UserDefaults.standard.string(forKey: "Latency Stddev:") ?? "0.0") + " ms"   // JT 19.02.06
+            $0.value = (UserDefaults.standard.string(forKey: "Latency Stddev:") ?? "0.0") + " ms"
         }
         .cellUpdate
         { _, row in //
@@ -196,13 +196,13 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
                 row.value = tr2 //
             }
         }
-        handleAutoStart()   // JT 19.02.05
+        handleAutoStart()
     }   /////
 
     // MARK: -
     func handleAutoStart()
     {
-        let autoStart = UserDefaults.standard.bool(forKey: "Latency Test AutoStart") ?? false  // JT 19.01.30 Auto-start
+        let autoStart = UserDefaults.standard.bool(forKey: "Latency Test AutoStart") ?? false
         
         if autoStart
         {
@@ -260,7 +260,7 @@ class CloudletDetailsViewController: FormViewController, CircularSpinnerDelegate
                 {
                     CircularSpinner.hide() //
                     
-                    (self.form.rowBy(tag: "tranferRate") as? LabelRow)!.reload() // JT 18.11.16 voodoo  todo BUG UI is a showing previous data
+                    (self.form.rowBy(tag: "tranferRate") as? LabelRow)!.reload()
             }
         }
 

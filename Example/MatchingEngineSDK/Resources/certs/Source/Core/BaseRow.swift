@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 open class BaseRow: BaseRowType {
 
@@ -58,7 +58,7 @@ open class BaseRow: BaseRowType {
 
     /// The title will be displayed in the textLabel of the row.
     public var title: String?
-    public var subTitle: String?    // JT 18.11.04
+    public var subTitle: String?
 
     /// Parameter used when creating the cell for this row.
     public var cellStyle = UITableViewCell.CellStyle.value1

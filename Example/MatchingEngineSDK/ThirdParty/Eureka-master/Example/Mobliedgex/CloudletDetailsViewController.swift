@@ -64,7 +64,7 @@ class CloudletDetailsViewController : FormViewController
         }
             <<< TextRow() {
                 $0.title = "Latency Max:"
-                $0.value = UserDefaults.standard.string(forKey: "Latency Max:") ?? "96.1" + " ms"    // JT 18.11.04
+                $0.value = UserDefaults.standard.string(forKey: "Latency Max:") ?? "96.1" + " ms"
         }
             <<< TextRow() {
                 $0.title = "Latency Stddev:"

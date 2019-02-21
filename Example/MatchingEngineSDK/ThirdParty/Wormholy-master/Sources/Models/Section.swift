@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct WSection // JT 18.12.05
+struct WSection
 {
     var name: String
     var type: SectionType

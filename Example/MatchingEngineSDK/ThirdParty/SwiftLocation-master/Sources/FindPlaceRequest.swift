@@ -8,7 +8,7 @@
 
 import Foundation
 import SwiftyJSON
-import CoreLocation // JT 18.11.06
+import CoreLocation
 
 public typealias FindPlaceRequest_Success = (([PlaceMatch]) -> (Void))
 public typealias FindPlaceRequest_Failure = ((LocationError) -> (Void))

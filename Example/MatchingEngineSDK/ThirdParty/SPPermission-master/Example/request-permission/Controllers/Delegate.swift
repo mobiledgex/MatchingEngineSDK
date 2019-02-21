@@ -25,7 +25,7 @@ extension ViewController: SPPermissionDialogDelegate {
     
     func didHide() {
         print("SPPermissionDialogDelegate - didHide")
-        SPAnimationAlpha.showList(views: [self.presentButton]) // , self.changeBackgroundButton // JT 19.01.15
+        SPAnimationAlpha.showList(views: [self.presentButton]) // , self.changeBackgroundButton
     }
     
     func didAllow(permission: SPPermissionType) {

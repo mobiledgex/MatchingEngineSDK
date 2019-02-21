@@ -31,8 +31,8 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    #warning ("Action item: you need to replace appName/devName. Our demo passes appName and devName to RegisterClient() API")    // JT 19.02.03
-//    #error ("Action item: you need to replace appName/devName. our demo passes appName and devName to RegisterClient() API")    // JT 19.02.03
+    #warning ("Action item: you need to replace appName/devName. Our demo passes appName and devName to RegisterClient() API")
+//    #error ("Action item: you need to replace appName/devName. our demo passes appName and devName to RegisterClient() API")
     
     var appName =  "MobiledgeX SDK Demo"    //   replace this with your appName
     var devName =  "MobiledgeX SDK Demo"    //   replace this with your devName
@@ -51,14 +51,14 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         // Swift.print("\(#function)")
 
-        title = "MatchingEngineSDK Demo"    // JT 19.02.03
+        title = "MatchingEngineSDK Demo"
 
         // -----
         // Google maps
 
         theMap = viewMap //   publish
         theMap!.delegate = self //  for taps
-     //   theMap!.isMyLocationEnabled = true //   blue dot  // JT 19.02.10 first ask permission
+     //   theMap!.isMyLocationEnabled = true //   blue dot
 
         let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: 48.857165, longitude: 2.354613, zoom: 8.0)
 
@@ -80,18 +80,18 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         // -----
 
-        defaultUninitializedSettings()  // JT 19.01.30
+        defaultUninitializedSettings()
 
         observers()
 
         // -----
-        getInitialLatencies()   // JT 19.02.05
+        getInitialLatencies()
    
-        let firstTimeUsagePermission = UserDefaults.standard.bool(forKey: "firstTimeUsagePermission")    // JT 18.12.17
+        let firstTimeUsagePermission = UserDefaults.standard.bool(forKey: "firstTimeUsagePermission")
         if firstTimeUsagePermission == true
         {
              getLocaltionUpdates()
-            theMap!.isMyLocationEnabled = true //   blue dot  // JT 19.02.10
+            theMap!.isMyLocationEnabled = true //   blue dot
         }
         
         //////////////////
@@ -99,15 +99,15 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         //
         MexRegisterClient.shared.registerClientNow( appName: appName,
                                                    devName:  devName,
-                                                   appVers: "1.0")  // JT 19.02.03 chained below to also load cloudlets
+                                                   appVers: "1.0")
     }
     
-    func getInitialLatencies()  // JT 19.02.05
+    func getInitialLatencies()
     {
         // Swift.print("\(#function)")
 
         DispatchQueue.main.async {
-            getNetworkLatencyCloud()    //   "latencyCloud"   // JT 19.01.16
+            getNetworkLatencyCloud()    //   "latencyCloud"
         }
         DispatchQueue.main.async {
             getNetworkLatencyEdge() //   "latencyEdge"
@@ -124,7 +124,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             // let v = notification.object as! String
             
-            SKToast.show(withMessage: "Client registered") // JT 19.01.31
+            SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
             MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
@@ -134,35 +134,35 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         { [weak self] notification in
             guard let _ = self else { return }
             
-            let d = notification.object as! [String : Any]  // JT 19.01.31
+            let d = notification.object as! [String : Any]
             
-            SKToast.show(withMessage: "processAppInstList") // JT 19.01.31
+            SKToast.show(withMessage: "processAppInstList")
             
-            processAppInstList(d)   // JT 19.01.31
+            processAppInstList(d)
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Verifylocation success"), object: nil, queue: nil)    // JT 19.01.31
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Verifylocation success"), object: nil, queue: nil)
         { [weak self] notification in
             guard let _ = self else { return }
             
-            let d = notification.object as! [String : Any]  // JT 19.01.31
+            let d = notification.object as! [String : Any]
             
-            SKToast.show(withMessage: "Verifylocation success: \(d)") // JT 19.01.31
+            SKToast.show(withMessage: "Verifylocation success: \(d)")
             
             let image =  makeUserMakerImage(MexRegisterClient.COLOR_VERIFIED)
             userMarker!.icon = image
             
-            self!.locationVerified = true    // JT 19.02.03
+            self!.locationVerified = true
 
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Verifylocation failure"), object: nil, queue: nil)    // JT 19.01.31
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Verifylocation failure"), object: nil, queue: nil)
         { [weak self] notification in
             guard let _ = self else { return }
             
-            let d = notification.object as! [String : Any]  // JT 19.01.31
+            let d = notification.object as! [String : Any]
             
-            SKToast.show(withMessage: "Verifylocation failure: \(d)") // JT 19.01.31
+            SKToast.show(withMessage: "Verifylocation failure: \(d)")
             
             let image =  makeUserMakerImage(MexRegisterClient.COLOR_FAILURE)
             userMarker!.icon = image
@@ -188,10 +188,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         
         // ----
-        let firstTimeUsagePermission = UserDefaults.standard.bool(forKey: "firstTimeUsagePermission")    // JT 18.12.17
+        let firstTimeUsagePermission = UserDefaults.standard.bool(forKey: "firstTimeUsagePermission")
         if firstTimeUsagePermission == false
         {
-            askPermission()   // JT 19.01.16
+            askPermission()
         }
         
         
@@ -201,7 +201,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             let d = notification.object as! [String:Any]
             
-            processFindCloudletResult(d)  // JT 19.01.31 todo should be documented, at the least an example
+            processFindCloudletResult(d)
         }
         
         
@@ -212,26 +212,26 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
           //  let d = notification.object as! [String:Any]
             
-            self!.getLocaltionUpdates()   // JT 19.02.10
-            theMap!.isMyLocationEnabled = true //   blue dot  // JT 19.02.10
+            self!.getLocaltionUpdates()
+            theMap!.isMyLocationEnabled = true //   blue dot
         }
         
     } // end observers()
 
     // MARK: -
     
-    func getLocaltionUpdates()  // JT 19.01.31
+    func getLocaltionUpdates()
     {
         Swift.print("\(#function)")
         
-        resetUserLocation(true)   // JT 19.01.31 todo
+        resetUserLocation(true)
     }
     
-    func defaultUninitializedSettings() // JT 19.01.30
+    func defaultUninitializedSettings()
     {
         // Swift.print("\(#function)")
         
-        UserDefaults.standard.set("0", forKey: "Latency Avg:")  // JT 19.01.31
+        UserDefaults.standard.set("0", forKey: "Latency Avg:")
 
         if UserDefaults.standard.string(forKey: "Latency Test Packets") == nil
         {
@@ -253,13 +253,13 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         //            UserDefaults.standard.set("Ping", forKey: "Latency Test Auto-Start")
         //        }
         
-        UserDefaults.standard.set("0", forKey: "Latency Avg:")  // JT 19.01.31
+        UserDefaults.standard.set("0", forKey: "Latency Avg:")
         
     }
     
     
     
-    func askPermission()    // JT 19.01.16
+    func askPermission()
     {
         // Swift.print("\(#function)")
 
@@ -378,23 +378,23 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 //  "Register Client",
                 MexRegisterClient.shared.registerClientNow( appName:   self!.appName,
                                                            devName:  self!.devName,
-                                                           appVers: self!.appVers)  // JT 19.02.03
+                                                           appVers: self!.appVers)
             case 1:
                 let loc = retrieveLocation()
-                MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"   // JT 19.01.31 cloudlets
+                MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
 
             case 2:
                 Swift.print("Verify Location")
 
-                let vl = UserDefaults.standard.bool(forKey: "VerifyLocation")   // JT 19.01.15
+                let vl = UserDefaults.standard.bool(forKey: "VerifyLocation")
                 
                 if vl
                 {
-                    self!.locationVerificationAttempted = true   // JT 19.02.03
+                    self!.locationVerificationAttempted = true
 
-                    let loc = retrieveLocation()   // JT 19.01.31
+                    let loc = retrieveLocation()
 
-                    MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc)     // "Verify Location" // JT 19.01.31
+                    MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc)     // "Verify Location"
                 }
                 else
                 {
@@ -404,7 +404,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 
             case 3:
                 Swift.print("Find Closest Cloudlet")
-                 let loc = retrieveLocation()   // JT 19.01.31
+                 let loc = retrieveLocation()
                 MexFindNearestCloudlet.shared.findNearestCloudlet(gpslocation:loc)     //  "Find Closest Cloudlet"
                 
             case 4:
@@ -485,7 +485,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         present(alert, animated: true, completion: nil)
     }
     
-    func askPermissionToVerifyLocation()    // JT 19.01.15
+    func askPermissionToVerifyLocation()
     {
         // Swift.print("\(#function)")
 
@@ -493,10 +493,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         
         alert.addAction(UIAlertAction(title: "Request permission To Verify Location", style: .default, handler: { _ in
 
-            UserDefaults.standard.set( true, forKey: "VerifyLocation")  // JT 19.01.15 just ask once
-            let loc = retrieveLocation()   // JT 19.01.31
+            UserDefaults.standard.set( true, forKey: "VerifyLocation")
+            let loc = retrieveLocation()
             
-            MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc)     // "Verify Location" // JT 19.01.31
+            MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc)     // "Verify Location"
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { _ in
             

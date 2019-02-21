@@ -63,8 +63,8 @@ open class RFAboutViewController: UIViewController,UITableViewDataSource,UITable
     open var headerBackgroundImage: UIImage?
     
     /// The image for the button to dismiss the RFAboutViewController. Defaults to image of "X".
-  //  open var closeButtonImage = UIImage(named: "Frameworks/RFAboutView_Swift.framework/RFAboutView_Swift.bundle/RFAboutViewCloseX")   // JT 18.11.19
-    open var closeButtonImage = UIImage(named: "RFAboutViewCloseX") // JT 18.11.19
+  //  open var closeButtonImage = UIImage(named: "Frameworks/RFAboutView_Swift.framework/RFAboutView_Swift.bundle/RFAboutViewCloseX")
+    open var closeButtonImage = UIImage(named: "RFAboutViewCloseX")
 
     /// Determines if the close button should be an image, or text.
     open var closeButtonAsImage = true
@@ -79,7 +79,7 @@ open class RFAboutViewController: UIViewController,UITableViewDataSource,UITable
     open var blurHeaderBackground = true
     
     /// Effect style of the header blur. Defaults to UIBlurEffectStyleLight.
-    open var blurStyle: UIBlurEffect.Style = .light // JT 18.11.17
+    open var blurStyle: UIBlurEffect.Style = .light
     
     /// Determines if diagnostic information (app title, version, build, device etc.) should be included in the email when the user taps the email link. This information can be very useful to debug certain problems and can be deleted by the user if they don't want to send this information. Defaults to true.
     open var includeDiagnosticInformationInEmail = true

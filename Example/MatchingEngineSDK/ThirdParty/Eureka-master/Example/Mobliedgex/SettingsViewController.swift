@@ -32,42 +32,42 @@ class SettingsViewController : FormViewController
             }()
             }
            
-            <<< ButtonRow("Enhanced Network Location Services")   // JT 18.11.03
+            <<< ButtonRow("Enhanced Network Location Services")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName:
-                    "EnhancedNetworkLocationServicesViewControllerSegue", onDismiss: nil)   // JT 18.11.03
-                $0.value = "ZSE"    // JT 18.11.03
+                    "EnhancedNetworkLocationServicesViewControllerSegue", onDismiss: nil)
+                $0.value = "ZSE"
             }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "plus_image")
             }
             
-            <<< ButtonRow("General Settings")   // JT 18.11.03
+            <<< ButtonRow("General Settings")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName:
-                    "GeneralSettingsViewControllerSegue", onDismiss: nil)   // JT 18.11.03
+                    "GeneralSettingsViewControllerSegue", onDismiss: nil)
         }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "plus_image")
             }
             
-            <<< ButtonRow("Speed Test Settings")   // JT 18.11.03
+            <<< ButtonRow("Speed Test Settings")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName:
-                    "SpeedTestSettingsViewControllerSegue", onDismiss: nil)   // JT 18.11.03
+                    "SpeedTestSettingsViewControllerSegue", onDismiss: nil)
         }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "plus_image")
             }
             
-            <<< ButtonRow("Face Detection Settings")   // JT 18.11.03
+            <<< ButtonRow("Face Detection Settings")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName:
-                    "FaceDectectionSettingsViewControllerSegue", onDismiss: nil)   // JT 18.11.03
+                    "FaceDectectionSettingsViewControllerSegue", onDismiss: nil)
         }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "plus_image")

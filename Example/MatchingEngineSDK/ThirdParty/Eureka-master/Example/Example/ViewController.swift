@@ -43,17 +43,17 @@ class HomeViewController : FormViewController {
                 $0.header = HeaderFooterView<EurekaLogoView>(.class)
             }
         
-            <<< ButtonRow("Settings")   // JT 18.11.03
+            <<< ButtonRow("Settings")
             {
                 $0.title = $0.tag
               $0.presentationMode = .segueName(segueName: "Settings", onDismiss: nil)
             }
-            <<< ButtonRow("Cloudlet Details")   // JT 18.11.03
+            <<< ButtonRow("Cloudlet Details")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName: "CloudletDetailsViewControllerSeque", onDismiss: nil)
         }
-            <<< ButtonRow("SideMenu")   // JT 18.11.03
+            <<< ButtonRow("SideMenu")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName: "SideMenu", onDismiss: nil)
