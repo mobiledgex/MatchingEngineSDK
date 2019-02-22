@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-@_exported import UIKit    // JT 18.11.12
+@_exported import UIKit
 
 open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 

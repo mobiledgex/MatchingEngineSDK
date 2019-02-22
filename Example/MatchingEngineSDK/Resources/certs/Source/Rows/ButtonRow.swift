@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 // MARK: ButtonCell
 
@@ -36,7 +36,7 @@ open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        height = { 55 } // JT 18.11.03
+        height = { 55 }
 
     }
 
@@ -49,8 +49,8 @@ open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         textLabel?.textAlignment = .center
         textLabel?.textColor = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
         
-       // detailTextLabel?.text = "XXX"   // JT 18.11.03
-        height = { 60 } // JT 18.11.03
+       // detailTextLabel?.text = "XXX"
+        height = { 60 }
 
     }
 
@@ -71,7 +71,7 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         super.init(tag: tag)
         displayValueFor = nil
         cellStyle = .default
-        cellStyle = .subtitle   // JT 18.11.04
+        cellStyle = .subtitle
 
     }
 

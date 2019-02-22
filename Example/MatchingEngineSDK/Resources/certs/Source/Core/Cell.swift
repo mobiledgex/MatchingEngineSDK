@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-import UIKit    // JT 18.11.12
+import UIKit
 
 /// Base class for the Eureka cells
 open class BaseCell: UITableViewCell, BaseCellType {
@@ -132,12 +132,12 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         if (row.subTitle != nil)
         {
             detailTextLabel?.text = row.subTitle
-            detailTextLabel?.textColor =  .darkGray // JT 18.11.04
+            detailTextLabel?.textColor =  .darkGray
 
         }
-      //  Swift.print("\(detailTextLabel)")   // JT 18.11.04
+      //  Swift.print("\(detailTextLabel)")
 
-     //   detailTextLabel?.text = "QAZ"   // JT 18.11.03
+     //   detailTextLabel?.text = "QAZ"
     }
 
     /**

@@ -208,7 +208,7 @@ class RowsExampleViewController: FormViewController {
                 $0.value = CLLocation(latitude: -34.91, longitude: -56.1646)
             }
 
-            <<< ImageRow()  // ImageRow()   // JT 18.11.04 FieldRow
+            <<< ImageRow()  // ImageRow()
                 {
                 $0.title = "ImageRow-"
                // let imageView = UIImageView(image: UIImage(named: "ic_launcher-web"))

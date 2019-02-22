@@ -33,7 +33,7 @@
 import Foundation
 import CoreLocation
 import MapKit
-import CoreTelephony    // JT 18.11.10
+import CoreTelephony
 
 /// Shortcut to locator manager
 public let Locator: LocatorManager = LocatorManager.shared

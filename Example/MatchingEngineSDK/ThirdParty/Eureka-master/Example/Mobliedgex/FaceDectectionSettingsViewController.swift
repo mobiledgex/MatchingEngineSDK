@@ -38,11 +38,11 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Multi-face \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Multi-face" )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Multi-face" )
 
             }
                 .cellSetup { cell, row in
-                  row.subTitle = " Track multiple faces" // JT 18.11.04
+                  row.subTitle = " Track multiple faces"
             }
             <<< SwitchRow() {
                 $0.title = "Local processing"
@@ -51,10 +51,10 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Local processing" + " \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Local processing" )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Local processing" )
             }
                 .cellSetup { cell, row in
-                    row.subTitle = " Include tracking via local processing " // JT 18.11.04
+                    row.subTitle = " Include tracking via local processing "
             }
             <<< SwitchRow() {
                 $0.title = "Show full process latancy"
@@ -63,10 +63,10 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Show full process latancy"  + " \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Show full process latancy"  )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Show full process latancy"  )
             }
                 .cellSetup { cell, row in
-                    row.subTitle = " Measure all" // JT 18.11.04
+                    row.subTitle = " Measure all"
             }
             <<< SwitchRow() {
                 $0.title = "Show network latancy"
@@ -75,10 +75,10 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Show network latancy"  + " \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Show network latancy"  )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Show network latancy"  )
                 }
                 .cellSetup { cell, row in
-                    row.subTitle = " Measures only network latency" // JT 18.11.04
+                    row.subTitle = " Measures only network latency"
             }
             
             <<< SwitchRow() {
@@ -89,10 +89,10 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Show Stddev"  + " \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Show Stddev"  )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Show Stddev"  )
         }
                 .cellSetup { cell, row in
-                    row.subTitle = " Standard deviation" // JT 18.11.04
+                    row.subTitle = " Standard deviation"
             }
             
             <<< SwitchRow() {
@@ -102,10 +102,10 @@ class FaceDectectionSettingsViewController : FormViewController
                     
                     Swift.print("Use Rolling Average"  + " \(row) \(row.value!)")
                     
-                    UserDefaults.standard.set(row.value, forKey:"Use Rolling Average"  )       // JT 18.11.03
+                    UserDefaults.standard.set(row.value, forKey:"Use Rolling Average"  )
                     
                 }  .cellSetup { cell, row in
-                    row.subTitle = " Show measurements and rolling average." // JT 18.11.04
+                    row.subTitle = " Show measurements and rolling average."
         }
     }
     

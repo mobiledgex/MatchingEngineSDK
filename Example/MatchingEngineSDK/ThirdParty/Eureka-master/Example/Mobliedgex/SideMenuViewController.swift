@@ -21,7 +21,7 @@ class SideMenuViewController : FormViewController
     {
         super.viewDidLoad()
         
-        title = "Side Menu" // JT 18.11.04
+        title = "Side Menu"
         
         form +++  // Section("")
             
@@ -30,43 +30,43 @@ class SideMenuViewController : FormViewController
 //                $0.header = HeaderFooterView<LogoView>(.class)
 //            }
             
-            <<< ButtonRow("Sign in with Google")   // JT 18.11.03
+            <<< ButtonRow("Sign in with Google")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName:
-                    "Sign in with Google", onDismiss: nil)   // JT 18.11.03
-              //  $0.value = "ZSE"    // JT 18.11.03
-                $0.cellStyle = .subtitle // JT 18.11.04
+                    "Sign in with Google", onDismiss: nil)
+              //  $0.value = "ZSE"
+                $0.cellStyle = .subtitle
                 }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "g-logo")
                     
               }
             
-            <<< ButtonRow("Face Resognition")   // JT 18.11.03
+            <<< ButtonRow("Face Resognition")
             {
                 $0.title = $0.tag
                 Swift.print("Face Resognition")
 
                $0.presentationMode = .segueName(segueName:
-                    "Face Resognition", onDismiss: nil)   // JT 18.11.03
+                    "Face Resognition", onDismiss: nil)
                 }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "ios11-control-center-camera-icon")
             }
             
-            <<< ButtonRow("Face Detection")   // JT 18.11.03
+            <<< ButtonRow("Face Detection")
             {
                 $0.title = $0.tag
                 Swift.print("Face Detection")
               $0.presentationMode = .segueName(segueName:
-                  "Face Detection", onDismiss: nil)   // JT 18.11.03
+                  "Face Detection", onDismiss: nil)
                 }
                 .cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "ios11-control-center-camera-icon")
             }
             
-            <<< ButtonRow("Settings")   // JT 18.11.03
+            <<< ButtonRow("Settings")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName: "Settings", onDismiss: nil)
@@ -75,7 +75,7 @@ class SideMenuViewController : FormViewController
                     cell.imageView?.image = UIImage(named: "Cog_font_awesome.png")
         }
         
-            <<< ButtonRow("About")   // JT 18.11.03
+            <<< ButtonRow("About")
             {
                 $0.title = $0.tag
                 $0.presentationMode = .segueName(segueName: "About", onDismiss: nil)
@@ -84,7 +84,7 @@ class SideMenuViewController : FormViewController
                     cell.imageView?.image = UIImage(named: "About")
         }
            form +++  Section("Benchmark")
-            <<< ButtonRow("Edge")   // JT 18.11.03
+            <<< ButtonRow("Edge")
             {
                 $0.title = $0.tag
                $0.presentationMode = .segueName(segueName: "Edge", onDismiss: nil)
@@ -98,7 +98,7 @@ class SideMenuViewController : FormViewController
                     
                     cell.imageView?.image = ti  // UIImage(named: ti)
         }
-            <<< ButtonRow("Local")   // JT 18.11.03
+            <<< ButtonRow("Local")
             {
                 $0.title = $0.tag
                    $0.presentationMode = .segueName(segueName: "Local", onDismiss: nil)

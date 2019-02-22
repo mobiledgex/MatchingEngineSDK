@@ -131,8 +131,8 @@ public enum GeocoderService {
 	/// - Returns: request instance
 	public func newRequest(operation: GeocoderOperation, timeout: TimeInterval?) -> GeocoderRequest {
 		let t = timeout ?? 10
-Swift.print("to do Geocoder_OpenStreet") // JT 18.11.06
-        #if false   // JT 18.11.06
+Swift.print("to do Geocoder_OpenStreet")
+        #if false
         switch self {
         case .openStreetMap:
             return Geocoder_OpenStreet(operation: operation, timeout: t)
@@ -143,7 +143,7 @@ Swift.print("to do Geocoder_OpenStreet") // JT 18.11.06
         }
         #endif
 
-        return  GeocoderRequest(operation: operation, timeout: t) // JT 18.11.10
+        return  GeocoderRequest(operation: operation, timeout: t)
 	}
 }
 
@@ -831,7 +831,7 @@ public class Place: CustomStringConvertible {
 //        } else {
 //            self.city = p.locality
 //        }
-        self.city = p.locality  // JT 18.11.10
+        self.city = p.locality
 
 	}
 	

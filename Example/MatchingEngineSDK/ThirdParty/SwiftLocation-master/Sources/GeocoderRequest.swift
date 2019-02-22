@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 import MapKit
 import Contacts
-//import SwiftyJSON // JT 18.11.06
+//import SwiftyJSON
 
 //MARK: Geocoder Google
 

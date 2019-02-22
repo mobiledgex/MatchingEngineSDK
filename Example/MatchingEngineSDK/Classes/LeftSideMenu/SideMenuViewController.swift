@@ -141,7 +141,7 @@ class SideMenuViewController: FormViewController, GIDSignInUIDelegate
 //            let ti = im!.imageWithColor(tintColorGray)
 //
 //            cell.imageView?.image = ti
-//        } // JT 19.02.05
+//        }
     }
 
     class LogoView: UIView
@@ -214,10 +214,10 @@ class SideMenuViewController: FormViewController, GIDSignInUIDelegate
         
         doAFaceRecognition = true
         
-        faceDetectCount = OSAtomicInt32(3)  // JT 19.02.05 next this is what starts things
+        faceDetectCount = OSAtomicInt32(3)
 
         UserDefaults.standard.set(true, forKey: "doFaceRecognition")
-        UserDefaults.standard.synchronize()  // JT 19.02.04
+        UserDefaults.standard.synchronize()
 
         navigationController!.pushViewController(vc, animated: true)
     }
@@ -231,10 +231,10 @@ class SideMenuViewController: FormViewController, GIDSignInUIDelegate
 
         doAFaceRecognition = false
 
-        faceDetectCount = OSAtomicInt32(3)  // JT 19.02.05 next this is what starts things
+        faceDetectCount = OSAtomicInt32(3)
 
         UserDefaults.standard.set(false, forKey: "doFaceRecognition")
-        UserDefaults.standard.synchronize()  // JT 19.02.04
+        UserDefaults.standard.synchronize()
         
         navigationController!.pushViewController(vc, animated: true)
     }

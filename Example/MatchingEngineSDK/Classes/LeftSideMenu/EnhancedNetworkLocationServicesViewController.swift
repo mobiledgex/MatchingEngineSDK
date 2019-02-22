@@ -45,15 +45,15 @@ class EnhancedNetworkLocationServicesViewController: FormViewController
         { /*[weak self]*/ row in
             Swift.print("Location Verification \(row) \(row.value!)")
 
-         //   UserDefaults.standard.set(row.value, forKey: "Location Verification") // JT 19.01.15
-            UserDefaults.standard.set( row.value, forKey: "VerifyLocation")     // JT 19.01.15
+         //   UserDefaults.standard.set(row.value, forKey: "Location Verification")
+            UserDefaults.standard.set( row.value, forKey: "VerifyLocation")
 
         }.cellSetup
         { _, row in
             row.subTitle = " Enhanced Network Location Services."
         }
 
-        #if false   // JT 18.11.19 Network Switching for IOS?
+        #if false
 //        <<< SwitchRow
 //            {
 //                $0.title = "Network Switching Enabled"
@@ -62,11 +62,11 @@ class EnhancedNetworkLocationServicesViewController: FormViewController
 //            { /*[weak self]*/ row in
 //                Swift.print("Network Switching Enabled \(row)")
 //
-//                UserDefaults.standard.set(row.value, forKey: "Network Switching Enabled") // JT 18.11.03
+//                UserDefaults.standard.set(row.value, forKey: "Network Switching Enabled")
 //
 //            }.cellSetup
 //            { _, row in
-//                row.subTitle = " Wifi to Cell network switching" // JT 18.11.04
+//                row.subTitle = " Wifi to Cell network switching"
 //        }
 
         #endif

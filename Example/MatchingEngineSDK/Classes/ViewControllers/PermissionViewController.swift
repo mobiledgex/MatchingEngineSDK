@@ -28,7 +28,7 @@ class PermissionViewController: UIViewController
     {
         super.viewDidLoad()
 
-        title = "Permissions" // JT 19.01.15
+        title = "Permissions"
     }
 
     @IBAction func why1Action(_: Any)
@@ -48,7 +48,7 @@ class PermissionViewController: UIViewController
 
     func showWhy1()
     {
-        let alert = UIAlertController(title: "Alert", message: "App needs your loation to verify it.", preferredStyle: .alert) // .actionSheet) // JT 19.02.10
+        let alert = UIAlertController(title: "Alert", message: "App needs your loation to verify it.", preferredStyle: .alert) // .actionSheet)
 
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             // execute some code when this option is selected
@@ -71,17 +71,17 @@ class PermissionViewController: UIViewController
     @IBAction func okAction(_: Any)
     {
         Swift.print("okAction")
-        presentPermissonDialog()    // JT 19.01.16
+        presentPermissonDialog()
     }
     @objc func presentPermissonDialog()
     {
     //    SPAnimationAlpha.hideList(views: [self.presentButton, self.changeBackgroundButton])
         
         SPPermission.Dialog.request(
-            with: [.locationAlways], //[.locationWhenInUse],  //.camera, .calendar, .microphone],    // JT 19.01.29
+            with: [.locationAlways], //[.locationWhenInUse],  //.camera, .calendar, .microphone],
             on: self,
             delegate: self,
-            dataSource: self    // JT 19.01.16
+            dataSource: self
             //,colorSource: self
         )
     }
@@ -101,12 +101,12 @@ extension PermissionViewController: SPPermissionDialogDelegate
         //  print("SPPermissionDialogDelegate - didAllow \(permission.name)")
         Swift.print("didAllow")
         
-        UserDefaults.standard.set( true, forKey: "firstTimeUsagePermission")    // JT 18.12.17
+        UserDefaults.standard.set( true, forKey: "firstTimeUsagePermission")
 
-        let _ = navigationController?.popViewController(animated: true)   // JT 19.01.16
+        let _ = navigationController?.popViewController(animated: true)
         
 
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "permissionGrantedGetLocaltionUpdates"), object: nil)   // JT 19.02.10
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "permissionGrantedGetLocaltionUpdates"), object: nil)
 
     }
 
@@ -194,7 +194,7 @@ extension PermissionViewController: SPPermissionDialogDataSource
             return "Location"
         case .locationWhenInUse:
             return "Location"
-                // JT 19.01.29
+
 //        case .locationWithBackground:
 //            return "Location"
             
@@ -202,7 +202,7 @@ extension PermissionViewController: SPPermissionDialogDataSource
             return "Media Library"
             
         default:
-            return "BAD enum"   // JT 19.01.29
+            return "BAD enum"
 
         }
     }
@@ -228,16 +228,16 @@ extension PermissionViewController: SPPermissionDialogDataSource
             return "Allow check you voice"
         case .locationAlways:
             return "App will can check your location"
-//        case .locationWhenInUse:    // JT 19.01.29
-//            return "App can check your location when in use" // JT 19.01.15   // JT 19.01.29 ???
+//        case .locationWhenInUse:
+//            return "App can check your location when in use"
             
 //        case .locationWithBackground:
-//            return "App will can check your location" // JT 19.01.29
+//            return "App will can check your location"
         case .mediaLibrary:
             return "Allow check your media"
             
         default:
-            return "?? not found"   // JT 19.01.29
+            return "?? not found"
 
         }
     }

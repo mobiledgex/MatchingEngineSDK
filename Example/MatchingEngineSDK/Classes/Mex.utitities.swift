@@ -102,7 +102,7 @@ extension CGPoint
     }
 }
 
-extension CGRect // JT 18.11.19
+extension CGRect
 {
     public init(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat)
     {

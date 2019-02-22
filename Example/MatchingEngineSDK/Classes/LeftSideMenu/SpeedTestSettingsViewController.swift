@@ -52,11 +52,11 @@ class SpeedTestSettingsViewController: FormViewController
         { _, _ in
             //     row.subTitle = "Number of Megabytes to download for speed test" //   todo fix subtitle second line
         }
-            <<< ActionSheetRow<String>()    // JT 19.01.16
+            <<< ActionSheetRow<String>()
         {
             $0.title = "Latency Test Method"
             $0.selectorTitle = "Latency Test Method"
-            $0.options = ["Socket", "Ping ICMP"]   // JT 19.01.16
+            $0.options = ["Socket", "Ping ICMP"]
             $0.value = UserDefaults.standard.string(forKey: "LatencyTestMethod") ?? "Ping"
         }.onChange
         { /*[weak self]*/ row in
@@ -73,7 +73,7 @@ class SpeedTestSettingsViewController: FormViewController
         {
             $0.title = "Latency Test Packets"
             $0.selectorTitle = "Latency Test Packets"
-            $0.options = ["5", "10", "20"]  // JT 19.01.31
+            $0.options = ["5", "10", "20"]
             $0.value = UserDefaults.standard.string(forKey: "Latency Test Packets") ?? "4" // initially selected
         }.onChange
         { /*[weak self]*/ row in
