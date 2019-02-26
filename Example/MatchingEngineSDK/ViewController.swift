@@ -32,7 +32,7 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
     #warning ("Action item: you need to replace appName/devName. Our demo passes appName and devName to RegisterClient() API")
-//    #error ("Action item: you need to replace appName/devName. our demo passes appName and devName to RegisterClient() API")
+    // #error ("Action item: you need to replace appName/devName. our demo passes appName and devName to RegisterClient() API")
     
     var appName =  "MobiledgeX SDK Demo"    //   replace this with your appName
     var devName =  "MobiledgeX SDK Demo"    //   replace this with your devName
@@ -95,7 +95,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         
         //////////////////
-       // use registerClient API
+        // use registerClient API
         //
         MexRegisterClient.shared.registerClientNow( appName: appName,
                                                    devName:  devName,
@@ -107,7 +107,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         // Swift.print("\(#function)")
 
         DispatchQueue.main.async {
-            getNetworkLatencyCloud()    //   "latencyCloud"
+            getNetworkLatencyCloud() //   "latencyCloud"
         }
         DispatchQueue.main.async {
             getNetworkLatencyEdge() //   "latencyEdge"
@@ -127,7 +127,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
+            MexGetAppInst.shared.getAppInstNow(gpslocation:loc) // "Get App Instances"
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "processAppInstList"), object: nil, queue: nil)
@@ -149,7 +149,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             SKToast.show(withMessage: "Verifylocation success: \(d)")
             
-            let image =  makeUserMakerImage(MexRegisterClient.COLOR_VERIFIED)
+            let image =  makeUserMakerImage(LocationColorCode.VERIFIED)
             userMarker!.icon = image
             
             self!.locationVerified = true
@@ -164,7 +164,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             SKToast.show(withMessage: "Verifylocation failure: \(d)")
             
-            let image =  makeUserMakerImage(MexRegisterClient.COLOR_FAILURE)
+            let image =  makeUserMakerImage(LocationColorCode.FAILURE)
             userMarker!.icon = image
         }
         
@@ -467,7 +467,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
             userMarker!.snippet = "Spoofed \(String(format: "%.2f", distance)) km from actual location"
             
-            let resized =  makeUserMakerImage(MexRegisterClient.COLOR_NEUTRAL)
+            let resized =  makeUserMakerImage(LocationColorCode.NEUTRAL)
             
             userMarker!.icon = resized
 
@@ -476,7 +476,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
             updateLocSimLocation(userMarker!.position.latitude, userMarker!.position.longitude)
             
-            let resized =  makeUserMakerImage(MexRegisterClient.COLOR_NEUTRAL)
+            let resized =  makeUserMakerImage(LocationColorCode.NEUTRAL)
             
             userMarker!.icon = resized
 
@@ -496,11 +496,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             UserDefaults.standard.set( true, forKey: "VerifyLocation")
             let loc = retrieveLocation()
             
-            MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc)     // "Verify Location"
+            MexVerifyLocation.shared.doVerifyLocation(gpslocation:loc) // "Verify Location"
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { _ in
             
-         Swift.print("VerifyLocation Cancel")   // Log
+         Swift.print("VerifyLocation Cancel") // Log
             
         }))
         

@@ -45,6 +45,15 @@ private let faceServerPort: String = "8008"
 private let DEF_FACE_HOST_CLOUD = "facedetection.defaultcloud.mobiledgex.net"
 private let DEF_FACE_HOST_EDGE = "facedetection.defaultedge.mobiledgex.net"
 
+public class LocationColorCode
+{
+    public static let NEUTRAL: UInt32 = 0xFF67_6798 // default
+    public static let VERIFIED: UInt32 = 0xFF00_9933
+    public static let FAILURE: UInt32 = 0xFFFF_3300
+    public static let CAUTION: UInt32 = 0xFF00_B33C // Amber: ffbf00;
+}
+
+
 // --------
 
 // This file Handles Events from:
@@ -59,8 +68,6 @@ private let DEF_FACE_HOST_EDGE = "facedetection.defaultedge.mobiledgex.net"
 
 
 // MARK: -
-
-
 func processAppInstList(_ d: [String: Any] )
 {
     Swift.print("GetAppInstlist1 \(d)")
@@ -82,7 +89,6 @@ func processAppInstList(_ d: [String: Any] )
         
         if cld.key == "Cloudlets" // "cloudlet_location"
         {
-            //       let ddd = cld.value
             let a = cld.value as! [[String: Any]]   // Dictionary/json
             
             Swift.print("••• \(a)")
@@ -134,7 +140,7 @@ func processAppInstList(_ d: [String: Any] )
                 let iconTemplate = UIImage(named: "ic_marker_cloudlet-web")
                 
                 // todo refactor - make func
-                let tint = getColorByHex(MexRegisterClient.COLOR_NEUTRAL)
+                let tint = getColorByHex(LocationColorCode.NEUTRAL)
                 let tinted = iconTemplate!.imageWithColor(tint)
                 let resized = tinted.imageResize(sizeChange: CGSize(width: 40, height: 30))
                 
@@ -364,7 +370,6 @@ func processFindCloudletResult(_ d: [String: Any])
 func resetUserLocation(_ show: Bool) // called by "Reset user location" menu
 {
     // Swift.print("\(#function)")
-
     locationRequest = Locator.subscribePosition(accuracy: .house, onUpdate:
         { newLocation in
             // print("New location received: \(newLocation)")
@@ -405,7 +410,7 @@ func doUserMarker(_ loc: CLLocationCoordinate2D)
     userMarker!.title = "You are here"
     userMarker!.snippet = "Drag to spoof" //   marker!.snippet = "Tap for details"
     
-    let resized =  makeUserMakerImage(MexRegisterClient.COLOR_NEUTRAL)
+    let resized =  makeUserMakerImage(LocationColorCode.NEUTRAL)
     
     userMarker!.icon = resized
     userMarker!.map = theMap
@@ -414,9 +419,7 @@ func doUserMarker(_ loc: CLLocationCoordinate2D)
 }
 
 // MARK: -
-
 // used by: GetToken, getAppInstNow, verify  loc
-
  public func retrieveLocation() -> [String: Any]
 {
     // Swift.print("\(#function)")
@@ -519,14 +522,16 @@ class MexFaceRecognition
             let _ = pendingCount.increment()
             //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
 
-            let requestObj = Alamofire.request(urlStr,
-                                               method: HTTPMethod.post,
-                                               parameters: params
-                // , encoding: JSONEncoding.default // of -d
-                , headers: headers)
+            _ = Alamofire.request(
+                    urlStr,
+                    method: HTTPMethod.post,
+                    parameters: params,
+                // encoding: JSONEncoding.default // of -d
+                    headers: headers)
                 
                 .responseJSON
-                { response in
+                {
+                    response in
                     //    Swift.print("----\n")
                     //    Swift.print("\(response)")
                     //    debugPrint(response)
@@ -546,7 +551,7 @@ class MexFaceRecognition
                         if success == "true"
                         {
                             print("Y.\(service) ", terminator:"")
-   // Swift.print("data: \(data)")
+                            // Swift.print("data: \(data)")
                             
                             let start =  self.faceDetectionStartTimes![service] //
                             let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //self.faceDetectionStartTime!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
@@ -571,7 +576,7 @@ class MexFaceRecognition
                         }
                         else
                         {
-                            //        Logger.shared.log(.network, .info, postName + " request\n \(request) \n")
+                            // Logger.shared.log(.network, .info, postName + " request\n \(request) \n")
                             print("N.\(service) ", terminator:"")
 
                         }
@@ -585,7 +590,7 @@ class MexFaceRecognition
 
                     } // end sucess/failure
                     
-                  //  Swift.print("1=-- \(faceDetectCount.add(0))")  // JT
+                    //  Swift.print("1=-- \(faceDetectCount.add(0))")  // JT
                     
                     if faceDetectCount.decrement() == 0
                     {
@@ -605,9 +610,6 @@ class MexFaceRecognition
 
     // Mark: -
     // Mark: FaceRecognition
-    
-    
-    
     func doNextFaceRecognition()
     {
         // Swift.print("\(#function)")
@@ -658,12 +660,11 @@ class MexFaceRecognition
                 }
                 
         },
-            completion: { let _ = $0 //print("completed with result: \($0)")
+            completion: { let _ = $0 // print("completed with result: \($0)")
                 
         }
         )
     }
-    
     
     
     func FaceRecognition(_ image: UIImage?, _ service: String)
@@ -723,9 +724,9 @@ class MexFaceRecognition
             
             let requestObj = Alamofire.request(urlStr,
                                                method: HTTPMethod.post,
-                                               parameters: params
-                // , encoding: JSONEncoding.default // of -d
-                , headers: headers)
+                                               parameters: params,
+                                               // encoding: JSONEncoding.default, // of -d
+                                               headers: headers)
                 
                 .responseJSON
                 { response in
@@ -754,7 +755,7 @@ class MexFaceRecognition
                             
                             SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
                             
-                        //    let msg = "FaceRecognized" + service
+                            //    let msg = "FaceRecognized" + service
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
                             
                             
@@ -806,7 +807,7 @@ func getNetworkLatencyCloud()
 
 func getNetworkLatency(_ hostName:String, post name: String)
 {
-    //Swift.print("\(#function) \(hostName)")
+    // Swift.print("\(#function) \(hostName)")
     
     // Ping once
     let  pingOnce = SwiftyPing(host: hostName, configuration: PingConfiguration(interval: 0.5, with: 5), queue: DispatchQueue.global())
@@ -817,33 +818,12 @@ func getNetworkLatency(_ hostName:String, post name: String)
         
         let latency = response.duration * 1000
  
-    //     print("\(hostName) latency (ms): \(latency)")
+        // print("\(hostName) latency (ms): \(latency)")
 
         
         let latencyMsg = String( format: "%4.2f", latency )
-        
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: name), object: latencyMsg)
     }
     pingOnce?.start()
-    
-    
-//    PlainPing.ping(hostName, withTimeout: 1.0, completionBlock:
-//        { (timeElapsed: Double?, error: Error?) in
-//
-//        if let latency = timeElapsed
-//        {
-//            let latencyMsg = String(format: "%4.3f", latency)
-//
-//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: name), object: latencyMsg)
-//        }
-//        if let error = error
-//        {
-//            Swift.print("ping failed: \(hostName)")
-//            print("ping error: \(error.localizedDescription)")
-//        }
-//
-//    })
-
-    
 }
 
