@@ -21,7 +21,7 @@ import Foundation
 import Alamofire
 import GoogleMaps
 import MatchingEngineSDK
-import SwiftSocket //   connection latency
+import SwiftSocket // connection latency
 
 
 public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
@@ -92,9 +92,9 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
          _ distance: Double,
          _ uri: String,
          _ urlPrefix: String,
-        _ marker: GMSMarker,
-        _ numBytes: Int,
-        _ numPackets: Int) // LatLng
+         _ marker: GMSMarker,
+         _ numBytes: Int,
+         _ numPackets: Int) // LatLng
     {
         Swift.print("Cloudlet contructor. cloudletName= \(cloudletName)")
         
@@ -105,7 +105,6 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         if autoStart
         {
             let numPings = Int(UserDefaults.standard.string(forKey: "Latency Test Packets") ?? "4") //
-            
             runLatencyTest(numPings: numPings!) //runLatencyTest
         }
         else
@@ -131,9 +130,9 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                        _ distance: Double,
                        _ uri: String,
                        _ urlPrefix: String,
-        _ marker: GMSMarker,
-        _ numBytes: Int,
-        _ numPackets: Int) // # packets to ping
+                       _ marker: GMSMarker,
+                       _ numBytes: Int,
+                       _ numPackets: Int) // # packets to ping
         
     {
         Swift.print("Cloudlet update. cloudletName= \(cloudletName)")
@@ -158,7 +157,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     
     func runLatencyTest(numPings: Int)
     {
-        latencyTestTaskRunning = false //
+        latencyTestTaskRunning = false
         
         if latencyTestTaskRunning
         {
@@ -191,8 +190,6 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             pingNext()
         }
         
-        
-        
         // post upateLatencies
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: nil)
         
@@ -218,7 +215,6 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         let host = pings.removeFirst()
         
         //  let latencyTestMethod = UserDefaults.standard.string(forKey: "LatencyTestMethod")
-        
         var useSocket = false
         Swift.print("uri \(uri)")
         if ( uri.contains("azure"))
@@ -231,44 +227,42 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             future = GetSocketLatency(host, 7777)
             
             future!.on(success:
-                {
-                    let d = $0 as [String: Any]
-                    
-                    print("GetSocketLatency: \(d["latency"])")
-                    let duration = Double(d["latency"] as! String  )
-                    
-                    // print("\(ping) latency (ms): \(latency)")
-                    self.latencies.append(duration! * 1000)
-                    
-                    Swift.print("latencies \(self.latencies)")
-                    
-                    self.latencyMin = self.latencies.min()!
-                    self.latencyMax = self.latencies.max()!
-                    
-                    let sumArray = self.latencies.reduce(0, +)
-                    
-                    self.latencyAvg = sumArray / Double(self.latencies.count)
-                    
-                    self.latencyStddev = standardDeviation(arr: self.latencies)
-                    
-                    Swift.print("•latencyMin \(self.latencyMin)")
-                    Swift.print("latencyMax \(self.latencyMax)")
-                    Swift.print("latencyAvg \(self.latencyAvg)")
-                    Swift.print("latencyStddev \(self.latencyStddev)")
-                    
-                    let latencyMsg = String(format: "%4.3f", self.latencyAvg)
-                    
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: latencyMsg)
-                    
-                    self.pingNext()
+            {
+                let d = $0 as [String: Any]
+                
+                print("GetSocketLatency: \(d["latency"])")
+                let duration = Double(d["latency"] as! String  )
+                
+                // print("\(ping) latency (ms): \(latency)")
+                self.latencies.append(duration! * 1000)
+                
+                Swift.print("latencies \(self.latencies)")
+                
+                self.latencyMin = self.latencies.min()!
+                self.latencyMax = self.latencies.max()!
+                
+                let sumArray = self.latencies.reduce(0, +)
+                
+                self.latencyAvg = sumArray / Double(self.latencies.count)
+                
+                self.latencyStddev = standardDeviation(arr: self.latencies)
+                
+                Swift.print("•latencyMin \(self.latencyMin)")
+                Swift.print("latencyMax \(self.latencyMax)")
+                Swift.print("latencyAvg \(self.latencyAvg)")
+                Swift.print("latencyStddev \(self.latencyStddev)")
+                
+                let latencyMsg = String(format: "%4.3f", self.latencyAvg)
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateLatencies"), object: latencyMsg)
+                
+                self.pingNext()
                     
             },
-                       failure: {
-                        print("Socket failed with error: \($0)")
-                        
+            failure: {
+                    print("Socket failed with error: \($0)")
             },
-                       completion: { let _ = $0    //print("completed with result: \($0)" )
-                        
+            completion: { let _ = $0 // print("completed with result: \($0)" )
             })
         }
         else

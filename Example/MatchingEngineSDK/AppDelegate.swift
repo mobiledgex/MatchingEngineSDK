@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var services: Any? //   = GMSServices.sharedServices()
 
     #warning ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
-    //    #error ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
+    // #error ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
 
     // replace the following two values with your own
     //
@@ -144,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 //    }
 }
 
-extension  AppDelegate: GIDSignInDelegate
+extension AppDelegate: GIDSignInDelegate
 {
     func sign(_: GIDSignIn!,
               didSignInFor user: GIDGoogleUser!,

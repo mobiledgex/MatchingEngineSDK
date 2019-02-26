@@ -22,15 +22,16 @@
 import Foundation
 
 import Alamofire // dependency
-import NSLogger // JT
+import NSLogger
 
 /// MexSDK MobiledeX SDK APIs
 
 // MARK: -
 
-public class MexSDK
+/// MobiledgeX MatchingEngine SDK APIs
+public class MatchingEngineSDK
 {
-    public static let shared = MexSDK() /// singleton access: MexSDK.shared.whatever
+    public static let shared = MatchingEngineSDK() /// singleton access: MexSDK.shared.whatever
 
     var sessionManager: SessionManager? // alamofire: creeated based on host trust
     // need different SessionManager for each host
@@ -82,17 +83,17 @@ public class MexSDK
         
         dealWithTrustPolicy(uri) // certs
 
-        let requestObj = MexSDK.shared.sessionManager!.request(
+        let requestObj = MatchingEngineSDK.shared.sessionManager!.request(
             uri,
             method: .post,
             parameters: request,
             encoding: JSONEncoding.default,
-            headers: MexSDK.shared.headers
+            headers: MatchingEngineSDK.shared.headers
         ).responseJSON
         { response in
             if (false)
             {
-                debugPrint("\n••\n\(response.request!)\n") // curl
+                debugPrint("\n••\n\(response.request!)\n")
             }
 
             guard response.result.isSuccess else
@@ -157,8 +158,8 @@ public class MexSDK
             Swift.print("result \(response.result)")
             Swift.print("data \(response.data!)")
 
-            //            print(response.metrics)
-            //           print(response.timeline)
+            // print(response.metrics)
+            // print(response.timeline)
         }
 
         if (false)  // DEBUG
@@ -171,9 +172,6 @@ public class MexSDK
         return promise.future
     }
 
-    // in general
-    //
-
     ///  Deal with certificates, trust
     ///
     /// - Parameter url:
@@ -182,7 +180,6 @@ public class MexSDK
         _ url: URLConvertible // a string
     )
     {
-        // let certificates = getCertificates()
         let certificates = ServerTrustPolicy.certificates() // alamo extension
         Swift.print("~~~certificates: \(certificates) ---")
         //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )
@@ -203,7 +200,7 @@ public class MexSDK
 
             let policyManager = ServerTrustPolicyManager(policies: trustPolicies)
 
-            MexSDK.shared.sessionManager = SessionManager(
+            MatchingEngineSDK.shared.sessionManager = SessionManager(
                 configuration: .default,
                 serverTrustPolicyManager: policyManager
             )
@@ -342,14 +339,12 @@ public class MexUtil // common to Mex... below
     public let findcloudletAPI: String = "/v1/findcloudlet"
     
     
-    
     public var closestCloudlet = ""
     
     private init() //   singleton called as of first access to shared
     {
         baseDmeHostInUse = baseDmeHost // dme.mobiledgex.net
-        
-     }
+    }
     
     // Retrieve the carrier name of the cellular network interface.
     public func getCarrierName() -> String
@@ -385,12 +380,6 @@ public class MexRegisterClient
 
     public var tokenserveruri = "" // set by RegisterClient
     public var sessioncookie = "" // set by RegisterClient    // used by getApp and verifyLoc
-
-    // Color of user todo
-    public static let COLOR_NEUTRAL: UInt32 = 0xFF67_6798 // default
-    public static let COLOR_VERIFIED: UInt32 = 0xFF00_9933
-    public static let COLOR_FAILURE: UInt32 = 0xFFFF_3300
-    public static let COLOR_CAUTION: UInt32 = 0xFF00_B33C // Amber: ffbf00;
 
     public var future: Future<[String: AnyObject], Error>? // async result (captured by async?)
 
@@ -458,9 +447,6 @@ public class MexRegisterClient
 
         return regClientRequest
     }
-
-    // MARK: registerClientNow
-
     
     public func registerClientNow(appName: String, devName: String,  appVers: String) // called by top right menu  //  "1.0"
     {
@@ -477,7 +463,7 @@ public class MexRegisterClient
         let urlStr = baseuri + MexUtil.shared.registerAPI
 
         let future =
-            MexSDK.shared.postRequest(urlStr, registerClientRequest, "RegisterClient1")
+            MatchingEngineSDK.shared.postRequest(urlStr, registerClientRequest, "RegisterClient1")
 
         MexRegisterClient.shared.future = future
 
@@ -548,7 +534,7 @@ public class MexGetAppInst
 
         // let loc = retrieveLocation()
 
-        let getAppInstListRequest = MexSDK.shared.createGetAppInstListRequest(
+        let getAppInstListRequest = MatchingEngineSDK.shared.createGetAppInstListRequest(
             carrierName: MexUtil.shared.carrierNameDefault_TDG,
             gpslocation: gpslocation,
             sessioncookie: MexRegisterClient.shared.sessioncookie
@@ -556,7 +542,7 @@ public class MexGetAppInst
 
         // 🔵
         let urlStr = baseuri + MexUtil.shared.appinstlistAPI
-        future = MexSDK.shared.postRequest(urlStr, getAppInstListRequest, "GetAppInstlist1")
+        future = MatchingEngineSDK.shared.postRequest(urlStr, getAppInstListRequest, "GetAppInstlist1")
 
         future!.on(success:
             {
@@ -595,7 +581,7 @@ public class MexFindNearestCloudlet
         let baseuri = MexUtil.shared.generateBaseUri(MexUtil.shared.getCarrierName(), MexUtil.shared.dmePort)
         //  let loc = retrieveLocation()
 
-        let findCloudletRequest = MexSDK.shared.createFindCloudletRequest(MexUtil.shared.carrierNameDefault_TDG, gpslocation)
+        let findCloudletRequest = MatchingEngineSDK.shared.createFindCloudletRequest(MexUtil.shared.carrierNameDefault_TDG, gpslocation)
 
         let urlStr = baseuri + MexUtil.shared.findcloudletAPI
         //        Log.logger.name = "FindCloudlet"
@@ -603,7 +589,7 @@ public class MexFindNearestCloudlet
         //        logw("\n findCloudletRequest:\n \(findCloudletRequest)")
 
         // 🔵 API
-        MexRegisterClient.shared.future = MexSDK.shared.postRequest(urlStr, findCloudletRequest, "FindCloudlet1")
+        MexRegisterClient.shared.future = MatchingEngineSDK.shared.postRequest(urlStr, findCloudletRequest, "FindCloudlet1")
 
         MexRegisterClient.shared.future!.on(
             success:
@@ -712,7 +698,7 @@ public class MexVerifyLocation
 
         Swift.print("\(uri)")
 
-        let promise = MexSDK.shared.postRequest(uri, [String: Any](), "GetToken") // async
+        let promise = MatchingEngineSDK.shared.postRequest(uri, [String: Any](), "GetToken") // async
         // NOTE special case: "GetToken" fails and its error result is parsed and returned as success
 
         return promise
@@ -745,7 +731,7 @@ public class MexVerifyLocation
         //        logw("\n VerifylocationRequest:\n \(tokenizedRequest)")
 
         // 🔵
-        future = MexSDK.shared.postRequest(uri, tokenizedRequest, "Verifylocation1")
+        future = MatchingEngineSDK.shared.postRequest(uri, tokenizedRequest, "Verifylocation1")
 
         future!.on(success: { print("Verifylocation1 received value: \($0)")
             let d = $0 as [String: Any]
