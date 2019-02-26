@@ -24,9 +24,9 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.homepage         = 'https://github.com/mobiledgex/MatchingEngineSDK'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'Apache.LICENSE-2.0', :file => 'LICENSE' }
-  s.author           = { 'mobiledgex' => 'github@metatheory.com' }
+  s.author           = { 'mobiledgex' => 'github@github.com' }
   s.source           = { :git => 'https://github.com/mobiledgex/MatchingEngineSDK.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/mobiledgex'
 
   s.ios.deployment_target = '11.4'
 
@@ -43,7 +43,5 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.dependency 'Alamofire'
   s.dependency 'SwiftyJSON'
 
-    s.swift_version = '4.2'
-  
-  
+  s.swift_version = '4.2'
 end
