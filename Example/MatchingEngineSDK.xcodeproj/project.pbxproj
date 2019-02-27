@@ -330,7 +330,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		7405090AC8162F6DD26B4FC2 /* Pods-MatchingEngineSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngineSDK_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngineSDK_Example/Pods-MatchingEngineSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		BB2C2DBD2774F9A6E5309D20 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		C8532BAE66F86211C21C1D2E /* MatchingEngineSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MatchingEngineSDK.podspec; path = ../MatchingEngineSDK.podspec; sourceTree = "<group>"; };
+		C8532BAE66F86211C21C1D2E /* MatchingEngineSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MatchingEngineSDK.podspec; path = ../MatchingEngineSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D1A8E0BD0A189BB0A81E9087 /* Pods_MatchingEngineSDK_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MatchingEngineSDK_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD7F705A8673F63A86065AF /* Pods_MatchingEngineSDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MatchingEngineSDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
