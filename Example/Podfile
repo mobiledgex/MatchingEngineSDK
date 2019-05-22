@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MatchingEngine_Example' do
+  pod 'MatchingEngine', :path => '../'
+
+  target 'MatchingEngine_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
