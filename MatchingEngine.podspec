@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MatchingEngine'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of MatchingEngine.'
+  s.version          = '0.1.49'
+  s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX infrastructure and to utilize its services.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,20 +17,25 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+s.description      = <<-DESC
+Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage the power that Mobile Edge Cloud offers? The MobiledgeX SDK for iOS Swift exposes various services that MobiledgeX offers such as finding the nearest MobiledgeX Cloudlet Infrastructure for client-server communication or workload processing offload.
+                     DESC
 
-  s.homepage         = 'https://github.com/lgarner/MatchingEngine'
+  s.homepage         = 'https://github.com/mobiledgex/MatchingEngine'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'lgarner' => '1672745+lgarner@users.noreply.github.com' }
-  s.source           = { :git => 'https://github.com/lgarner/MatchingEngine.git', :tag => s.version.to_s }
+  s.license          = { :type => 'Apache.LICENSE-2.0', :file => 'LICENSE' }
+  s.author           = { 'mobiledgex' => 'github@github.com' }
+  s.source           = { :git => 'https://github.com/mobiledgex/MatchingEngine.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '11.4'
 
   s.source_files = 'MatchingEngine/Classes/**/*'
+  
+  s.dependency 'NSLogger/Swift'
+  s.dependency 'Alamofire'
+  s.dependency 'SwiftyJSON'
+  s.dependency 'PromisesSwift'
   
   # s.resource_bundles = {
   #   'MatchingEngine' => ['MatchingEngine/Assets/*.png']
@@ -39,4 +44,6 @@ TODO: Add long description of the pod here.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+
+  s.swift_version = '4.2'
 end

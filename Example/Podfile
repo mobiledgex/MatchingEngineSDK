@@ -1,11 +1,29 @@
 use_frameworks!
 
+platform :ios, '11.4'
+
 target 'MatchingEngine_Example' do
   pod 'MatchingEngine', :path => '../'
 
+  pod 'Alamofire'
+  pod 'PromisesSwift'
+
+  pod 'DropDown'
+  pod 'SwiftLocation'
+  pod 'SwiftyJSON'
+  
+  pod 'GoogleMaps', '= 3.1.0'
+  pod 'GoogleSignIn'
+
+  pod 'SwiftLog'
+  pod 'NSLogger/Swift'
+  
+  pod 'SPPermission'
+  pod 'SwiftSocket'
+  
   target 'MatchingEngine_Tests' do
     inherit! :search_paths
-
     
   end
+  
 end
