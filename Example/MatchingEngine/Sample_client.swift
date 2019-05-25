@@ -280,7 +280,7 @@ public func updateLocSimLocation(_ lat: Double, _ lng: Double)
 
     let jd: [String: Any]? = ["latitude": lat, "longitude": lng]    // Dictionary/json
 
-    let hostName: String = MexUtil.shared.generateDmeHostPath(MexUtil.shared.getCarrierName()).replacingOccurrences(of: "dme", with: "locsim")
+    let hostName: String = MexUtil.shared.generateDmeHost(carrierName: MexUtil.shared.getCarrierName()).replacingOccurrences(of: "dme", with: "locsim")
 
     let urlString: URLConvertible = "http://\(hostName):8888/updateLocation"
 
