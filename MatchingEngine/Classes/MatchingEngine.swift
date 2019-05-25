@@ -11,6 +11,7 @@ import NSLogger
 import Promises
 
 import CoreTelephony
+import CoreLocation
 
 enum InvalidTokenServerTokenError: Error  {
     case invalidTokenServerUri
@@ -20,28 +21,52 @@ enum InvalidTokenServerTokenError: Error  {
 
 enum MatchingEngineError: Error {
     case networkFailure
+    case missingAppName
+    case missingAppVersion
+    case missingDevName
     case missingCarrierName
     case missingSessionCookie
+    
+    case missingGPSLocation
+    case invalidGPSLongitude
+    case invalidGPSLatitude
+    
     case missingTokenServerURI
+    case missingTokenServerToken
     case missingGPSLocationStatus
     case registerFailed
     case findCloudletFailed
     case verifyLocationFailed
+    
+    
 }
 
 
 class MatchingEngineState {
     var DEBUG: Bool = true
+    init()
+    {
+        print(Bundle.main.object)
+    }
     
-    // App Info
-    private var appName: String {
-        get {
+    let defaultCarrierName = "tdg"
+    public let defaultRestDmePort: UInt = 38001
+    var carrierName: String?
+    var previousCarrierName: String?
+    
+    public var appName: String
+    {
+        get
+        {
             return Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
         }
     }
-    public var displayAppName: String {
-        get {
-            return Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+    
+    public var appVersion: String
+    {
+        get
+        {
+            return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         }
     }
     
@@ -53,21 +78,8 @@ class MatchingEngineState {
     
     // Various known states (should create non-dictionary classes)
     var verifyLocationResult: [String: AnyObject]?
-    
-    var carrierName: String? {
-        didSet {
-            Logger.shared.log(.service, .debug, "New carrierName: \(carrierName ?? "") previousCarrierName\(previousCarrierName ?? "")\n")
-        }
-    }
 
-    var previousCarrierName: String?
-    
     var location = [String: Any]()
-    
-    init()
-    {
-        print(Bundle.main.object)
-    }
     
     func setSessionCookie(sessionCookie: String?)
     {
@@ -136,7 +148,7 @@ public class MatchingEngine
         addServiceSubscriberCellularProvidersDidUpdateNotifier()
         executionQueue = DispatchQueue.global(qos: .default) // What type is this?
 
-        print(state.displayAppName)
+        print(state.appName)
         
     }
     // set a didUpdates closure for carrierName via NetworkInfo in the MatchingEngine SDK.
@@ -214,6 +226,44 @@ public class MatchingEngine
                 return nil
             }
         }
+    }
+    
+    public func getDefaultDmePort() -> UInt
+    {
+        return state.defaultRestDmePort
+    }
+    
+    public func getAppName() -> String
+    {
+        return state.appName
+    }
+    
+    public func getAppVersion() -> String
+    {
+        return state.appVersion
+    }
+    
+    // TODO: Other types are valid.
+    public func validateGpsLocation(gpsLocation: [String: Any]) throws -> Bool {
+        if let longitude = gpsLocation["longitude"] as? CLLocationDegrees {
+            if longitude < -180 as CLLocationDegrees || longitude > 180 as CLLocationDegrees
+            {
+                throw MatchingEngineError.invalidGPSLongitude
+            }
+        } else {
+            throw MatchingEngineError.invalidGPSLongitude
+        }
+        
+        if let latitude = gpsLocation["latitude"] as? CLLocationDegrees {
+            if latitude < -90 as CLLocationDegrees || latitude > 90 as CLLocationDegrees
+            {
+                throw MatchingEngineError.invalidGPSLatitude
+            }
+        } else {
+            throw MatchingEngineError.invalidGPSLatitude
+        }
+        
+        return true
     }
 
 
@@ -355,7 +405,7 @@ public class MexUtil // common to Mex... below
         return carrierNameInUse
     }
     
-    public func generateDmeHostPath(_ carrierName: String) -> String
+    public func generateDmeHost(carrierName: String) -> String
     {
         if carrierName == ""
         {
@@ -364,9 +414,14 @@ public class MexUtil // common to Mex... below
         return carrierName + "." + baseDmeHostInUse
     }
     
-    public func generateBaseUri(_ carrierName: String, _: UInt) -> String
+    public func generateBaseUri(carrierName: String, port: UInt) -> String
     {
-        return "https://\(generateDmeHostPath(carrierName)):\(dmePort)"
+        return "https://\(generateDmeHost(carrierName: carrierName)):\(port)"
+    }
+    
+    public func generateBaseUri(host: String, port: UInt) -> String
+    {
+        return "https://\(host):\(port)"
     }
 } // end MexUtil
 

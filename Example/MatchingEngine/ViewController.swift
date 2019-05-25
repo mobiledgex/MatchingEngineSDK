@@ -33,14 +33,20 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    #warning ("Action item: you need to replace appName/devName. Our demo passes appName and devName to RegisterClient() API")
-    // #error ("Action item: you need to replace appName/devName. our demo passes appName and devName to RegisterClient() API")
-    
     var me: MatchingEngine = MatchingEngine()
+    var host = ""
+    var port: UInt = 38001
     
-    var appName =  "MobiledgeX SDK Demo"    //   replace this with your appName
-    var devName =  "MobiledgeX"    //   replace this with your devName
-    var appVers =  "1.0"    //   replace this with your appVers
+    var demo = true; // If true, use DEMO values as opposed to discoverable properties.
+    
+    var carrierName = ""
+    var appName = ""
+    var devName = ""
+    var appVers = ""
+    var authToken: String? = nil
+    
+    // For the overriding me.getCarrierName() for contacting the DME host
+    var overrideDmeCarrierName: String? = "mexdemo"
 
     @IBOutlet var viewMap: GMSMapView!
 
@@ -54,9 +60,33 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     private var locationVerified: Bool = false //  todo where to set this true?
     private var locationVerificationAttempted: Bool = false
 
+    private func updateAppDetails() {
+         #warning ("Action item: These values are a key value lookup for the Distributed Matching Engine backend to locate the matching edge cloudlet for your app")
+        if demo
+        {
+            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            port = me.getDefaultDmePort()
+            appName =  "MobiledgeX SDK Demo"
+            appVers = "1.0"
+            devName =  "MobiledgeX"
+            carrierName = "tdg"
+            authToken = nil
+        }
+        else
+        {
+            appName =  me.getAppName()
+            appVers =  me.getAppVersion()
+            devName =  "MobiledgeX"             //   replace this with your devName
+            carrierName = me.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
+            authToken = nil // opaque developer specific String? value.
+        }
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        updateAppDetails();
 
         // Swift.print("\(#function)")
 
@@ -67,7 +97,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         theMap = viewMap //   publish
         theMap!.delegate = self //  for taps
-     //   theMap!.isMyLocationEnabled = true //   blue dot
+        // theMap!.isMyLocationEnabled = true //   blue dot
 
         let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: 48.857165, longitude: 2.354613, zoom: 8.0)
 
@@ -106,19 +136,32 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         //////////////////
         // use registerClient API
         //
-        var carrierName = ""
-        if let cname = me.getCarrierName()
-        {
+        var carrierName: String? = nil
+        if let cname = overrideDmeCarrierName {
             carrierName = cname
-        } else
-        {
-            carrierName = "tdg"
+        } else {
+            if let cname = me.getCarrierName()
+            {
+                carrierName = cname
+            }
+            else
+            {
+                carrierName = "tdg"
+            }
+        }
+        guard let _ = carrierName else {
+            Logger.shared.log(.network, .debug, "Register Client needs a valid carrierName!")
+            return;
         }
         
-        try me.registerClient(carrierName: carrierName,
-                              appName: appName,
-                              devName: devName,
-                              appVers: "1.0")
+        let registerClientRequest = me.createRegisterClientRequest(devName: devName,
+                                                                   appName: appName,
+                                                                   appVers: appVers,
+                                                                   carrierName: carrierName,
+                                                                   authToken: authToken)
+        me.registerClient(host: host,
+                          port: port,
+                          request: registerClientRequest)
         .then { registerReply in
                 // Nothing to do, engine keeps track of details for next all.
                 Logger.shared.log(.network, .debug, "RegisterReply: \(registerReply)")
@@ -398,19 +441,20 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 //            "Find Closest Cloudlet",
 //            "Reset Location",
             
-            
-            
-            // Becase the UI demo doesn't represent async network code very well. Register is a future, and every other command must wait for it.
             switch index
             {
             case 0:
-                //  "Register Client",
+                //  "Register Client", should use dynamic values if not Demo:
+                var registerClientRequest = self!.me.createRegisterClientRequest(devName: self!.devName,
+                                                                                 appName: self!.appName,
+                                                                                 appVers: self!.appVers,
+                                                                                 carrierName: self!.carrierName,
+                                                                                 authToken: self!.authToken);
                 self!.registerPromise = self!.me.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
-                        appName: self!.appName,
-                        devName: self!.devName,
-                        appVers: self!.appVers)
+                        host: self!.host, // For demo purposes, this remains static.
+                        port: self!.port,
+                        request: registerClientRequest)
                 .then { registerClientReply in
-                    
                     Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
                 }
                 .catch { error in
@@ -420,7 +464,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             case 1:
                 let loc = retrieveLocation()
                 
-                self!.me.getAppInstList(gpslocation: loc)
+                let appInstListRequest = self!.me.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
+                self!.me.getAppInstList(host: self!.host, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
                         Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
                         print("appInstList Reply: \(appInstListReply)")
@@ -443,8 +488,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
                     let loc = retrieveLocation()
                     
-                    self!.verifyLocationPromise = self!.me.verifyLocation(
-                            gpsLocation: loc)
+                    let verifyLocRequest = self!.me.createVerifyLocationRequest(
+                        carrierName: self!.carrierName, gpsLocation: loc)
+                    self!.verifyLocationPromise = self!.me.verifyLocation(host: self!.host, port: self!.port, request: verifyLocRequest)
                     .then { verifyLocationReply in
                         Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
                         print("VerfiyLocation reply: \(verifyLocationReply)")
@@ -468,7 +514,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 // FIXME: register client is a promise.
 
                 print("Before FindCloudlet")
-                self!.me.findCloudlet(gpslocation: loc)
+                let findCloudletRequest = self!.me.createFindCloudletRequest(carrierName: self!.carrierName,
+                                                                             gpsLocation: loc, devName: self!.devName,
+                                                                             appName: self!.appName, appVers: self!.appVers)
+                self!.me.findCloudlet(host: self!.host, port: self!.port, request: findCloudletRequest)
                 .then { findCloudletReply in
                     Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
                     print("findCloudlet Reply: \(findCloudletReply)")
