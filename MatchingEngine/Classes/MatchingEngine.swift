@@ -37,8 +37,6 @@ enum MatchingEngineError: Error {
     case registerFailed
     case findCloudletFailed
     case verifyLocationFailed
-    
-    
 }
 
 
@@ -331,21 +329,21 @@ public class MatchingEngine
         Swift.print("~~~certificates: \(certificates) ---")
         //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )
         Logger.shared.log(.network, .info, " add these certificates to your curl below --cacert mex-ca.crt --cert mex-client.crt")
-
+        
         let trustPolicy = ServerTrustPolicy.pinCertificates(
             certificates: certificates,
             validateCertificateChain: true,
             validateHost: true
         )
-
+        
         do
         {
             let whoToTrust = try url.asURL().host
             //     Swift.print("\(whoToTrust)")
-
+            
             let trustPolicies = [whoToTrust!: trustPolicy] // [String: ServerTrustPolicy]∫
             let policyManager = ServerTrustPolicyManager(policies: trustPolicies)
-
+            
             sessionManager = SessionManager(
                 configuration: .default,
                 serverTrustPolicyManager: policyManager

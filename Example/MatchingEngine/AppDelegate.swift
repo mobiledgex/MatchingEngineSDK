@@ -26,32 +26,32 @@ import GoogleMaps
 import GoogleSignIn
 
 import NSLogger
-
+import MatchingEngine
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var services: Any? //   = GMSServices.sharedServices()
+    var matchingEngine: MatchingEngine!
+    var myViewController: ViewController!
 
-    #warning ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
-    // #error ("Action item: you need to replace  the values assigned: kAPIKey/kClientID ")
-
-    // replace the following two values with your own
-    //
-    let kAPIKey = "AIzaSyCNWqii1sVJ0NGU12UvRBbvDhqBqpcSyP0" // JT my personal APIKey - todo: use your own
+    #warning ("Action item: you need to replace the values assigned: kClientID ")
+    let kAPIKey = "AIzaSyDHEayhLBIJfBvE3SBOsHNHA3dSRYR31G8"
     let kClientID = "406366254062-ci2micbnconnti5hhb7ltku9natmegct.apps.googleusercontent.com" // JT   for google signin, tmp use mine
 
+    
+    
     var window: UIWindow?
-
     
     /// Where it all starts
     ///
+    /// Initialize one (or more) MatchingEngines.
+    ///
     /// Do Google GIDSignIn and GMSServices
-   /// init loggng options
-    
+    /// init loggng options
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        // Swift.print("\(#function)")
+        matchingEngine = MatchingEngine()
 
         #if true    // GIDSignIn
             GIDSignIn.sharedInstance().clientID = kClientID
@@ -60,9 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         GMSServices.provideAPIKey(kAPIKey) // for maps
         services = GMSServices.sharedServices()
-
-        // rotate log
-  ////      Log.logger.rename(0)  // usage: logw("•• write to the log")
 
         // ---
         // NSLogger options
@@ -131,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
     // MARK: -
     
     

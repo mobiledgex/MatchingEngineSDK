@@ -30,10 +30,10 @@ import SwiftLocation
 
 import NSLogger
 import Promises
-import MatchingEngine // SDK
+import MatchingEngine
 
 // ----------------------------------------
-
+//
 private var locationRequest: LocationRequest? // so we can stop updates
 
 // --------
@@ -274,14 +274,11 @@ private func useCloudlets(_ findCloudletReply: [String: Any]) // unused
  * @param lat
  * @param lng
  */
-public func updateLocSimLocation(_ lat: Double, _ lng: Double)
+public func updateLocSimLocation(hostName: String, latitude: Double, longitude: Double)
 {
     // Swift.print("\(#function)")
 
-    let jd: [String: Any]? = ["latitude": lat, "longitude": lng]    // Dictionary/json
-
-    let hostName: String = MexUtil.shared.generateDmeHost(carrierName: MexUtil.shared.getCarrierName()).replacingOccurrences(of: "dme", with: "locsim")
-
+    let jd: [String: Any]? = ["latitude": latitude, "longitude": longitude]    // Dictionary/json
     let urlString: URLConvertible = "http://\(hostName):8888/updateLocation"
 
     Swift.print("\(urlString)")
