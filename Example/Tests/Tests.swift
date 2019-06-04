@@ -15,6 +15,15 @@ class Tests: XCTestCase {
     var authToken: String?
     var matchingEngine: MatchingEngine!
     
+    func propertyAssert(propertyNameList: [String], object: [String: AnyObject]) {
+        for propertyName in propertyNameList {
+            guard let _ = object[propertyName] else {
+                XCTAssert(false, "Object is missing required property: \(propertyName)")
+                return
+            }
+        }
+    }
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -61,7 +70,11 @@ class Tests: XCTestCase {
         }
 
         XCTAssert(waitForPromises(timeout: 10))
-        XCTAssert(replyPromise.value!["Status"] as? String ?? "" == "RS_SUCCESS", "Register was a success")
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "Register did not return a value.")
+            return
+        }
+        XCTAssert(promiseValue["status"] as? String ?? "" == "RsSuccess", "Register Failed.")
         XCTAssertNil(replyPromise.error)
     }
     
@@ -80,11 +93,74 @@ class Tests: XCTestCase {
                                                     devName: self.devName,
                                                     appName: self.appName,
                                                     appVers: "1.0"))
+            }.catch { error in
+                XCTAssert(false, "FindCloudlet encountered error: \(error)")
+        }
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let val = replyPromise.value else {
+            XCTAssert(false, "FindCloudlet missing a return value.")
+            return
+        }
+        XCTAssert(val["status"] as? String ?? "" == "FindFound", "FindCloudlet failed, status: \(String(describing: val["status"]))")
+        XCTAssertNil(replyPromise.error)
+    }
+    
+    func testVerfiyLocation() {
+        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.verifyLocation(host: self.host, port: self.port,
+                                                   request: self.matchingEngine.createVerifyLocationRequest(
+                                                    carrierName: self.carrierName, // Test override values
+                                                    gpsLocation: loc))
+            }.catch {error in
+                XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
         }
         
+        XCTAssert(waitForPromises(timeout: 20))
+        guard let val = replyPromise.value else {
+            XCTAssert(false, "VerifyLocationReply missing a return value.")
+            return
+        }
+        let gpsStatus = val["gps_location_status"] as? String ?? ""
+        // The next value may change. Range of values are possible depending on location.
+        XCTAssert(gpsStatus == "LocRoamingCountryMatch", "VerifyLocation failed: \(gpsStatus)")
+        XCTAssertNil(replyPromise.error, "VerifyLocation Error is set: \(String(describing: replyPromise.error))")
+    }
+    
+    func testAppInstList() {
+        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.getAppInstList(host: self.host, port: self.port,
+                                                   request: self.matchingEngine.createGetAppInstListRequest(
+                                                    carrierName: self.carrierName,
+                                                    gpsLocation: loc))
+        }
         XCTAssert(waitForPromises(timeout: 10))
-        let val = replyPromise.value!
-        XCTAssert(val["status"] as? String ?? "" == "FIND_FOUND", "FindCloudlet was a success")
+        guard let val = replyPromise.value else {
+            XCTAssert(false, "AppInstList missing a return value.")
+            return
+        }
+        XCTAssert(val["status"] as? String ?? "" == "AiSuccess", "AppInstList failed, status: \(String(describing: val["status"]))")
+        // This one depends on the server for the number of cloudlets:
+        guard let cloudlets = val["cloudlets"] as? [[String: AnyObject]] else {
+            XCTAssert(false, "AppInstList: No cloudlets!")
+            return
+        }
+        // Basic assertions:
+        let propertyNameList = ["carrier_name", "cloudlet_name", "gps_location", "distance", "appinstances"]
+        for cloudlet in cloudlets {
+            propertyAssert(propertyNameList: propertyNameList, object: cloudlet)
+        }
         XCTAssertNil(replyPromise.error)
     }
 

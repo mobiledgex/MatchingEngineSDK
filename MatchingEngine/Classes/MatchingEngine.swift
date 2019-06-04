@@ -17,6 +17,7 @@ enum InvalidTokenServerTokenError: Error  {
     case invalidTokenServerUri
     case cannotContactServer
     case invalidToken
+    case invalidTokenServerResponse
 }
 
 enum MatchingEngineError: Error {
@@ -263,8 +264,7 @@ public class MatchingEngine
         
         return true
     }
-
-
+    
     /// Async https request, Google Promises
     ///
     /// - Parameters:
@@ -291,12 +291,15 @@ public class MatchingEngine
                     encoding: JSONEncoding.default,
                     headers: self.headers
                     ).responseJSON { response in
-                        Swift.print("\n••\n\(response.request!)\n")
+                        Logger.shared.log(.network, .debug, "\(response.request!)\n")
+                        
+                        let statusCode = response.response?.statusCode
+                        Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
                         
                         switch response.result
                         {
                         case let .failure(error):
-                            Swift.print("\(error)")
+                            Logger.shared.log(.network, .debug, "\(error)")
                             reject(error)
                             return
                             
@@ -304,7 +307,7 @@ public class MatchingEngine
                             // First make sure you got back a dictionary if that's what you expect
                             guard let json = data as? [String: AnyObject] else
                             {
-                                Swift.print("json = \(data)  error")
+                                Logger.shared.log(.network, .debug, "json = \(data)  error")
                                 return
                             }
                             Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(json) \n")

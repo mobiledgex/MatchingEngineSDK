@@ -28,36 +28,36 @@ extension MatchingEngine {
         var findCloudletRequest = [String: Any]() // Dictionary/json
         
         findCloudletRequest["ver"] = 1
-        findCloudletRequest["SessionCookie"] = self.state.getSessionCookie()
-        findCloudletRequest["CarrierName"] = carrierName
-        findCloudletRequest["GpsLocation"] = gpsLocation
-        findCloudletRequest["DevName"] = devName
-        findCloudletRequest["AppName"] = appName ?? state.appName
-        findCloudletRequest["AppVers"] = appVers ?? state.appVersion
+        findCloudletRequest["session_cookie"] = self.state.getSessionCookie()
+        findCloudletRequest["carrier_name"] = carrierName
+        findCloudletRequest["gps_location"] = gpsLocation
+        findCloudletRequest["dev_name"] = devName
+        findCloudletRequest["app_name"] = appName ?? state.appName
+        findCloudletRequest["app_vers"] = appVers ?? state.appVersion
         
         return findCloudletRequest
     }
     
     func validateFindCloudletRequest(request: [String: Any]) throws
     {
-        guard let _ = request["SessionCookie"] as? String else {
+        guard let _ = request["session_cookie"] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request["CarrierName"] as? String else {
+        guard let _ = request["carrier_name"] as? String else {
             throw MatchingEngineError.missingCarrierName
         }
-        guard let gpsLocation = request["GpsLocation"] as? [String: Any] else {
+        guard let gpsLocation = request["gps_location"] as? [String: Any] else {
             throw MatchingEngineError.missingGPSLocation
         }
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)
 
-        guard let _ = request["DevName"] as? String else {
+        guard let _ = request["dev_name"] as? String else {
             throw MatchingEngineError.missingDevName
         }
-        guard let _ = request["AppName"] as? String else {
+        guard let _ = request["app_name"] as? String else {
             throw MatchingEngineError.missingAppName
         }
-        guard let _ = request["AppVers"] as? String else {
+        guard let _ = request["app_vers"] as? String else {
             throw MatchingEngineError.missingAppVersion
         }
     }

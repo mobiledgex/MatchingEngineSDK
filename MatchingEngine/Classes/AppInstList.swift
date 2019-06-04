@@ -22,23 +22,23 @@ extension MatchingEngine {
         //   json findCloudletRequest;
         var appInstListRequest = [String: Any]() // Dictionary/json
         
-        appInstListRequest["vers"] = 1
-        appInstListRequest["SessionCookie"] = state.getSessionCookie()
-        appInstListRequest["CarrierName"] = carrierName ?? state.carrierName
-        appInstListRequest["GpsLocation"] = gpsLocation
+        appInstListRequest["ver"] = 1
+        appInstListRequest["session_cookie"] = state.getSessionCookie()
+        appInstListRequest["carrier_name"] = carrierName ?? state.carrierName
+        appInstListRequest["gps_location"] = gpsLocation
         
         return appInstListRequest
     }
     
     func validateAppInstListRequest(request: [String: Any]) throws
     {
-        guard let _ = request["SessionCookie"] as? String else {
+        guard let _ = request["session_cookie"] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request["CarrierName"] as? String else {
+        guard let _ = request["carrier_name"] as? String else {
             throw MatchingEngineError.missingCarrierName
         }
-        guard let gpsLocation = request["GpsLocation"] as? [String: Any] else {
+        guard let gpsLocation = request["gps_location"] as? [String: Any] else {
             throw MatchingEngineError.missingGPSLocation
         }
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)

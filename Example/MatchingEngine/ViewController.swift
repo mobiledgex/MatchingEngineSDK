@@ -47,7 +47,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var authToken: String? = nil
     
     // For the overriding me.getCarrierName() for contacting the DME host
-    var overrideDmeCarrierName: String? = "tdg2"
+    var overrideDmeCarrierName: String? = "mexdemo"
 
     @IBOutlet var viewMap: GMSMapView!
 
