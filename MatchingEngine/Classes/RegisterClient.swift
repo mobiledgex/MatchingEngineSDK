@@ -9,9 +9,9 @@ import NSLogger
 import Promises
 
 // MARK: RegisterClient code.
+// TODO: GRPC for Swift (none available).
 
-// GCD based FutureX code dependencies.
-
+// MARK: RegisterClient Extension
 extension MatchingEngine
 {
     // MARK:
@@ -47,30 +47,30 @@ extension MatchingEngine
     public func createRegisterClientRequest(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?)
         -> [String: Any] // Dictionary/json
     {
-        var regClientRequest = [String: String]() // Dictionary/json regClientRequest
+        var regClientRequest = [String: Any]() // Dictionary/json regClientRequest
         
-        regClientRequest["ver"] = "1"
-        regClientRequest["AppName"] = appName ?? getAppName()
-        regClientRequest["AppVers"] = appVers ?? getAppVersion()
-        regClientRequest["DevName"] = devName
-        regClientRequest["CarrierName"] = carrierName ?? getCarrierName()
-        regClientRequest["AuthToken"] = authToken ?? ""
+        regClientRequest["ver"] = 1
+        regClientRequest["app_name"] = appName ?? getAppName()
+        regClientRequest["app_vers"] = appVers ?? getAppVersion()
+        regClientRequest["dev_name"] = devName
+        regClientRequest["carrier_name"] = carrierName ?? getCarrierName()
+        regClientRequest["auth_token"] = authToken ?? ""
         
         return regClientRequest
     }
     
     public func validateRegisterClientRequest(request: [String: Any]) throws
     {
-        guard let _ = request["AppName"] else {
+        guard let _ = request["app_name"] else {
             throw MatchingEngineError.missingAppName
         }
-        guard let _ = request["AppVers"] else {
+        guard let _ = request["app_vers"] else {
             throw MatchingEngineError.missingAppVersion
         }
-        guard let _ = request["DevName"] else {
+        guard let _ = request["dev_name"] else {
             throw MatchingEngineError.missingDevName
         }
-        guard let _ = request["CarrierName"] else {
+        guard let _ = request["carrier_name"] else {
             throw MatchingEngineError.missingDevName
         }
     }
@@ -124,14 +124,14 @@ extension MatchingEngine
         
         // Return a promise chain:
         return self.postRequest(uri: urlStr, request: request).then { replyDict in
-            guard let sessionCookie = replyDict["SessionCookie"] as? String else {
+            guard let sessionCookie = replyDict["session_cookie"] as? String else {
                 self.state.setSessionCookie(sessionCookie: nil);
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingSessionCookie)
             }
             self.state.setSessionCookie(sessionCookie: sessionCookie)
             Logger.shared.log(.network, .debug, " saved sessioncookie")
             
-            guard let tokenServerUri = replyDict["TokenServerURI"] as? String else {
+            guard let tokenServerUri = replyDict["token_server_uri"] as? String else {
                 self.state.setTokenServerUri(tokenServerUri: nil);
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingTokenServerURI)
             }
@@ -141,53 +141,5 @@ extension MatchingEngine
             // Implicit return replyDict.
         }
     }
-
-    /*
-    public func registerClient(appName: String, devName: String,  appVers: String)
-        -> Promise<[String: AnyObject]>
-    {
-        guard let carrierName = getCarrierName() else { // FIXME: Handle multiple carriers.
-            let promise = Promise<[String: AnyObject]> { fulfill, reject in
-                reject(MatchingEngineError.missingCarrierName)
-            }
-            return promise
-        }
-        
-        return registerClient(carrierName: carrierName, appName: appName, devName: devName, appVers: appVers)
-    }
- */
-    
-    /*
-    public func registerClient(carrierName: String, appName: String, devName: String,  appVers: String)
-        -> Promise<[String: AnyObject]>
-    {
-        Logger.shared.log(.network, .debug, "registerClient")
-        
-        let baseuri = MexUtil.shared.generateBaseUri(carrierName, MexUtil.shared.dmePort)
-        Logger.shared.log(.network, .debug, "\(baseuri)")
-        
-        // 🔵 API
-        let registerClientRequest = createRegisterClientRequest(appName:appName, devName: devName, appVers: appVers)
-        let urlStr = baseuri + MexUtil.shared.registerAPI
-        
-        // Return a promise:
-        return self.postRequest(uri: urlStr, request: registerClientRequest).then { replyDict in
-            guard let sessionCookie = replyDict["SessionCookie"] as? String else {
-                self.state.setSessionCookie(sessionCookie: nil);
-                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingSessionCookie)
-            }
-            self.state.setSessionCookie(sessionCookie: sessionCookie)
-            Logger.shared.log(.network, .debug, " saved sessioncookie")
-            
-            guard let tokenServerUri = replyDict["TokenServerURI"] as? String else {
-                self.state.setTokenServerUri(tokenServerUri: nil);
-                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingTokenServerURI)
-            }
-            self.state.setTokenServerUri(tokenServerUri: tokenServerUri)
-            Logger.shared.log(.network, .debug, " saved tokenserveruri\n")
-            
-            // Implicit return replyDict.
-        }
-    }*/
        
 } // end RegisterClient
