@@ -77,7 +77,7 @@ extension MatchingEngine {
         let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
-        return try findCloudlet(host: host, port: port, request: request)
+        return findCloudlet(host: host, port: port, request: request)
     }
     
     
