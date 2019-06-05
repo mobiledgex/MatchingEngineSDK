@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'MatchingEngineSDK'
   s.version          = '1.4.1'
-  s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX infrastructure and to utilize its services.'
+  s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
