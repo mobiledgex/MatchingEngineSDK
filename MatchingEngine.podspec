@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'MatchingEngine'
+  s.name             = 'MatchingEngineSDK'
   s.version          = '0.1.49'
   s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX infrastructure and to utilize its services.'
 
@@ -21,12 +21,12 @@ s.description      = <<-DESC
 Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage the power that Mobile Edge Cloud offers? The MobiledgeX SDK for iOS Swift exposes various services that MobiledgeX offers such as finding the nearest MobiledgeX Cloudlet Infrastructure for client-server communication or workload processing offload.
                      DESC
 
-  s.homepage         = 'https://github.com/mobiledgex/MatchingEngine'
+  s.homepage         = 'https://github.com/mobiledgex/MatchingEngineSDK'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'Apache.LICENSE-2.0', :file => 'LICENSE' }
   s.author           = { 'mobiledgex' => 'github@github.com' }
   s.source           = { :git => 'https://github.com/mobiledgex/MatchingEngine.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/mobiledgex
 
   s.ios.deployment_target = '11.4'
 
