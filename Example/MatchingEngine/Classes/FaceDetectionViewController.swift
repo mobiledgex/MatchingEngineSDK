@@ -375,8 +375,15 @@ class FaceDetectionViewController: UIViewController
 
             defaultVideoDevice = (usingFrontCamera ? getFrontCamera() : getBackCamera())
 
+            guard let _ = defaultVideoDevice else {
+                Logger.shared.log(.network, .info, "There is no available video capture device!")
+                setupResult = .configurationFailed
+                return
+            }
+            
             let videoDeviceInput = try AVCaptureDeviceInput(device: defaultVideoDevice!)
-
+            
+            
             for i : AVCaptureDeviceInput in (session.inputs as! [AVCaptureDeviceInput])
             {
                 self.session.removeInput(i)
@@ -1006,9 +1013,16 @@ extension FaceDetectionViewController
         return nil
     }
     
-    func getBackCamera() -> AVCaptureDevice
+    func getBackCamera() -> AVCaptureDevice?
     {
-        return AVCaptureDevice.default(for: AVMediaType.video)!
+        if let avcapdev = AVCaptureDevice.default(for: AVMediaType.video)
+        {
+            return avcapdev
+        }
+        else
+        {
+            return nil
+        }
     }
     
 }
