@@ -19,8 +19,8 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GTMSessionFetcher/Core (1.2.2)
-  - MatchingEngine (0.1.49):
-    - Alamofire (~> 4.8.1)
+  - MatchingEngineSDK (1.4.1):
+    - Alamofire
     - NSLogger/Swift
     - PromisesSwift
     - SwiftyJSON
@@ -41,7 +41,7 @@ DEPENDENCIES:
   - DropDown
   - GoogleMaps (= 3.1.0)
   - GoogleSignIn
-  - MatchingEngine (from `../`)
+  - MatchingEngineSDK (from `../`)
   - NSLogger/Swift
   - PromisesSwift
   - SPPermission
@@ -68,7 +68,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 EXTERNAL SOURCES:
-  MatchingEngine:
+  MatchingEngineSDK:
     :path: "../"
 
 SPEC CHECKSUMS:
@@ -78,7 +78,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  MatchingEngine: 3b975ab031580c3586b1cff17ee214813e20df50
+  MatchingEngineSDK: a5434292a0b361f51da72778b477f8fe6ed0ae6b
   NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
@@ -88,6 +88,6 @@ SPEC CHECKSUMS:
   SwiftSocket: 6f4c9c63fbc5c1d61188936bb3c599fd546f40ae
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 2a54a2c142d5f98b1e6ef425609a90a1b2d03645
+PODFILE CHECKSUM: 5ecd2c228f74dc99911e179043c8cf6e799cc857
 
 COCOAPODS: 1.7.0

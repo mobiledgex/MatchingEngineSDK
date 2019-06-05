@@ -2,8 +2,13 @@ use_frameworks!
 
 platform :ios, '11.4'
 
+# Default Specs.git:
+source 'https://github.com/CocoaPods/Specs.git'
+# MobiledgeX Private Trunk for Specs.git equivalent, , if not using "../":
+source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
+
 target 'MatchingEngine_Example' do
-  pod 'MatchingEngine', :path => '../'
+  pod 'MatchingEngineSDK', :path => '../'
 
   pod 'Alamofire'
   pod 'PromisesSwift'
