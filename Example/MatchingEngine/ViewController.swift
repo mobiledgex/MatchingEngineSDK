@@ -200,7 +200,15 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            // MexGetAppInst.shared.getAppInstNow(gpslocation: loc) // "Get App Instances"
+            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
+            self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: request)
+                .then { appInstList in
+                    // Ick. Refactor, to just "Toast" the SDK usage status in UI at each promises chain stage:
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "processAppInstList"), object: appInstList)
+                }
+                .catch { error in
+                    Logger.shared.log(.network, .info, "Error getting appInstList: \(error)")
+                }
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "processAppInstList"), object: nil, queue: nil)
@@ -365,7 +373,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         {
             let cl = lets[cloudletName]
             Swift.print("\(cloudletName)")
-            Swift.print("\(cl)")
+            Swift.print("\(String(describing: cl))")
 
             Swift.print("didTapInfoWindowOf \(cloudletName)")
 
