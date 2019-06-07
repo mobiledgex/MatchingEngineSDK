@@ -62,7 +62,13 @@ extension MatchingEngine {
         }
     }
     
-    // TODO: overload findCloudlet to take more parameters, add platformIntegrtion.swift.
+    /// API findCloudlet
+    ///
+    /// Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
+    /// for the current carrier, if any.
+    /// - Parameters:
+    ///   - request: FindCloudlet dictionary, from createFindCloudletReqwuest.
+    /// - Returns: API Dictionary/json
     public func findCloudlet(request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
@@ -80,7 +86,15 @@ extension MatchingEngine {
         return findCloudlet(host: host, port: port, request: request)
     }
     
-    
+    /// API findCloudlet
+    ///
+    /// Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
+    /// for the current carrier, if any.
+    /// - Parameters:
+    ///   - host: host override of the dme host server. DME must be reachable from current carrier.
+    ///   - port: port override of the dme server port
+    ///   - request: FindCloudlet dictionary, from createFindCloudletReqwuest.
+    /// - Returns: API Dictionary/json
     public func findCloudlet(host: String, port: UInt, request: [String: Any])
         -> Promise<[String: AnyObject]>
     {

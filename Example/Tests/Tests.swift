@@ -92,7 +92,7 @@ class Tests: XCTestCase {
                                                     gpsLocation: loc,
                                                     devName: self.devName,
                                                     appName: self.appName,
-                                                    appVers: "1.0"))
+                                                    appVers: self.appVers))
             }.catch { error in
                 XCTAssert(false, "FindCloudlet encountered error: \(error)")
         }
@@ -110,7 +110,6 @@ class Tests: XCTestCase {
         
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
             .then { reply in
                 self.matchingEngine.verifyLocation(host: self.host, port: self.port,

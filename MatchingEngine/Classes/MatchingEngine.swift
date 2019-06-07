@@ -121,15 +121,7 @@ public class MatchingEngine
     var state: MatchingEngineState = MatchingEngineState()
     let networkInfo = CTTelephonyNetworkInfo()
     
-    var sessionManager: SessionManager? // alamofire: creeated based on host trust
-    
-    // need different SessionManager for each host
-    
-    // Storage for Futures (TODO Accessors)
-    public var registerClientPromise: Promise<[String: AnyObject]>?
-    public var findCloudletPromise: Promise<[String: AnyObject]>?
-    public var getTokenPromise: Promise<[String: AnyObject]>?
-    public var verifyLocationPromise: Promise<[String: AnyObject]>?
+    var sessionManager: SessionManager? // alamofire
     
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
     var executionQueue = DispatchQueue.global(qos: .default)
@@ -138,14 +130,13 @@ public class MatchingEngine
         "Accept": "application/json",
         "Content-Type": "application/json", // This is the default
         "Charsets": "utf-8",
-    ] /// headers HTTPHeaders:
+    ]
 
-    
     public init()
     {
         // adds update provider for cell service provider carrierName changes.
         addServiceSubscriberCellularProvidersDidUpdateNotifier()
-        executionQueue = DispatchQueue.global(qos: .default) // What type is this?
+        executionQueue = DispatchQueue.global(qos: .default)
 
         print(state.appName)
         
@@ -370,7 +361,7 @@ public class MatchingEngine
 // MARK:- MexUtil
 
 // common
-//
+// FIXME: Util class contents belong in main MatchingEnigne class, and not shared.
 
 public class MexUtil // common to Mex... below
 {

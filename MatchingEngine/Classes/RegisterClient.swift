@@ -39,10 +39,11 @@ extension MatchingEngine
     /// API createRegisterClientRequest
     ///
     /// - Parameters:
-    ///   - ver: "1"
-    ///   - appName: "appName"
-    ///   - devName:  "devName"
-    ///   - appVers: "appVers""
+    ///   - devName: Name of the developer
+    ///   - appName: Name of the application
+    ///   - appVers: Version of the application.
+    ///   - carrierName: Name of the mobile carrier.
+    ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
     public func createRegisterClientRequest(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?)
         -> [String: Any] // Dictionary/json
@@ -79,7 +80,8 @@ extension MatchingEngine
     ///
     /// Takes a RegisterClient request, and contacts the Distributed MatchingEngine host for the current
     /// carrier, if any.
-    ///
+    /// - Parameters:
+    ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
     public func registerClient(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
@@ -103,7 +105,10 @@ extension MatchingEngine
     ///
     /// Takes a RegisterClient request, and contacts the specified Distributed MatchingEngine host and port
     /// for the current carrier, if any.
-    ///
+    /// - Parameters:
+    ///   - host: host override of the dme host server. DME must be reachable from current carrier.
+    ///   - port: port override of the dme server port
+    ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
     public func registerClient(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
