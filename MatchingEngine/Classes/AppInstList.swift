@@ -12,11 +12,10 @@ extension MatchingEngine {
     /// createGetAppInstListRequest
     ///
     /// - Parameters:
-    ///   - carrierName: <#carrierName description#>   // Carrier name can change depending on cell tower.
-    ///   - gpslocation: <#gpslocation description#>
+    ///   - carrierName: Carrier name. This value can change depending on cell tower.
+    ///   - gpslocation: A dictionary with at least longitude and latitude key values.
     ///
     /// - Returns: API Dictionary/json
-    
     public func createGetAppInstListRequest(carrierName: String?, gpsLocation: [String: Any]) -> [String: Any]
     {
         var appInstListRequest = [String: Any]() // Dictionary/json
@@ -43,7 +42,6 @@ extension MatchingEngine {
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)
     }
     
-    // TODO: overload findCloudlet to take more parameters, add platformIntegrtion.swift.
     public func getAppInstList(request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
@@ -59,7 +57,6 @@ extension MatchingEngine {
         
         return getAppInstList(host: host, port: port, request: request)
     }
-    
     
     public func getAppInstList(host: String, port: UInt, request: [String: Any])
         -> Promise<[String: AnyObject]>
