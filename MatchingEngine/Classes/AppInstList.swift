@@ -19,7 +19,6 @@ extension MatchingEngine {
     
     public func createGetAppInstListRequest(carrierName: String?, gpsLocation: [String: Any]) -> [String: Any]
     {
-        //   json findCloudletRequest;
         var appInstListRequest = [String: Any]() // Dictionary/json
         
         appInstListRequest["ver"] = 1
