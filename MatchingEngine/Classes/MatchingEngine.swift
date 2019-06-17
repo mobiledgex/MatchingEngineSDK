@@ -271,45 +271,48 @@ public class MatchingEngine
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n \(request) \n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            self.executionQueue.async { // Wrap into a promise:
-                self.dealWithTrustPolicy(url: uri)
-                
-                // The value is returned via reslove/reject.
-                let _ = self.sessionManager!.request(
-                    uri,
-                    method: .post,
-                    parameters: request,
-                    encoding: JSONEncoding.default,
-                    headers: self.headers
-                    ).responseJSON { response in
-                        Logger.shared.log(.network, .debug, "\(response.request!)\n")
+            // Certificates. FIXME: Should not be here.
+            do {
+                try self.dealWithTrustPolicy(url: uri)
+            } catch {
+                reject(error)
+            }
+
+            // The value is returned via reslove/reject.
+            let _ = self.sessionManager!.request(
+                uri,
+                method: .post,
+                parameters: request,
+                encoding: JSONEncoding.default,
+                headers: self.headers
+                ).responseJSON { response in
+                    Logger.shared.log(.network, .debug, "\(response.request!)\n")
+
+                    let statusCode = response.response?.statusCode
+                    Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
+
+                    switch response.result
+                    {
+                    case let .failure(error):
+                        Logger.shared.log(.network, .debug, "\(error)")
+                        reject(error)
+                        return
                         
-                        let statusCode = response.response?.statusCode
-                        Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
-                        
-                        switch response.result
+                    case let .success(data):
+                        // First make sure you got back a dictionary if that's what you expect
+                        guard let json = data as? [String: AnyObject] else
                         {
-                        case let .failure(error):
-                            Logger.shared.log(.network, .debug, "\(error)")
-                            reject(error)
+                            Logger.shared.log(.network, .debug, "json = \(data)  error")
                             return
-                            
-                        case let .success(data):
-                            // First make sure you got back a dictionary if that's what you expect
-                            guard let json = data as? [String: AnyObject] else
-                            {
-                                Logger.shared.log(.network, .debug, "json = \(data)  error")
-                                return
-                            }
-                            Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(json) \n")
-                            fulfill(json)
                         }
-                        
-                        Logger.shared.log(.network, .debug, "\(response)")
-                        Logger.shared.log(.network, .debug, "result \(response.result)")
-                        Logger.shared.log(.network, .debug, "data \(response.data!)")
-                }
-            } // Background queue for promise.
+                        Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(json) \n")
+                        fulfill(json)
+                    }
+
+                    Logger.shared.log(.network, .debug, "\(response)")
+                    Logger.shared.log(.network, .debug, "result \(response.result)")
+                    Logger.shared.log(.network, .debug, "data \(response.data!)")
+            }
         }
     }
 
@@ -317,7 +320,7 @@ public class MatchingEngine
     /// Deal with certificates, trust
     ///
     /// - Parameter url:
-    func dealWithTrustPolicy(url: URLConvertible)
+    func dealWithTrustPolicy(url: URLConvertible) throws
     {
         let certificates = ServerTrustPolicy.certificates() // alamo extension
         Swift.print("~~~certificates: \(certificates) ---")
@@ -329,7 +332,7 @@ public class MatchingEngine
             validateCertificateChain: true,
             validateHost: true
         )
-        
+
         do
         {
             let whoToTrust = try url.asURL().host
@@ -345,7 +348,8 @@ public class MatchingEngine
         }
         catch
         {
-            Swift.print("dealWithTrustPolicy asURL throws: trust failure")
+            Logger.shared.log(.network, .debug, ("dealWithTrustPolicy asURL throws: trust failure"))
+            throw error
         }
     }
 
