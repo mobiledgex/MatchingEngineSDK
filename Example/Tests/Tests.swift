@@ -74,7 +74,7 @@ class Tests: XCTestCase {
             XCTAssert(false, "Register did not return a value.")
             return
         }
-        XCTAssert(promiseValue["status"] as? String ?? "" == "RsSuccess", "Register Failed.")
+        XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "Register Failed.")
         XCTAssertNil(replyPromise.error)
     }
     
@@ -85,8 +85,8 @@ class Tests: XCTestCase {
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
-        .then { reply in
-            self.matchingEngine.findCloudlet(host: self.host, port: self.port,
+            .then { reply in
+                self.matchingEngine.findCloudlet(host: self.host, port: self.port,
                                                  request: self.matchingEngine.createFindCloudletRequest(
                                                     carrierName: self.carrierName,
                                                     gpsLocation: loc,
@@ -101,7 +101,7 @@ class Tests: XCTestCase {
             XCTAssert(false, "FindCloudlet missing a return value.")
             return
         }
-        XCTAssert(val["status"] as? String ?? "" == "FindFound", "FindCloudlet failed, status: \(String(describing: val["status"]))")
+        XCTAssert(val["status"] as? String ?? "" == "FIND_FOUND", "FindCloudlet failed, status: \(String(describing: val["status"]))")
         XCTAssertNil(replyPromise.error)
     }
     
@@ -116,7 +116,7 @@ class Tests: XCTestCase {
                                                    request: self.matchingEngine.createVerifyLocationRequest(
                                                     carrierName: self.carrierName, // Test override values
                                                     gpsLocation: loc))
-            }.catch {error in
+            }.catch { error in
                 XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
         }
         
@@ -127,7 +127,7 @@ class Tests: XCTestCase {
         }
         let gpsStatus = val["gps_location_status"] as? String ?? ""
         // The next value may change. Range of values are possible depending on location.
-        XCTAssert(gpsStatus == "LocRoamingCountryMatch", "VerifyLocation failed: \(gpsStatus)")
+        XCTAssert(gpsStatus == "LOC_ROAMING_COUNTRY_MATCH", "VerifyLocation failed: \(gpsStatus)")
         XCTAssertNil(replyPromise.error, "VerifyLocation Error is set: \(String(describing: replyPromise.error))")
     }
     
@@ -149,7 +149,7 @@ class Tests: XCTestCase {
             XCTAssert(false, "AppInstList missing a return value.")
             return
         }
-        XCTAssert(val["status"] as? String ?? "" == "AiSuccess", "AppInstList failed, status: \(String(describing: val["status"]))")
+        XCTAssert(val["status"] as? String ?? "" == "AI_SUCCESS", "AppInstList failed, status: \(String(describing: val["status"]))")
         // This one depends on the server for the number of cloudlets:
         guard let cloudlets = val["cloudlets"] as? [[String: AnyObject]] else {
             XCTAssert(false, "AppInstList: No cloudlets!")
