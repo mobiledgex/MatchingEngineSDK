@@ -85,52 +85,53 @@ extension MatchingEngine {
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            self.executionQueue.async { // Wrap into a promise:
-                self.dealWithTrustPolicy(url: uri)
+            do {
+                try self.dealWithTrustPolicy(url: uri)
+            } catch {
+                reject(error)
+            }
+            
+            // The value is returned via reslove/reject.
+            let _ = self.sessionManager!.request(
+                uri,
+                method: .post,
+                parameters: [String: Any](),
+                encoding: JSONEncoding.default,
+                headers: self.headers
+            ).responseJSON { response in
+                Logger.shared.log(.network, .debug, "\n••\n\(response.request!)\n")
                 
-                // The value is returned via reslove/reject.
-                let _ = self.sessionManager!.request(
-                    uri,
-                    method: .post,
-                    parameters: [String: Any](),
-                    encoding: JSONEncoding.default,
-                    headers: self.headers
-                    ).responseJSON { response in
-                        Logger.shared.log(.network, .debug, "\n••\n\(response.request!)\n")
-                        
-                        // 303 SeeOther is "ServerName Not found", which is odd
-                        guard let _ = response.result.error else {
-                            // This is unexpected in AlamoFire.
-                            reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                            return
-                        }
-                        
-                        // Very strange HTTP handling in Alamofire. No headers. Not nice.
-                        Logger.shared.log(.network, .debug, "Expected Error. Handling token.")
-                        if !response.result.isSuccess
-                        {
-                            let msg = String(describing: response.result.error)
-                            Logger.shared.log(.network, .debug, "msg: \(msg)")
-                            if msg.contains("dt-id=")
-                            { // not really an error
-                                let dtId = msg.components(separatedBy: "dt-id=")
-                                let s1 = dtId[1].components(separatedBy: ",")
-                                let token = s1[0]
-                                Logger.shared.log(.network, .debug, "\(token)")
-                                fulfill(["token": token as AnyObject])
-                            } else {
-                                // Missing token.
-                                reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                            }
-                        }
-                        else
-                        {
-                            // Should not succeed on 303.
-                            reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                        }
-                        
+                // 303 SeeOther is "ServerName Not found", which is odd
+                guard let _ = response.result.error else {
+                    // This is unexpected in AlamoFire.
+                    reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
+                    return
                 }
-            } // Background queue for promise.
+                
+                // Very strange HTTP handling in Alamofire. No headers. Not nice.
+                Logger.shared.log(.network, .debug, "Expected Error. Handling token.")
+                if !response.result.isSuccess
+                {
+                    let msg = String(describing: response.result.error)
+                    Logger.shared.log(.network, .debug, "msg: \(msg)")
+                    if msg.contains("dt-id=")
+                    { // not really an error
+                        let dtId = msg.components(separatedBy: "dt-id=")
+                        let s1 = dtId[1].components(separatedBy: ",")
+                        let token = s1[0]
+                        Logger.shared.log(.network, .debug, "\(token)")
+                        fulfill(["token": token as AnyObject])
+                    } else {
+                        // Missing token.
+                        reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
+                    }
+                }
+                else
+                {
+                    // Should not succeed on 303.
+                    reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
+                }
+            }
         }
     }
     
