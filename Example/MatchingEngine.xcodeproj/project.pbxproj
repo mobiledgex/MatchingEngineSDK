@@ -881,11 +881,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = K7C3P28GZ6;
+						DevelopmentTeam = YYJXQ5W38F;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = YYJXQ5W38F;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -1282,6 +1283,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1327,6 +1329,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1335,15 +1338,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 033D6E20A36A2B3251FB7DA3 /* Pods-MatchingEngine_Example.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = K7C3P28GZ6;
+				DEVELOPMENT_TEAM = YYJXQ5W38F;
 				INFOPLIST_FILE = MatchingEngine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobiledgex.demo.MatchingEngine-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franklin.demo.MatchingEngine-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1351,15 +1354,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E56005713766F4805886E636 /* Pods-MatchingEngine_Example.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = K7C3P28GZ6;
+				DEVELOPMENT_TEAM = YYJXQ5W38F;
 				INFOPLIST_FILE = MatchingEngine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobiledgex.demo.MatchingEngine-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franklin.demo.MatchingEngine-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1367,6 +1370,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = YYJXQ5W38F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1381,7 +1385,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MatchingEngine_Example.app/MatchingEngine_Example";
 			};
 			name = Debug;
@@ -1390,6 +1394,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB71EF3F51E6B9780099D19E /* Pods-MatchingEngine_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = YYJXQ5W38F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1400,7 +1405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MatchingEngine_Example.app/MatchingEngine_Example";
 			};
 			name = Release;
