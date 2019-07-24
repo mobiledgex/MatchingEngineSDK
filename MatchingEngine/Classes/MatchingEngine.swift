@@ -387,6 +387,7 @@ public class MexUtil // common to Mex... below
     public let appinstlistAPI: String = "/v1/getappinstlist"
     public let verifylocationAPI: String = "/v1/verifylocation"
     public let findcloudletAPI: String = "/v1/findcloudlet"
+    public let qospositionkpiAPI: String = "/v1/getqospositionkpi";
     
     public var closestCloudlet = ""
     
