@@ -170,4 +170,27 @@ class Tests: XCTestCase {
         }
     }
     
+    func testGetQosPositionKpi() {
+        let loc1 = ["longitude": -145.149349, "latitude": 37.459609]
+        let loc2 = ["longitude": -1100.149349, "latitude": 37.459609]
+        let positions = ["1": loc1, "2": loc2]
+        
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(requests: positions))
+            } .catch { error in
+                XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "Get QOS Position did not return a value.")
+            return
+        }
+        XCTAssert(promiseValue["qos_positions"] as? String ?? "" == "RS_SUCCESS", "QOS Position Failed.")
+        XCTAssertNil(replyPromise.error)
+    }
+    
 }
