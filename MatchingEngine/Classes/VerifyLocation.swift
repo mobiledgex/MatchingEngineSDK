@@ -14,6 +14,23 @@ enum MatchingEngineParameterError: Error {
     case missingDeviceGPSLocation
 }
 
+//VerifyLocationRequest fields
+class VerifyLocationRequest {
+    public static let ver = "ver"
+    public static let session_cookie = "session_cookie"
+    public static let carrier_name = "carrier_name"
+    public static let gps_location = "gps_location"
+    public static let verify_loc_token = "verify_loc_token"
+}
+
+//VerifyLocationReply fields
+class VerifyLocationReply {
+    public static let ver = "ver"
+    public static let tower_status = "tower_status"
+    public static let gps_location_status = "gps_location_status"
+    public static let gps_location_accuracy_km = "gps_location_accuracy_km"
+}
+
 extension MatchingEngine {
     
     public func doVerifyLocation(gpsLocation: [String: AnyObject])
@@ -52,28 +69,28 @@ extension MatchingEngine {
     {
         var verifyLocationRequest = [String: Any]() // Dictionary/json
         
-        verifyLocationRequest["ver"] = 1
-        verifyLocationRequest["session_cookie"] = self.state.getSessionCookie()
-        verifyLocationRequest["carrier_name"] = carrierName ?? state.carrierName
-        verifyLocationRequest["gps_location"] = gpsLocation
+        verifyLocationRequest[VerifyLocationRequest.ver] = 1
+        verifyLocationRequest[VerifyLocationRequest.session_cookie] = self.state.getSessionCookie()
+        verifyLocationRequest[VerifyLocationRequest.carrier_name] = carrierName ?? state.carrierName
+        verifyLocationRequest[VerifyLocationRequest.gps_location] = gpsLocation
 
         return verifyLocationRequest
     }
     
     func validateVerifyLocationRequest(request: [String: Any]) throws
     {
-        guard let _ = request["session_cookie"] as? String else {
+        guard let _ = request[VerifyLocationRequest.session_cookie] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request["carrier_name"] as? String else {
+        guard let _ = request[VerifyLocationRequest.carrier_name] as? String else {
             throw MatchingEngineError.missingCarrierName
         }
-        guard let gpsLocation = request["gps_location"] as? [String: Any] else {
+        guard let gpsLocation = request[VerifyLocationRequest.gps_location] as? [String: Any] else {
             throw MatchingEngineError.missingGPSLocation
         }
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)
         
-        guard let _ = request["verify_loc_token"] as? String else {
+        guard let _ = request[VerifyLocationRequest.verify_loc_token] as? String else {
             throw MatchingEngineError.missingTokenServerToken
         }
     }
@@ -166,7 +183,7 @@ extension MatchingEngine {
         let verifyLocationRequest = self.createVerifyLocationRequest(carrierName: carrierName, gpsLocation: gpsLocation)
         var tokenizedRequest = [String: Any]() // Dictionary/json
         tokenizedRequest += verifyLocationRequest
-        tokenizedRequest["verify_loc_token"] = verifyLocationToken
+        tokenizedRequest[VerifyLocationRequest.verify_loc_token] = verifyLocationToken
             
         return tokenizedRequest
     }
@@ -193,11 +210,11 @@ extension MatchingEngine {
         // Dummy promise to check inputs:
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
 
-        guard let _ = request["carrier_name"] ?? self.state.carrierName ?? getCarrierName() else {
+        guard let _ = request[VerifyLocationRequest.carrier_name] ?? self.state.carrierName ?? getCarrierName() else {
             promiseInputs.reject(MatchingEngineParameterError.missingCarrierName)
             return promiseInputs
         }
-        guard let _ = request["gps_location"] ?? self.state.deviceGpsLocation else {
+        guard let _ = request[VerifyLocationRequest.gps_location] ?? self.state.deviceGpsLocation else {
             promiseInputs.reject(MatchingEngineParameterError.missingDeviceGPSLocation)
             return promiseInputs
         }
@@ -221,7 +238,7 @@ extension MatchingEngine {
             
             // Append Token
             var tokenizedRequest = request // Dictionary/json
-            tokenizedRequest["verify_loc_token"] = verifyLocationToken
+            tokenizedRequest[VerifyLocationRequest.verify_loc_token] = verifyLocationToken
             try self.validateVerifyLocationRequest(request: tokenizedRequest)
             
             return self.postRequest(uri: uri,
