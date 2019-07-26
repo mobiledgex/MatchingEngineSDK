@@ -10,7 +10,12 @@ import Promises
 
 extension MatchingEngine {
     
-    public func createQosKPIRequest(requests: [String: Any]) -> [String: Any]   //requests are QosPositions (map from id to gps location)
+    /// createQosKPIRequest
+    ///
+    /// - Parameters:
+    ///   -requests: QosPositions (Dict: id -> gps location)
+    /// - Returns: API  Dictionary/json
+    public func createQosKPIRequest(requests: [String: Any]) -> [String: Any]
     {
         var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
@@ -27,6 +32,12 @@ extension MatchingEngine {
         }
     }
     
+    /// API getQosKPIPosition
+    ///
+    /// Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations
+    /// - Parameters:
+    ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
+    /// - Returns: API Dictionary/json
     public func getQosKPIPosition(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "getQosKPIPosition")
@@ -44,10 +55,21 @@ extension MatchingEngine {
         return getQosKPIPosition(host: host, port: port, request: request);
     }
     
+    /// API getQosKPIPosition
+    ///
+    /// Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations
+    /// - Parameters:
+    ///   - host: host override of the dme host server. DME must be reachable from current carrier.
+    ///   - port: port override of the dme server port
+    ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
+    /// - Returns: API Dictionary/json
     public func getQosKPIPosition(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         Logger.shared.log(.network, .debug, "getQosKPIPosition")
+        
+        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + MexUtil.shared.appinstlistAPI
         
         do {
             try validateQosKPIRequest(request: request)
@@ -56,9 +78,6 @@ extension MatchingEngine {
             promiseInputs.reject(error) // catch and reject
             return promiseInputs
         }
-        
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.qospositionkpiAPI
         
         return self.postRequest(uri: urlStr, request: request)
     }
