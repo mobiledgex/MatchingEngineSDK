@@ -76,6 +76,7 @@ class Tests: XCTestCase {
         }
         XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "Register Failed.")
         XCTAssertNil(replyPromise.error)
+        matchingEngine.registerClientResult(promiseValue)
     }
     
     func testFindCloudlet() {
@@ -179,7 +180,9 @@ class Tests: XCTestCase {
         
         let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
             .then { reply in
-                self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(requests: positions))
+                self.matchingEngine.getQosKPIPosition(host: self.host,
+                                                      port: self.port,
+                                                      request: self.matchingEngine.createQosKPIRequest(requests: positions))
             } .catch { error in
                 XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
         }
