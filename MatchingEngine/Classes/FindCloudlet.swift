@@ -15,8 +15,8 @@ extension MatchingEngine {
     /// createFindCloudletRequest
     ///
     /// - Parameters:
-    ///   - carrierName: <#carrierName description#>
-    ///   - gpslocation: <#gpslocation description#>
+    ///   - carrierName: carrierName description
+    ///   - gpslocation: gpslocation description
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.

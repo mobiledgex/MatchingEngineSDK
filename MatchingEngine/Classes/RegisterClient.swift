@@ -27,12 +27,12 @@ extension MatchingEngine
         else
         {
             let line1 = "\nREST RegisterClient Status: \n"
-            let line2 = "Version: " + (registerClientReply["Ver"] as? String ?? "0")
-            let line3 = ",\n Client Status:" + (registerClientReply["Status"] as? String ?? "")
-            let line4 = ",\n SessionCookie:" + (registerClientReply["SessionCookie"] as? String ?? "")
+            let line2 = "Version: " + (registerClientReply[MatchingEngine.registerClientReplyFields.ver] as? String ?? "0")
+            let line3 = ",\n Client Status:" + (registerClientReply[MatchingEngine.registerClientReplyFields.status] as? String ?? "")
+            let line4 = ",\n SessionCookie:" + (registerClientReply[MatchingEngine.registerClientReplyFields.session_cookie] as? String ?? "")
             
             Swift.print(line1 + line2 + line3 + line4 + "\n\n")
-            Swift.print("Token Server URI: " + (registerClientReply["TokenServerURI"] as? String ?? "") + "\n")
+            Swift.print("Token Server URI: " + (registerClientReply[MatchingEngine.registerClientReplyFields.token_server_uri] as? String ?? "") + "\n")
         }
     }
     
@@ -50,29 +50,29 @@ extension MatchingEngine
     {
         var regClientRequest = [String: Any]() // Dictionary/json regClientRequest
         
-        regClientRequest["ver"] = 1
-        regClientRequest["app_name"] = appName ?? getAppName()
-        regClientRequest["app_vers"] = appVers ?? getAppVersion()
-        regClientRequest["dev_name"] = devName
-        regClientRequest["carrier_name"] = carrierName ?? getCarrierName()
-        regClientRequest["auth_token"] = authToken ?? ""
+        regClientRequest[MatchingEngine.registerClientRequestFields.ver] = 1
+        regClientRequest[MatchingEngine.registerClientRequestFields.app_name] = appName ?? getAppName()
+        regClientRequest[MatchingEngine.registerClientRequestFields.app_vers] = appVers ?? getAppVersion()
+        regClientRequest[MatchingEngine.registerClientRequestFields.dev_name] = devName
+        regClientRequest[MatchingEngine.registerClientRequestFields.carrier_name] = carrierName ?? getCarrierName()
+        regClientRequest[MatchingEngine.registerClientRequestFields.auth_token] = authToken ?? ""
         
         return regClientRequest
     }
     
     public func validateRegisterClientRequest(request: [String: Any]) throws
     {
-        guard let _ = request["app_name"] else {
+        guard let _ = request[MatchingEngine.registerClientRequestFields.app_name] else {
             throw MatchingEngineError.missingAppName
         }
-        guard let _ = request["app_vers"] else {
+        guard let _ = request[MatchingEngine.registerClientRequestFields.app_vers] else {
             throw MatchingEngineError.missingAppVersion
         }
-        guard let _ = request["dev_name"] else {
+        guard let _ = request[MatchingEngine.registerClientRequestFields.dev_name] else {
             throw MatchingEngineError.missingDevName
         }
-        guard let _ = request["carrier_name"] else {
-            throw MatchingEngineError.missingDevName
+        guard let _ = request[MatchingEngine.registerClientRequestFields.carrier_name] else {
+            throw MatchingEngineError.missingCarrierName
         }
     }
     
@@ -129,14 +129,14 @@ extension MatchingEngine
         
         // Return a promise chain:
         return self.postRequest(uri: urlStr, request: request).then { replyDict in
-            guard let sessionCookie = replyDict["session_cookie"] as? String else {
+            guard let sessionCookie = replyDict[MatchingEngine.registerClientReplyFields.session_cookie] as? String else {
                 self.state.setSessionCookie(sessionCookie: nil);
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingSessionCookie)
             }
             self.state.setSessionCookie(sessionCookie: sessionCookie)
             Logger.shared.log(.network, .debug, " saved sessioncookie")
             
-            guard let tokenServerUri = replyDict["token_server_uri"] as? String else {
+            guard let tokenServerUri = replyDict[MatchingEngine.registerClientReplyFields.token_server_uri] as? String else {
                 self.state.setTokenServerUri(tokenServerUri: nil);
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingTokenServerURI)
             }
