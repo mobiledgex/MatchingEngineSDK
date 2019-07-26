@@ -8,6 +8,21 @@ import Foundation
 import NSLogger
 import Promises
 
+//AppInstListRequest fields
+class AppInstListRequest {
+    public static let ver = "ver"
+    public static let session_cookie = "session_cookie"
+    public static let carrier_name = "carrier_name"
+    public static let gps_location = "gps_location"
+}
+
+//AppInstListReply fields
+class AppInstListReply {
+    public static let ver = "ver"
+    public static let status = "status"
+    public static let cloudlets = "cloudlets"
+}
+
 extension MatchingEngine {
     /// createGetAppInstListRequest
     ///
@@ -19,24 +34,25 @@ extension MatchingEngine {
     public func createGetAppInstListRequest(carrierName: String?, gpsLocation: [String: Any]) -> [String: Any]
     {
         var appInstListRequest = [String: Any]() // Dictionary/json
+        Swift.print("blaaahhh appinst")
         
-        appInstListRequest["ver"] = 1
-        appInstListRequest["session_cookie"] = state.getSessionCookie()
-        appInstListRequest["carrier_name"] = carrierName ?? state.carrierName
-        appInstListRequest["gps_location"] = gpsLocation
+        appInstListRequest[AppInstListRequest.ver] = 1
+        appInstListRequest[AppInstListRequest.session_cookie] = state.getSessionCookie()
+        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? state.carrierName
+        appInstListRequest[AppInstListRequest.gps_location] = gpsLocation
         
         return appInstListRequest
     }
     
     func validateAppInstListRequest(request: [String: Any]) throws
     {
-        guard let _ = request["session_cookie"] as? String else {
+        guard let _ = request[AppInstListRequest.session_cookie] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request["carrier_name"] as? String else {
+        guard let _ = request[AppInstListRequest.carrier_name] as? String else {
             throw MatchingEngineError.missingCarrierName
         }
-        guard let gpsLocation = request["gps_location"] as? [String: Any] else {
+        guard let gpsLocation = request[AppInstListRequest.gps_location] as? [String: Any] else {
             throw MatchingEngineError.missingGPSLocation
         }
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)

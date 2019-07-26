@@ -8,6 +8,41 @@ import Foundation
 import NSLogger
 import Promises
 
+//QosPosition fields (right QosPosition is just Dict: positionid -> gps_location)
+class QosPosition {
+    public static let positionid = "positionid"
+    public static let gps_location = "gps_location"
+}
+
+//QosPositionKpiRequest fields
+class QosPositionKpiRequest {
+    public static let ver = "ver"
+    public static let session_cookie = "session_cookie"
+    public static let positions = "positions"
+}
+
+//QosPositionKpiResult fields
+class QosPositionKpiResult {
+    public static let positionid = "positionid"
+    public static let gps_location = "gps_location"
+    public static let dluserthroughput_min = "dluserthroughput_min"
+    public static let dluserthroughput_avg = "dluserthroughput_avg"
+    public static let dluserthroughput_max = "dluserthroughput_max"
+    public static let uluserthroughput_min = "uluserthroughput_min"
+    public static let uluserthroughput_avg = "uluserthroughput_avg"
+    public static let uluserthroughput_max = "uluserthroughput_max"
+    public static let latency_min = "latency_min"
+    public static let latency_avg = "latency_avg"
+    public static let latency_max = "latency_max"
+}
+
+//QosPositionKpiReply fields
+class QosPositionKpiReply {
+    public static let ver = "ver"
+    public static let status = "status"
+    public static let position_results = "position_results"
+}
+
 extension MatchingEngine {
     
     /// createQosKPIRequest
@@ -17,17 +52,19 @@ extension MatchingEngine {
     /// - Returns: API  Dictionary/json
     public func createQosKPIRequest(requests: [String: Any]) -> [String: Any]
     {
+        Swift.print("blaaaaaa qoskpi")
         var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
-        qosKPIRequest["session_cookie"] = self.state.getSessionCookie()
-        qosKPIRequest["qos_positions"] = requests
+        qosKPIRequest[QosPositionKpiRequest.ver] = 1
+        qosKPIRequest[QosPositionKpiRequest.session_cookie] = self.state.getSessionCookie()
+        qosKPIRequest[QosPositionKpiRequest.positions] = requests
         
         return qosKPIRequest
     }
     
     func validateQosKPIRequest(request: [String: Any]) throws
     {
-        guard let _ = request["session_cookie"] as? String else {
+        guard let _ = request[QosPositionKpiRequest.session_cookie] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
     }
