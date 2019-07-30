@@ -52,7 +52,6 @@ extension MatchingEngine {
     /// - Returns: API  Dictionary/json
     public func createQosKPIRequest(requests: [String: Any]) -> [String: Any]
     {
-        Swift.print("blaaaaaa qoskpi")
         var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
         qosKPIRequest[QosPositionKpiRequest.ver] = 1
