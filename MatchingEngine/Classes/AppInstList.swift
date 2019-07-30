@@ -34,7 +34,6 @@ extension MatchingEngine {
     public func createGetAppInstListRequest(carrierName: String?, gpsLocation: [String: Any]) -> [String: Any]
     {
         var appInstListRequest = [String: Any]() // Dictionary/json
-        Swift.print("blaaahhh appinst")
         
         appInstListRequest[AppInstListRequest.ver] = 1
         appInstListRequest[AppInstListRequest.session_cookie] = state.getSessionCookie()
