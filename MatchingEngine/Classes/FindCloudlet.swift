@@ -8,6 +8,26 @@ import Foundation
 import NSLogger
 import Promises
 
+//FindCloudletRequest fields
+class FindCloudletRequest {
+    public static let ver = "ver"
+    public static let session_cookie = "session_cookie"
+    public static let carrier_name = "carrier_name"
+    public static let gps_location = "gps_location"
+    public static let dev_name = "dev_name"
+    public static let app_name = "app_name"
+    public static let app_vers = "app_vers"
+}
+
+//FindCloudletReply fields
+class FindCloudletReply {
+    public static let ver = "ver"
+    public static let status = "status"
+    public static let fqdn = "fqdn"
+    public static let ports = "ports"
+    public static let cloudlet_location = "cloudlet_location"
+}
+
 extension MatchingEngine {
     // Carrier name can change depending on cell tower.
     //
@@ -15,8 +35,8 @@ extension MatchingEngine {
     /// createFindCloudletRequest
     ///
     /// - Parameters:
-    ///   - carrierName: <#carrierName description#>
-    ///   - gpslocation: <#gpslocation description#>
+    ///   - carrierName: carrierName description
+    ///   - gpslocation: gpslocation description
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
@@ -27,37 +47,37 @@ extension MatchingEngine {
         //    findCloudletRequest;
         var findCloudletRequest = [String: Any]() // Dictionary/json
         
-        findCloudletRequest["ver"] = 1
-        findCloudletRequest["session_cookie"] = self.state.getSessionCookie()
-        findCloudletRequest["carrier_name"] = carrierName
-        findCloudletRequest["gps_location"] = gpsLocation
-        findCloudletRequest["dev_name"] = devName
-        findCloudletRequest["app_name"] = appName ?? state.appName
-        findCloudletRequest["app_vers"] = appVers ?? state.appVersion
+        findCloudletRequest[FindCloudletRequest.ver] = 1
+        findCloudletRequest[FindCloudletRequest.session_cookie] = self.state.getSessionCookie()
+        findCloudletRequest[FindCloudletRequest.carrier_name] = carrierName
+        findCloudletRequest[FindCloudletRequest.gps_location] = gpsLocation
+        findCloudletRequest[FindCloudletRequest.dev_name] = devName
+        findCloudletRequest[FindCloudletRequest.app_name] = appName ?? state.appName
+        findCloudletRequest[FindCloudletRequest.app_vers] = appVers ?? state.appVersion
         
         return findCloudletRequest
     }
     
     func validateFindCloudletRequest(request: [String: Any]) throws
     {
-        guard let _ = request["session_cookie"] as? String else {
+        guard let _ = request[FindCloudletRequest.session_cookie] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request["carrier_name"] as? String else {
+        guard let _ = request[FindCloudletRequest.carrier_name] as? String else {
             throw MatchingEngineError.missingCarrierName
         }
-        guard let gpsLocation = request["gps_location"] as? [String: Any] else {
+        guard let gpsLocation = request[FindCloudletRequest.gps_location] as? [String: Any] else {
             throw MatchingEngineError.missingGPSLocation
         }
         let _ = try validateGpsLocation(gpsLocation: gpsLocation)
 
-        guard let _ = request["dev_name"] as? String else {
+        guard let _ = request[FindCloudletRequest.dev_name] as? String else {
             throw MatchingEngineError.missingDevName
         }
-        guard let _ = request["app_name"] as? String else {
+        guard let _ = request[FindCloudletRequest.app_name] as? String else {
             throw MatchingEngineError.missingAppName
         }
-        guard let _ = request["app_vers"] as? String else {
+        guard let _ = request[FindCloudletRequest.app_vers] as? String else {
             throw MatchingEngineError.missingAppVersion
         }
     }
