@@ -174,8 +174,10 @@ class Tests: XCTestCase {
     func createQoSPositionList(loc: [String: Double], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [String: Any]
     {
         var qosPositionList = [String: Any]()
-        let addLongitude = cos(directionDegrees) * increment
-        let addLatitude = sin(directionDegrees) * increment
+        let kmPerDegreeLong = 111.32 //at Equator
+        let kmPerDegreeLat = 110.57 //at Equator
+        let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
+        let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
         var positionId = "1"
         var i = 0.0;
         var longitude = loc["longitude"] ?? 0
