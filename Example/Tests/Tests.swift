@@ -68,7 +68,7 @@ class Tests: XCTestCase {
             .catch { error in
                 XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
         }
-
+        
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "Register did not return a value.")
@@ -163,7 +163,7 @@ class Tests: XCTestCase {
         }
         XCTAssertNil(replyPromise.error)
     }
-
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure() {
@@ -171,10 +171,40 @@ class Tests: XCTestCase {
         }
     }
     
+    func createQoSPositionList(loc: [String: Double], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [String: Any]
+    {
+        var qosPositionList = [String: Any]()
+        let kmPerDegreeLong = 111.32 //at Equator
+        let kmPerDegreeLat = 110.57 //at Equator
+        let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
+        let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
+        var positionId = "1"
+        var i = 0.0;
+        var longitude = loc["longitude"] ?? 0
+        var latitude = loc["latitude"] ?? 0
+        
+        while i < totalDistanceKm {
+            let loc = [ "longitude": longitude, "latitude": latitude]
+            var intPosition = Int(positionId) ?? 0
+            intPosition += 1
+            positionId = String(intPosition)
+            
+            qosPositionList[positionId] = loc
+            
+            longitude += addLongitude
+            latitude += addLatitude
+            i += increment
+        }
+        
+        return qosPositionList
+    }
+    
     func testGetQosPositionKpi() {
-        let loc1 = ["longitude": -145.149349, "latitude": 37.459609]
-        let loc2 = ["longitude": -1100.149349, "latitude": 37.459609]
-        let positions = ["1": loc1, "2": loc2]
+        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        let positions = createQoSPositionList(loc: loc,
+                                              directionDegrees: 45,
+                                              totalDistanceKm: 200,
+                                              increment: 1)
         
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
