@@ -9,7 +9,7 @@ import NSLogger
 import Promises
 
 //QosPosition fields (right QosPosition is just Dict: positionid -> gps_location)
-class QosPosition {
+public class QosPosition {
     public static let positionid = "positionid"
     public static let gps_location = "gps_location"
 }
