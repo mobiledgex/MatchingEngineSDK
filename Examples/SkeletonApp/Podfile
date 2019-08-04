@@ -7,7 +7,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 # MobiledgeX Private Trunk for Specs.git equivalent, , if not using "../../IOSMatchingEngineSDK/":
 source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
 
-target 'MatchingEngine_Example' do
+target 'SkeletonApp' do
   pod 'MatchingEngine', :path => '../../IOSMatchingEngineSDK/'
 
   pod 'Alamofire'
