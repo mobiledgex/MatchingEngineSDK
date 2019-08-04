@@ -41,7 +41,7 @@ DEPENDENCIES:
   - DropDown
   - GoogleMaps (= 3.1.0)
   - GoogleSignIn
-  - MatchingEngine (from `../`)
+  - MatchingEngine (from `../../IOSMatchingEngineSDK/`)
   - NSLogger/Swift
   - PromisesSwift
   - SPPermission
@@ -69,7 +69,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MatchingEngine:
-    :path: "../"
+    :path: "../../IOSMatchingEngineSDK/"
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
