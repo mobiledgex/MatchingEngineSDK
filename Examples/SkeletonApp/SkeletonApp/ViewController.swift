@@ -157,22 +157,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             Logger.shared.log(.network, .debug, "Register Client needs a valid carrierName!")
             return;
         }
-        
-        let registerClientRequest = matchingEngine.createRegisterClientRequest(devName: devName,
-                                                                   appName: appName,
-                                                                   appVers: appVers,
-                                                                   carrierName: carrierName,
-                                                                   authToken: authToken)
-        matchingEngine.registerClient(host: host,
-                          port: port,
-                          request: registerClientRequest)
-        .then { registerReply in
-            // Update UI. The MatchingEngine SDK keeps track of details for next calls.
-            Logger.shared.log(.network, .debug, "RegisterReply: \(registerReply)")
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Client Registered"), object: nil)
-        }.catch { error in
-            Logger.shared.log(.network, .debug, "RegisterReply Error: \(error)")
-        }
+        Swift.print("RegisterClient not implemented yet") 
     }
     
     func getInitialLatencies()
@@ -457,90 +442,13 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             switch index
             {
             case 0:
-                //  "Register Client", should use dynamic values if not Demo:
-                var registerClientRequest = self!.matchingEngine.createRegisterClientRequest(devName: self!.devName,
-                                                                                 appName: self!.appName,
-                                                                                 appVers: self!.appVers,
-                                                                                 carrierName: self!.carrierName,
-                                                                                 authToken: self!.authToken);
-                self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
-                        host: self!.host, // For demo purposes, this remains static.
-                        port: self!.port,
-                        request: registerClientRequest)
-                .then { registerClientReply in
-                    Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
-                }
-                
+                Swift.print("RegisterClient not implemented yet") 
             case 1:
-                let loc = retrieveLocation()
-                
-                let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
-                self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: appInstListRequest)
-                    .then { appInstListReply in
-                        Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
-                        print("appInstList Reply: \(appInstListReply)")
-                        // TODO: observers
-                    }
-                    .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        print("appInstList error: \(error)")
-                }
-                // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
-
+                Swift.print("GetAppInst not implemented yet")
             case 2:
-                Swift.print("Verify Location")
-
-                let vl = UserDefaults.standard.bool(forKey: "VerifyLocation")
-                
-                if vl
-                {
-                    self!.locationVerificationAttempted = true
-
-                    let loc = retrieveLocation()
-                    
-                    let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
-                        carrierName: self!.carrierName, gpsLocation: loc)
-                    self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.host, port: self!.port, request: verifyLocRequest)
-                    .then { verifyLocationReply in
-                        Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
-                        print("VerfiyLocation reply: \(verifyLocationReply)")
-                        // TODO: observers
-                    }
-                    .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        print("VerfiyLocation error: \(error)")
-                    }
-                    
-                }
-                else
-                {
-                    // alert
-                    self?.askPermissionToVerifyLocation()
-                }
-                
+                Swift.print("VerifyLocation not implemented yet")
             case 3:
-                Swift.print("Find Closest Cloudlet")
-                let loc = retrieveLocation()
-                // FIXME: register client is a promise.
-
-                print("Before FindCloudlet")
-                let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
-                                                                             gpsLocation: loc, devName: self!.devName,
-                                                                             appName: self!.appName, appVers: self!.appVers)
-                self!.matchingEngine.findCloudlet(host: self!.host, port: self!.port, request: findCloudletRequest)
-                .then { findCloudletReply in
-                    Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
-                    print("findCloudlet Reply: \(findCloudletReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
-                        print("findCloudlet error: \(error)")
-                }
-                print("Should print immediately, non-blocked")
-                
+                Swift.print("FindClosestCloudlet not implemented yet")
             case 4:
                 Swift.print("Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
