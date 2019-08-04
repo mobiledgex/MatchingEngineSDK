@@ -1,0 +1,28 @@
+use_frameworks!
+
+platform :ios, '11.4'
+
+# Default Specs.git:
+source 'https://github.com/CocoaPods/Specs.git'
+# MobiledgeX Private Trunk for Specs.git equivalent, , if not using "../../IOSMatchingEngineSDK/":
+source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
+
+target 'SkeletonApp' do
+  pod 'MatchingEngine', :path => '../../IOSMatchingEngineSDK/'
+
+  pod 'Alamofire'
+  pod 'PromisesSwift'
+
+  pod 'DropDown'
+  pod 'SwiftLocation'
+  pod 'SwiftyJSON'
+  
+  pod 'GoogleMaps', '= 3.1.0'
+  pod 'GoogleSignIn'
+
+  pod 'SwiftLog'
+  pod 'NSLogger/Swift'
+  
+  pod 'SPPermission'
+  pod 'SwiftSocket'
+end
