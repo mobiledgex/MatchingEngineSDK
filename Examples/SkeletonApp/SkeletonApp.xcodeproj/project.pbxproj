@@ -151,8 +151,8 @@
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		8CE7CDC2FFEB34099CDFCAAF /* Pods_SkeletonApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BBFB22D5723578CD70E7598 /* Pods_SkeletonApp.framework */; };
 		F1C52076D0208C779DB30E00 /* Pods_MatchingEngine_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E5B0B73A539508C56EA054 /* Pods_MatchingEngine_Tests.framework */; };
-		FC22E6F704021E859E96CB13 /* Pods_MatchingEngine_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93DE79DA0CE4C86B384808D5 /* Pods_MatchingEngine_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -326,10 +326,12 @@
 		607FACE51AFB9204008FA782 /* MatchingEngine_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MatchingEngine_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		93DE79DA0CE4C86B384808D5 /* Pods_MatchingEngine_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MatchingEngine_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BBFB22D5723578CD70E7598 /* Pods_SkeletonApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SkeletonApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5E5B0B73A539508C56EA054 /* Pods_MatchingEngine_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MatchingEngine_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BB4F6E97F438BCA5CCF9D1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		DDDE5A49D5132BA2C493C013 /* Pods-SkeletonApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkeletonApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E56005713766F4805886E636 /* Pods-MatchingEngine_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngine_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngine_Example/Pods-MatchingEngine_Example.release.xcconfig"; sourceTree = "<group>"; };
+		E9D4FA49EF25945E2BACEDCA /* Pods-SkeletonApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkeletonApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp.release.xcconfig"; sourceTree = "<group>"; };
 		FB71EF3F51E6B9780099D19E /* Pods-MatchingEngine_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngine_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngine_Tests/Pods-MatchingEngine_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -340,7 +342,7 @@
 			files = (
 				407799AC22974259002EF03B /* CoreTelephony.framework in Frameworks */,
 				407799AA22974244002EF03B /* CoreLocation.framework in Frameworks */,
-				FC22E6F704021E859E96CB13 /* Pods_MatchingEngine_Example.framework in Frameworks */,
+				8CE7CDC2FFEB34099CDFCAAF /* Pods_SkeletonApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +364,8 @@
 				E56005713766F4805886E636 /* Pods-MatchingEngine_Example.release.xcconfig */,
 				52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */,
 				FB71EF3F51E6B9780099D19E /* Pods-MatchingEngine_Tests.release.xcconfig */,
+				DDDE5A49D5132BA2C493C013 /* Pods-SkeletonApp.debug.xcconfig */,
+				E9D4FA49EF25945E2BACEDCA /* Pods-SkeletonApp.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -468,7 +472,7 @@
 		40779AA122975CF0002EF03B /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				40779D93229771D1002EF03B /* SwfitLocation */,
+				40779D93229771D1002EF03B /* SwiftLocation */,
 				40779D912297713D002EF03B /* ExtensionVars.swift */,
 				40779D8F22977105002EF03B /* CMSampleBufferExtension.swift */,
 				40779D7B229770AF002EF03B /* RFAboutView-Swift */,
@@ -480,7 +484,7 @@
 				40779AFA22976004002EF03B /* CircularSpinner */,
 			);
 			name = ThirdParty;
-			path = MatchingEngine/ThirdParty;
+			path = SkeletonApp/ThirdParty;
 			sourceTree = "<group>";
 		};
 		40779AFA22976004002EF03B /* CircularSpinner */ = {
@@ -585,12 +589,13 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		40779D93229771D1002EF03B /* SwfitLocation */ = {
+		40779D93229771D1002EF03B /* SwiftLocation */ = {
 			isa = PBXGroup;
 			children = (
 				40779D94229771EC002EF03B /* Sources */,
 			);
-			path = SwfitLocation;
+			name = SwiftLocation;
+			path = "SwiftLocation-master";
 			sourceTree = "<group>";
 		};
 		40779D94229771EC002EF03B /* Sources */ = {
@@ -604,7 +609,7 @@
 				40779D9B229771EC002EF03B /* Locator.swift */,
 			);
 			name = Sources;
-			path = "MatchingEngine/ThirdParty/SwiftLocation-master/Sources";
+			path = "SkeletonApp/ThirdParty/SwiftLocation-master/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
 		407D577322A744B5009CF705 /* Source */ = {
@@ -745,8 +750,8 @@
 			children = (
 				407799AB22974259002EF03B /* CoreTelephony.framework */,
 				407799A922974244002EF03B /* CoreLocation.framework */,
-				93DE79DA0CE4C86B384808D5 /* Pods_MatchingEngine_Example.framework */,
 				B5E5B0B73A539508C56EA054 /* Pods_MatchingEngine_Tests.framework */,
+				6BBFB22D5723578CD70E7598 /* Pods_SkeletonApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -880,12 +885,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = K7C3P28GZ6;
+						DevelopmentTeam = XS5HK8D79C;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = KMLB5KB68N;
+						DevelopmentTeam = XS5HK8D79C;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -1002,7 +1007,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MatchingEngine_Example-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SkeletonApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1015,7 +1020,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MatchingEngine_Example/Pods-MatchingEngine_Example-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
@@ -1026,7 +1031,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MatchingEngine_Example/Pods-MatchingEngine_Example-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AD97B784AE69F7FC5EB9ACE7 /* [CP] Embed Pods Frameworks */ = {
@@ -1035,7 +1040,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MatchingEngine_Example/Pods-MatchingEngine_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
@@ -1068,7 +1073,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MatchingEngine_Example/Pods-MatchingEngine_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SkeletonApp/Pods-SkeletonApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1333,14 +1338,14 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 033D6E20A36A2B3251FB7DA3 /* Pods-MatchingEngine_Example.debug.xcconfig */;
+			baseConfigurationReference = DDDE5A49D5132BA2C493C013 /* Pods-SkeletonApp.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = K7C3P28GZ6;
+				DEVELOPMENT_TEAM = XS5HK8D79C;
 				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiledgex.demo.SkeletonApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.franklinh.demo.SkeletonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -1349,13 +1354,14 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E56005713766F4805886E636 /* Pods-MatchingEngine_Example.release.xcconfig */;
+			baseConfigurationReference = E9D4FA49EF25945E2BACEDCA /* Pods-SkeletonApp.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = XS5HK8D79C;
 				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiledgex.demo.SkeletonApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.franklinh.demo.SkeletonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -1366,6 +1372,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = XS5HK8D79C;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1389,7 +1396,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB71EF3F51E6B9780099D19E /* Pods-MatchingEngine_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = KMLB5KB68N;
+				DEVELOPMENT_TEAM = XS5HK8D79C;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
