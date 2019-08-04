@@ -1,7 +1,7 @@
 // Sample Client of SDK
 //
 //  Sample_client.swift
-//  MatchingEngine SDK Example
+//  SkeletonApp
 //
 // Copyright 2019 MobiledgeX
 //

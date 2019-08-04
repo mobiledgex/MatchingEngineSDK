@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  MatchingEngine SDK Example
+//  SkeletonApp
 //
 // Copyright 2019 MobiledgeX, Inc.
 //

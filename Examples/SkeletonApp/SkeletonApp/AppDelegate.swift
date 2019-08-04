@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  MatchingEngineSDK Example
+//  SkeletonApp
 //
 //  Created by Jean Tantra, Metatheory.com
 //

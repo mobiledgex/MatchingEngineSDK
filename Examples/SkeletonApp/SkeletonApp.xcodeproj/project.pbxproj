@@ -317,7 +317,7 @@
 		52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngine_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngine_Tests/Pods-MatchingEngine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		554544867A48F54828025417 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5D74431C21D3748FD310C745 /* MatchingEngine.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MatchingEngine.podspec; path = ../MatchingEngine.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		607FACD01AFB9204008FA782 /* MatchingEngine_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatchingEngine_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		607FACD01AFB9204008FA782 /* SkeletonApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkeletonApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -756,7 +756,7 @@
 			children = (
 				40779AA122975CF0002EF03B /* ThirdParty */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
-				607FACD21AFB9204008FA782 /* Example for MatchingEngine */,
+				607FACD21AFB9204008FA782 /* SkeletonApp */,
 				407799B322974972002EF03B /* Resources */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
@@ -768,13 +768,13 @@
 		607FACD11AFB9204008FA782 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD01AFB9204008FA782 /* MatchingEngine_Example.app */,
+				607FACD01AFB9204008FA782 /* SkeletonApp.app */,
 				607FACE51AFB9204008FA782 /* MatchingEngine_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		607FACD21AFB9204008FA782 /* Example for MatchingEngine */ = {
+		607FACD21AFB9204008FA782 /* SkeletonApp */ = {
 			isa = PBXGroup;
 			children = (
 				407D56DE22A73DA2009CF705 /* Images.xcassets */,
@@ -788,8 +788,7 @@
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
-			name = "Example for MatchingEngine";
-			path = MatchingEngine;
+			path = SkeletonApp;
 			sourceTree = "<group>";
 		};
 		607FACD31AFB9204008FA782 /* Supporting Files */ = {
@@ -830,9 +829,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		607FACCF1AFB9204008FA782 /* MatchingEngine_Example */ = {
+		607FACCF1AFB9204008FA782 /* SkeletonApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "MatchingEngine_Example" */;
+			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "SkeletonApp" */;
 			buildPhases = (
 				8C97D4DEA38993040CDAAA9E /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
@@ -845,9 +844,9 @@
 			);
 			dependencies = (
 			);
-			name = MatchingEngine_Example;
+			name = SkeletonApp;
 			productName = MatchingEngine;
-			productReference = 607FACD01AFB9204008FA782 /* MatchingEngine_Example.app */;
+			productReference = 607FACD01AFB9204008FA782 /* SkeletonApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		607FACE41AFB9204008FA782 /* MatchingEngine_Tests */ = {
@@ -881,7 +880,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = KMLB5KB68N;
+						DevelopmentTeam = K7C3P28GZ6;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
@@ -892,7 +891,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "MatchingEngine" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "SkeletonApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -906,7 +905,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				607FACCF1AFB9204008FA782 /* MatchingEngine_Example */,
+				607FACCF1AFB9204008FA782 /* SkeletonApp */,
 				607FACE41AFB9204008FA782 /* MatchingEngine_Tests */,
 			);
 		};
@@ -1192,7 +1191,7 @@
 /* Begin PBXTargetDependency section */
 		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 607FACCF1AFB9204008FA782 /* MatchingEngine_Example */;
+			target = 607FACCF1AFB9204008FA782 /* SkeletonApp */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1337,11 +1336,11 @@
 			baseConfigurationReference = 033D6E20A36A2B3251FB7DA3 /* Pods-MatchingEngine_Example.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = K7C3P28GZ6;
-				INFOPLIST_FILE = MatchingEngine/Info.plist;
+				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobiledgex.demo.MatchingEngine-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobiledgex.demo.SkeletonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -1352,11 +1351,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E56005713766F4805886E636 /* Pods-MatchingEngine_Example.release.xcconfig */;
 			buildSettings = {
-				INFOPLIST_FILE = MatchingEngine/Info.plist;
+				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobiledgex.demo.MatchingEngine-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobiledgex.demo.SkeletonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -1409,7 +1408,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "MatchingEngine" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "SkeletonApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
@@ -1418,7 +1417,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "MatchingEngine_Example" */ = {
+		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "SkeletonApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACF01AFB9204008FA782 /* Debug */,
