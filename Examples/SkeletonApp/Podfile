@@ -25,10 +25,4 @@ target 'SkeletonApp' do
   
   pod 'SPPermission'
   pod 'SwiftSocket'
-  
-  target 'MatchingEngine_Tests' do
-    inherit! :search_paths
-    
-  end
-  
 end
