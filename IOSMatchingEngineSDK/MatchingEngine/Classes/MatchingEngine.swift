@@ -271,12 +271,6 @@ public class MatchingEngine
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n \(request) \n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            // Certificates. FIXME: Should not be here.
-            do {
-                try self.dealWithTrustPolicy(url: uri)
-            } catch {
-                reject(error)
-            }
 
             // The value is returned via reslove/reject.
             let _ = self.sessionManager!.request(
@@ -315,50 +309,6 @@ public class MatchingEngine
             }
         }
     }
-
-    // FIXME: Use NSURLSession
-    /// Deal with certificates, trust
-    ///
-    /// - Parameter url:
-    func dealWithTrustPolicy(url: URLConvertible) throws
-    {
-        let certificates = ServerTrustPolicy.certificates() // alamo extension
-        Swift.print("~~~certificates: \(certificates) ---")
-        //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )
-        Logger.shared.log(.network, .info, " add these certificates to your curl below --cacert mex-ca.crt --cert mex-client.crt")
-        
-        let trustPolicy = ServerTrustPolicy.pinCertificates(
-            certificates: certificates,
-            validateCertificateChain: true,
-            validateHost: true
-        )
-
-        do
-        {
-            let whoToTrust = try url.asURL().host
-            //     Swift.print("\(whoToTrust)")
-            
-            let trustPolicies = [whoToTrust!: trustPolicy] // [String: ServerTrustPolicy]∫
-            let policyManager = ServerTrustPolicyManager(policies: trustPolicies)
-            
-            sessionManager = SessionManager(
-                configuration: .default,
-                serverTrustPolicyManager: policyManager
-            )
-        }
-        catch
-        {
-            Logger.shared.log(.network, .debug, ("dealWithTrustPolicy asURL throws: trust failure"))
-            throw error
-        }
-    }
-
-    // MARK: -
-
-    // requests
-
-
-
 } // end MatchingEngineSDK
 
 

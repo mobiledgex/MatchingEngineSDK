@@ -102,11 +102,6 @@ extension MatchingEngine {
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            do {
-                try self.dealWithTrustPolicy(url: uri)
-            } catch {
-                reject(error)
-            }
             
             // The value is returned via reslove/reject.
             let _ = self.sessionManager!.request(
