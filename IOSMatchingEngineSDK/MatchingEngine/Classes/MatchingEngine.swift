@@ -284,7 +284,6 @@ public class MatchingEngine
 
                     let statusCode = response.response?.statusCode
                     Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
-
                     switch response.result
                     {
                     case let .failure(error):
@@ -307,6 +306,67 @@ public class MatchingEngine
                     Logger.shared.log(.network, .debug, "result \(response.result)")
                     Logger.shared.log(.network, .debug, "data \(response.data!)")
             }
+        }
+    }
+    
+    public func postRequest2(uri: String,
+                             request: [String: Any])
+        -> Promise<[String: AnyObject]>
+    {
+        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+            
+            //let url = URL(string: uri)
+            //Logger.shared.log(.network, .debug, "uri is " + uri)
+            do {
+                //let jsondata = try JSONSerialization.data(withJSONObject: request, options: .prettyPrinted)
+                //var request = new URL
+                let url = URL(string: uri)
+                var urlRequest = URLRequest(url: url!)
+                let jsondata = try JSONSerialization.data(withJSONObject: request, options: .prettyPrinted)
+                urlRequest.httpBody = jsondata
+                urlRequest.httpMethod = "POST"
+                urlRequest.allHTTPHeaderFields = self.headers
+                Swift.print("urlRequest is ")
+                Swift.print(urlRequest)
+                let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                    /*let httpResponse = response as? HTTPURLResponse
+                     if (httpResponse == nil) {
+                     print("no repsonse")
+                     } else if(error != nil) {
+                     print("error")
+                     } else {
+                     print("http response is ")
+                     print(httpResponse)
+                     }
+                     if(data == nil) {
+                     print("no data")
+                     }*/
+                    if let data = data {
+                        do {
+                            // Convert the data to JSON
+                            let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
+                            
+                            if let json = jsonSerialized {
+                                print("json data is ")
+                                print(json)
+                                fulfill(json)
+                            }
+                        }  catch let error as NSError {
+                            print("error 1")
+                            print(error.localizedDescription)
+                            reject(error)
+                        }
+                    } else if let error = error {
+                        print("error 2")
+                        print(error.localizedDescription)
+                        reject(error)
+                    }
+                })
+                task.resume()
+            } catch {
+                print("JSON serializaiton error")
+            }
+            //let request = NSURLRequest(url: url!)
         }
     }
 } // end MatchingEngineSDK
