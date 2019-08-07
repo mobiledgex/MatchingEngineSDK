@@ -458,7 +458,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             {
             case 0:
                 //  "Register Client", should use dynamic values if not Demo:
-                var registerClientRequest = self!.matchingEngine.createRegisterClientRequest(devName: self!.devName,
+                let registerClientRequest = self!.matchingEngine.createRegisterClientRequest(devName: self!.devName,
                                                                                  appName: self!.appName,
                                                                                  appVers: self!.appVers,
                                                                                  carrierName: self!.carrierName,
@@ -526,7 +526,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let loc = retrieveLocation()
                 // FIXME: register client is a promise.
 
-                print("Before FindCloudlet")
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
                                                                              gpsLocation: loc, devName: self!.devName,
                                                                              appName: self!.appName, appVers: self!.appVers)

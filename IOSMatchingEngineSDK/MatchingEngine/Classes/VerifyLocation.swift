@@ -6,7 +6,6 @@
 
 import Foundation
 import NSLogger
-import Alamofire
 import Promises
 
 enum MatchingEngineParameterError: Error {
@@ -95,55 +94,61 @@ extension MatchingEngine {
         }
     }
     
-    // Special version of postRequest. 303 is an error.
     private func getTokenPost(uri: String) // Dictionary/json
         -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+            //Create URLRequest object
+            let url = URL(string: uri)
+            var urlRequest = URLRequest(url: url!)
             
-            // The value is returned via reslove/reject.
-            let _ = self.sessionManager!.request(
-                uri,
-                method: .post,
-                parameters: [String: Any](),
-                encoding: JSONEncoding.default,
-                headers: self.headers
-            ).responseJSON { response in
-                Logger.shared.log(.network, .debug, "\n••\n\(response.request!)\n")
-                
-                // 303 SeeOther is "ServerName Not found", which is odd
-                guard let _ = response.result.error else {
-                    // This is unexpected in AlamoFire.
+            //Configure URLRequest
+            urlRequest.httpMethod = "POST"
+            urlRequest.allHTTPHeaderFields = self.headers
+            urlRequest.allowsCellularAccess = true
+            
+            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            
+            //Create new URLSession in order to use delegates
+            let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: SessionDelegate(), delegateQueue: OperationQueue.main)
+            
+            //Send request via URLSession API
+            let dataTask = session.dataTask(with: urlRequest as URLRequest) { (data, response, error) in
+                if (error != nil) {
                     reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                    return
-                }
-                
-                // Very strange HTTP handling in Alamofire. No headers. Not nice.
-                Logger.shared.log(.network, .debug, "Expected Error. Handling token.")
-                if !response.result.isSuccess
-                {
-                    let msg = String(describing: response.result.error)
-                    Logger.shared.log(.network, .debug, "msg: \(msg)")
-                    if msg.contains("dt-id=")
-                    { // not really an error
-                        let dtId = msg.components(separatedBy: "dt-id=")
-                        let s1 = dtId[1].components(separatedBy: ",")
-                        let token = s1[0]
-                        Logger.shared.log(.network, .debug, "\(token)")
-                        fulfill(["token": token as AnyObject])
-                    } else {
-                        // Missing token.
-                        reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        Logger.shared.log(.network, .debug, "Cant cast response at HTTPURLResponse")
+                        return
+                    }
+                    if let location = httpResponse.allHeaderFields["Location"] as? String {
+                        if location.contains("dt-id=") {
+                            //Parse to get token
+                            let dtId = location.components(separatedBy: "dt-id=")
+                            let s1 = dtId[1].components(separatedBy: ",")
+                            let token = s1[0]
+                            Logger.shared.log(.network, .debug, "\(token)")
+                            fulfill(["token": token as AnyObject])
+                        } else {
+                            //Missing Token
+                            Logger.shared.log(.network, .debug, "Missing token response \(location)")
+                            reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
+                        }
                     }
                 }
-                else
-                {
-                    // Should not succeed on 303.
-                    reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                }
             }
+            dataTask.resume()
+        }
+    }
+
+    private class SessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
+        
+        //Prevents redirects for getToken
+        public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
+        {
+            completionHandler(nil)
         }
     }
     
@@ -157,7 +162,7 @@ extension MatchingEngine {
                 return
             }
             fulfill(uri)
-        }.then {tokenUri in
+        }.then { tokenUri in
                 self.getTokenPost(uri: tokenUri)
         }.then { reply in
             guard let token = reply["token"] as? String else {
