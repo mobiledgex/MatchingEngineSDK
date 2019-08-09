@@ -95,59 +95,7 @@ extension MatchingEngine {
         }
     }
     
-    // Special version of postRequest. 303 is an error.
     private func getTokenPost(uri: String) // Dictionary/json
-        -> Promise<[String: AnyObject]>
-    {
-        Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
-        
-        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            
-            // The value is returned via reslove/reject.
-            let _ = self.sessionManager!.request(
-                uri,
-                method: .post,
-                parameters: [String: Any](),
-                encoding: JSONEncoding.default,
-                headers: self.headers
-            ).responseJSON { response in
-                Logger.shared.log(.network, .debug, "\n••\n\(response.request!)\n")
-                
-                // 303 SeeOther is "ServerName Not found", which is odd
-                guard let _ = response.result.error else {
-                    // This is unexpected in AlamoFire.
-                    reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                    return
-                }
-                
-                // Very strange HTTP handling in Alamofire. No headers. Not nice.
-                Logger.shared.log(.network, .debug, "Expected Error. Handling token.")
-                if !response.result.isSuccess
-                {
-                    let msg = String(describing: response.result.error)
-                    Logger.shared.log(.network, .debug, "msg: \(msg)")
-                    if msg.contains("dt-id=")
-                    { // not really an error
-                        let dtId = msg.components(separatedBy: "dt-id=")
-                        let s1 = dtId[1].components(separatedBy: ",")
-                        let token = s1[0]
-                        Logger.shared.log(.network, .debug, "\(token)")
-                        fulfill(["token": token as AnyObject])
-                    } else {
-                        // Missing token.
-                        reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                    }
-                }
-                else
-                {
-                    // Should not succeed on 303.
-                    reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
-                }
-            }
-        }
-    }
-    
-    private func getTokenPost3(uri: String) // Dictionary/json
         -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
@@ -216,7 +164,7 @@ extension MatchingEngine {
             }
             fulfill(uri)
         }.then { tokenUri in
-                self.getTokenPost3(uri: tokenUri)
+                self.getTokenPost(uri: tokenUri)
         }.then { reply in
             guard let token = reply["token"] as? String else {
                 return Promise("")
