@@ -153,24 +153,22 @@ extension MatchingEngine {
         Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+            //Create URLRequest object
             let url = URL(string: uri)
             var urlRequest = URLRequest(url: url!)
             
-            let request = [String: Any]()
-            let jsonRequest = try JSONSerialization.data(withJSONObject: request)
-            urlRequest.httpBody = jsonRequest
+            //Configure URLRequest
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = self.headers
             urlRequest.allowsCellularAccess = true
             
-            Swift.print("URL request get token is ")
-            Swift.print(urlRequest)
+            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
             
+            //Create new URLSession in order to use delegates
             let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: SessionDelegate(), delegateQueue: OperationQueue.main)
-
-            Swift.print("before")
+            
+            //Send request via URLSession API
             let dataTask = session.dataTask(with: urlRequest as URLRequest) { (data, response, error) in
-                Swift.print("inside")
                 if (error != nil) {
                     reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
                 } else {
@@ -180,15 +178,15 @@ extension MatchingEngine {
                     }
                     if let location = httpResponse.allHeaderFields["Location"] as? String {
                         if location.contains("dt-id=") {
+                            //Parse to get token
                             let dtId = location.components(separatedBy: "dt-id=")
                             let s1 = dtId[1].components(separatedBy: ",")
                             let token = s1[0]
                             Logger.shared.log(.network, .debug, "\(token)")
-                            Swift.print("Token is ")
-                            Swift.print(token)
                             fulfill(["token": token as AnyObject])
                         } else {
-                            Logger.shared.log(.network, .debug, "Invalid token response \(location)")
+                            //Missing Token
+                            Logger.shared.log(.network, .debug, "Missing token response \(location)")
                             reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
                         }
                     }
@@ -198,56 +196,14 @@ extension MatchingEngine {
         }
     }
 
-    public class SessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
+    private class SessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
         
-        //var completionHandler:((URLResponse, NSError, Data) -> Promise<[String: AnyObject]>)?
-
+        //Prevents redirects for getToken
         public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
         {
-            Swift.print("Repsonse in cancel is ")
-            Swift.print(response)
             completionHandler(nil)
         }
-        
-        public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
-        {
-            var mimeType: String? = nil
-            var headers: [NSObject : AnyObject]? = nil
-            
-            // Ignore NSURLErrorCancelled errors - these are a result of us cancelling the session in
-            // the delegate method URLSession(session:dataTask:response:completionHandler:).
-            //if (error == nil || error?.localizedDescription == NSURLErrorCancelled) {
-            Swift.print("Localized descript of error is")
-            Swift.print(error?.localizedDescription)
-                
-                mimeType = task.response?.mimeType
-                
-                if let httpStatusCode = (task.response as? HTTPURLResponse)?.statusCode {
-                    headers = (task.response as? HTTPURLResponse)?.allHeaderFields as [NSObject : AnyObject]?
-                    
-                    if httpStatusCode >= 200 && httpStatusCode < 300 {
-                        // All good
-                        Swift.print("YUUUUHHHH")
-                        
-                    } else {
-                        // You may want to invalidate the mimeType/headers here as an http error
-                        // occurred so the mimeType may actually be for a 404 page or
-                        // other resource, rather than the URL you originally requested!
-                        // mimeType = nil
-                        // headers = nil
-                        Swift.print("HTTP STATUS NOT GOOD")
-                    }
-                }
-            //}
-            
-            Swift.print("mimeType = \(String(describing: mimeType))")
-            Swift.print("headers = \(String(describing: headers))")
-            
-            session.invalidateAndCancel()
-        }
     }
-    
-    
     
     private func getToken(uri: String) -> Promise<String> // async
     {

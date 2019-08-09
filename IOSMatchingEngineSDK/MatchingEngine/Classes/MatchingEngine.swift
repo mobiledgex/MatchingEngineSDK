@@ -267,7 +267,7 @@ public class MatchingEngine
                 let url = URL(string: uri)
                 var urlRequest = URLRequest(url: url!)
                 
-                //fill in body/parameters of URLRequest
+                //fill in body/configure URLRequest
                 let jsonRequest = try JSONSerialization.data(withJSONObject: request)
                 urlRequest.httpBody = jsonRequest
                 urlRequest.httpMethod = "POST"
@@ -275,9 +275,6 @@ public class MatchingEngine
                 urlRequest.allowsCellularAccess = true
                 
                 Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
-                Swift.print("URLRequest is ")
-                Swift.print(urlRequest)
-
                 
                 //send request via URLSession API
                 let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
@@ -323,80 +320,6 @@ public class MatchingEngine
             }
         }
     }
-    
-    public func postRequest2(uri: String,
-                            request: [String: Any])
-        -> Promise<[String: AnyObject]>
-    {
-        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            
-            do {
-                let url = URL(string: uri)
-                var urlRequest = URLRequest(url: url!)
-                
-                let jsonRequest = try JSONSerialization.data(withJSONObject: request)
-                urlRequest.httpBody = jsonRequest
-                urlRequest.httpMethod = "POST"
-                urlRequest.allHTTPHeaderFields = self.headers
-                urlRequest.allowsCellularAccess = true
-                
-                Swift.print("URL request is ")
-                Swift.print(urlRequest)
-                
-                let sessionDelegate = SessionDelegate()
-                //sessionDelegate.completionHandler = self.URLSessionOver
-                let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: SessionDelegate(), delegateQueue: nil)
-                /*URLSession.shared.configuration = URLSessionConfiguration.ephemeral
-                 URLSession.shared.delegate = URLSession.shared.self
-                 URLSession.shared.delegateQueue = OperationQueue.main*/
-                Swift.print("before")
-                let dataTask = session.dataTask(with: urlRequest as URLRequest)
-                //let dataTask = session.dataTask(with: urlRequest as URLRequest)
-                dataTask.resume()
-            }
-        }
-    }
-        
-        
-        public func URLSessionOver(response: URLResponse?, error: NSError?, data: Data?)
-            -> Promise<[String: AnyObject]>
-        {
-            return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-                guard let httpResponse = response as? HTTPURLResponse else
-                {
-                    Logger.shared.log(.network, .debug, "Response not HTTPURLResponse")
-                    return
-                }
-                
-                //checks if http request succeeded (200 == success)
-                let statusCode = httpResponse.statusCode
-                if (statusCode != 200) {
-                    Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
-                    return
-                }
-                
-                guard let error = error as NSError? else
-                {
-                    //No errors
-                    if let data = data {
-                        do {
-                            // Convert the data to JSON
-                            let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
-                            Logger.shared.log(.network, .debug, "uri: \reply json\n \(String(describing: jsonSerialized)) \n")
-                            fulfill(jsonSerialized!)
-                        } catch {
-                            Logger.shared.log(.network, .debug, "json = \(data) error")
-                            return
-                        }
-                    }
-                    return
-                }
-                
-                //Error is not nil
-                Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
-                reject(error)
-            }
-        }
 } // end MatchingEngineSDK
 
 
