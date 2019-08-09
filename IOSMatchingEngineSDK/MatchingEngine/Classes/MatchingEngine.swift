@@ -256,119 +256,147 @@ public class MatchingEngine
         return true
     }
     
-    /// Async https request, Google Promises
-    ///
-    /// - Parameters:
-    ///   - uri:  url
-    ///   - request: json/Dictionary
-    ///   - postName:  "commandName" posted for observers // Refactor overloaded param target.
-    ///
-    /// - Returns: Future for later success/failure
     public func postRequest(uri: String,
-                            request: [String: Any]) // Dictionary/json
-        -> Promise<[String: AnyObject]>
-    {
-        Logger.shared.log(.network, .debug, "uri: \(uri) request\n \(request) \n")
-        
-        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-
-            // The value is returned via reslove/reject.
-            let _ = self.sessionManager!.request(
-                uri,
-                method: .post,
-                parameters: request,
-                encoding: JSONEncoding.default,
-                headers: self.headers
-                ).responseJSON { response in
-                    Logger.shared.log(.network, .debug, "\(response.request!)\n")
-
-                    let statusCode = response.response?.statusCode
-                    Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
-                    switch response.result
-                    {
-                    case let .failure(error):
-                        Logger.shared.log(.network, .debug, "\(error)")
-                        reject(error)
-                        return
-                        
-                    case let .success(data):
-                        // First make sure you got back a dictionary if that's what you expect
-                        guard let json = data as? [String: AnyObject] else
-                        {
-                            Logger.shared.log(.network, .debug, "json = \(data)  error")
-                            return
-                        }
-                        Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(json) \n")
-                        fulfill(json)
-                    }
-
-                    Logger.shared.log(.network, .debug, "\(response)")
-                    Logger.shared.log(.network, .debug, "result \(response.result)")
-                    Logger.shared.log(.network, .debug, "data \(response.data!)")
-            }
-        }
-    }
-    
-    public func postRequest2(uri: String,
                              request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
             
-            //let url = URL(string: uri)
-            //Logger.shared.log(.network, .debug, "uri is " + uri)
             do {
-                //let jsondata = try JSONSerialization.data(withJSONObject: request, options: .prettyPrinted)
-                //var request = new URL
+                //create URLRequest object
                 let url = URL(string: uri)
                 var urlRequest = URLRequest(url: url!)
-                let jsondata = try JSONSerialization.data(withJSONObject: request, options: .prettyPrinted)
-                urlRequest.httpBody = jsondata
+                
+                //fill in body/parameters of URLRequest
+                let jsonRequest = try JSONSerialization.data(withJSONObject: request)
+                urlRequest.httpBody = jsonRequest
                 urlRequest.httpMethod = "POST"
                 urlRequest.allHTTPHeaderFields = self.headers
-                Swift.print("urlRequest is ")
+                urlRequest.allowsCellularAccess = true
+                
+                Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+                Swift.print("URLRequest is ")
                 Swift.print(urlRequest)
+
+                
+                //send request via URLSession API
                 let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
-                    /*let httpResponse = response as? HTTPURLResponse
-                     if (httpResponse == nil) {
-                     print("no repsonse")
-                     } else if(error != nil) {
-                     print("error")
-                     } else {
-                     print("http response is ")
-                     print(httpResponse)
-                     }
-                     if(data == nil) {
-                     print("no data")
-                     }*/
+                    guard let httpResponse = response as? HTTPURLResponse else
+                    {
+                        Logger.shared.log(.network, .debug, "Response not HTTPURLResponse")
+                        return
+                    }
+                    
+                    //checks if http request succeeded (200 == success)
+                    let statusCode = httpResponse.statusCode
+                    if (statusCode != 200) {
+                        Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
+                        return
+                    }
+                    
+                    guard let error = error as NSError? else
+                    {
+                        //No errors
+                        if let data = data {
+                            do {
+                                // Convert the data to JSON
+                                let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
+                                Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")
+                                fulfill(jsonSerialized!)
+                            } catch {
+                                Logger.shared.log(.network, .debug, "json = \(data) error")
+                                return
+                            }
+                        }
+                        return
+                    }
+                    
+                    //Error is not nil
+                    Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
+                    reject(error)
+
+                })
+                task.resume()
+            } catch {
+                Logger.shared.log(.network, .debug, "Request JSON serialization error")
+                return
+            }
+        }
+    }
+    
+    public func postRequest2(uri: String,
+                            request: [String: Any])
+        -> Promise<[String: AnyObject]>
+    {
+        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+            
+            do {
+                let url = URL(string: uri)
+                var urlRequest = URLRequest(url: url!)
+                
+                let jsonRequest = try JSONSerialization.data(withJSONObject: request)
+                urlRequest.httpBody = jsonRequest
+                urlRequest.httpMethod = "POST"
+                urlRequest.allHTTPHeaderFields = self.headers
+                urlRequest.allowsCellularAccess = true
+                
+                Swift.print("URL request is ")
+                Swift.print(urlRequest)
+                
+                let sessionDelegate = SessionDelegate()
+                //sessionDelegate.completionHandler = self.URLSessionOver
+                let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: SessionDelegate(), delegateQueue: nil)
+                /*URLSession.shared.configuration = URLSessionConfiguration.ephemeral
+                 URLSession.shared.delegate = URLSession.shared.self
+                 URLSession.shared.delegateQueue = OperationQueue.main*/
+                Swift.print("before")
+                let dataTask = session.dataTask(with: urlRequest as URLRequest)
+                //let dataTask = session.dataTask(with: urlRequest as URLRequest)
+                dataTask.resume()
+            }
+        }
+    }
+        
+        
+        public func URLSessionOver(response: URLResponse?, error: NSError?, data: Data?)
+            -> Promise<[String: AnyObject]>
+        {
+            return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+                guard let httpResponse = response as? HTTPURLResponse else
+                {
+                    Logger.shared.log(.network, .debug, "Response not HTTPURLResponse")
+                    return
+                }
+                
+                //checks if http request succeeded (200 == success)
+                let statusCode = httpResponse.statusCode
+                if (statusCode != 200) {
+                    Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
+                    return
+                }
+                
+                guard let error = error as NSError? else
+                {
+                    //No errors
                     if let data = data {
                         do {
                             // Convert the data to JSON
                             let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
-                            
-                            if let json = jsonSerialized {
-                                print("json data is ")
-                                print(json)
-                                fulfill(json)
-                            }
-                        }  catch let error as NSError {
-                            print("error 1")
-                            print(error.localizedDescription)
-                            reject(error)
+                            Logger.shared.log(.network, .debug, "uri: \reply json\n \(String(describing: jsonSerialized)) \n")
+                            fulfill(jsonSerialized!)
+                        } catch {
+                            Logger.shared.log(.network, .debug, "json = \(data) error")
+                            return
                         }
-                    } else if let error = error {
-                        print("error 2")
-                        print(error.localizedDescription)
-                        reject(error)
                     }
-                })
-                task.resume()
-            } catch {
-                print("JSON serializaiton error")
+                    return
+                }
+                
+                //Error is not nil
+                Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
+                reject(error)
             }
-            //let request = NSURLRequest(url: url!)
         }
-    }
 } // end MatchingEngineSDK
 
 

@@ -157,7 +157,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             Logger.shared.log(.network, .debug, "Register Client needs a valid carrierName!")
             return;
         }
-        Swift.print("RegisterClient not implemented yet") 
+        Swift.print("RegisterClient not implemented yet. Copy and Paste initial call to RegisterClient")
     }
     
     func getInitialLatencies()
