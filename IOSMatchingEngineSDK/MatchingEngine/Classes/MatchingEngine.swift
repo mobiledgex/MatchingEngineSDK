@@ -6,7 +6,6 @@
 
 import Foundation
 
-import Alamofire
 import NSLogger
 import Promises
 
@@ -121,12 +120,10 @@ public class MatchingEngine
     var state: MatchingEngineState = MatchingEngineState()
     let networkInfo = CTTelephonyNetworkInfo()
     
-    var sessionManager: SessionManager? // alamofire
-    
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
     var executionQueue = DispatchQueue.global(qos: .default)
     
-    let headers: HTTPHeaders = [
+    let headers = [
         "Accept": "application/json",
         "Content-Type": "application/json", // This is the default
         "Charsets": "utf-8",
@@ -296,6 +293,8 @@ public class MatchingEngine
                         //No errors
                         if let data = data {
                             do {
+                                let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+                                print(string1)
                                 // Convert the data to JSON
                                 let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
                                 Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")

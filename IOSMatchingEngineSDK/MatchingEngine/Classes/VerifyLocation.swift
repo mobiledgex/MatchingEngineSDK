@@ -6,7 +6,6 @@
 
 import Foundation
 import NSLogger
-import Alamofire
 import Promises
 
 enum MatchingEngineParameterError: Error {
