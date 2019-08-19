@@ -220,7 +220,6 @@ class Tests: XCTestCase {
         }
         
         let status = promiseValue["status"] as? String ?? ""
-        // The next value may change. Range of values are possible depending on location.
         XCTAssert(status != "RS_SUCCESS", "QoSPosition failed: \(status)")
         XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
     }
