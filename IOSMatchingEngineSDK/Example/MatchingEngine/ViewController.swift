@@ -432,6 +432,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             "Get App Instances",
             "Verify Location",
             "Find Closet Cloudlet",
+            "Get QoS Position",
             "Reset Location",
         ]
     }
@@ -452,6 +453,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 //            "Get App Instances",
 //            "Verify Location",
 //            "Find Closest Cloudlet",
+//            "Get QoS Position",
 //            "Reset Location",
             
             switch index
@@ -469,9 +471,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         request: registerClientRequest)
                 .then { registerClientReply in
                     Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                    SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                 }
                 .catch { error in
                     Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                    SKToast.show(withMessage: "RegisterClient Error: \(error)")
                 }
                 
             case 1:
@@ -481,12 +485,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
                         Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
-                        print("appInstList Reply: \(appInstListReply)")
+                        SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
                         // TODO: observers
                     }
                     .catch { error in
                         Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        print("appInstList error: \(error)")
+                        SKToast.show(withMessage: "appInstList error: \(error)")
                 }
                 // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
 
@@ -506,12 +510,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.host, port: self!.port, request: verifyLocRequest)
                     .then { verifyLocationReply in
                         Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
-                        print("VerfiyLocation reply: \(verifyLocationReply)")
+                        SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
                         // TODO: observers
                     }
                     .catch { error in
                         Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        print("VerfiyLocation error: \(error)")
+                        SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                     }
                     
                 }
@@ -532,17 +536,37 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 self!.matchingEngine.findCloudlet(host: self!.host, port: self!.port, request: findCloudletRequest)
                 .then { findCloudletReply in
                     Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
-                    print("findCloudlet Reply: \(findCloudletReply)")
+                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                 }
                 .catch { error in
                     Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
-                        print("findCloudlet error: \(error)")
+                        SKToast.show(withMessage: "findCloudlet error: \(error)")
                 }
                 print("Should print immediately, non-blocked")
                 
             case 4:
-                Swift.print("Reset Location")
+                Swift.print("Get QoS Position")
+                let loc = retrieveLocation()
+                let positions = self!.createQoSPositionList(loc: loc,
+                                                      directionDegrees: 45,
+                                                      totalDistanceKm: 200,
+                                                      increment: 1)
+                
+                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions)
+                self!.matchingEngine.getQosKPIPosition(host: self!.host, port: self!.port, request: getQoSPositionRequest)
+                .then { getQoSPositionReply in
+                    Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                    SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
+                }
+                .catch { error in
+                        Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
+                        SKToast.show(withMessage: "getQoSPosition error: \(error)")
+                }
+                
+            case 5:
+                SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
+                
 
             default:
                 break
@@ -567,8 +591,30 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             dismiss(animated: true, completion: nil)
         }
     }
-
   
+    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [[String: Any]]
+    {
+        var qosPositionList = [[String: Any]]()
+        let kmPerDegreeLong = 111.32 //at Equator
+        let kmPerDegreeLat = 110.57 //at Equator
+        let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
+        let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
+        var i = 0.0;
+        var longitude = loc["longitude"] ?? 0
+        var latitude = loc["latitude"] ?? 0
+        
+        while i < totalDistanceKm {
+            let loc = [ "longitude": longitude, "latitude": latitude]
+            
+            qosPositionList.append(loc)
+            
+            longitude = (longitude as! Double + addLongitude) as Any
+            latitude = (latitude as! Double + addLatitude) as Any
+            i += increment
+        }
+        
+        return qosPositionList
+    }
     // MARK: -
 
     private func showSpoofGpsDialog(_ spoofLatLng: CLLocationCoordinate2D) // LatLng)
