@@ -592,25 +592,21 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
     }
   
-    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [String: Any]
+    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [[String: Any]]
     {
-        var qosPositionList = [String: Any]()
+        var qosPositionList = [[String: Any]]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
         let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
         let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
-        var positionId = "1"
         var i = 0.0;
         var longitude = loc["longitude"] ?? 0
         var latitude = loc["latitude"] ?? 0
         
         while i < totalDistanceKm {
             let loc = [ "longitude": longitude, "latitude": latitude]
-            var intPosition = Int(positionId) ?? 0
-            intPosition += 1
-            positionId = String(intPosition)
             
-            qosPositionList[positionId] = loc
+            qosPositionList.append(loc)
             
             longitude = (longitude as! Double + addLongitude) as Any
             latitude = (latitude as! Double + addLatitude) as Any
