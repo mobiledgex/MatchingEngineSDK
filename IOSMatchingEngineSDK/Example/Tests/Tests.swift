@@ -121,7 +121,7 @@ class Tests: XCTestCase {
                 XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
         }
         
-        XCTAssert(waitForPromises(timeout: 20))
+        XCTAssert(waitForPromises(timeout: 10))
         guard let val = replyPromise.value else {
             XCTAssert(false, "VerifyLocationReply missing a return value.")
             return
@@ -213,7 +213,7 @@ class Tests: XCTestCase {
                 XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 30))
+        XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "Get QOS Position did not return a value.")
             return
