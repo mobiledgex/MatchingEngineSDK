@@ -417,6 +417,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             "Get App Instances",
             "Verify Location",
             "Find Closet Cloudlet",
+            "Get QoS Position",
             "Reset Location",
         ]
     }
@@ -442,15 +443,17 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             switch index
             {
             case 0:
-                Swift.print("RegisterClient not implemented yet") 
+                SKToast.show(withMessage: "RegisterClient not implemented yet")
             case 1:
-                Swift.print("GetAppInst not implemented yet")
+                SKToast.show(withMessage: "GetAppInst not implemented yet")
             case 2:
-                Swift.print("VerifyLocation not implemented yet")
+               SKToast.show(withMessage: "VerifyLocation not implemented yet")
             case 3:
-                Swift.print("FindClosestCloudlet not implemented yet")
+                SKToast.show(withMessage: "FindClosestCloudlet not implemented yet")
             case 4:
-                Swift.print("Reset Location")
+                SKToast.show(withMessage: "getQosPositionKPI not implemented yet")
+            case 5:
+                SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
 
             default:

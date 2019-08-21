@@ -27,12 +27,6 @@
 		40779A2922974973002EF03B /* ic_action_find_cloudlets.png in Resources */ = {isa = PBXBuildFile; fileRef = 407799C222974972002EF03B /* ic_action_find_cloudlets.png */; };
 		40779A2A22974973002EF03B /* dot-menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 407799C322974972002EF03B /* dot-menu@2x.png */; };
 		40779A2B22974973002EF03B /* ic_marker_mobile-web.png in Resources */ = {isa = PBXBuildFile; fileRef = 407799C422974972002EF03B /* ic_marker_mobile-web.png */; };
-		40779A2C22974973002EF03B /* mex-client.crt in Resources */ = {isa = PBXBuildFile; fileRef = 407799C622974972002EF03B /* mex-client.crt */; };
-		40779A7322974973002EF03B /* mex-ca.der in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1622974972002EF03B /* mex-ca.der */; };
-		40779A7422974973002EF03B /* mex-client.key in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1722974972002EF03B /* mex-client.key */; };
-		40779A7522974973002EF03B /* mex-ca.crt in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1822974972002EF03B /* mex-ca.crt */; };
-		40779A7622974973002EF03B /* mex-clientkey.der in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1922974972002EF03B /* mex-clientkey.der */; };
-		40779A7722974973002EF03B /* mex-client.der in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1A22974972002EF03B /* mex-client.der */; };
 		40779A7822974973002EF03B /* Acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 40779A1B22974972002EF03B /* Acknowledgements.plist */; };
 		40779A8F22974992002EF03B /* Cloudlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779A7A22974992002EF03B /* Cloudlet.swift */; };
 		40779A9022974992002EF03B /* CloudletDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779A7B22974992002EF03B /* CloudletDetailsViewController.swift */; };
@@ -75,9 +69,6 @@
 		40779DA0229771EC002EF03B /* HeadingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D99229771EC002EF03B /* HeadingRequest.swift */; };
 		40779DA1229771EC002EF03B /* IPLocationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D9A229771EC002EF03B /* IPLocationRequest.swift */; };
 		40779DA2229771EC002EF03B /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D9B229771EC002EF03B /* Locator.swift */; };
-		40779DA6229EF0FD002EF03B /* mex-client copy.key in Resources */ = {isa = PBXBuildFile; fileRef = 40779DA5229EF0FC002EF03B /* mex-client copy.key */; };
-		40779DA9229F01F1002EF03B /* mexdemo.crt in Resources */ = {isa = PBXBuildFile; fileRef = 40779DA7229F01F1002EF03B /* mexdemo.crt */; };
-		40779DAA229F01F1002EF03B /* mexdemo.key in Resources */ = {isa = PBXBuildFile; fileRef = 40779DA8229F01F1002EF03B /* mexdemo.key */; };
 		407D56DF22A73DA2009CF705 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 407D56DE22A73DA2009CF705 /* Images.xcassets */; };
 		407D57C122A744B5009CF705 /* CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407D577522A744B5009CF705 /* CellType.swift */; };
 		407D57C222A744B5009CF705 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407D577622A744B5009CF705 /* Cell.swift */; };
@@ -174,12 +165,6 @@
 		407799C222974972002EF03B /* ic_action_find_cloudlets.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_action_find_cloudlets.png; sourceTree = "<group>"; };
 		407799C322974972002EF03B /* dot-menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dot-menu@2x.png"; sourceTree = "<group>"; };
 		407799C422974972002EF03B /* ic_marker_mobile-web.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_marker_mobile-web.png"; sourceTree = "<group>"; };
-		407799C622974972002EF03B /* mex-client.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mex-client.crt"; sourceTree = "<group>"; };
-		40779A1622974972002EF03B /* mex-ca.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mex-ca.der"; sourceTree = "<group>"; };
-		40779A1722974972002EF03B /* mex-client.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mex-client.key"; sourceTree = "<group>"; };
-		40779A1822974972002EF03B /* mex-ca.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mex-ca.crt"; sourceTree = "<group>"; };
-		40779A1922974972002EF03B /* mex-clientkey.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mex-clientkey.der"; sourceTree = "<group>"; };
-		40779A1A22974972002EF03B /* mex-client.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mex-client.der"; sourceTree = "<group>"; };
 		40779A1B22974972002EF03B /* Acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Acknowledgements.plist; sourceTree = "<group>"; };
 		40779A7A22974992002EF03B /* Cloudlet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloudlet.swift; sourceTree = "<group>"; };
 		40779A7B22974992002EF03B /* CloudletDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudletDetailsViewController.swift; sourceTree = "<group>"; };
@@ -227,9 +212,6 @@
 		40779D99229771EC002EF03B /* HeadingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadingRequest.swift; sourceTree = "<group>"; };
 		40779D9A229771EC002EF03B /* IPLocationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPLocationRequest.swift; sourceTree = "<group>"; };
 		40779D9B229771EC002EF03B /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
-		40779DA5229EF0FC002EF03B /* mex-client copy.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mex-client copy.key"; sourceTree = "<group>"; };
-		40779DA7229F01F1002EF03B /* mexdemo.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mexdemo.crt; sourceTree = "<group>"; };
-		40779DA8229F01F1002EF03B /* mexdemo.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mexdemo.key; sourceTree = "<group>"; };
 		407D56DE22A73DA2009CF705 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		407D577522A744B5009CF705 /* CellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellType.swift; sourceTree = "<group>"; };
 		407D577622A744B5009CF705 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -342,7 +324,6 @@
 			isa = PBXGroup;
 			children = (
 				407799B422974972002EF03B /* Images */,
-				407799C522974972002EF03B /* certs */,
 				40779A1B22974972002EF03B /* Acknowledgements.plist */,
 			);
 			path = Resources;
@@ -369,22 +350,6 @@
 				407799C422974972002EF03B /* ic_marker_mobile-web.png */,
 			);
 			path = Images;
-			sourceTree = "<group>";
-		};
-		407799C522974972002EF03B /* certs */ = {
-			isa = PBXGroup;
-			children = (
-				40779DA7229F01F1002EF03B /* mexdemo.crt */,
-				40779DA8229F01F1002EF03B /* mexdemo.key */,
-				40779DA5229EF0FC002EF03B /* mex-client copy.key */,
-				407799C622974972002EF03B /* mex-client.crt */,
-				40779A1622974972002EF03B /* mex-ca.der */,
-				40779A1722974972002EF03B /* mex-client.key */,
-				40779A1822974972002EF03B /* mex-ca.crt */,
-				40779A1922974972002EF03B /* mex-clientkey.der */,
-				40779A1A22974972002EF03B /* mex-client.der */,
-			);
-			path = certs;
 			sourceTree = "<group>";
 		};
 		40779A7922974992002EF03B /* Classes */ = {
@@ -814,7 +779,6 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = XS5HK8D79C;
 						LastSwiftMigration = 0900;
 					};
 				};
@@ -846,20 +810,15 @@
 				40779A2422974973002EF03B /* ic_launcher-web.76.png in Resources */,
 				40779A2222974973002EF03B /* ic_marker_cloudlet-web.png in Resources */,
 				407D57D622A744B5009CF705 /* Assets.xcassets in Resources */,
-				40779A7422974973002EF03B /* mex-client.key in Resources */,
 				40779A9B22974992002EF03B /* g-logo copy.png in Resources */,
 				40779A2122974973002EF03B /* ic_launcher-web.83.png in Resources */,
-				40779A7522974973002EF03B /* mex-ca.crt in Resources */,
 				40779A9522974992002EF03B /* Cog_font_awesome.png in Resources */,
 				40779A1D22974973002EF03B /* dot-menu@3x copy.png in Resources */,
 				40779D8C229770AF002EF03B /* RFAboutViewCloseX@3x.png in Resources */,
 				40779D8D229770AF002EF03B /* RFAboutViewCloseX@2x.png in Resources */,
 				40779A2722974973002EF03B /* ic_launcher-web.180.png in Resources */,
-				40779DAA229F01F1002EF03B /* mexdemo.key in Resources */,
-				40779A7322974973002EF03B /* mex-ca.der in Resources */,
 				40779A2A22974973002EF03B /* dot-menu@2x.png in Resources */,
 				40779A2922974973002EF03B /* ic_action_find_cloudlets.png in Resources */,
-				40779DA9229F01F1002EF03B /* mexdemo.crt in Resources */,
 				40779AF822975F65002EF03B /* LaunchScreen.storyboard in Resources */,
 				40779A1F22974973002EF03B /* ic_launcher-web.png in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
@@ -867,20 +826,16 @@
 				40779A2622974973002EF03B /* dot-menu@3x.png in Resources */,
 				40779AF922975F65002EF03B /* Permissions.storyboard in Resources */,
 				40779A9922974992002EF03B /* menu-512.png in Resources */,
-				40779A2C22974973002EF03B /* mex-client.crt in Resources */,
 				407D56DF22A73DA2009CF705 /* Images.xcassets in Resources */,
 				40779A1C22974973002EF03B /* ic_menu_camera.png in Resources */,
 				40779A1E22974973002EF03B /* ic_menu_recent_history.png in Resources */,
 				407D57D522A744B5009CF705 /* Eureka.bundle in Resources */,
 				40779D8E229770AF002EF03B /* RFAboutViewCloseX.png in Resources */,
-				40779A7622974973002EF03B /* mex-clientkey.der in Resources */,
 				40779A2822974973002EF03B /* ic_launcher-web.1024.png in Resources */,
-				40779DA6229EF0FD002EF03B /* mex-client copy.key in Resources */,
 				40779A9622974992002EF03B /* g-logo.png in Resources */,
 				40779A2B22974973002EF03B /* ic_marker_mobile-web.png in Resources */,
 				40779A2522974973002EF03B /* ic_menu_compass.png in Resources */,
 				40779A7822974973002EF03B /* Acknowledgements.plist in Resources */,
-				40779A7722974973002EF03B /* mex-client.der in Resources */,
 				40779B0822976005002EF03B /* x_darkGray@3x.png in Resources */,
 				40779A9722974992002EF03B /* ios11-control-center-camera-icon.png in Resources */,
 				40779A2322974973002EF03B /* ic_menu_preferences.png in Resources */,
@@ -1221,7 +1176,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDDE5A49D5132BA2C493C013 /* Pods-SkeletonApp.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = XS5HK8D79C;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1237,7 +1192,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E9D4FA49EF25945E2BACEDCA /* Pods-SkeletonApp.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = XS5HK8D79C;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SkeletonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
