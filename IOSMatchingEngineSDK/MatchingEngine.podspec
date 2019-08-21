@@ -33,7 +33,6 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.source_files = 'MatchingEngine/Classes/**/*'
   
   s.dependency 'NSLogger/Swift'
-  s.dependency 'Alamofire'
   s.dependency 'SwiftyJSON'
   s.dependency 'PromisesSwift'
   

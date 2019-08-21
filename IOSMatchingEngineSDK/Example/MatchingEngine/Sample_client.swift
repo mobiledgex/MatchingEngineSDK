@@ -23,7 +23,6 @@ import MapKit
 import Security
 import UIKit
 
-import Alamofire
 import GoogleMaps
 
 import SwiftLocation
@@ -276,32 +275,37 @@ private func useCloudlets(_ findCloudletReply: [String: Any]) // unused
  */
 public func updateLocSimLocation(hostName: String, latitude: Double, longitude: Double)
 {
-    // Swift.print("\(#function)")
-
-    let jd: [String: Any]? = ["latitude": latitude, "longitude": longitude]    // Dictionary/json
-    let urlString: URLConvertible = "http://\(hostName):8888/updateLocation"
-
-    Swift.print("\(urlString)")
-
-    Alamofire.request( urlString,
-                      method: HTTPMethod.post,
-                      parameters: jd,
-                      encoding: JSONEncoding.default)
-        .responseString
-    { response in
-        Swift.print("----\n")
-        Swift.print("\(response)")
-        //     debugPrint(response)
-
-        switch response.result {
-        case .success:
-            //      debugPrint(response)
-            SKToast.show(withMessage: "UpdateLocSimLocation result: \(response)")
-
-        case let .failure(error):
-            print(error)
-            SKToast.show(withMessage: "UpdateLocSimLocation Failed: \(error)")
-        }
+    do {
+        let jd: [String: Any] = ["latitude": latitude, "longitude": longitude]    // Dictionary/json
+        let url = URL(string: "http://\(hostName):8888/updateLocation")
+        Swift.print("\(String(describing: url))")
+    
+        var urlRequest = URLRequest(url: url!)
+    
+        //fill in body/configure URLRequest
+        let jsonRequest = try JSONSerialization.data(withJSONObject: jd)
+        urlRequest.httpBody = jsonRequest
+        urlRequest.httpMethod = "POST"
+        urlRequest.allowsCellularAccess = true
+    
+        Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+    
+        //send request via URLSession API
+        let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+            Swift.print("----\n")
+            Swift.print("\(String(describing: response))")
+            //debugPrint(response)
+            
+            if (error != nil) {
+                print(error!)
+                SKToast.show(withMessage: "UpdateLocSimLocation Failed: \(error!)")
+            } else {
+                SKToast.show(withMessage: "UpdateLocSimLocation result: \(String(describing: response))")
+            }
+        })
+        task.resume()
+    } catch {
+            Logger.shared.log(.network, .debug, "JSON Serialization error")
     }
 }
 
@@ -484,7 +488,8 @@ class MexFaceRecognition
         
         let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort  //
         
-        let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
+        //let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
+        let urlStr = "http://facedetection.defaultcloud.mobiledgex.net/"
         
         // Swift.print("urlStr \(urlStr)")
         
@@ -500,12 +505,9 @@ class MexFaceRecognition
             
             params["image"] = imageData
             
-            //   let imageData2 = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  //  tmp smallest working example
-            //   params["image"] = imageData2 //  tmp
-            
-            let headers: HTTPHeaders = [
+            let headers = [
                 "Accept": "application/json",
-                // "Content-Type": "application/json",    //  fails. we are doing url encoding no json
+                "Content-Type": "application/x-www-form-urlencoded",    //  we are doing url encoding no json
                 "Charsets": "utf-8",
                 ]
 
@@ -519,88 +521,78 @@ class MexFaceRecognition
 
             let _ = pendingCount.increment()
             //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
-
-            _ = Alamofire.request(
-                    urlStr,
-                    method: HTTPMethod.post,
-                    parameters: params,
-                // encoding: JSONEncoding.default // of -d
-                    headers: headers)
-                
-                .responseJSON
-                {
-                    response in
-                    //    Swift.print("----\n")
-                    //    Swift.print("\(response)")
-                    //    debugPrint(response)
-                    let _ = pendingCount.decrement()
-
-                    switch response.result
-                    {
-                    case let .success(data):
-                        
-                        let end = DispatchTime.now() // <<<<<<<<<<   end time
-
-                        // Swift.print("")---
-                        print("•", terminator:"")
-
-                        let d = data as! [String: Any]
-                        let success = d["success"] as! String
-                        if success == "true"
-                        {
-                            print("Y.\(service) ", terminator:"")
-                            // Swift.print("data: \(data)")
-                            
-                            let start =  self.faceDetectionStartTimes![service] //
-                            let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //self.faceDetectionStartTime!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
-                            
-
-                            
-                            let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
-                            
-                           // Swift.print("FaceDetection time: \(timeInterval)")
-                            SKToast.show(withMessage: "FaceDetection  time: \(timeInterval) result: \(data)")
-                            
-                            let aa = d["rects"]
-                            
-                            let msg =    "FaceDetection" + service
-
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: msg), object: aa) //   draw blue rect around face  [[Int]]
-                            
-                            promise.fulfill(d as [String : AnyObject])
-                            
-                            let latency = String(format: "%4.3f", timeInterval * 1000)
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: broardcastMsg!), object: latency)
-                        }
-                        else
-                        {
-                            // Logger.shared.log(.network, .info, postName + " request\n \(request) \n")
-                            print("N.\(service) ", terminator:"")
-
-                        }
-                     
-                    case let .failure(error):
-                        print(error)
-                        promise.reject(error)
-                        Swift.print("error doAFaceDetection")
-
-                    } // end sucess/failure
-                    
-                    //  Swift.print("1=-- \(faceDetectCount.add(0))")  // JT
-                    
-                    if faceDetectCount.decrement() == 0
-                    {
-                        faceDetectCount = OSAtomicInt32(3)
-                    }
-                    
-                    //Swift.print("2=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
-                    
-            }
             
-            // debugPrint(requestObj) // dump curl
-            // Swift.print("")
+            let url = URL(string: urlStr)
+            var urlRequest = URLRequest(url: url!)
+            
+            do {
+                //fill in body/configure URLRequest
+                let jsonRequest = try JSONSerialization.data(withJSONObject: params, options: [])
+                urlRequest.httpBody = jsonRequest
+            } catch {
+                Swift.print("JSON Serialization error")
+            }
+ 
+            urlRequest.httpMethod = "POST"
+            urlRequest.allHTTPHeaderFields = headers
+            urlRequest.allowsCellularAccess = true
+            
+            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            
+            //send request via URLSession API
+            let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                let _ = pendingCount.decrement()
+                if (error != nil) {
+                    print(error!)
+                    promise.reject(error!)
+                    Swift.print("error doAFaceDetection")
+                } else {
+                    let end = DispatchTime.now() // <<<<<<<<<<   end time
+                    
+                    // Swift.print("")---
+                    print("•", terminator:"")
+
+                    if let data = data {
+                        do {
+                            // Convert the data to JSON
+                            let d = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String : AnyObject]
+                            let success = d!["success"] as! String
+                            if success == "true"
+                            {
+                                print("Y.\(service) ", terminator:"")
+                                // Swift.print("data: \(data)")
+                                
+                                let start =  self.faceDetectionStartTimes![service] //
+                                let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //self.faceDetectionStartTime!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+                                
+                                let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
+                                
+                                // Swift.print("FaceDetection time: \(timeInterval)")
+                                SKToast.show(withMessage: "FaceDetection  time: \(timeInterval) result: \(String(describing: data))")
+                                
+                                let aa = d!["rects"]
+                                
+                                let msg =    "FaceDetection" + service
+                                
+                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: msg), object: aa) //   draw blue rect around face  [[Int]]
+                                
+                                promise.fulfill(d!)
+                                
+                                let latency = String(format: "%4.3f", timeInterval * 1000)
+                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: broardcastMsg!), object: latency)
+                            }
+                        } catch {
+                            Swift.print("JSON Serialization error")
+                            return
+                        }
+                    }
+                }
+                if faceDetectCount.decrement() == 0 {
+                    faceDetectCount = OSAtomicInt32(3)
+                }
+            })
+            task.resume()
         }
-        
         return promise
     }
 
@@ -630,7 +622,7 @@ class MexFaceRecognition
         faceRecognitionPromise!.then { reply in
             print("FaceRecognition received value: \(reply)")
 
-            SKToast.show(withMessage: "FaceRec \(reply["subject"]) confidence: \(reply["confidence"]) ")
+            SKToast.show(withMessage: "FaceRec \(String(describing: reply["subject"])) confidence: \(String(describing: reply["confidence"])) ")
             Swift.print("FaceRecognition \(reply)")
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "faceRecognized" + service), object: reply )
@@ -695,7 +687,7 @@ class MexFaceRecognition
             //   let imageData2 = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  //  tmp smallest working example
             //   params["image"] = imageData2 //  tmp
             
-            let headers: HTTPHeaders = [
+            let headers = [
                 "Accept": "application/json",
                 // "Content-Type": "application/json",    // fails. we are doing url encoding no json
                 "Charsets": "utf-8",
@@ -708,62 +700,68 @@ class MexFaceRecognition
             }
             faceRecognitionStartTimes![service] =  DispatchTime.now() //
             
-            let _ = Alamofire.request(urlStr,
-                                               method: HTTPMethod.post,
-                                               parameters: params,
-                                               // encoding: JSONEncoding.default, // of -d
-                                               headers: headers)
-                
-                .responseJSON
-                { response in
-                    //    Swift.print("----\n")
-                    //    Swift.print("\(response)")
-                    //    debugPrint(response)
-                    
-                    switch response.result {
-                    case let .success(data):
-                        let end = DispatchTime.now()   // <<<<<<<<<<   end time
-
-                        // Swift.print("")
-                        let d = data as! [String: Any]
-                        let success = d["success"] as! String
-                        if success == "true"
-                        {
-                            // Swift.print("data: \(data)")
-                            
-                            let start =  self.faceRecognitionStartTimes![service] //
-                            let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
-                            let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
-                            
-                            promise.fulfill(d as [String : AnyObject])  //
-                            
-                            Swift.print("••• FaceRecognition time: \(timeInterval)")
-                            
-                            SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
-                            
-                            //    let msg = "FaceRecognized" + service
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
-                            
-                            
-                            let latency = String( format: "%4.3f", timeInterval * 1000 ) //  ms
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: postMsg), object: latency)     //  post latency
-                        }
-                        else
-                        {
-                            Swift.print("FaceRecognition failed")
-                        }
-                        
-                    case let .failure(error):
-                        print(error)
-                        SKToast.show(withMessage: "FaceRecognition Failed: \(error)")
-                        promise.reject(error)
-                    }
+            let url = URL(string: urlStr)
+            var urlRequest = URLRequest(url: url!)
+            do {
+                //fill in body/configure URLRequest
+                let jsonRequest = try JSONSerialization.data(withJSONObject: params)
+                urlRequest.httpBody = jsonRequest
+            } catch {
+                Swift.print("JSON Serialization error")
             }
             
-            // debugPrint(requestObj) // dump curl
-            // Swift.print("")
+            urlRequest.httpMethod = "POST"
+            urlRequest.allHTTPHeaderFields = headers
+            urlRequest.allowsCellularAccess = true
+            
+            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            
+            //send request via URLSession API
+            let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                if (error != nil) {
+                    print(error!)
+                    SKToast.show(withMessage: "FaceRecognition Failed: \(String(describing: error))")
+                    promise.reject(error!)
+                } else {
+                    let end = DispatchTime.now()   // <<<<<<<<<<   end time
+                    
+                    // Swift.print("")
+                    var d: [String: AnyObject]!
+                    
+                    if let data = data {
+                        do {
+                            // Convert the data to JSON
+                            d = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
+                        } catch {
+                            Swift.print("JSON Serialization error")
+                        }
+                    }
+                    let success = d["success"] as! String
+                    if success == "true"
+                    {
+                        // Swift.print("data: \(data)")
+                        
+                        let start =  self.faceRecognitionStartTimes![service] //
+                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
+                        let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
+                        
+                        promise.fulfill(d as [String : AnyObject])  //
+                        
+                        Swift.print("••• FaceRecognition time: \(timeInterval)")
+                        
+                        SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
+                        
+                        //    let msg = "FaceRecognized" + service
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
+                        
+                        
+                        let latency = String( format: "%4.3f", timeInterval * 1000 ) //  ms
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: postMsg), object: latency)
+                    }
+                }
+            })
+            task.resume()
         }
-        
         return promise
     }
 }
