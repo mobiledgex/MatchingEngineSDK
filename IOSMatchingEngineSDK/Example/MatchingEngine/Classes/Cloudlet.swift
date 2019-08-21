@@ -18,7 +18,6 @@
 
 import Foundation
 
-import Alamofire
 import GoogleMaps
 import Promises
 import MatchingEngine
@@ -569,7 +568,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         Swift.print("doSpeedTest\n  \(downloadUri)") // DEBUG
         startTime1 = DispatchTime.now() // <<<<<<<<<< Start time
         
-        Alamofire.request(downloadUri)
+        /*Alamofire.request(downloadUri)
             .downloadProgress(queue: DispatchQueue.global(qos: .utility))
             { progress in
                 //     print("Progress: \(progress.fractionCompleted)")
@@ -605,7 +604,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
                 
                 SKToast.show(withMessage: "[COMPLETED] rate in MBs   : \(Double(tranferRate) / (1024 * 1024.0))") // UI
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "tranferRate"), object: tranferRate) // post
-        }
+        }*/
     }
     
     func dump()

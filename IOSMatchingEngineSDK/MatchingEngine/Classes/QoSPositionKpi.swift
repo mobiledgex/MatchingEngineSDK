@@ -50,7 +50,7 @@ extension MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [String: Any]) -> [String: Any]
+    public func createQosKPIRequest(requests: [[String: Any]]) -> [String: Any]
     {
         var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
@@ -105,7 +105,7 @@ extension MatchingEngine {
         Logger.shared.log(.network, .debug, "getQosKPIPosition")
         
         let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.appinstlistAPI
+        let urlStr = baseuri + MexUtil.shared.qospositionkpiAPI
         
         do {
             try validateQosKPIRequest(request: request)
