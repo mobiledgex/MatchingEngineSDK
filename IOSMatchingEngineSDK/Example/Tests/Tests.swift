@@ -69,7 +69,7 @@ class Tests: XCTestCase {
                 XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 30))
+        XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "Register did not return a value.")
             return
@@ -222,5 +222,47 @@ class Tests: XCTestCase {
         let status = promiseValue["status"] as? String ?? ""
         XCTAssert(status != "RS_SUCCESS", "QoSPosition failed: \(status)")
         XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
+    }
+    
+    func testGetLocation() {
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.getLocation(host: self.host,
+                                                port: self.port,
+                                                request: self.matchingEngine.createGetLocationRequest(carrierName: self.carrierName))
+            } .catch { error in
+                XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "GetLocation did not return a value.")
+            return
+        }
+        XCTAssert(promiseValue["status"] as? String ?? "" == "LOC_FOUND", "GetLocation Failed.")
+        XCTAssertNil(replyPromise.error)
+    }
+    
+    func testAddUsertoGroup() {
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.addUserToGroup(host: self.host,
+                                                   port: self.port,
+                                                   request: self.matchingEngine.createDynamicLocGroupRequest(commType: nil, userData: nil))
+            } .catch { error in
+                XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "AddUserToGroup did not return a value.")
+            return
+        }
+        XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "AddUserToGroup Failed.")
+        XCTAssertNil(replyPromise.error)
     }
 }
