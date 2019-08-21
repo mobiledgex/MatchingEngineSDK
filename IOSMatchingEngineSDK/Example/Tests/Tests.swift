@@ -69,7 +69,7 @@ class Tests: XCTestCase {
                 XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 10))
+        XCTAssert(waitForPromises(timeout: 30))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "Register did not return a value.")
             return
@@ -121,7 +121,7 @@ class Tests: XCTestCase {
                 XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
         }
         
-        XCTAssert(waitForPromises(timeout: 20))
+        XCTAssert(waitForPromises(timeout: 10))
         guard let val = replyPromise.value else {
             XCTAssert(false, "VerifyLocationReply missing a return value.")
             return
@@ -171,28 +171,24 @@ class Tests: XCTestCase {
         }
     }
     
-    func createQoSPositionList(loc: [String: Double], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [String: Any]
+    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [[String: Any]]
     {
-        var qosPositionList = [String: Any]()
+        var qosPositionList = [[String: Any]]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
         let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
         let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
-        var positionId = "1"
         var i = 0.0;
         var longitude = loc["longitude"] ?? 0
         var latitude = loc["latitude"] ?? 0
         
         while i < totalDistanceKm {
             let loc = [ "longitude": longitude, "latitude": latitude]
-            var intPosition = Int(positionId) ?? 0
-            intPosition += 1
-            positionId = String(intPosition)
             
-            qosPositionList[positionId] = loc
+            qosPositionList.append(loc)
             
-            longitude += addLongitude
-            latitude += addLatitude
+            longitude = longitude as! Double + addLongitude
+            latitude = latitude as! Double + addLatitude
             i += increment
         }
         
@@ -222,8 +218,9 @@ class Tests: XCTestCase {
             XCTAssert(false, "Get QOS Position did not return a value.")
             return
         }
-        XCTAssert(promiseValue["qos_positions"] as? String ?? "" == "RS_SUCCESS", "QOS Position Failed.")
-        XCTAssertNil(replyPromise.error)
+        
+        let status = promiseValue["status"] as? String ?? ""
+        XCTAssert(status != "RS_SUCCESS", "QoSPosition failed: \(status)")
+        XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
     }
-    
 }

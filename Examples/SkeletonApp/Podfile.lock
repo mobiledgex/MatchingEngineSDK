@@ -1,0 +1,93 @@
+PODS:
+  - Alamofire (4.8.1)
+  - DropDown (2.3.13)
+  - GoogleMaps (3.1.0):
+    - GoogleMaps/Maps (= 3.1.0)
+  - GoogleMaps/Base (3.1.0)
+  - GoogleMaps/Maps (3.1.0):
+    - GoogleMaps/Base
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
+  - GTMSessionFetcher/Core (1.2.2)
+  - MatchingEngine (1.4.2.2):
+    - Alamofire
+    - NSLogger/Swift
+    - PromisesSwift
+    - SwiftyJSON
+  - NSLogger/ObjC (1.9.7)
+  - NSLogger/Swift (1.9.7):
+    - NSLogger/ObjC
+  - PromisesObjC (1.2.8)
+  - PromisesSwift (1.2.8):
+    - PromisesObjC (= 1.2.8)
+  - SPPermission (2.9)
+  - SwiftLocation (4.0.2)
+  - SwiftLog (1.0.0)
+  - SwiftSocket (2.0.2)
+  - SwiftyJSON (5.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - DropDown
+  - GoogleMaps (= 3.1.0)
+  - GoogleSignIn
+  - MatchingEngine (from `../../IOSMatchingEngineSDK/`)
+  - NSLogger/Swift
+  - PromisesSwift
+  - SPPermission
+  - SwiftLocation
+  - SwiftLog
+  - SwiftSocket
+  - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - DropDown
+    - GoogleMaps
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - NSLogger
+    - PromisesObjC
+    - PromisesSwift
+    - SPPermission
+    - SwiftLocation
+    - SwiftLog
+    - SwiftSocket
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  MatchingEngine:
+    :path: "../../IOSMatchingEngineSDK/"
+
+SPEC CHECKSUMS:
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
+  GoogleMaps: 5c13302e6fe6bb6e686b267196586b91cd594225
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
+  MatchingEngine: 925bb5b5316e3a236e92b923556d2e3d9bc6af4a
+  NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
+  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
+  SPPermission: 82d2071b4a6fd91e1f29ba68ef1d9e0485c26eeb
+  SwiftLocation: 4f030832331a21abaa4e0c5189d0f80ab8d3e377
+  SwiftLog: f6c4f9a4ade06263555ab34b2c0f72025ffcda9e
+  SwiftSocket: 6f4c9c63fbc5c1d61188936bb3c599fd546f40ae
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+
+PODFILE CHECKSUM: c850eb2ed8bca8e3d8385f6401bbbbfa03cc5e7e
+
+COCOAPODS: 1.7.3

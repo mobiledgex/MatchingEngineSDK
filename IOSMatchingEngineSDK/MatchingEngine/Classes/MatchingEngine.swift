@@ -6,7 +6,6 @@
 
 import Foundation
 
-import Alamofire
 import NSLogger
 import Promises
 
@@ -121,12 +120,10 @@ public class MatchingEngine
     var state: MatchingEngineState = MatchingEngineState()
     let networkInfo = CTTelephonyNetworkInfo()
     
-    var sessionManager: SessionManager? // alamofire
-    
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
     var executionQueue = DispatchQueue.global(qos: .default)
     
-    let headers: HTTPHeaders = [
+    let headers = [
         "Accept": "application/json",
         "Content-Type": "application/json", // This is the default
         "Charsets": "utf-8",
@@ -256,109 +253,72 @@ public class MatchingEngine
         return true
     }
     
-    /// Async https request, Google Promises
-    ///
-    /// - Parameters:
-    ///   - uri:  url
-    ///   - request: json/Dictionary
-    ///   - postName:  "commandName" posted for observers // Refactor overloaded param target.
-    ///
-    /// - Returns: Future for later success/failure
     public func postRequest(uri: String,
-                            request: [String: Any]) // Dictionary/json
+                             request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "uri: \(uri) request\n \(request) \n")
-        
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
-            // Certificates. FIXME: Should not be here.
+            
             do {
-                try self.dealWithTrustPolicy(url: uri)
-            } catch {
-                reject(error)
-            }
-
-            // The value is returned via reslove/reject.
-            let _ = self.sessionManager!.request(
-                uri,
-                method: .post,
-                parameters: request,
-                encoding: JSONEncoding.default,
-                headers: self.headers
-                ).responseJSON { response in
-                    Logger.shared.log(.network, .debug, "\(response.request!)\n")
-
-                    let statusCode = response.response?.statusCode
-                    Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
-
-                    switch response.result
+                //create URLRequest object
+                let url = URL(string: uri)
+                var urlRequest = URLRequest(url: url!)
+                
+                //fill in body/configure URLRequest
+                let jsonRequest = try JSONSerialization.data(withJSONObject: request)
+                urlRequest.httpBody = jsonRequest
+                urlRequest.httpMethod = "POST"
+                urlRequest.allHTTPHeaderFields = self.headers
+                urlRequest.allowsCellularAccess = true
+                
+                Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+                
+                //send request via URLSession API
+                let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                    guard let httpResponse = response as? HTTPURLResponse else
                     {
-                    case let .failure(error):
-                        Logger.shared.log(.network, .debug, "\(error)")
-                        reject(error)
+                        Logger.shared.log(.network, .debug, "Response not HTTPURLResponse")
                         return
-                        
-                    case let .success(data):
-                        // First make sure you got back a dictionary if that's what you expect
-                        guard let json = data as? [String: AnyObject] else
-                        {
-                            Logger.shared.log(.network, .debug, "json = \(data)  error")
-                            return
-                        }
-                        Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(json) \n")
-                        fulfill(json)
                     }
+                    
+                    //checks if http request succeeded (200 == success)
+                    let statusCode = httpResponse.statusCode
+                    if (statusCode != 200) {
+                        Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
+                        return
+                    }
+                    
+                    guard let error = error as NSError? else
+                    {
+                        //No errors
+                        if let data = data {
+                            do {
+                                let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+                                print(string1)
+                                // Convert the data to JSON
+                                let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
+                                Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")
+                                fulfill(jsonSerialized!)
+                            } catch {
+                                Logger.shared.log(.network, .debug, "json = \(data) error")
+                                return
+                            }
+                        }
+                        return
+                    }
+                    
+                    //Error is not nil
+                    Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
+                    reject(error)
 
-                    Logger.shared.log(.network, .debug, "\(response)")
-                    Logger.shared.log(.network, .debug, "result \(response.result)")
-                    Logger.shared.log(.network, .debug, "data \(response.data!)")
+                })
+                task.resume()
+            } catch {
+                Logger.shared.log(.network, .debug, "Request JSON serialization error")
+                return
             }
         }
     }
-
-    // FIXME: Use NSURLSession
-    /// Deal with certificates, trust
-    ///
-    /// - Parameter url:
-    func dealWithTrustPolicy(url: URLConvertible) throws
-    {
-        let certificates = ServerTrustPolicy.certificates() // alamo extension
-        Swift.print("~~~certificates: \(certificates) ---")
-        //  Logger.shared.log(.network, .info,  " certificates:\n \(certificates) \n" )
-        Logger.shared.log(.network, .info, " add these certificates to your curl below --cacert mex-ca.crt --cert mex-client.crt")
-        
-        let trustPolicy = ServerTrustPolicy.pinCertificates(
-            certificates: certificates,
-            validateCertificateChain: true,
-            validateHost: true
-        )
-
-        do
-        {
-            let whoToTrust = try url.asURL().host
-            //     Swift.print("\(whoToTrust)")
-            
-            let trustPolicies = [whoToTrust!: trustPolicy] // [String: ServerTrustPolicy]∫
-            let policyManager = ServerTrustPolicyManager(policies: trustPolicies)
-            
-            sessionManager = SessionManager(
-                configuration: .default,
-                serverTrustPolicyManager: policyManager
-            )
-        }
-        catch
-        {
-            Logger.shared.log(.network, .debug, ("dealWithTrustPolicy asURL throws: trust failure"))
-            throw error
-        }
-    }
-
-    // MARK: -
-
-    // requests
-
-
-
 } // end MatchingEngineSDK
 
 
