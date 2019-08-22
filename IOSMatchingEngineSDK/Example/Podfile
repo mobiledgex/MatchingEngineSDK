@@ -16,7 +16,7 @@ target 'MatchingEngine_Example' do
   pod 'SwiftLocation'
   pod 'SwiftyJSON'
   
-  pod 'GoogleMaps', '= 3.1.0'
+  pod 'GoogleMaps', '= 3.3.0'
   pod 'GoogleSignIn'
 
   pod 'SwiftLog'
