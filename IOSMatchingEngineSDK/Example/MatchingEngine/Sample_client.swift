@@ -491,7 +491,6 @@ class MexFaceRecognition
         Swift.print("urlStr \(urlStr)")
         
         //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
-        
         if let image = image
         {
             let headers = [
