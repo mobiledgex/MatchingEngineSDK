@@ -485,12 +485,10 @@ class MexFaceRecognition
         
         let _ = GetSocketLatency( DEF_FACE_HOST_CLOUD, Int32(faceServerPort)!, "latencyCloud")   //
         
-        
         let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort  //
         
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
         //let urlStr = "http://facedetection.defaultcloud.mobiledgex.net/"
-        //let urlStr = "http://10.227.66.230:8008/detector/detect/"
         
         // Swift.print("urlStr \(urlStr)")
         
@@ -498,17 +496,9 @@ class MexFaceRecognition
         
         if let image = image
         {
-            var imageData = (image.pngData()! as NSData).base64EncodedString(
-                options: NSData.Base64EncodingOptions.lineLength64Characters
-            )
-            imageData = imageData.replacingOccurrences(of: "+", with: "%2B")
-            imageData = "image=\(imageData)"
-            let image = imageData.data(using: String.Encoding.utf8)
-            
             let headers = [
                 "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded",    //  we are doing url encoding no json
-                "Charsets": "utf-8"
+                "Content-Type": "image/png",
                 ]
 
             
@@ -525,7 +515,7 @@ class MexFaceRecognition
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
-            urlRequest.httpBody = image
+            urlRequest.httpBody = image.pngData()
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
@@ -669,21 +659,10 @@ class MexFaceRecognition
         
         if let image = image
         {
-            var imageData = (image.pngData()! as NSData).base64EncodedString(
-                options: NSData.Base64EncodingOptions.lineLength64Characters
-            )
-            imageData = imageData.replacingOccurrences(of: "+", with: "%2B")
-            imageData = "image=\(imageData)"
-            let image = imageData.data(using: String.Encoding.utf8)
-            
-            //   let imageData2 = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  //  tmp smallest working example
-            //   params["image"] = imageData2 //  tmp
-            
             let headers = [
                 "Accept": "application/json",
-                // "Content-Type": "application/json",    // fails. we are doing url encoding no json
-                "Charsets": "utf-8",
-                ]
+                "Content-Type": "image/png",
+            ]
             
     
             if faceRecognitionStartTimes == nil   // LIT hack
@@ -695,7 +674,7 @@ class MexFaceRecognition
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
-            urlRequest.httpBody = image
+            urlRequest.httpBody = image.pngData()
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
