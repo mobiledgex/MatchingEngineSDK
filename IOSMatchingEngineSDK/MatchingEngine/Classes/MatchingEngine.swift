@@ -39,7 +39,6 @@ enum MatchingEngineError: Error {
     case verifyLocationFailed
 }
 
-
 class MatchingEngineState {
     var DEBUG: Bool = true
     init()
@@ -76,7 +75,6 @@ class MatchingEngineState {
     
     // Various known states (should create non-dictionary classes)
     var verifyLocationResult: [String: AnyObject]?
-
     var location = [String: Any]()
     
     func setSessionCookie(sessionCookie: String?)
@@ -128,13 +126,13 @@ public class MatchingEngine
         "Content-Type": "application/json", // This is the default
         "Charsets": "utf-8",
     ]
-
+    
     public init()
     {
         // adds update provider for cell service provider carrierName changes.
         addServiceSubscriberCellularProvidersDidUpdateNotifier()
         executionQueue = DispatchQueue.global(qos: .default)
-
+        
         print(state.appName)
         
     }
@@ -145,8 +143,8 @@ public class MatchingEngine
         {
             self.networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = {
                 (carrierNameKey: String) -> () in
-                    self.state.previousCarrierName = self.state.carrierName;
-                    self.state.carrierName = carrierNameKey;
+                self.state.previousCarrierName = self.state.carrierName;
+                self.state.carrierName = carrierNameKey;
             }
         }
         else
@@ -154,8 +152,8 @@ public class MatchingEngine
             // Deprecated path:
             self.networkInfo.subscriberCellularProviderDidUpdateNotifier = {
                 (ctCarrier: CTCarrier) -> () in
-                    self.state.previousCarrierName = self.state.carrierName;
-                    self.state.carrierName = ctCarrier.carrierName;
+                self.state.previousCarrierName = self.state.carrierName;
+                self.state.carrierName = ctCarrier.carrierName;
             }
         }
     }
@@ -254,7 +252,7 @@ public class MatchingEngine
     }
     
     public func postRequest(uri: String,
-                             request: [String: Any])
+                            request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
@@ -310,7 +308,7 @@ public class MatchingEngine
                     //Error is not nil
                     Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
                     reject(error)
-
+                    
                 })
                 task.resume()
             } catch {
@@ -348,6 +346,8 @@ public class MexUtil // common to Mex... below
     public let verifylocationAPI: String = "/v1/verifylocation"
     public let findcloudletAPI: String = "/v1/findcloudlet"
     public let qospositionkpiAPI: String = "/v1/getqospositionkpi";
+    public let getlocationAPI: String = "/v1/getlocation";
+    public let addusertogroupAPI: String = "/v1/addusertogroup"
     
     public var closestCloudlet = ""
     
@@ -391,7 +391,7 @@ public extension Dictionary
     {
         lhs.merge(rhs) { $1 }
     }
-
+    
     static func + (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value]
     {
         return lhs.merging(rhs) { $1 }

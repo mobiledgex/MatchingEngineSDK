@@ -485,30 +485,18 @@ class MexFaceRecognition
         
         let _ = GetSocketLatency( DEF_FACE_HOST_CLOUD, Int32(faceServerPort)!, "latencyCloud")   //
         
+        let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort
         
-        let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort  //
-        
-        //let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
-        let urlStr = "http://facedetection.defaultcloud.mobiledgex.net/"
-        
-        // Swift.print("urlStr \(urlStr)")
-        
-        var params: [String: String] = [:] //
+        let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
+        Swift.print("urlStr \(urlStr)")
         
         //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
         
         if let image = image
         {
-            let imageData = (image.pngData()! as NSData).base64EncodedString(
-                options: NSData.Base64EncodingOptions.lineLength64Characters
-            )
-            
-            params["image"] = imageData
-            
             let headers = [
                 "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded",    //  we are doing url encoding no json
-                "Charsets": "utf-8",
+                "Content-Type": "image/png",
                 ]
 
             
@@ -525,14 +513,7 @@ class MexFaceRecognition
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
-            do {
-                //fill in body/configure URLRequest
-                let jsonRequest = try JSONSerialization.data(withJSONObject: params, options: [])
-                urlRequest.httpBody = jsonRequest
-            } catch {
-                Swift.print("JSON Serialization error")
-            }
- 
+            urlRequest.httpBody = image.pngData()
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
@@ -672,26 +653,14 @@ class MexFaceRecognition
         
          Swift.print("urlStr \(urlStr)")
         
-        var params: [String: String] = [:]
-        
         //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/recognizer/predict/"
         
         if let image = image
         {
-            let imageData = (image.pngData()! as NSData).base64EncodedString(
-                options: NSData.Base64EncodingOptions.lineLength64Characters
-            )
-            
-            params["image"] = imageData
-            
-            //   let imageData2 = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  //  tmp smallest working example
-            //   params["image"] = imageData2 //  tmp
-            
             let headers = [
                 "Accept": "application/json",
-                // "Content-Type": "application/json",    // fails. we are doing url encoding no json
-                "Charsets": "utf-8",
-                ]
+                "Content-Type": "image/png",
+            ]
             
     
             if faceRecognitionStartTimes == nil   // LIT hack
@@ -702,14 +671,8 @@ class MexFaceRecognition
             
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
-            do {
-                //fill in body/configure URLRequest
-                let jsonRequest = try JSONSerialization.data(withJSONObject: params)
-                urlRequest.httpBody = jsonRequest
-            } catch {
-                Swift.print("JSON Serialization error")
-            }
             
+            urlRequest.httpBody = image.pngData()
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true

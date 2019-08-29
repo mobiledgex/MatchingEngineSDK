@@ -414,9 +414,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         
         rightBarDropDown.dataSource = [ // these first two are automatically done on launch
             "Register Client",
-            "Get App Instances",
-            "Verify Location",
             "Find Closet Cloudlet",
+            "Verify Location",
+            "Get QoS Position",
             "Reset Location",
         ]
     }
@@ -434,29 +434,53 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             Swift.print("selectionAction \(index) \(item) ")
 
 //            "Register Client",
-//            "Get App Instances",
-//            "Verify Location",
 //            "Find Closest Cloudlet",
+//            "Verify Location",
+//            "Get QoS Position",
 //            "Reset Location",
             
             switch index
             {
             case 0:
-                Swift.print("RegisterClient not implemented yet") 
+                SKToast.show(withMessage: "RegisterClient not implemented yet")
             case 1:
-                Swift.print("GetAppInst not implemented yet")
+                SKToast.show(withMessage: "FindClosestCloudlet not implemented yet")
             case 2:
-                Swift.print("VerifyLocation not implemented yet")
+                SKToast.show(withMessage: "VerifyLocation not implemented yet")
             case 3:
-                Swift.print("FindClosestCloudlet not implemented yet")
+                SKToast.show(withMessage: "getQosPositionKPI not implemented yet")
             case 4:
-                Swift.print("Reset Location")
+                SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
 
             default:
                 break
             }
         }
+    }
+    
+    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [[String: Any]]
+    {
+        var qosPositionList = [[String: Any]]()
+        let kmPerDegreeLong = 111.32 //at Equator
+        let kmPerDegreeLat = 110.57 //at Equator
+        let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
+        let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
+        var i = 0.0;
+        var longitude = loc["longitude"] ?? 0
+        var latitude = loc["latitude"] ?? 0
+        
+        while i < totalDistanceKm {
+            let loc = [ "longitude": longitude, "latitude": latitude]
+            
+            qosPositionList.append(loc)
+            
+            longitude = (longitude as! Double + addLongitude) as Any
+            latitude = (latitude as! Double + addLatitude) as Any
+            i += increment
+        }
+        
+        return qosPositionList
     }
 
     @objc func menuButtonAction()
