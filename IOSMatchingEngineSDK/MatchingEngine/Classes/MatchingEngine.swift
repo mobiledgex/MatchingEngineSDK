@@ -75,7 +75,6 @@ class MatchingEngineState {
     
     // Various known states (should create non-dictionary classes)
     var verifyLocationResult: [String: AnyObject]?
-    
     var location = [String: Any]()
     
     func setSessionCookie(sessionCookie: String?)

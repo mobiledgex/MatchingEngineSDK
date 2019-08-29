@@ -485,12 +485,10 @@ class MexFaceRecognition
         
         let _ = GetSocketLatency( DEF_FACE_HOST_CLOUD, Int32(faceServerPort)!, "latencyCloud")   //
         
-        let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort  //
+        let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort
         
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
-        //let urlStr = "http://facedetection.defaultcloud.mobiledgex.net/"
-        
-        // Swift.print("urlStr \(urlStr)")
+        Swift.print("urlStr \(urlStr)")
         
         //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
         
