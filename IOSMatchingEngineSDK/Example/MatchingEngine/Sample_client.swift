@@ -495,7 +495,7 @@ class MexFaceRecognition
         {
             let headers = [
                 "Accept": "application/json",
-                "Content-Type": "image/png",
+                "Content-Type": "image/jpeg",
                 ]
 
             
@@ -512,7 +512,7 @@ class MexFaceRecognition
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
-            urlRequest.httpBody = image.pngData()
+            urlRequest.httpBody = image.jpegData(compressionQuality: 1.0)
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
