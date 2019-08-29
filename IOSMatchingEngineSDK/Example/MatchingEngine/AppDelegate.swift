@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var myViewController: ViewController!
 
     #warning ("Action item: you need to replace the values assigned: API Key and ClientID are specific to each app.")
-    let kAPIKey = "AIzaSyDHEayhLBIJfBvE3SBOsHNHA3dSRYR31G8"
+    let kAPIKey = "***REMOVED***"
     let kClientID = "986302029352-9ctsr3cu2rf2irj616cjilh84bp8chj5.apps.googleusercontent.com" // For this iOS demo FaceDetection Example
 
     
