@@ -491,12 +491,11 @@ class MexFaceRecognition
         Swift.print("urlStr \(urlStr)")
         
         //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
-        
         if let image = image
         {
             let headers = [
                 "Accept": "application/json",
-                "Content-Type": "image/png",
+                "Content-Type": "image/jpeg",
                 ]
 
             
@@ -513,7 +512,7 @@ class MexFaceRecognition
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
-            urlRequest.httpBody = image.pngData()
+            urlRequest.httpBody = image.jpegData(compressionQuality: 1.0)
             urlRequest.httpMethod = "POST"
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
