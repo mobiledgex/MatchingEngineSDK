@@ -68,7 +68,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         if demo
         {
-            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            //host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            host = MexUtil.shared.generateDmeHost2(carrierName: "mexdemo")
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
@@ -552,7 +553,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       totalDistanceKm: 200,
                                                       increment: 1)
                 
-                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions)
+                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil)
                 self!.matchingEngine.getQosKPIPosition(host: self!.host, port: self!.port, request: getQoSPositionRequest)
                 .then { getQoSPositionReply in
                     Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")

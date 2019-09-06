@@ -331,14 +331,15 @@ public class MexUtil // common to Mex... below
     
     
     // url  //  dme.mobiledgex.net:38001
-    let baseDmeHost: String = "dme.mobiledgex.net"
+    let baseDmeHost: String = "global.dme.mobiledgex.net"
     public let dmePort: UInt = 38001
     
     public let carrierNameDefault_TDG: String = "TDG"
     //    let carrierNameDefault_mexdemo: String = "mexdemo"
     
     public var baseDmeHostInUse: String = "TDG" // baseDmeHost
-    public var carrierNameInUse: String = "mexdemo" // carrierNameDefault_mexdemo
+    public var carrierNameInUse: String = "sdkdemo" // carrierNameDefault_mexdemo
+    public var mccMNCInUse: String = "26201"
     
     // API Paths:   See Readme.txt for curl usage examples
     public let registerAPI: String = "/v1/registerclient"
@@ -362,13 +363,32 @@ public class MexUtil // common to Mex... below
         return carrierNameInUse
     }
     
-    public func generateDmeHost(carrierName: String) -> String
+    public func generateFallbackDmeHost(carrierName: String) -> String
     {
         if carrierName == ""
         {
             return carrierNameInUse + "." + baseDmeHostInUse
         }
         return carrierName + "." + baseDmeHostInUse
+    }
+    
+    public func generateDmeHost(carrierName: String) -> String
+    {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let fallbackURL = generateFallbackDmeHost(carrierName: carrierName)
+        guard let ctCarrier = networkInfo.subscriberCellularProvider else {
+            Logger.shared.log(.network, .debug, "Cannot find Subscriber Cellular Provider Info")
+            return fallbackURL
+        }
+        guard let mcc = ctCarrier.mobileCountryCode else {
+            Logger.shared.log(.network, .debug, "Cannot get Mobile Country Code")
+            return fallbackURL
+        }
+        guard let mnc = ctCarrier.mobileNetworkCode else {
+            Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
+            return fallbackURL
+        }
+        return "\(mcc)-\(mnc).\(baseDmeHostInUse)"
     }
     
     public func generateBaseUri(carrierName: String, port: UInt) -> String

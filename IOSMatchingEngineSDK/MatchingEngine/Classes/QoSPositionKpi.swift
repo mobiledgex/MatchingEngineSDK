@@ -15,10 +15,12 @@ public class QosPosition {
 }
 
 //QosPositionKpiRequest fields
-class QosPositionKpiRequest {
+class QosPositionRequest {
     public static let ver = "ver"
     public static let session_cookie = "session_cookie"
     public static let positions = "positions"
+    public static let lte_category = "lte_category"
+    public static let band_selection = "band_selection"
 }
 
 //QosPositionKpiResult fields
@@ -50,20 +52,27 @@ extension MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [[String: Any]]) -> [String: Any]
+    public func createQosKPIRequest(requests: [[String: Any]], lte_category: String?, band_selection: [String: Any]?) -> [String: Any]
     {
         var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
-        qosKPIRequest[QosPositionKpiRequest.ver] = 1
-        qosKPIRequest[QosPositionKpiRequest.session_cookie] = self.state.getSessionCookie()
-        qosKPIRequest[QosPositionKpiRequest.positions] = requests
+        qosKPIRequest[QosPositionRequest.ver] = 1
+        qosKPIRequest[QosPositionRequest.session_cookie] = self.state.getSessionCookie()
+        qosKPIRequest[QosPositionRequest.positions] = requests
+        
+        if (lte_category != nil) {
+            qosKPIRequest[QosPositionRequest.lte_category] = lte_category
+        }
+        if(band_selection != nil) {
+            qosKPIRequest[QosPositionRequest.band_selection] = band_selection
+        }
         
         return qosKPIRequest
     }
     
     func validateQosKPIRequest(request: [String: Any]) throws
     {
-        guard let _ = request[QosPositionKpiRequest.session_cookie] as? String else {
+        guard let _ = request[QosPositionRequest.session_cookie] as? String else {
             throw MatchingEngineError.missingSessionCookie
         }
     }

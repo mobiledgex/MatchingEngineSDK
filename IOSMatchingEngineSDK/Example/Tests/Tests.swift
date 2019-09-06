@@ -208,7 +208,7 @@ class Tests: XCTestCase {
             .then { reply in
                 self.matchingEngine.getQosKPIPosition(host: self.host,
                                                       port: self.port,
-                                                      request: self.matchingEngine.createQosKPIRequest(requests: positions))
+                                                      request: self.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil))
             } .catch { error in
                 XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
         }
