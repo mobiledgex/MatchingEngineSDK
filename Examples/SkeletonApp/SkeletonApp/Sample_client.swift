@@ -486,8 +486,6 @@ class MexFaceRecognition
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
         Swift.print("urlStr \(urlStr)")
         
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
-        
         if let image = image
         {
             let headers = [
@@ -502,9 +500,7 @@ class MexFaceRecognition
             }
             faceDetectionStartTimes![service] =  DispatchTime.now() //
             
-            
             let _ = pendingCount.increment()
-            //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
             
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
@@ -648,8 +644,6 @@ class MexFaceRecognition
         let urlStr = "http://" + baseuri + faceRecognitonAPI //  URLConvertible
         
         Swift.print("urlStr \(urlStr)")
-        
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/recognizer/predict/"
         
         if let image = image
         {
