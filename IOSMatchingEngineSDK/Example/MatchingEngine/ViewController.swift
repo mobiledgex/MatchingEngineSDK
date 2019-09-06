@@ -68,8 +68,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         if demo
         {
-            //host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
-            host = MexUtil.shared.generateDmeHost2(carrierName: "mexdemo")
+            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
