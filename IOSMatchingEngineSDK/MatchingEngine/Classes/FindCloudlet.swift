@@ -136,7 +136,29 @@ extension MatchingEngine {
         }
         
         // postRequest is dispatched to background by default:
-        return self.postRequest(uri: urlStr, request: request)
+        return self.postRequest(uri: urlStr, request: request).then { replyDict in
+            //array of dictionaries
+            guard let ports = replyDict[FindCloudletReply.ports] as? [[String: Any]] else {
+                self.state.setPublicPort(publicPort: nil);
+                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingPorts)
+            }
+            //first dictionary in array
+            let port = ports.first
+            //saving public port to matching engine state
+            guard let publicPort = port?["public_port"] as? UInt else {
+                self.state.setPublicPort(publicPort: nil)
+                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingPublicPort)
+            }
+            self.state.setPublicPort(publicPort: publicPort)
+            Logger.shared.log(.network, .debug, "saved public port\n")
+            //saving end port to matching engine state
+            let endPort = port?["end_port"] as? UInt
+            if (endPort == nil || endPort == 0) {
+                self.state.setEndPort(endPort: nil)
+            }
+            self.state.setEndPort(endPort: endPort)
+            Logger.shared.log(.network, .debug, "saved end port\n")
+            // Implicit return replyDict.
+        }
     }
-    
 }

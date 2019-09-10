@@ -37,6 +37,9 @@ enum MatchingEngineError: Error {
     case registerFailed
     case findCloudletFailed
     case verifyLocationFailed
+    
+    case missingPorts
+    case missingPublicPort
 }
 
 class MatchingEngineState {
@@ -70,12 +73,34 @@ class MatchingEngineState {
     private var sessionCookie: String?
     private var tokenServerUri: String?
     private var tokenServerToken: String?
+    private var publicPort: UInt?
+    private var endPort: UInt?
     
     var deviceGpsLocation: [String: AnyObject]?
     
     // Various known states (should create non-dictionary classes)
     var verifyLocationResult: [String: AnyObject]?
     var location = [String: Any]()
+    
+    func setEndPort(endPort: UInt?)
+    {
+        self.endPort = endPort
+    }
+    
+    func getEndPort() -> UInt?
+    {
+        return self.endPort
+    }
+    
+    func setPublicPort(publicPort: UInt?)
+    {
+        self.publicPort = publicPort
+    }
+    
+    func getPublicPort() -> UInt?
+    {
+        return self.publicPort
+    }
     
     func setSessionCookie(sessionCookie: String?)
     {
