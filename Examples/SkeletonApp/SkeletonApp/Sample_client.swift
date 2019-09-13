@@ -488,7 +488,6 @@ class MexFaceRecognition
         let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort
         
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
-        Swift.print("urlStr \(urlStr)")
         
         if let image = image
         {
@@ -503,9 +502,9 @@ class MexFaceRecognition
                 faceDetectionStartTimes = [String:DispatchTime]()
             }
             faceDetectionStartTimes![service] =  DispatchTime.now() //
-            
+
             let _ = pendingCount.increment()
-            
+       
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
@@ -647,8 +646,6 @@ class MexFaceRecognition
         
         let urlStr = "http://" + baseuri + faceRecognitonAPI //  URLConvertible
         
-        Swift.print("urlStr \(urlStr)")
-        
         if let image = image
         {
             let headers = [
@@ -696,8 +693,6 @@ class MexFaceRecognition
                     let success = d["success"] as! String
                     if success == "true"
                     {
-                        // Swift.print("data: \(data)")
-                        
                         let start =  self.faceRecognitionStartTimes![service] //
                         let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
                         let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
@@ -707,11 +702,20 @@ class MexFaceRecognition
                         Swift.print("••• FaceRecognition time: \(timeInterval)")
                         
                         SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
+                      
+                        let start =  self.faceRecognitionStartTimes![service] //
+                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
+                        let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
                         
+                        promise.fulfill(d as [String : AnyObject])  //
+                        
+                        Swift.print("••• FaceRecognition time: \(timeInterval)")
+                        
+                        SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
+
                         //    let msg = "FaceRecognized" + service
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
-                        
-                        
+                              
                         let latency = String( format: "%4.3f", timeInterval * 1000 ) //  ms
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: postMsg), object: latency)
                     }

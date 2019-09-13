@@ -280,4 +280,25 @@ class Tests: XCTestCase {
         XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "AddUserToGroup Failed.")
         XCTAssertNil(replyPromise.error)
     }
+    
+    func testGetConnection() {
+        let loc = ["longitude": -122.149349, "latitude": 37.459609]
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        
+        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+            .then { reply in
+                self.matchingEngine.findCloudlet(host: self.host, port: self.port,
+                                                 request: self.matchingEngine.createFindCloudletRequest(carrierName: self.carrierName, gpsLocation: loc, devName: self.devName, appName: self.appName, appVers: self.appVers))
+                    .then { reply in
+                        self.matchingEngine.getConnection(netInterfaceType: "pdp_ip0", findCloudletReply: reply, ports: nil, proto: "TCP")
+                }
+        }
+        
+        XCTAssert(waitForPromises(timeout: 20))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "GetConnection did not return a value.")
+            return
+        }
+        Swift.print("promiseValue is \(promiseValue.pointee)")
+    }
 }

@@ -453,16 +453,12 @@ class MexFaceRecognition
     func FaceDetection(_ image: UIImage?, _ service: String)
         -> Promise<[String: AnyObject]>
     {
-        // Swift.print("\(#function)")
-
         let broadcast =  "FaceDetectionLatency" + service
         
         let faceDetectionFuture = FaceDetectionCore(image, service, post: broadcast)
         
         return faceDetectionFuture
     }
-    
-    //  todo? pass in host
     
     func FaceDetectionCore(_ image: UIImage?,  _ service: String, post broardcastMsg: String?)
         -> Promise<[String: AnyObject]>
@@ -471,17 +467,8 @@ class MexFaceRecognition
 
         let promise = Promise<[String: AnyObject]>.pending()
         
-        // detector/detect
-        // Used to send a face image to the server and get back a set of coordinates for any detected faces.
-        // POST http://<hostname>:8008/detector/detect/
-        
         let faceDetectionAPI: String = "/detector/detect/"
-        
-        //    Swift.print("FaceDetection")
-        //    Swift.print("FaceDetection MEX .")
-        //    Swift.print("====================\n")
-        //
-        
+
         getNetworkLatency(DEF_FACE_HOST_EDGE, post: "updateNetworkLatenciesEdge")
         getNetworkLatency(DEF_FACE_HOST_CLOUD, post: "updateNetworkLatenciesCloud")  //
         
@@ -490,9 +477,7 @@ class MexFaceRecognition
         let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort
         
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
-        Swift.print("urlStr \(urlStr)")
-        
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
+
         if let image = image
         {
             let headers = [
@@ -507,9 +492,7 @@ class MexFaceRecognition
             }
             faceDetectionStartTimes![service] =  DispatchTime.now() //
             
-
             let _ = pendingCount.increment()
-            //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
             
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
@@ -531,7 +514,6 @@ class MexFaceRecognition
                 } else {
                     let end = DispatchTime.now() // <<<<<<<<<<   end time
                     
-                    // Swift.print("")---
                     print("•", terminator:"")
 
                     if let data = data {
@@ -542,7 +524,6 @@ class MexFaceRecognition
                             if success == "true"
                             {
                                 print("Y.\(service) ", terminator:"")
-                                // Swift.print("data: \(data)")
                                 
                                 let start =  self.faceDetectionStartTimes![service] //
                                 let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //self.faceDetectionStartTime!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
@@ -634,18 +615,7 @@ class MexFaceRecognition
 
         let promise = Promise<[String: AnyObject]>.pending()
         
-       // Logger.shared.log(.network, .info, image! )      //
-
-        // detector/detect
-        // Used to send a face image to the server and get back a set of coordinates for any detected faces.
-        // POST http://<hostname>:8008/detector/detect/
-        
         let faceRecognitonAPI: String = "/recognizer/predict/"
-        
-        //    Swift.print("FaceRecogniton")
-        //    Swift.print("FaceRecogniton MEX .")
-        //    Swift.print("====================\n")
-        
         
         let postMsg =  "faceRecognitionLatency" + service
         let baseuri = (service ==  "Cloud" ? DEF_FACE_HOST_CLOUD : DEF_FACE_HOST_EDGE)   + ":" + faceServerPort  //
@@ -654,15 +624,12 @@ class MexFaceRecognition
         
          Swift.print("urlStr \(urlStr)")
         
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/recognizer/predict/"
-        
         if let image = image
         {
             let headers = [
                 "Accept": "application/json",
                 "Content-Type": "image/png",
             ]
-            
     
             if faceRecognitionStartTimes == nil   // LIT hack
             {
@@ -689,7 +656,6 @@ class MexFaceRecognition
                 } else {
                     let end = DispatchTime.now()   // <<<<<<<<<<   end time
                     
-                    // Swift.print("")
                     var d: [String: AnyObject]!
                     
                     if let data = data {
@@ -703,13 +669,11 @@ class MexFaceRecognition
                     let success = d["success"] as! String
                     if success == "true"
                     {
-                        // Swift.print("data: \(data)")
-                        
-                        let start =  self.faceRecognitionStartTimes![service] //
-                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
+                        let start =  self.faceRecognitionStartTimes![service]
+                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds
                         let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
                         
-                        promise.fulfill(d as [String : AnyObject])  //
+                        promise.fulfill(d as [String : AnyObject])
                         
                         Swift.print("••• FaceRecognition time: \(timeInterval)")
                         
