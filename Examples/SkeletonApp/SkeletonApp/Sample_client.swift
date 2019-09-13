@@ -1,21 +1,25 @@
-// Sample Client of SDK
-//
-//  Sample_client.swift
-//  SkeletonApp
-//
-// Copyright 2019 MobiledgeX
+// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+//
+// Sample Client of SDK
+//
+//  Sample_client.swift
+//  SkeletonApp
+//
+
 
 import Foundation
 import CoreLocation
@@ -484,9 +488,6 @@ class MexFaceRecognition
         let baseuri = (service == "Cloud" ? DEF_FACE_HOST_CLOUD  : DEF_FACE_HOST_EDGE) + ":" + faceServerPort
         
         let urlStr = "http://" + baseuri + faceDetectionAPI //   URLConvertible
-        Swift.print("urlStr \(urlStr)")
-        
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/detector/detect/"
         
         if let image = image
         {
@@ -501,11 +502,9 @@ class MexFaceRecognition
                 faceDetectionStartTimes = [String:DispatchTime]()
             }
             faceDetectionStartTimes![service] =  DispatchTime.now() //
-            
-            
+
             let _ = pendingCount.increment()
-            //Swift.print("0=-- \(faceDetectCount.add(0)) \(pendingCount.add(0)) ")  // JT
-            
+       
             let url = URL(string: urlStr)
             var urlRequest = URLRequest(url: url!)
             
@@ -647,10 +646,6 @@ class MexFaceRecognition
         
         let urlStr = "http://" + baseuri + faceRecognitonAPI //  URLConvertible
         
-        Swift.print("urlStr \(urlStr)")
-        
-        //   urlStr = "http://mobiledgexsdkdemomobiledgexsdkdemo10.microsoftwestus2cloudlet.azure.mobiledgex.net:8008/recognizer/predict/"
-        
         if let image = image
         {
             let headers = [
@@ -698,8 +693,6 @@ class MexFaceRecognition
                     let success = d["success"] as! String
                     if success == "true"
                     {
-                        // Swift.print("data: \(data)")
-                        
                         let start =  self.faceRecognitionStartTimes![service] //
                         let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
                         let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
@@ -709,11 +702,20 @@ class MexFaceRecognition
                         Swift.print("••• FaceRecognition time: \(timeInterval)")
                         
                         SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
+                      
+                        let start =  self.faceRecognitionStartTimes![service] //
+                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
+                        let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
                         
+                        promise.fulfill(d as [String : AnyObject])  //
+                        
+                        Swift.print("••• FaceRecognition time: \(timeInterval)")
+                        
+                        SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
+
                         //    let msg = "FaceRecognized" + service
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
-                        
-                        
+                              
                         let latency = String( format: "%4.3f", timeInterval * 1000 ) //  ms
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: postMsg), object: latency)
                     }
