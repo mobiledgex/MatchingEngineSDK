@@ -37,9 +37,6 @@ enum MatchingEngineError: Error {
     case registerFailed
     case findCloudletFailed
     case verifyLocationFailed
-    
-    case missingPorts
-    case missingPublicPort
 }
 
 class MatchingEngineState {
@@ -73,34 +70,12 @@ class MatchingEngineState {
     private var sessionCookie: String?
     private var tokenServerUri: String?
     private var tokenServerToken: String?
-    private var publicPort: UInt?
-    private var endPort: UInt?
     
     var deviceGpsLocation: [String: AnyObject]?
     
     // Various known states (should create non-dictionary classes)
     var verifyLocationResult: [String: AnyObject]?
     var location = [String: Any]()
-    
-    func setEndPort(endPort: UInt?)
-    {
-        self.endPort = endPort
-    }
-    
-    func getEndPort() -> UInt?
-    {
-        return self.endPort
-    }
-    
-    func setPublicPort(publicPort: UInt?)
-    {
-        self.publicPort = publicPort
-    }
-    
-    func getPublicPort() -> UInt?
-    {
-        return self.publicPort
-    }
     
     func setSessionCookie(sessionCookie: String?)
     {
@@ -286,7 +261,6 @@ public class MatchingEngine
                 //create URLRequest object
                 let url = URL(string: uri)
                 var urlRequest = URLRequest(url: url!)
-                
                 //fill in body/configure URLRequest
                 let jsonRequest = try JSONSerialization.data(withJSONObject: request)
                 urlRequest.httpBody = jsonRequest
@@ -365,6 +339,8 @@ public class MexUtil // common to Mex... below
     public var baseDmeHostInUse: String = "TDG" // baseDmeHost
     public var carrierNameInUse: String = "sdkdemo" // carrierNameDefault_mexdemo
     public var mccMNCInUse: String = "26201"
+    public var ctCarriers: [String: CTCarrier]?
+    public var lastCarrier: CTCarrier?
     
     // API Paths:   See Readme.txt for curl usage examples
     public let registerAPI: String = "/v1/registerclient"
@@ -401,15 +377,32 @@ public class MexUtil // common to Mex... below
     {
         let networkInfo = CTTelephonyNetworkInfo()
         let fallbackURL = generateFallbackDmeHost(carrierName: carrierName)
-        guard let ctCarrier = networkInfo.subscriberCellularProvider else {
+        
+        if #available(iOS 12.0, *) {
+            ctCarriers = networkInfo.serviceSubscriberCellularProviders
+        } else {
+            return fallbackURL
+            // Fallback on earlier versions
+        }
+        if #available(iOS 12.1, *) {
+            networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = { (carrier) in
+                self.ctCarriers = networkInfo.serviceSubscriberCellularProviders
+                if self.ctCarriers !=  nil {
+                    self.lastCarrier = self.ctCarriers![carrier]
+                }
+            };
+        }
+        
+        lastCarrier = networkInfo.subscriberCellularProvider
+        if lastCarrier == nil{
             Logger.shared.log(.network, .debug, "Cannot find Subscriber Cellular Provider Info")
             return fallbackURL
         }
-        guard let mcc = ctCarrier.mobileCountryCode else {
+        guard let mcc = lastCarrier!.mobileCountryCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Country Code")
             return fallbackURL
         }
-        guard let mnc = ctCarrier.mobileNetworkCode else {
+        guard let mnc = lastCarrier!.mobileNetworkCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
             return fallbackURL
         }
