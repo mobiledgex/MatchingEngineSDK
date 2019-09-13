@@ -19,9 +19,16 @@ class Ports {
 
 extension MatchingEngine {
     
+    enum SystemError: Swift.Error {
+        case getaddrinfo(Int32, Int32?)
+        case socket(Int32, Int32?)
+        case bind(Int32, Int32?)
+        case connect(Int32, Int32?)
+    }
+    
     //Get a TCP or UDP connection on client interface specified with the provisioned appInst server and port
-    public func getConnection(netInterfaceType: String?, findCloudletReply: [String: AnyObject], ports: [String]?, proto: String?) -> Promise<AnyObject> {
-        return Promise<AnyObject>(on: self.executionQueue) { fulfill, reject in
+    public func getConnection(netInterfaceType: String?, findCloudletReply: [String: AnyObject], ports: [String]?, proto: String?) -> Promise<UnsafeMutablePointer<addrinfo>> {
+        return Promise<UnsafeMutablePointer<addrinfo>>(on: self.executionQueue) { fulfill, reject in
             //client host
             let clientIP = self.getIPAddress(netInterfaceType: netInterfaceType)
             //server host
@@ -46,40 +53,53 @@ extension MatchingEngine {
             } else {
                 addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
             }
+            
             //getaddrinfo function makes ip + port conversion to sockaddr easy
             let error = getaddrinfo(clientIP, port, &addrInfo, &res)
             if error != 0 {
-                Logger.shared.log(.network, .debug, String(validatingUTF8: gai_strerror(error)) ?? "Client getaddrinfo error is \(error)")
-                return
+                let sysError = SystemError.getaddrinfo(error, errno)
+                Logger.shared.log(.network, .debug, "Client get addrinfo error is \(sysError)")
+                reject(sysError)
             }
             
             //socket returns a socket descriptor
             let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  //protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
-                Logger.shared.log(.network, .debug, "Client socket error is \(s)")
-                return
+                let sysError = SystemError.socket(s, errno)
+                Logger.shared.log(.network, .debug, "Client socket error is \(sysError)")
+                reject(sysError)
             }
             
             //bind to socket to client cellular network interface
             let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
             if b == -1 {
-                Logger.shared.log(.network, .debug, "Client bind error is \(b)")
+                let sysError = SystemError.bind(b, errno)
+                Logger.shared.log(.network, .debug, "Client bind error is \(sysError)")
+                reject(sysError)
             }
             
             let serverError = getaddrinfo(serverFqdn, port, &addrInfo, &serverRes)
-            if serverError == -1 {
-                Logger.shared.log(.network, .debug, String(validatingUTF8: gai_strerror(serverError)) ?? "Server getaddrinfo error is \(serverError)")
-                return
+            if serverError != 0 {
+                let sysError = SystemError.getaddrinfo(serverError, errno)
+                Logger.shared.log(.network, .debug, "Server get addrinfo error is \(sysError)")
+                reject(sysError)
             }
+            
             let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
             if serverSocket == -1 {
-                Logger.shared.log(.network, .debug, "Server socket error is \(serverSocket)")
-                return
+                let sysError = SystemError.connect(serverSocket, errno)
+                Logger.shared.log(.network, .debug, "Server socket error is \(sysError)")
+                reject(sysError)
             }
             
             //connect our socket to the provisioned socket
             let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
-            fulfill(res.pointee.ai_addr.pointee as AnyObject)
+            if c == -1 {
+                let sysError = SystemError.connect(c, errno)
+                Logger.shared.log(.network, .debug, "Connection error is \(sysError)")
+                reject(sysError)
+            }
+            fulfill(res)
         }
     }
     
@@ -142,11 +162,11 @@ extension MatchingEngine {
     //Gets the client IP Address on the interface specified
     //TODO: check for multiple cellular ip addresses (multiple SIM subscriptions possible)
     private func getIPAddress(netInterfaceType: String?) -> String? {
-        var netInterface: String
+        var specifiedNetInterface: Bool
         if netInterfaceType == nil {
-            netInterface = "pdp_ip0" //default is cellular interface
+            specifiedNetInterface = false //default is cellular interface
         } else {
-            netInterface = netInterfaceType!
+            specifiedNetInterface = true
         }
         var address : String?
         // Get list of all interfaces on the local machine:
@@ -157,22 +177,18 @@ extension MatchingEngine {
         // For each interface ...
         for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
             let interface = ifptr.pointee
-            // Check for IPv4 or IPv6 interface:
-            let addrFamily = interface.ifa_addr.pointee.sa_family
-            if addrFamily == UInt8(AF_INET) || addrFamily == UInt8(PF_INET) {
-                
-                // Check interface name:
-                let name = String(cString: interface.ifa_name)
-                if  name == netInterface {     //Cellular interface
+            
+            // Check interface name:
+            let name = String(cString: interface.ifa_name)
+            if  name == netInterfaceType || !specifiedNetInterface {     //Cellular interface
                     
-                    //return interface.ifa_addr.pointee
-                    let data = NSData(bytes: &interface.ifa_addr.pointee, length: MemoryLayout<sockaddr_in>.size) as CFData                    // Convert interface address to a human readable string:
-                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len),
-                                &hostname, socklen_t(hostname.count),
-                                nil, socklen_t(0), NI_NUMERICHOST)
-                    address = String(cString: hostname)
-                }
+                //return interface.ifa_addr.pointee
+                let data = NSData(bytes: &interface.ifa_addr.pointee, length: MemoryLayout<sockaddr_in>.size) as CFData                 //Convert interface address to a human readable string:
+                var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len),
+                            &hostname, socklen_t(hostname.count),
+                            nil, socklen_t(0), NI_NUMERICHOST)
+                address = String(cString: hostname)
             }
         }
         freeifaddrs(ifaddr)

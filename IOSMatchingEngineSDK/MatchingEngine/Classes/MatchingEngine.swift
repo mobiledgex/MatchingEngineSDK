@@ -338,7 +338,6 @@ public class MexUtil // common to Mex... below
     
     public var baseDmeHostInUse: String = "TDG" // baseDmeHost
     public var carrierNameInUse: String = "sdkdemo" // carrierNameDefault_mexdemo
-    public var mccMNCInUse: String = "26201"
     public var ctCarriers: [String: CTCarrier]?
     public var lastCarrier: CTCarrier?
     

@@ -284,6 +284,6 @@ class Tests: XCTestCase {
             XCTAssert(false, "GetConnection did not return a value.")
             return
         }
-        Swift.print("promiseValue is \(promiseValue)")
+        Swift.print("promiseValue is \(promiseValue.pointee)")
     }
 }
