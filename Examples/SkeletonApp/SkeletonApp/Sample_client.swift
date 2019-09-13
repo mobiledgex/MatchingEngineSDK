@@ -702,16 +702,6 @@ class MexFaceRecognition
                         Swift.print("••• FaceRecognition time: \(timeInterval)")
                         
                         SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
-                      
-                        let start =  self.faceRecognitionStartTimes![service] //
-                        let nanoTime = end.uptimeNanoseconds - start!.uptimeNanoseconds  //
-                        let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
-                        
-                        promise.fulfill(d as [String : AnyObject])  //
-                        
-                        Swift.print("••• FaceRecognition time: \(timeInterval)")
-                        
-                        SKToast.show(withMessage: "FaceRecognition  time: \(timeInterval) result: \(data)")
 
                         //    let msg = "FaceRecognized" + service
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FaceRecognized"), object: d)   //  doNextFaceRecognition "FaceRecognized"
