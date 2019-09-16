@@ -305,7 +305,7 @@ public class MatchingEngine
                         //No errors
                         if let data = data {
                             do {
-                                let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
+                                //let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
                                 // Convert the data to JSON
                                 let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
                                 Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")
