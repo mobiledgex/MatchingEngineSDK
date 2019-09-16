@@ -345,7 +345,7 @@ public class MexUtil // common to Mex... below
     
     
     // url  //  dme.mobiledgex.net:38001
-    let baseDmeHost: String = "global.dme.mobiledgex.net"
+    let baseDmeHost: String = "dme.mobiledgex.net"
     public let dmePort: UInt = 38001
     
     public let carrierNameDefault_TDG: String = "TDG"
