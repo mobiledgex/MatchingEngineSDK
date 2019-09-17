@@ -364,7 +364,7 @@ public class MexUtil // common to Mex... below
     public let getlocationAPI: String = "/v1/getlocation";
     public let addusertogroupAPI: String = "/v1/addusertogroup"
     
-    public let dmeList: Set = ["262-01.dme.mobiledgex.net", "310-260.dme.mobiledgex.net"]
+    public let dmeList: Set = ["262-01.dme.mobiledgex.net", "310-260.dme.mobiledgex.net"] //dme urls (with mcc-mnc format) that work
     
     public var closestCloudlet = ""
     
@@ -423,7 +423,7 @@ public class MexUtil // common to Mex... below
         }
         
         let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
-        if !dmeList.contains(url)  {   //the only mnc and mcc pair that currently works
+        if !dmeList.contains(url)  {
             return fallbackURL
         }
         return url
