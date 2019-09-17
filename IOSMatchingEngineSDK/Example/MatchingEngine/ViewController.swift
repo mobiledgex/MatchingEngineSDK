@@ -469,8 +469,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  carrierName: self!.carrierName,
                                                                                  authToken: self!.authToken);
                 self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
-                        host: self!.host, // For demo purposes, this remains static.
-                        port: self!.port,
                         request: registerClientRequest)
                 .then { registerClientReply in
                     Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
@@ -485,7 +483,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let loc = retrieveLocation()
                 
                 let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
-                self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: appInstListRequest)
+                self!.matchingEngine.getAppInstList(request: appInstListRequest)
                     .then { appInstListReply in
                         Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
                         SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
@@ -510,7 +508,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     
                     let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
                         carrierName: self!.carrierName, gpsLocation: loc)
-                    self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.host, port: self!.port, request: verifyLocRequest)
+                    self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(request: verifyLocRequest)
                     .then { verifyLocationReply in
                         Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
                         SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
@@ -536,7 +534,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
                                                                              gpsLocation: loc, devName: self!.devName,
                                                                              appName: self!.appName, appVers: self!.appVers)
-                self!.matchingEngine.findCloudlet(host: self!.host, port: self!.port, request: findCloudletRequest)
+                self!.matchingEngine.findCloudlet(request: findCloudletRequest)
                 .then { findCloudletReply in
                     Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
                     SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
@@ -556,7 +554,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       increment: 1)
                 
                 let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil)
-                self!.matchingEngine.getQosKPIPosition(host: self!.host, port: self!.port, request: getQoSPositionRequest)
+                self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
                 .then { getQoSPositionReply in
                     Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
                     SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
