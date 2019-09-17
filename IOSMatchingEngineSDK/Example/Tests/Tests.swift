@@ -79,7 +79,7 @@ class Tests: XCTestCase {
         let request = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: request)
+        let replyPromise = matchingEngine.registerClient(request: request)
             .catch { error in
                 XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
         }
@@ -100,10 +100,9 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.findCloudlet(host: self.host, port: self.port,
-                                                 request: self.matchingEngine.createFindCloudletRequest(
+                self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
                                                     carrierName: self.carrierName,
                                                     gpsLocation: loc,
                                                     devName: self.devName,
@@ -126,10 +125,9 @@ class Tests: XCTestCase {
         
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.verifyLocation(host: self.host, port: self.port,
-                                                   request: self.matchingEngine.createVerifyLocationRequest(
+                self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
                                                     carrierName: self.carrierName, // Test override values
                                                     gpsLocation: loc))
             }.catch { error in
@@ -143,7 +141,7 @@ class Tests: XCTestCase {
         }
         let gpsStatus = val["gps_location_status"] as? String ?? ""
         // The next value may change. Range of values are possible depending on location.
-        XCTAssert(gpsStatus == "LOC_ROAMING_COUNTRY_MATCH", "VerifyLocation failed: \(gpsStatus)")
+        XCTAssert(gpsStatus == "LOC_VERIFIED", "VerifyLocation failed: \(gpsStatus)")
         XCTAssertNil(replyPromise.error, "VerifyLocation Error is set: \(String(describing: replyPromise.error))")
     }
     
@@ -153,10 +151,9 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.getAppInstList(host: self.host, port: self.port,
-                                                   request: self.matchingEngine.createGetAppInstListRequest(
+                self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
                                                     carrierName: self.carrierName,
                                                     gpsLocation: loc))
         }
@@ -219,11 +216,12 @@ class Tests: XCTestCase {
         
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.getQosKPIPosition(host: self.host,
-                                                      port: self.port,
-                                                      request: self.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil))
+                self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(
+                                                        requests: positions,
+                                                        lte_category: nil,
+                                                        band_selection: nil))
             } .catch { error in
                 XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
         }
@@ -242,11 +240,10 @@ class Tests: XCTestCase {
     func testGetLocation() {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.getLocation(host: self.host,
-                                                port: self.port,
-                                                request: self.matchingEngine.createGetLocationRequest(carrierName: self.carrierName))
+                self.matchingEngine.getLocation(request: self.matchingEngine.createGetLocationRequest(
+                                                    carrierName: self.carrierName))
             } .catch { error in
                 XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
         }
@@ -263,11 +260,11 @@ class Tests: XCTestCase {
     func testAddUsertoGroup() {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.addUserToGroup(host: self.host,
-                                                   port: self.port,
-                                                   request: self.matchingEngine.createDynamicLocGroupRequest(commType: nil, userData: nil))
+                self.matchingEngine.addUserToGroup(request: self.matchingEngine.createDynamicLocGroupRequest(
+                                                        commType: nil,
+                                                        userData: nil))
             } .catch { error in
                 XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
         }
@@ -285,10 +282,14 @@ class Tests: XCTestCase {
         let loc = ["longitude": -122.149349, "latitude": 37.459609]
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
-        let replyPromise = matchingEngine.registerClient(host: host, port: port, request: regRequest)
+        let replyPromise = matchingEngine.registerClient(request: regRequest)
             .then { reply in
-                self.matchingEngine.findCloudlet(host: self.host, port: self.port,
-                                                 request: self.matchingEngine.createFindCloudletRequest(carrierName: self.carrierName, gpsLocation: loc, devName: self.devName, appName: self.appName, appVers: self.appVers))
+                self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
+                                                    carrierName: self.carrierName,
+                                                    gpsLocation: loc,
+                                                    devName: self.devName,
+                                                    appName: self.appName,
+                                                    appVers: self.appVers))
                     .then { reply in
                         self.matchingEngine.getConnection(netInterfaceType: "pdp_ip0", findCloudletReply: reply, ports: nil, proto: "TCP")
                 }

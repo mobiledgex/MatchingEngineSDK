@@ -305,8 +305,7 @@ public class MatchingEngine
                         //No errors
                         if let data = data {
                             do {
-                                let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-                                print(string1)
+                                //let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
                                 // Convert the data to JSON
                                 let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
                                 Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")
@@ -345,7 +344,7 @@ public class MexUtil // common to Mex... below
     
     
     // url  //  dme.mobiledgex.net:38001
-    let baseDmeHost: String = "global.dme.mobiledgex.net"
+    let baseDmeHost: String = "dme.mobiledgex.net"
     public let dmePort: UInt = 38001
     
     public let carrierNameDefault_TDG: String = "TDG"
@@ -420,7 +419,12 @@ public class MexUtil // common to Mex... below
             Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
             return fallbackURL
         }
-        return "\(mcc)-\(mnc).\(baseDmeHostInUse)"
+        
+        let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
+        if url != "262-01.dme.mobiledgex.net" {   //the only mnc and mcc pair that currently works
+            return fallbackURL
+        }
+        return url
     }
     
     public func generateBaseUri(carrierName: String, port: UInt) -> String
