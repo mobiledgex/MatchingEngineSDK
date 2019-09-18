@@ -598,8 +598,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         var qosPositionList = [[String: Any]]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
-        let addLongitude = (cos(directionDegrees) * increment) / kmPerDegreeLong
-        let addLatitude = (sin(directionDegrees) * increment) / kmPerDegreeLat
+        let addLongitude = (cos(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLong
+        let addLatitude = (sin(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLat
         var i = 0.0;
         var longitude = loc["longitude"] ?? 0
         var latitude = loc["latitude"] ?? 0
