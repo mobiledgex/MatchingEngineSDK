@@ -54,6 +54,13 @@ enum MatchingEngineError: Error {
     case verifyLocationFailed
 }
 
+enum DmeDnsError: Error {
+    case outdatedIOSVersion
+    case missingCellularSubscriberInfo
+    case missingMNC
+    case missingMCC
+}
+
 class MatchingEngineState {
     var DEBUG: Bool = true
     init()
@@ -388,7 +395,20 @@ public class MexUtil // common to Mex... below
         return carrierName + "." + baseDmeHostInUse
     }
     
-    public func generateDmeHost(carrierName: String) -> String
+    public func verifyDmeHost(host: String) throws {
+        var addrInfo = addrinfo.init()
+        var result: UnsafeMutablePointer<addrinfo>!
+        
+        //getaddrinfo function makes ip + port conversion to sockaddr easy
+        let error = getaddrinfo(host, nil, &addrInfo, &result)
+        if error != 0 {
+            let sysError = SystemError.getaddrinfo(error, errno)
+            Logger.shared.log(.network, .debug, "Cannot verifyDmeHost error: \(sysError)")
+            throw sysError
+        }
+    }
+    
+    public func generateDmeHost(carrierName: String) throws -> String
     {
         let networkInfo = CTTelephonyNetworkInfo()
         let fallbackURL = generateFallbackDmeHost(carrierName: carrierName)
@@ -396,7 +416,7 @@ public class MexUtil // common to Mex... below
         if #available(iOS 12.0, *) {
             ctCarriers = networkInfo.serviceSubscriberCellularProviders
         } else {
-            return fallbackURL
+            throw DmeDnsError.outdatedIOSVersion
             // Fallback on earlier versions
         }
         if #available(iOS 12.1, *) {
@@ -411,27 +431,26 @@ public class MexUtil // common to Mex... below
         lastCarrier = networkInfo.subscriberCellularProvider
         if lastCarrier == nil{
             Logger.shared.log(.network, .debug, "Cannot find Subscriber Cellular Provider Info")
-            return fallbackURL
+            throw DmeDnsError.missingCellularSubscriberInfo
         }
         guard let mcc = lastCarrier!.mobileCountryCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Country Code")
-            return fallbackURL
+            throw DmeDnsError.missingMCC
         }
         guard let mnc = lastCarrier!.mobileNetworkCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
-            return fallbackURL
+            throw DmeDnsError.missingMNC
         }
         
         let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
-        if !dmeList.contains(url)  {
-            return fallbackURL
-        }
+        try verifyDmeHost(host: url)
         return url
     }
     
-    public func generateBaseUri(carrierName: String, port: UInt) -> String
+    public func generateBaseUri(carrierName: String, port: UInt) throws -> String
     {
-        return "https://\(generateDmeHost(carrierName: carrierName)):\(port)"
+        let host = try generateDmeHost(carrierName: carrierName)
+        return "https://\(host):\(port)"
     }
     
     public func generateBaseUri(host: String, port: UInt) -> String

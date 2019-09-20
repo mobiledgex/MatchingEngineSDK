@@ -46,7 +46,7 @@ class VerifyLocationReply {
 extension MatchingEngine {
     
     public func doVerifyLocation(gpsLocation: [String: AnyObject])
-        -> Promise<[String: AnyObject]>?
+        throws -> Promise<[String: AnyObject]>?
     {
         Swift.print("Verify Location of this Mex client.")
         Swift.print("===================================\n\n")
@@ -61,10 +61,9 @@ extension MatchingEngine {
             Logger.shared.log(.network, .error, "ERROR: TokenURI is empty!")
             return nil
         }
-        // Bleh
         
         let verifyLocRequest = createVerifyLocationRequest(carrierName: getCarrierName(), gpsLocation: gpsLocation)
-        return self.verifyLocation(request: verifyLocRequest)
+        return try self.verifyLocation(request: verifyLocRequest)
     }
     
     /// <#Description#>
@@ -201,7 +200,7 @@ extension MatchingEngine {
         return tokenizedRequest
     }
     
-    public func verifyLocation(request: [String: Any]) -> Promise<[String: AnyObject]> {
+    public func verifyLocation(request: [String: Any]) throws -> Promise<[String: AnyObject]> {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
@@ -210,7 +209,7 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
         return verifyLocation(host: host, port: port, request: request)

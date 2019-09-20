@@ -29,14 +29,14 @@ class Ports {
     public static let end_port = "end_port"
 }
 
+enum SystemError: Swift.Error {
+    case getaddrinfo(Int32, Int32?)
+    case socket(Int32, Int32?)
+    case bind(Int32, Int32?)
+    case connect(Int32, Int32?)
+}
+
 extension MatchingEngine {
-    
-    enum SystemError: Swift.Error {
-        case getaddrinfo(Int32, Int32?)
-        case socket(Int32, Int32?)
-        case bind(Int32, Int32?)
-        case connect(Int32, Int32?)
-    }
     
     //Get a TCP or UDP connection on client interface specified with the provisioned appInst server and port
     public func getConnection(netInterfaceType: String?, findCloudletReply: [String: AnyObject], ports: [String]?, proto: String?) -> Promise<UnsafeMutablePointer<addrinfo>> {

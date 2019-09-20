@@ -70,8 +70,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         if demo
         {
-            //host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
-            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            do {
+                host = try MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            } catch {
+                Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            }
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
@@ -468,30 +471,38 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  appVers: self!.appVers,
                                                                                  carrierName: self!.carrierName,
                                                                                  authToken: self!.authToken);
-                self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
-                        request: registerClientRequest)
-                .then { registerClientReply in
-                    Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
-                    SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
-                    SKToast.show(withMessage: "RegisterClient Error: \(error)")
+                do {
+                    self!.registerPromise = try self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
+                            request: registerClientRequest)
+                        .then { registerClientReply in
+                            Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                            SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                            SKToast.show(withMessage: "RegisterClient Error: \(error)")
+                    }
+                } catch {
+                    Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
                 }
                 
             case 1:
                 let loc = retrieveLocation()
                 
                 let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
-                self!.matchingEngine.getAppInstList(request: appInstListRequest)
-                    .then { appInstListReply in
-                        Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
-                        SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
-                        // TODO: observers
+                do {
+                    try self!.matchingEngine.getAppInstList(request: appInstListRequest)
+                        .then { appInstListReply in
+                            Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
+                            SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
+                            // TODO: observers
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                            SKToast.show(withMessage: "appInstList error: \(error)")
                     }
-                    .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        SKToast.show(withMessage: "appInstList error: \(error)")
+                } catch {
+                    Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
                 }
                 // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
 
@@ -508,15 +519,19 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     
                     let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
                         carrierName: self!.carrierName, gpsLocation: loc)
-                    self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(request: verifyLocRequest)
-                    .then { verifyLocationReply in
-                        Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
-                        SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
-                        // TODO: observers
-                    }
-                    .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        SKToast.show(withMessage: "VerfiyLocation error: \(error)")
+                    do {
+                        self!.verifyLocationPromise = try self!.matchingEngine.verifyLocation(request: verifyLocRequest)
+                            .then { verifyLocationReply in
+                                Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
+                                SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
+                                // TODO: observers
+                            }
+                            .catch { error in
+                                Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                                SKToast.show(withMessage: "VerfiyLocation error: \(error)")
+                        }
+                    } catch {
+                        Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
                     }
                     
                 }
@@ -534,14 +549,18 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
                                                                              gpsLocation: loc, devName: self!.devName,
                                                                              appName: self!.appName, appVers: self!.appVers)
-                self!.matchingEngine.findCloudlet(request: findCloudletRequest)
-                .then { findCloudletReply in
-                    Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
-                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
-                        SKToast.show(withMessage: "findCloudlet error: \(error)")
+                do {
+                    try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
+                        .then { findCloudletReply in
+                            Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
+                            SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
+                            SKToast.show(withMessage: "findCloudlet error: \(error)")
+                    }
+                } catch {
+                    Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
                 }
                 print("Should print immediately, non-blocked")
                 
@@ -554,14 +573,18 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       increment: 1)
                 
                 let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil)
-                self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
-                .then { getQoSPositionReply in
-                    Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
-                    SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
-                }
-                .catch { error in
-                        Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
-                        SKToast.show(withMessage: "getQoSPosition error: \(error)")
+                do {
+                    try self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
+                        .then { getQoSPositionReply in
+                            Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                            SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
+                            SKToast.show(withMessage: "getQoSPosition error: \(error)")
+                    }
+                } catch {
+                    Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
                 }
                 
             case 5:
@@ -655,7 +678,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             // For demo purposes, we're going to use the carrierName override.
             let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "mexdemo"
             
-            let hostName: String = MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            var hostName: String!
+            do {
+                hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            } catch {
+                Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            }
             updateLocSimLocation(hostName: hostName,
                                  latitude: userMarker!.position.latitude,
                                  longitude: userMarker!.position.longitude)
