@@ -90,7 +90,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -124,7 +124,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -153,7 +153,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -183,7 +183,7 @@ class Tests: XCTestCase {
                                                         gpsLocation: loc))
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -258,7 +258,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -286,7 +286,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -313,7 +313,7 @@ class Tests: XCTestCase {
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         
@@ -345,7 +345,7 @@ class Tests: XCTestCase {
                     }
             }
         } catch {
-            XCTAssert(false, "Did not generate a valid DME host. Error: \(error.localizedDescription)")
+            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
             return
         }
         

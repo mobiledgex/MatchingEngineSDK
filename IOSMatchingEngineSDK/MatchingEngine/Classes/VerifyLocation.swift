@@ -178,9 +178,9 @@ extension MatchingEngine {
                 self.getTokenPost(uri: tokenUri)
         }.then { reply in
             guard let token = reply["token"] as? String else {
-                return Promise("")
+                return Promise{""}
             }
-            return Promise(token)
+            return Promise{token}
         }
     }
     

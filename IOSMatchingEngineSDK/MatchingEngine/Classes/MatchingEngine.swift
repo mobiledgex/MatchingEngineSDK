@@ -54,13 +54,6 @@ enum MatchingEngineError: Error {
     case verifyLocationFailed
 }
 
-enum DmeDnsError: Error {
-    case outdatedIOSVersion
-    case missingCellularSubscriberInfo
-    case missingMNC
-    case missingMCC
-}
-
 class MatchingEngineState {
     var DEBUG: Bool = true
     init()
@@ -345,6 +338,10 @@ public class MatchingEngine
 // common
 // FIXME: Util class contents belong in main MatchingEnigne class, and not shared.
 
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
+}
+
 public class MexUtil // common to Mex... below
 {
     public static let shared = MexUtil() // singleton
@@ -404,7 +401,7 @@ public class MexUtil // common to Mex... below
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)
             Logger.shared.log(.network, .debug, "Cannot verifyDmeHost error: \(sysError)")
-            throw sysError
+            throw "Could not verify host: \(host). Error: \(sysError.localizedDescription)"
         }
     }
     
@@ -416,7 +413,7 @@ public class MexUtil // common to Mex... below
         if #available(iOS 12.0, *) {
             ctCarriers = networkInfo.serviceSubscriberCellularProviders
         } else {
-            throw DmeDnsError.outdatedIOSVersion
+            throw "iOS is outdated. Requires 12.0+"
             // Fallback on earlier versions
         }
         if #available(iOS 12.1, *) {
@@ -429,17 +426,17 @@ public class MexUtil // common to Mex... below
         }
         
         lastCarrier = networkInfo.subscriberCellularProvider
-        if lastCarrier == nil{
+        if lastCarrier == nil {
             Logger.shared.log(.network, .debug, "Cannot find Subscriber Cellular Provider Info")
-            throw DmeDnsError.missingCellularSubscriberInfo
+            throw "Unable to find Subscriber Cellular Provider Info"
         }
         guard let mcc = lastCarrier!.mobileCountryCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Country Code")
-            throw DmeDnsError.missingMCC
+            throw "Unable to get Mobile Country Code"
         }
         guard let mnc = lastCarrier!.mobileNetworkCode else {
             Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
-            throw DmeDnsError.missingMNC
+            throw "Unable to get Mobile Network Code"
         }
         
         let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
