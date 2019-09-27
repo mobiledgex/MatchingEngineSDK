@@ -23,7 +23,6 @@ target 'MatchingEngine_Example' do
   pod 'NSLogger/Swift'
   
   pod 'SPPermission'
-  pod 'SwiftSocket'
   
   target 'MatchingEngine_Tests' do
     inherit! :search_paths
