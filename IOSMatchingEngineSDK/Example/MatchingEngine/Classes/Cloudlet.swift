@@ -588,7 +588,7 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
  
         let url = URL(string: downloadUri)
         let urlRequest = URLRequest(url: url!)
-        //Create new URLSession in order to use delegates
+        // Create new URLSession in order to use delegates
         let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: sessionDelegate, delegateQueue: OperationQueue.main)
         
         let dataTask = session.dataTask(with: urlRequest as URLRequest) { (data, response, error) in
