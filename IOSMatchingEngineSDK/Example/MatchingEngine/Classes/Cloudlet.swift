@@ -582,14 +582,12 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
             return
         }
         speedTestTaskRunning = true //
-        
         setDownloadUri(mBaseUri) // so we have current B bytes to download appended
         Swift.print("doSpeedTest\n  \(downloadUri)") // DEBUG
         startTime1 = DispatchTime.now() // <<<<<<<<<< Start time
  
         let url = URL(string: downloadUri)
         let urlRequest = URLRequest(url: url!)
-        
         //Create new URLSession in order to use delegates
         let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: sessionDelegate, delegateQueue: OperationQueue.main)
         
