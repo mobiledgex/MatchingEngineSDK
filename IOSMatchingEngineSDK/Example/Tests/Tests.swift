@@ -208,7 +208,7 @@ class Tests: XCTestCase {
     }
     
     func testGetQosPositionKpi() {
-        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        let loc = [ "longitude": 13.4050, "latitude": 52.5200]   //Berlin
         let positions = createQoSPositionList(loc: loc,
                                               directionDegrees: 45,
                                               totalDistanceKm: 200,

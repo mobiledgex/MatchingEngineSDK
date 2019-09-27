@@ -568,7 +568,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
                 
-
             default:
                 break
             }
