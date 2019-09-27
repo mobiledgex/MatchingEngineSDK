@@ -84,6 +84,8 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
     private var uri: String = ""
     private var theFQDN_prefix: String = ""
     
+    private var sessionDelegate = SessionDelegate()
+    
     init()
     {}
     
@@ -123,6 +125,8 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         {
             Swift.print("LatencyTestAutoStart is disabled")
         }
+        
+        sessionDelegate.parent = self
     }
     
     public func update(_ cloudletName: String,
@@ -556,6 +560,18 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         #endif
     }
     
+    private class SessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
+        weak var parent: Cloudlet! = nil
+        
+        //Updates progress of urlsession
+        public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64,totalBytesExpectedToWrite: Int64) {
+            
+            let fractionCompleted = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "speedTestProgress"), object: fractionCompleted)
+            parent.speedTestProgress = fractionCompleted
+        }
+    }
+    
     func doSpeedTest()
     {
         if speedTestTaskRunning
@@ -570,44 +586,46 @@ public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
         setDownloadUri(mBaseUri) // so we have current B bytes to download appended
         Swift.print("doSpeedTest\n  \(downloadUri)") // DEBUG
         startTime1 = DispatchTime.now() // <<<<<<<<<< Start time
+ 
+        let url = URL(string: downloadUri)
+        let urlRequest = URLRequest(url: url!)
         
-        /*Alamofire.request(downloadUri)
-            .downloadProgress(queue: DispatchQueue.global(qos: .utility))
-            { progress in
-                //     print("Progress: \(progress.fractionCompleted)")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "speedTestProgress"), object: progress.fractionCompleted) //
-                
-                self.speedTestProgress = progress.fractionCompleted //
+        //Create new URLSession in order to use delegates
+        let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: sessionDelegate, delegateQueue: OperationQueue.main)
+        
+        let dataTask = session.dataTask(with: urlRequest as URLRequest) { (data, response, error) in
+            guard let _ = response as? HTTPURLResponse else
+            {
+                print("Response not HTTPURLResponse")
+                return
             }
-            .responseString
-            { response in
-                self.speedTestTaskRunning = false //
-                // check for errors
-                guard response.result.error == nil else
+            self.speedTestTaskRunning = false
+            // check for errors
+            guard error == nil else
+            {
+                // got an error in getting the data, need to handle it
+                print("error doSpeedTest")
+                print(error!)
+                DispatchQueue.main.async
                 {
-                    // got an error in getting the data, need to handle it
-                    print("error doSpeedTest")
-                    print(response.result.error!)
-                    
-                    DispatchQueue.main.async
-                        {
-                            CircularSpinner.hide() //
-                    }
-                    
-                    return
+                    CircularSpinner.hide() //
                 }
-                let end = DispatchTime.now() // <<<<<<<<<<   end time
-                let nanoTime = end.uptimeNanoseconds - self.startTime1!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
-                let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
-                print("Time: \(timeInterval) seconds")
-                let tranferRateD = Double(self.mNumBytes) / timeInterval
-                let tranferRate = Int(tranferRateD)
-                
-                Swift.print("[COMPLETED] rate in bit/s   : \(tranferRate * 8)") // Log
-                
-                SKToast.show(withMessage: "[COMPLETED] rate in MBs   : \(Double(tranferRate) / (1024 * 1024.0))") // UI
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "tranferRate"), object: tranferRate) // post
-        }*/
+                return
+            }
+            
+            let end = DispatchTime.now() // <<<<<<<<<<   end time
+            let nanoTime = end.uptimeNanoseconds - self.startTime1!.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+            let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
+            print("Time: \(timeInterval) seconds")
+            let tranferRateD = Double(self.mNumBytes) / timeInterval
+            let tranferRate = Int(tranferRateD)
+                    
+            Swift.print("[COMPLETED] rate in bit/s   : \(tranferRate * 8)") // Log
+                    
+            SKToast.show(withMessage: "[COMPLETED] rate in MBs   : \(Double(tranferRate) / (1024 * 1024.0))") // UI
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "tranferRate"), object: tranferRate) // post
+        }
+        dataTask.resume()
     }
     
     func dump()
