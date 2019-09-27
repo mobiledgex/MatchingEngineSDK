@@ -641,17 +641,17 @@ func GetSocketLatency(_ host: String, _ port: Int32, _ postMsg: String? = nil)  
     {
         let time = measure1
         {
-            //used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
+            // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
             var res: UnsafeMutablePointer<addrinfo>!
-            //initialize addrnfo fields
+            // initialize addrnfo fields
             var addrInfo = addrinfo.init()
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream socket
-            //getaddrinfo function makes ip + port conversion to sockaddr easy
+            // getaddrinfo function makes ip + port conversion to sockaddr easy
             let error = getaddrinfo(host, String(port), &addrInfo, &res)
             if error != 0 {
                 promise.reject("Can't get addrinfo. Error is \(error)" as! Error)
             }
-            //socket returns a socket descriptor
+            // socket returns a socket descriptor
             let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)
             if s == -1 {
                 promise.reject("Can't create socket. Error is \(error)" as! Error)
