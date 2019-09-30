@@ -449,7 +449,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         // Action triggered on selection
         rightBarDropDown.selectionAction = { [weak self] index, item in
             Swift.print("selectionAction \(index) \(item) ")
-            
 //            "Register Client",
 //            "Get App Instances",
 //            "Verify Location",
@@ -467,7 +466,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  carrierName: self!.carrierName,
                                                                                  authToken: self!.authToken)
                 if (self!.demo) {  //used for demo purposes
-                    self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
+                    self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
                     .then { registerClientReply in
                         Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
@@ -479,7 +478,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     }
                 } else {
                     do {
-                        self!.registerPromise = try self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
+                        self!.registerPromise = try self!.matchingEngine.registerClient(
                             request: registerClientRequest)
                         .then { registerClientReply in
                             Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
@@ -743,7 +742,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }))
         alert.addAction(UIAlertAction(title: choices[1], style: .default, handler: { _ in
             // For demo purposes, we're going to use the carrierName override.
-            let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "mexdemo"
+            let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "sdkdemo"
             
             var hostName: String!
             do {

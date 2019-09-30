@@ -47,7 +47,7 @@ class Tests: XCTestCase {
         if TEST
         {
             do {
-                host = try MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+                host = try MexUtil.shared.generateDmeHost(carrierName: "sdkdemo")
             } catch {
                 Swift.print("Did not generate a valid DME host. Error: \(error)")
             }
