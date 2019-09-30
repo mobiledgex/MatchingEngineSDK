@@ -96,7 +96,7 @@ extension MatchingEngine {
     /// - Parameters:
     ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
     /// - Returns: API Dictionary/json
-    public func getQosKPIPosition(request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func getQosKPIPosition(request: [String: Any]) throws -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "getQosKPIPosition")
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
@@ -107,7 +107,7 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
         return getQosKPIPosition(host: host, port: port, request: request);

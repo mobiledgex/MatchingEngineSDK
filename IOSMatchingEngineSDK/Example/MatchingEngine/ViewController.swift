@@ -39,6 +39,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt = 38001
+    var demoHost = "sdkdemo.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -49,7 +50,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var authToken: String? = nil
     
     // For the overriding me.getCarrierName() for contacting the DME host
-    var overrideDmeCarrierName: String? = "mexdemo"
+    var overrideDmeCarrierName: String? = "sdkdemo"
 
     @IBOutlet var viewMap: GMSMapView!
 
@@ -70,8 +71,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         if demo
         {
-            //host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
-            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            host = demoHost
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
@@ -82,6 +82,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         else
         {
             appName =  matchingEngine.getAppName()
+            //appName = "MobiledgeX SDK Demo"   //Use when testing and app is not registered previously
             appVers =  matchingEngine.getAppVersion()
             devName =  "MobiledgeX"             //   replace this with your devName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
@@ -439,19 +440,15 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             "Reset Location",
         ]
     }
-
-    
     
     @objc public func openMenu(sender _: UIBarButtonItem)
     {
         Swift.print("openMenu") // Log
-
         rightBarDropDown.show()
 
         // Action triggered on selection
         rightBarDropDown.selectionAction = { [weak self] index, item in
             Swift.print("selectionAction \(index) \(item) ")
-
 //            "Register Client",
 //            "Get App Instances",
 //            "Verify Location",
@@ -467,23 +464,43 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  appName: self!.appName,
                                                                                  appVers: self!.appVers,
                                                                                  carrierName: self!.carrierName,
-                                                                                 authToken: self!.authToken);
-                self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
-                        request: registerClientRequest)
-                .then { registerClientReply in
-                    Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
-                    SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
-                    SKToast.show(withMessage: "RegisterClient Error: \(error)")
+                                                                                 authToken: self!.authToken)
+                if (self!.demo) {  //used for demo purposes
+                    self!.registerPromise = self!.matchingEngine.registerClient(
+                        host: self!.demoHost, port: self!.port, request: registerClientRequest)
+                    .then { registerClientReply in
+                        Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                        SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
+                    }
+                    .catch { error in
+                        Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                        SKToast.show(withMessage: "RegisterClient Error: \(error)")
+                    }
+                } else {
+                    do {
+                        self!.registerPromise = try self!.matchingEngine.registerClient(
+                            request: registerClientRequest)
+                        .then { registerClientReply in
+                            Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                            SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                            SKToast.show(withMessage: "RegisterClient Error: \(error)")
+                        }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
+                    } catch {
+                        Swift.print("Error: \(error.localizedDescription)")
+                    }
                 }
                 
             case 1:
                 let loc = retrieveLocation()
                 
                 let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
-                self!.matchingEngine.getAppInstList(request: appInstListRequest)
+                if (self!.demo) {
+                    self!.matchingEngine.getAppInstList(host: self!.demoHost, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
                         Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
                         SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
@@ -492,6 +509,24 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     .catch { error in
                         Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
                         SKToast.show(withMessage: "appInstList error: \(error)")
+                    }
+                } else {
+                    do {
+                        try self!.matchingEngine.getAppInstList(request: appInstListRequest)
+                        .then { appInstListReply in
+                            Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
+                            SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
+                            // TODO: observers
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                            SKToast.show(withMessage: "appInstList error: \(error)")
+                        }
+                    } catch let error as DmeDnsError {
+                            Swift.print("DmeHost Error: \(error.errorDescription)")
+                    } catch {
+                        Swift.print("Error: \(error.localizedDescription)")
+                    }
                 }
                 // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
 
@@ -508,15 +543,34 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     
                     let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
                         carrierName: self!.carrierName, gpsLocation: loc)
-                    self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(request: verifyLocRequest)
-                    .then { verifyLocationReply in
-                        Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
-                        SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
-                        // TODO: observers
-                    }
-                    .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
-                        SKToast.show(withMessage: "VerfiyLocation error: \(error)")
+                    if (self!.demo) {
+                        self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
+                        .then { verifyLocationReply in
+                            Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
+                            SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
+                                // TODO: observers
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                            SKToast.show(withMessage: "VerfiyLocation error: \(error)")
+                        }
+                    } else {
+                        do {
+                            self!.verifyLocationPromise = try self!.matchingEngine.verifyLocation(request: verifyLocRequest)
+                            .then { verifyLocationReply in
+                                Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
+                                SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
+                                    // TODO: observers
+                            }
+                            .catch { error in
+                                Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                                SKToast.show(withMessage: "VerfiyLocation error: \(error)")
+                            }
+                        } catch let error as DmeDnsError {
+                            Swift.print("DmeHost Error: \(error.errorDescription)")
+                        } catch {
+                            Swift.print("Error: \(error.localizedDescription)")
+                        }
                     }
                     
                 }
@@ -534,16 +588,33 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
                                                                              gpsLocation: loc, devName: self!.devName,
                                                                              appName: self!.appName, appVers: self!.appVers)
-                self!.matchingEngine.findCloudlet(request: findCloudletRequest)
-                .then { findCloudletReply in
-                    Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
-                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                }
-                .catch { error in
-                    Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
+                if (self!.demo) {
+                    self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
+                    .then { findCloudletReply in
+                        Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
+                        SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                    }
+                    .catch { error in
+                        Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
                         SKToast.show(withMessage: "findCloudlet error: \(error)")
+                    }
+                } else {
+                    do {
+                        try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
+                        .then { findCloudletReply in
+                            Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
+                            SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
+                            SKToast.show(withMessage: "findCloudlet error: \(error)")
+                        }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
+                    } catch {
+                        Swift.print("Error: \(error.localizedDescription)")
+                    }
                 }
-                print("Should print immediately, non-blocked")
                 
             case 4:
                 Swift.print("Get QoS Position")
@@ -554,14 +625,32 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       increment: 1)
                 
                 let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil)
-                self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
-                .then { getQoSPositionReply in
-                    Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
-                    SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
-                }
-                .catch { error in
+                if (self!.demo) {
+                    self!.matchingEngine.getQosKPIPosition(host: self!.demoHost, port: self!.port, request: getQoSPositionRequest)
+                    .then { getQoSPositionReply in
+                        Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                        SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
+                    }
+                    .catch { error in
                         Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
                         SKToast.show(withMessage: "getQoSPosition error: \(error)")
+                    }
+                } else {
+                    do {
+                        try self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
+                        .then { getQoSPositionReply in
+                            Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                            SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
+                        }
+                        .catch { error in
+                            Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
+                            SKToast.show(withMessage: "getQoSPosition error: \(error)")
+                        }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
+                    } catch {
+                        Swift.print("Error: \(error.localizedDescription)")
+                    }
                 }
                 
             case 5:
@@ -652,9 +741,16 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }))
         alert.addAction(UIAlertAction(title: choices[1], style: .default, handler: { _ in
             // For demo purposes, we're going to use the carrierName override.
-            let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "mexdemo"
+            let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "sdkdemo"
             
-            let hostName: String = MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            var hostName: String!
+            do {
+                hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            } catch let error as DmeDnsError {
+                Swift.print("Did not generate a valid DME host. Error: \(error.errorDescription)")
+            } catch {
+                Swift.print("Error: \(error.localizedDescription)")
+            }
             updateLocSimLocation(hostName: hostName,
                                  latitude: userMarker!.position.latitude,
                                  longitude: userMarker!.position.longitude)

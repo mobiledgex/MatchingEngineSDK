@@ -71,7 +71,7 @@ extension MatchingEngine {
     }
     
     public func getAppInstList(request: [String: Any])
-        -> Promise<[String: AnyObject]>
+        throws -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         guard let carrierName = state.carrierName ?? getCarrierName() else {
@@ -80,7 +80,7 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
         return getAppInstList(host: host, port: port, request: request)
