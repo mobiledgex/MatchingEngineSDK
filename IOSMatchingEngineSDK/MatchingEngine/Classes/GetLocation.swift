@@ -70,7 +70,7 @@ extension MatchingEngine {
     /// - Parameters:
     ///   - request: GetLocationRequest dictionary, from createGetLocationRequest.
     /// - Returns: API Dictionary/json
-    public func getLocation(request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func getLocation(request: [String: Any]) throws -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "getLocation")
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
@@ -81,7 +81,7 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
         return getLocation(host: host, port: port, request: request);

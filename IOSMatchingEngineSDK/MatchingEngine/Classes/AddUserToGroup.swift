@@ -76,7 +76,7 @@ extension MatchingEngine {
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
     public func addUserToGroup (request: [String: Any])
-        -> Promise<[String: AnyObject]>
+        throws -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         guard let carrierName = state.carrierName ?? getCarrierName() else {
@@ -85,7 +85,7 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
         let port = state.defaultRestDmePort
         
         return addUserToGroup(host: host, port: port, request: request)
