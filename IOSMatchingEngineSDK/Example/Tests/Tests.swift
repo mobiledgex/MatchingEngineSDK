@@ -89,8 +89,11 @@ class Tests: XCTestCase {
                 .catch { error in
                     XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -123,8 +126,11 @@ class Tests: XCTestCase {
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -152,8 +158,11 @@ class Tests: XCTestCase {
                 }.catch { error in
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -182,8 +191,11 @@ class Tests: XCTestCase {
                                                         carrierName: self.carrierName,
                                                         gpsLocation: loc))
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -257,8 +269,11 @@ class Tests: XCTestCase {
                 } .catch { error in
                     XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -285,8 +300,11 @@ class Tests: XCTestCase {
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -312,8 +330,11 @@ class Tests: XCTestCase {
                 } .catch { error in
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
@@ -344,8 +365,11 @@ class Tests: XCTestCase {
                             self.matchingEngine.getConnection(netInterfaceType: "pdp_ip0", findCloudletReply: reply, ports: nil, proto: "TCP")
                     }
             }
+        } catch let error as DmeDnsError {
+            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
+            return
         } catch {
-            XCTAssert(false, "DmeHost Error: \(error.localizedDescription)")
+            XCTAssert(false, "Error: \(error.localizedDescription)")
             return
         }
         
