@@ -54,6 +54,31 @@ enum MatchingEngineError: Error {
     case verifyLocationFailed
 }
 
+public enum DmeDnsError: Error {
+    case verifyDmeHostFailure(host: String, systemError: SystemError)
+    case missingMCC
+    case missingMNC
+    case missingCellularProviderInfo
+    case outdatedIOS
+    
+    public var errorDescription: String? {
+        switch self {
+        case .verifyDmeHostFailure(let host, let systemError): return "Could not verify host: \(host). Error: \(systemError.localizedDescription)"
+        case .missingMCC: return "Unable to get Mobile Country Code"
+        case .missingMNC: return "Unable to get Mobile Network Code"
+        case .missingCellularProviderInfo: return "Unable to find Subscriber Cellular Provider Info"
+        case .outdatedIOS: return "iOS is outdated. Requires 12.0+"
+        }
+    }
+}
+
+public enum SystemError: Error {
+    case getaddrinfo(Int32, Int32?)
+    case socket(Int32, Int32?)
+    case bind(Int32, Int32?)
+    case connect(Int32, Int32?)
+}
+
 class MatchingEngineState {
     var DEBUG: Bool = true
     init()
@@ -337,24 +362,6 @@ public class MatchingEngine
 
 // common
 // FIXME: Util class contents belong in main MatchingEnigne class, and not shared.
-enum DmeDnsError: Error {
-    case missingMCC
-    case missingMNC
-    case missingCellularProviderInfo
-    case verifyDmeHostFailure(host: String, systemError: SystemError)
-    case outdatedIOS
-    
-    var errorDescription: String? {
-        switch self {
-        case .missingMCC: return "Unable to get Mobile Country Code"
-        case .missingMNC: return "Unable to get Mobile Network Code"
-        case .missingCellularProviderInfo: return "Unable to find Subscriber Cellular Provider Info"
-        case .verifyDmeHostFailure(let host, let systemError): return "Could not verify host: \(host). Error: \(systemError.localizedDescription)"
-        case .outdatedIOS: return "iOS is outdated. Requires 12.0+"
-        }
-    }
-}
-
 public class MexUtil // common to Mex... below
 {
     public static let shared = MexUtil() // singleton
@@ -451,8 +458,7 @@ public class MexUtil // common to Mex... below
             throw DmeDnsError.missingMNC
         }
         
-        //let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
-        let url = "111-111.dme.mobiledgex.net"
+        let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
         try verifyDmeHost(host: url)
         return url
     }

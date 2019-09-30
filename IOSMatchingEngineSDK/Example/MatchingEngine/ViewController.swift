@@ -444,13 +444,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     @objc public func openMenu(sender _: UIBarButtonItem)
     {
         Swift.print("openMenu") // Log
-
         rightBarDropDown.show()
 
         // Action triggered on selection
         rightBarDropDown.selectionAction = { [weak self] index, item in
             Swift.print("selectionAction \(index) \(item) ")
-
+            
 //            "Register Client",
 //            "Get App Instances",
 //            "Verify Location",
@@ -468,7 +467,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  carrierName: self!.carrierName,
                                                                                  authToken: self!.authToken)
                 if (self!.demo) {  //used for demo purposes
-                    Swift.print("request in demo is \(registerClientRequest)")
                     self!.registerPromise = self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
                     .then { registerClientReply in
@@ -481,7 +479,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     }
                 } else {
                     do {
-                        Swift.print("request is \(registerClientRequest)")
                         self!.registerPromise = try self!.matchingEngine.registerClient( // This is usually a one time thing, minus carrier. Add to me instance.
                             request: registerClientRequest)
                         .then { registerClientReply in
@@ -492,8 +489,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
                             SKToast.show(withMessage: "RegisterClient Error: \(error)")
                         }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
-                        Swift.print("DmeHost Error: \(error.localizedDescription)")
+                        Swift.print("Error: \(error.localizedDescription)")
                     }
                 }
                 
@@ -524,8 +523,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
                             SKToast.show(withMessage: "appInstList error: \(error)")
                         }
+                    } catch let error as DmeDnsError {
+                            Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
-                        Swift.print("DmeHost Error: \(error.localizedDescription)")
+                        Swift.print("Error: \(error.localizedDescription)")
                     }
                 }
                 // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
@@ -566,8 +567,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                 Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
                                 SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                             }
+                        } catch let error as DmeDnsError {
+                            Swift.print("DmeHost Error: \(error.errorDescription)")
                         } catch {
-                            Swift.print("DmeHost Error: \(error.localizedDescription)")
+                            Swift.print("Error: \(error.localizedDescription)")
                         }
                     }
                     
@@ -607,8 +610,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
                             SKToast.show(withMessage: "findCloudlet error: \(error)")
                         }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
-                        Swift.print("DmeHost Error: \(error.localizedDescription)")
+                        Swift.print("Error: \(error.localizedDescription)")
                     }
                 }
                 
@@ -642,8 +647,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
                             SKToast.show(withMessage: "getQoSPosition error: \(error)")
                         }
+                    } catch let error as DmeDnsError {
+                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
-                        Swift.print("DmeHost Error: \(error.localizedDescription)")
+                        Swift.print("Error: \(error.localizedDescription)")
                     }
                 }
                 
@@ -741,8 +748,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             var hostName: String!
             do {
                 hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            } catch let error as DmeDnsError {
+                Swift.print("Did not generate a valid DME host. Error: \(error.errorDescription)")
             } catch {
-                Swift.print("Did not generate a valid DME host. Error: \(error.localizedDescription)")
+                Swift.print("Error: \(error.localizedDescription)")
             }
             updateLocSimLocation(hostName: hostName,
                                  latitude: userMarker!.position.latitude,
