@@ -1,0 +1,18 @@
+use_frameworks!
+
+platform :ios, '11.4'
+
+# Default Specs.git:
+#source 'https://github.com/CocoaPods/Specs.git'
+
+target 'ARShooter' do
+  pod 'Starscream'
+
+  target 'ARShooterTests' do
+    inherit! :search_paths  
+  end
+  
+  target 'ARShooterUITests' do
+    inherit! :search_paths
+  end
+end
