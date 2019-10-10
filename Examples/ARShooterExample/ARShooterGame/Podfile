@@ -3,10 +3,13 @@ use_frameworks!
 platform :ios, '11.4'
 
 # Default Specs.git:
-#source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+plugin 'cocoapods-art', :sources => ['cocoapods-releases'] 
 
 target 'ARShooter' do
   pod 'Starscream'
+  pod 'MatchingEngine'
+#  pod 'NSLogger/Swift'
 
   target 'ARShooterTests' do
     inherit! :search_paths  

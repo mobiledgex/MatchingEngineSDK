@@ -14,7 +14,7 @@ extension GameViewController : WebSocketDelegate {
     
     func websocketDidConnect(socket: WebSocketClient) {
         print("Connected")
-        ws.write(string: userName!)
+        ws.write(string: "\(gameID):\(userName!)")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
@@ -22,7 +22,7 @@ extension GameViewController : WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-        print("Received string")
+        print("Received string \(text)")
         if (text == "Username already in use") {
             // Return to loginViewController
             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "login") as! LoginViewController

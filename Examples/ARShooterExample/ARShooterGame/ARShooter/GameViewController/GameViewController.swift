@@ -27,10 +27,12 @@ class GameViewController: UIViewController {
     var number: Int = 0
     var peerNumber: Int = 0
     var Target: SCNNode?
-    var userName: String?
-    var gameID: String?
-    var ws = WebSocket(url: URL(string: "ws://10.227.70.35:1337/")!, protocols: ["arshooter"])
-    var peers = [String: Int]()
+    
+    var userName: String? // Passed from LoginViewController
+    var gameID: String? // Passed from LoginViewController
+    var peers = [String: Int]() // Passed from LoginViewController
+    var host: String? // Host from findCloudlet (MatchingEngine). Passed from LoginViewController
+    var ws = WebSocket(url: URL(string: "ws://10.227.67.65:1337/")!, protocols: ["arshooter"]) // Initialize websocket connection
     
     override func viewDidLoad() {
         super.viewDidLoad()
