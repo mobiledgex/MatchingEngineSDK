@@ -1,0 +1,36 @@
+{
+  "name": "MatchingEngine",
+  "version": "1.4.2.3",
+  "summary": "The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure",
+  "description": "Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage the power that Mobile Edge Cloud offers? The MobiledgeX SDK for iOS Swift exposes various services that MobiledgeX offers such as finding the nearest MobiledgeX Cloudlet Infrastructure for client-server communication or workload processing offload.",
+  "homepage": "https://github.com/mobiledgex/MatchingEngineSDK",
+  "license": {
+    "type": "Apache.LICENSE-2.0",
+    "file": "LICENSE.txt"
+  },
+  "authors": {
+    "mobiledgex": "github@github.com"
+  },
+  "source": {
+    "git": "https://github.com/mobiledgex/MatchingEngineSDK.git",
+    "tag": "1.4.2.3"
+  },
+  "social_media_url": "https://twitter.com/mobiledgex",
+  "platforms": {
+    "ios": "11.4"
+  },
+  "source_files": "MatchingEngine/Classes/**/*",
+  "dependencies": {
+    "NSLogger/Swift": [
+
+    ],
+    "SwiftyJSON": [
+
+    ],
+    "PromisesSwift": [
+
+    ]
+  },
+  "swift_versions": "4.2",
+  "swift_version": "4.2"
+}

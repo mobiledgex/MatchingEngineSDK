@@ -1,22 +1,13 @@
-var WebSocketServer = require('websocket').server;
-var http = require('http');
-
-var server = http.createServer(function(request, response) {
-});
-server.listen(1337, function() {
-    console.log((new Date()) + "Server is listening on port 1337");
-});
-
-var wsServer = new WebSocketServer({
-    httpServer: server
-});
+var io = require('socket.io')(1337) // Listen on port 1337
+//const nameSpace = "/arshooter"
+//const ARShooterIO = io.of(nameSpace);
 
 class GameState {
     constructor(gameID) {
         this.gameID = gameID;
         this.connections = new Set();
         this.usernames = new Set();
-        this.peerDict = new Map();   // USE MAP: CONNECTION IS AN OBJECT (USE MAPS FOR DICT/OBJECT) FORMAT
+        this.peerDict = new Map();
     }
 
     addClient(connection, username) {
@@ -42,7 +33,7 @@ class GameState {
     }
 }
 
-var connectionDict = new Map(); // Connection to GameState Map -> [connection: GameState] USE MAP: CONNECTION IS AN OBJECT
+var connectionDict = new Map(); // Connection to GameState Map -> [connection: GameState]
 var gameIDDict = {}; // GameID to GameState Dictionary -> [gameID: GameState]
 
 function sendDataToPeers(currConnection, event) {
@@ -95,42 +86,64 @@ function sendPeerUsernamesToSelf(username, currConnection, currGame, event) {
     }
 }
 
-wsServer.on('request', function(request) {
+var scoreInGameMap = new Map(); // Map gameID to Map of usernames and score in that game
 
-    console.log((new Date()) + "Connection from origin " + request.origin + "."); 
-    var currConnection = request.accept("arshooter", request.origin);
-    console.log("connection is " + currConnection);
-    
-    currConnection.on('message', function(event) {
-        console.log(JSON.stringify(event));
-        switch (event.type) {
-        // receive some action
-        case 'binary': 
-            sendDataToPeers(currConnection, event);
-            return;
-        // receive gameid and username
-        case 'utf8':
-            var arr = event.utf8Data.split(":"); // Parse gameID and userName 
-            var gameID = arr[0];
-            var username = arr[1];
+io.on('connection', function(socket) {
 
-            var currGame = getGame(gameID, username, currConnection, event);
-            
-            if (!currGame.hasUsername(username)) {
-                currGame.addClient(currConnection, username);
-                sendUsernameToPeers(username, currConnection, currGame, event);
-                sendPeerUsernamesToSelf(username, currConnection, currGame, event);
-            } else {
-                currConnection.send("Username already in use");
-            }
-            return;
+    console.log((new Date()) + "Connection from origin " + socket + "."); 
+
+    socket.on("login", function(gameID, username) {
+        console.log("gamid: " + gameID + ", username " + username);
+        if (!scoreInGameMap.has(gameID)) {
+            console.log("no game with that name yet");
+            var scores = {};
+            scoreInGameMap.set(gameID, scores);
+        }
+        var scores = scoreInGameMap.get(gameID);
+        if (username in scores) {
+            socket.emit("repeatUsername", "Username already being used. Choose a different one.");
+        } else {
+            scores[username] = 0;
+            scoreInGameMap.set(gameID, scores);
+            socket.join(gameID, function(err) {
+                console.log("After join: ", socket.rooms);
+                console.log("gamid: " + gameID + ", username " + username);
+                console.log(scores);
+                io.in(gameID).emit("otherUsers", scores);  // send self all other usernames and score
+                //ARShooterIO.to(gameID).emit("username", username); // send other users current username
+            });
+            console.log("no repeat username");
+
         }
     });
 
-    currConnection.on('close', function(connection) {
-        let currGame = connectionDict.get(currConnection);
-        console.log("currGame is " + currGame);
-        currGame.removeClient(currConnection);
-        connectionDict.delete(currConnection);
+    socket.on("bullet", function(gameID, bullet) {
+        socket.to(gameID).emit("bullet", bullet);
+        console.log("bullet is ");
+        console.log(bullet);
     });
+
+    //var worldMapBuffer = new Blob()
+    socket.on("worldMap", function(gameID, worldMap) {
+        socket.to(gameID).emit("worldMap", worldMap);
+        console.log("worldMap is ");
+        console.log(worldMap);
+    });
+
+    socket.on("score", function(gameID, username) {
+        console.log("score");
+    });
+
+    socket.on("error", function(err) {
+        console.log("Caught flash policy server socket error: ");
+        console.log(err.stack);
+    });
+    
+    //currConnection.on('close', function(connection) {
+    //socket.on('disconnect', function(connection) {
+        //let currGame = connectionDict.get(currConnection);
+        //console.log("currGame is " + currGame);
+        //currGame.removeClient(currConnection);
+        //connectionDict.delete(currConnection);
+    //});
 });

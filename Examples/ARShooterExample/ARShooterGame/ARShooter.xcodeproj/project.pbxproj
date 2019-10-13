@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		548A15F4D41ADEF2BDA42CA3 /* Pods_ARShooterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630FDBD7BA36D174DB4091C2 /* Pods_ARShooterTests.framework */; };
+		59098CAF2350F3FA002117CF /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59098CAE2350F3FA002117CF /* SocketIOManager.swift */; };
 		593EC4D723455C0E00AD377D /* WebSocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4D623455C0D00AD377D /* WebSocketDelegate.swift */; };
 		593EC4D923455C7B00AD377D /* SCNPhysicsContactDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4D823455C7B00AD377D /* SCNPhysicsContactDelegate.swift */; };
 		593EC4DB23455CC800AD377D /* ARSCNViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4DA23455CC800AD377D /* ARSCNViewDelegate.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		22F1A753DCE76103D54BEFEA /* Pods-ARShooterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterUITests.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterUITests/Pods-ARShooterUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		59098CAE2350F3FA002117CF /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		5936BE952344217A00C53480 /* SwiftWebSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftWebSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		593EC4D02345154D00AD377D /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
 		593EC4D2234515A800AD377D /* SwiftWebSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftWebSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +148,7 @@
 				593EC4D823455C7B00AD377D /* SCNPhysicsContactDelegate.swift */,
 				593EC4D623455C0D00AD377D /* WebSocketDelegate.swift */,
 				AB7FABC222F102AD00669E8D /* GameViewController.swift */,
+				59098CAE2350F3FA002117CF /* SocketIOManager.swift */,
 			);
 			path = GameViewController;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				AB7FABC322F102AD00669E8D /* GameViewController.swift in Sources */,
 				593EC4D723455C0E00AD377D /* WebSocketDelegate.swift in Sources */,
 				ABBA549B22FE077400754E98 /* Utilities.swift in Sources */,
+				59098CAF2350F3FA002117CF /* SocketIOManager.swift in Sources */,
 				ABBA549D2301C6AC00754E98 /* OtherButton.swift in Sources */,
 				AB7FABC122F102AD00669E8D /* AppDelegate.swift in Sources */,
 				593EC4DD23455D4400AD377D /* ARSessionDelegate.swift in Sources */,

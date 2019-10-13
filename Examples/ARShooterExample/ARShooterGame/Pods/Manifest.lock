@@ -9,11 +9,14 @@ PODS:
   - PromisesObjC (1.2.8)
   - PromisesSwift (1.2.8):
     - PromisesObjC (= 1.2.8)
+  - Socket.IO-Client-Swift (15.1.0):
+    - Starscream (~> 3.1)
   - Starscream (3.1.0)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
   - MatchingEngine
+  - Socket.IO-Client-Swift (~> 15.1.0)
   - Starscream
 
 SPEC REPOS:
@@ -23,6 +26,7 @@ SPEC REPOS:
     - NSLogger
     - PromisesObjC
     - PromisesSwift
+    - Socket.IO-Client-Swift
     - Starscream
     - SwiftyJSON
 
@@ -31,9 +35,10 @@ SPEC CHECKSUMS:
   NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
+  Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 7f828ff760aee07b165e43fe00d80624e8db1a7a
+PODFILE CHECKSUM: 905d1718026571aaefee9c3e0e82bc99d95adb27
 
 COCOAPODS: 1.8.3

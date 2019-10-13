@@ -10,7 +10,7 @@ import Foundation
 import ARKit
 import Starscream
 
-extension GameViewController : WebSocketDelegate {
+/*extension GameViewController : WebSocketDelegate {
     
     func websocketDidConnect(socket: WebSocketClient) {
         print("Connected")
@@ -58,4 +58,4 @@ extension GameViewController : WebSocketDelegate {
             }
         }
     }
-}
+}*/

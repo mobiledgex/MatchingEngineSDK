@@ -35,7 +35,7 @@ class LoginViewController: UIViewController {
     
     // MatchingEngine API return objects
     var registerPromise: Promise<[String: AnyObject]>? // AnyObject --> RegisterClientReply
-    var findCloudletPromise: Promise<[String: AnyObject]>? // AnyObject --> FindCloudletReply
+    var findCloudletPromise: Promise<[String: AnyObject]>?
     var verifyLocationPromise: Promise<[String: AnyObject]>?
     var appInstListPromise: Promise<[String: AnyObject]>?
     
@@ -89,11 +89,11 @@ class LoginViewController: UIViewController {
                     Swift.print("FindCloudletReply is \(findCloudletReply)")
                 }
                 //Verify location of user
-                self.verifyLocationPromise = try self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
+                /*self.verifyLocationPromise = try self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
                                                         carrierName: self.carrierName,                    gpsLocation: self.location!))
                 .then { verifyLocationReply in
                     Swift.print("VerifyLocationReply is \(verifyLocationReply)")
-                }
+                }*/
                 // List of App installations
                 self.appInstListPromise = try self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
                     carrierName: self.carrierName!,

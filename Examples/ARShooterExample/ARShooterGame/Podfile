@@ -7,9 +7,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 plugin 'cocoapods-art', :sources => ['cocoapods-releases'] 
 
 target 'ARShooter' do
-  pod 'Starscream'
+  #pod 'Starscream'
   pod 'MatchingEngine'
-#  pod 'NSLogger/Swift'
+  pod 'Socket.IO-Client-Swift', '~> 15.1.0'
 
   target 'ARShooterTests' do
     inherit! :search_paths  

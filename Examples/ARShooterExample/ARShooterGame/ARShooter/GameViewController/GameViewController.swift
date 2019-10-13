@@ -8,6 +8,7 @@
 
 import ARKit
 import Starscream
+import SocketIO
 
 enum BitMaskCategory: Int {
     case bullet = 1
@@ -32,18 +33,17 @@ class GameViewController: UIViewController {
     var gameID: String? // Passed from LoginViewController
     var peers = [String: Int]() // Passed from LoginViewController
     var host: String? // Host from findCloudlet (MatchingEngine). Passed from LoginViewController
-    var ws = WebSocket(url: URL(string: "ws://10.227.67.65:1337/")!, protocols: ["arshooter"]) // Initialize websocket connection
+    
+    let manager = SocketManager(socketURL: URL(string: "wss://192.168.0.181:1337/")!)
+    var socket: SocketIOClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view
-        ws.delegate = self
-        ws.connect()
-    }
-    
-    deinit {
-        ws.disconnect(forceTimeout: 0)
-        ws.delegate = nil
+        // Initialize socket and connect
+        //socket = manager.socket(forNamespace: "/arshooter")
+        socket = manager.defaultSocket
+        setUpSocketCallbacks()
+        socket.connect()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,9 +52,7 @@ class GameViewController: UIViewController {
         self.sceneView.session.run(configuration)
         sceneView.session.delegate = self // set a delegate to track the number of plane anchors for providing UI feedback
         sceneView.delegate = self
-        
         self.sceneView.autoenablesDefaultLighting = true
-
         self.sceneView.scene.physicsWorld.contactDelegate = self // executes the physics world function
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         UIApplication.shared.isIdleTimerDisabled = true // disable the screen from getting dimmed, as the user will be taking some time to scan the world
@@ -95,7 +93,7 @@ class GameViewController: UIViewController {
         self.sceneView.scene.rootNode.addChildNode(bullet)
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true) else{fatalError("can't encode anchor")}
 
-        ws.write(data: data)
+        socket.emit("bullet", gameID!, data)
     }
     
     // sends the world map and the eggs to be displayed on the screen
@@ -126,7 +124,8 @@ class GameViewController: UIViewController {
             guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                 else { fatalError("can't encode map") }
             Swift.print("sending world map")
-            self.ws.write(data: data)
+            //self.sendWorldMapData(data: data)
+            self.socket.emit("worldMap", self.gameID!, data)
         }
     }
 }

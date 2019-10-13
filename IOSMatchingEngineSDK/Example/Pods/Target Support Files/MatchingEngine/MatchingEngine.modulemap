@@ -1,0 +1,6 @@
+framework module MatchingEngine {
+  umbrella header "MatchingEngine-umbrella.h"
+
+  export *
+  module * { export * }
+}
