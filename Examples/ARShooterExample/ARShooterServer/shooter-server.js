@@ -2,90 +2,6 @@ var io = require('socket.io')(1337) // Listen on port 1337
 //const nameSpace = "/arshooter"
 //const ARShooterIO = io.of(nameSpace);
 
-class GameState {
-    constructor(gameID) {
-        this.gameID = gameID;
-        this.connections = new Set();
-        this.usernames = new Set();
-        this.peerDict = new Map();
-    }
-
-    addClient(connection, username) {
-        this.connections.add(connection);
-        this.usernames.add(username);
-        this.peerDict.set(connection, username);
-    }
-
-    removeClient(connection) {
-        let username = this.peerDict.get(connection);
-        this.connections.delete(connection);
-        this.usernames.delete(username);
-        this.peerDict.delete(connection);
-        console.log(username + " disconnected");
-    }
-
-    hasConnection(connection) {
-        return this.connections.has(connection);
-    }
-
-    hasUsername(username) {
-        return this.usernames.has(username);
-    }
-}
-
-var connectionDict = new Map(); // Connection to GameState Map -> [connection: GameState]
-var gameIDDict = {}; // GameID to GameState Dictionary -> [gameID: GameState]
-
-function sendDataToPeers(currConnection, event) {
-    console.log("server received data");
-    if (!(currConnection in connectionDict)) {
-        return;
-    }
-    var game = connectionDict.get(currConnection);
-    var gameConnections = game.connections;
-    for (let connection of gameConnections) {
-        if (connection != currConnection) {
-            connection.send(event.binaryData);
-        }
-    }
-}
-
-function getGame(gameID, username, currConnection, event) {
-    console.log("server received gameid and username")
-    if (gameID in gameIDDict) {
-        let gameState = gameIDDict[gameID];
-        if (!connectionDict.has(currConnection)) {
-            connectionDict.set(currConnection, gameState);
-        }
-        return gameState;
-    } else {
-        let gameState = new GameState(gameID);
-        connectionDict.set(currConnection, gameState); // add currConnection and the new GameState to dict
-        gameIDDict[gameID] = gameState;  // add gameID and the new GameState to dict
-        return gameState;
-    }
-}
-
-function sendUsernameToPeers(username, currConnection, currGame, event) {
-    var peers = currGame.connections;
-    for (let peer of peers) {   // send all users current username
-        if (peer != currConnection) {
-            console.log("sending other users curr username");
-            peer.send("" + username);  // quiets compile error
-        }
-    }
-}
-
-function sendPeerUsernamesToSelf(username, currConnection, currGame, event) {
-    var usernames = currGame.usernames;
-    for (let name of usernames) {   // send current user all other usernames
-        if (name != username) {
-            console.log("sending myself other usernames");
-            currConnection.send(name);
-        }
-    }
-}
-
 var scoreInGameMap = new Map(); // Map gameID to Map of usernames and score in that game
 
 io.on('connection', function(socket) {
@@ -105,12 +21,13 @@ io.on('connection', function(socket) {
         } else {
             scores[username] = 0;
             scoreInGameMap.set(gameID, scores);
+            socket.username = username;
+            socket.gameID = gameID;
             socket.join(gameID, function(err) {
                 console.log("After join: ", socket.rooms);
                 console.log("gamid: " + gameID + ", username " + username);
                 console.log(scores);
                 io.in(gameID).emit("otherUsers", scores);  // send self all other usernames and score
-                //ARShooterIO.to(gameID).emit("username", username); // send other users current username
             });
             console.log("no repeat username");
 
@@ -123,7 +40,6 @@ io.on('connection', function(socket) {
         console.log(bullet);
     });
 
-    //var worldMapBuffer = new Blob()
     socket.on("worldMap", function(gameID, worldMap) {
         socket.to(gameID).emit("worldMap", worldMap);
         console.log("worldMap is ");
@@ -139,11 +55,13 @@ io.on('connection', function(socket) {
         console.log(err.stack);
     });
     
-    //currConnection.on('close', function(connection) {
-    //socket.on('disconnect', function(connection) {
-        //let currGame = connectionDict.get(currConnection);
-        //console.log("currGame is " + currGame);
-        //currGame.removeClient(currConnection);
-        //connectionDict.delete(currConnection);
-    //});
+    socket.on('disconnect', function(reason) {
+        var username = socket.username;
+        var gameID = socket.gameID
+        var gameScores = scoreInGameMap.get(gameID);
+        delete gameScores[username];
+        scoreInGameMap.set(gameID, gameScores);
+        io.in(gameID).emit("otherUsers", gameScores);
+        console.log(reason);
+    });
 });
