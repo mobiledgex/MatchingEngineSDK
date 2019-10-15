@@ -1,5 +1,6 @@
 # OS X
 .DS_Store
+Examples/ARShooterExample/ARShooterGame/Pods
 
 # Xcode
 build/

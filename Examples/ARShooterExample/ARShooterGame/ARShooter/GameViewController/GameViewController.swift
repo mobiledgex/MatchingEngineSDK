@@ -98,17 +98,18 @@ class GameViewController: UIViewController {
     
     // sends the world map and the eggs to be displayed on the screen
     @IBAction func addTargets(_ sender: Any) { // eggs are added to the AR World
-        self.addegg(x: 1, y: 0, z: -1.5)
-        self.addegg(x: 0, y: 0, z: -1.5)
-        self.addegg(x: -1, y: 0, z: -1.5)
-        self.addegg(x: -2,y: 0, z: -1.5)
-        self.addegg(x: 2, y: 0, z: -1.5)
+        self.addegg(x: 1, y: 0, z: -2)
+        self.addegg(x: 0, y: 0, z: -2)
+        self.addegg(x: -1, y: 0, z: -2)
+        self.addegg(x: -2,y: 0, z: -2)
+        self.addegg(x: 2, y: 0, z: -2)
     }
     
     // creates the eggnode and displays the egg image into ARSCNView
     func addegg(x: Float, y: Float, z: Float){ // creates a node that includes the image of the egg and sends the information to the other user
         let eggScene = SCNScene(named: "Media.scnassets/egg.scn")
         let eggNode = (eggScene?.rootNode.childNode(withName: "egg", recursively: false))! // creates the egg node and
+        eggNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
         eggNode.position = SCNVector3(x,y,z)
         eggNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: eggNode, options: nil)) // makes it so that the objecgt is in the form of a egg
         eggNode.physicsBody?.categoryBitMask = BitMaskCategory.target.rawValue // gave the category of the target value
