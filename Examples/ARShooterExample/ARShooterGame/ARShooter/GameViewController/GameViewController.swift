@@ -34,7 +34,7 @@ class GameViewController: UIViewController {
     var peers = [String: Int]() // Passed from LoginViewController
     var host: String? // Host from findCloudlet (MatchingEngine). Passed from LoginViewController
     
-    let manager = SocketManager(socketURL: URL(string: "wss://192.168.0.181:1337/")!)
+    let manager = SocketManager(socketURL: URL(string: "wss://10.227.71.190:1337/")!)
     var socket: SocketIOClient!
     
     override func viewDidLoad() {

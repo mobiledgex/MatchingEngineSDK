@@ -77,7 +77,7 @@ class LoginViewController: UIViewController {
             // Register user to begin using edge cloudlet
             registerPromise = try matchingEngine.registerClient(request: registerClientRequest)
             .then { registerClientReply in
-                Swift.print("RegisterClientReply: \(registerClientReply)")
+                SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                 // Find closest edge cloudlet
                 self.findCloudletPromise = try self.matchingEngine.findCloudlet(request:        self.matchingEngine.createFindCloudletRequest(
                     carrierName: self.carrierName!,
@@ -86,26 +86,27 @@ class LoginViewController: UIViewController {
                     appName: self.appName!,
                     appVers: self.appVers!))
                 .then { findCloudletReply in
-                    Swift.print("FindCloudletReply is \(findCloudletReply)")
+                    SKToast.show(withMessage: "FindCloudletReply is \(findCloudletReply)")
+                    self.host = findCloudletReply["fqdn"] as? String
                 }
                 //Verify location of user
                 /*self.verifyLocationPromise = try self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
                                                         carrierName: self.carrierName,                    gpsLocation: self.location!))
                 .then { verifyLocationReply in
-                    Swift.print("VerifyLocationReply is \(verifyLocationReply)")
+                    SKToast.show(withMessage: "VerifyLocationReply is \(verifyLocationReply)")
                 }*/
                 // List of App installations
                 self.appInstListPromise = try self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
                     carrierName: self.carrierName!,
                     gpsLocation: self.location!))
                 .then { appInstListReply in
-                    Swift.print("AppInstListReply is \(appInstListReply)")
+                    SKToast.show(withMessage: "AppInstListReply is \(appInstListReply)")
                 }
             }
         } catch let error as DmeDnsError {
-            Swift.print("DmeHost Error: \(error.errorDescription)")
+            SKToast.show(withMessage: "DmeHost Error: \(error.errorDescription)")
         } catch {
-            Swift.print("Error: \(error.localizedDescription)")
+            SKToast.show(withMessage: "Error: \(error.localizedDescription)")
         }
     }
     
@@ -128,6 +129,7 @@ class LoginViewController: UIViewController {
         gameViewController.gameID = gameID
         gameViewController.userName = userName
         gameViewController.peers[userName!] = 0
+        gameViewController.host = host
         moveToGameViewController(gameViewController: gameViewController)
     }
 }

@@ -16,7 +16,7 @@ extension GameViewController {
     func setUpSocketCallbacks() {
         
         socket.on(clientEvent: .connect) { data, ack in
-            print("socket connected")
+            SKToast.show(withMessage: "Socket connected")
             self.socket.emit("login", self.gameID!, self.userName!)
         }
         
@@ -26,6 +26,7 @@ extension GameViewController {
             self?.addChild(loginViewController)
             self?.view.addSubview(loginViewController.view)
             loginViewController.didMove(toParent: self)
+            SKToast.show(withMessage: "That username is already being used")
             return
         }
         
@@ -44,45 +45,36 @@ extension GameViewController {
         }
         
         socket.on("worldMap") { [weak self] data , ack in
-            print("receivedWorldMap")
+            SKToast.show(withMessage: "Received World Map")
             guard let worldData = data[0] as? Data else { return }
             do {
                 if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: worldData) {
-                    Swift.print("successfully added world config")
+                    SKToast.show(withMessage: "Successfully added world config")
                     // Run the session with the received world map
                     let configuration = ARWorldTrackingConfiguration()
                     configuration.planeDetection = .horizontal
                     configuration.initialWorldMap = worldMap
                     self?.sceneView.session.run(configuration)
-                    self?.addTargets(worldMap)// sends the eggs to the other device
+                    self?.addTargets(worldMap) // sends the eggs to the other device
                 }
             } catch {
-                print("could not get worldMap")
+                SKToast.show(withMessage: "Could not parse world map")
             }
-        }
-        
-        socket.on("username") { [weak self] data, ack in
-            print("received new player \(data)")
-            guard let newUser = data[0] as? String else { return }
-            self?.peers[newUser] = 0
         }
         
         socket.on("otherUsers") { [weak self] data, ack in
             print("received otherUsers \(data)")
             guard let otherUsers = data[0] as? NSDictionary else { return }
-            /*for (user, score) in otherUsers {
-                self.peers[user] = score
-            }*/
             self?.peers = otherUsers as! [String : Int]
-            print("peers is \(self?.peers)")
+            self?.scoreTextView.text = self?.peers.description
         }
     }
-
+    
+    // Used if world map is too large to send in one go
     func sendWorldMapData(data: Data) {
         DispatchQueue.main.async {
             data.withUnsafeBytes{ (u8Ptr: UnsafePointer<UInt8>) in
                 let mutRawPointer = UnsafeMutableRawPointer(mutating: u8Ptr)
-                //let uploadChunkSize = 4096
                 let uploadChunkSize = 4096
                 let totalSize = data.count
                 Swift.print("data size is \(totalSize)")
