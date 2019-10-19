@@ -9,7 +9,6 @@ io.on('connection', function(socket) {
     socket.on("login", function(gameID, username) {
         console.log("gamid: " + gameID + ", username " + username);
         if (!scoreInGameMap.has(gameID)) {
-            // console.log("no game with that name yet");
             var scores = {};
             scoreInGameMap.set(gameID, scores);
         }
@@ -22,26 +21,26 @@ io.on('connection', function(socket) {
             socket.username = username;
             socket.gameID = gameID;
             socket.join(gameID, function(err) {
-                // console.log("After join: ", socket.rooms);
-                // console.log("gamid: " + gameID + ", username " + username);
-                // console.log(scores);
                 io.in(gameID).emit("otherUsers", scores);  // send self all other usernames and score
             });
-            // console.log("no repeat username");
-
         }
     });
 
     socket.on("bullet", function(gameID, bullet) {
         socket.to(gameID).emit("bullet", bullet);
-        // console.log("bullet is ");
-        // console.log(bullet);
     });
 
     socket.on("worldMap", function(gameID, worldMap) {
+        // Reset scores when someone sends worldMap
+        scores = scoreInGameMap.get(gameID);
+        const usernames = Object.keys(scores);
+        for (const username of usernames) {
+            scores[username] = 0
+        }
+        scoreInGameMap.set(gameID, scores);
+        io.in(gameID).emit("otherUsers", scores);
+        // Send world map
         socket.to(gameID).emit("worldMap", worldMap);
-        // console.log("worldMap is ");
-        // console.log(worldMap);
     });
 
     socket.on("score", function(gameID, username) {
@@ -55,7 +54,7 @@ io.on('connection', function(socket) {
     
     socket.on('disconnect', function(reason) {
         var username = socket.username;
-        var gameID = socket.gameID
+        var gameID = socket.gameID;
         var gameScores = scoreInGameMap.get(gameID);
         delete gameScores[username];
         scoreInGameMap.set(gameID, gameScores);

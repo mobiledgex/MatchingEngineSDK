@@ -24,24 +24,28 @@ class GameViewController: UIViewController {
     @IBOutlet weak var sendMapButton: UIButton!
     
     let configuration = ARWorldTrackingConfiguration()
-    var power: Float = 50
+    var power: Float = 10
     var number: Int = 0
     var peerNumber: Int = 0
     var Target: SCNNode?
+    var worldMapConfigured = false
     
-    var userName: String? // Passed from LoginViewController
-    var gameID: String? // Passed from LoginViewController
-    var peers = [String: Int]() // Passed from LoginViewController
-    var host: String? // Host from findCloudlet (MatchingEngine). Passed from LoginViewController
+    // Variables passed in from LoginViewController
+    var userName: String?
+    var gameID: String?
+    var peers = [String: Int]()
+    var host: String? // Host from findCloudlet (MatchingEngine)
+    var port: Int? // Port from findCloudlet (MatchingEngine)
     
-    let manager = SocketManager(socketURL: URL(string: "wss://10.227.71.190:1337/")!)
+    // SocketIO Variables
+    var manager: SocketManager?
     var socket: SocketIOClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Initialize socket and connect
         //socket = manager.socket(forNamespace: "/arshooter")
-        socket = manager.defaultSocket
+        socket = manager!.defaultSocket
         setUpSocketCallbacks()
         socket.connect()
     }
@@ -72,7 +76,7 @@ class GameViewController: UIViewController {
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: bullet, options: nil)) // needs the physics body in order to shoot the bullet, dynamic in order for our bullet to be affected by forces , shape of a bullet
         body.isAffectedByGravity = false // doesn't experience any gravity
         bullet.physicsBody = body
-    bullet.physicsBody?.applyForce(SCNVector3(orientation.x*power,orientation.y*power,orientation.z*power), asImpulse: true) // makes the sphere shoot like a bullet
+        bullet.physicsBody?.applyForce(SCNVector3(orientation.x*power,orientation.y*power,orientation.z*power), asImpulse: true) // makes the sphere shoot like a bullet
         bullet.physicsBody?.categoryBitMask = BitMaskCategory.bullet.rawValue // gives the value of bullet to two
         bullet.physicsBody?.contactTestBitMask = BitMaskCategory.target.rawValue // tells the physicsworld to watch out for any collision between the bullet and the raw value (egg)
         return bullet
@@ -81,6 +85,9 @@ class GameViewController: UIViewController {
     
     // sends bullet when user taps on the screen
     @IBAction func sendBullets(_ sender: UITapGestureRecognizer) {
+        if !worldMapConfigured {
+            return
+        }
         guard let sceneView = sender.view as? ARSCNView else{return} // makes sure that the view you tapped on is the scene view
         guard let pointOfView = sceneView.pointOfView else{return} // receives the point of view of the sceneView
         let transform = pointOfView.transform // gets the transform matrix from point of view (4x4 matrix)
@@ -89,7 +96,7 @@ class GameViewController: UIViewController {
         bullet.geometry?.firstMaterial?.diffuse.contents = UIColor.red
         bullet.runAction(SCNAction.sequence([SCNAction.wait(duration: 2.0), SCNAction.removeFromParentNode()])) // makes it as soon as the bullet is shot, it is removed after 2 seconds
         let anchor = ARAnchor(name: userName!, transform: simd_float4x4(transform))
-        
+        print("send bullet anchor.name is \(anchor.name)")
         self.sceneView.scene.rootNode.addChildNode(bullet)
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true) else{fatalError("can't encode anchor")}
 
@@ -98,18 +105,16 @@ class GameViewController: UIViewController {
     
     // sends the world map and the eggs to be displayed on the screen
     @IBAction func addTargets(_ sender: Any) { // eggs are added to the AR World
-        self.addegg(x: 1, y: 0, z: -2)
-        self.addegg(x: 0, y: 0, z: -2)
-        self.addegg(x: -1, y: 0, z: -2)
-        self.addegg(x: -2,y: 0, z: -2)
-        self.addegg(x: 2, y: 0, z: -2)
+        for i in -2...2 {
+            self.addegg(x: Float(i), y: 0, z: -2)
+        }
     }
     
     // creates the eggnode and displays the egg image into ARSCNView
     func addegg(x: Float, y: Float, z: Float){ // creates a node that includes the image of the egg and sends the information to the other user
         let eggScene = SCNScene(named: "Media.scnassets/egg.scn")
         let eggNode = (eggScene?.rootNode.childNode(withName: "egg", recursively: false))! // creates the egg node and
-        eggNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+        eggNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5) // Make egg smaller
         eggNode.position = SCNVector3(x,y,z)
         eggNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: eggNode, options: nil)) // makes it so that the objecgt is in the form of a egg
         eggNode.physicsBody?.categoryBitMask = BitMaskCategory.target.rawValue // gave the category of the target value
@@ -125,6 +130,7 @@ class GameViewController: UIViewController {
             guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                 else { fatalError("can't encode map") }
             Swift.print("sending world map")
+            self.worldMapConfigured = true
             //self.sendWorldMapData(data: data)
             self.socket.emit("worldMap", self.gameID!, data)
         }

@@ -7,8 +7,10 @@
 //
 
 import UIKit
-import MatchingEngine
+// import MatchingEngine
+import IOSMatchingEngine
 import Promises
+import SocketIO
 
 class LoginViewController: UIViewController {
     
@@ -29,9 +31,9 @@ class LoginViewController: UIViewController {
     var carrierName: String?
     var authToken: String?
     var host: String?
-    var port: UInt = 38001
+    var port: Int?
     var location: [String: Any]?
-    var demo = true
+    var demo = false
     
     // MatchingEngine API return objects
     var registerPromise: Promise<[String: AnyObject]>? // AnyObject --> RegisterClientReply
@@ -54,20 +56,22 @@ class LoginViewController: UIViewController {
     func setUpMatchingEngineConnection() {
         matchingEngine = MatchingEngine()
         if demo {
-            host = "sdkdemo.dme.mobiledgex.net"
-            port = 38001
-            appName = "MobiledgeX SDK Demo"
-            appVers = "1.0"
+            host = "arshootereucluster.berlin-main.tdg.mobiledgex.net"
+            port = 1337
+            appName = "ARShooter"  // ARShooter
+            appVers = "1.1"
             devName = "MobiledgeX"
-            carrierName = "tdg"
+            carrierName = "TDG"
             authToken = nil
             location = ["longitude": -122.149349, "latitude": 37.459609]  // Get actual location and ask user for permission
         } else {
             appName = matchingEngine.getAppName()
             appVers = matchingEngine.getAppVersion()
-            devName = "MobiledgeX" // Replace with your Developer Name
-            carrierName = matchingEngine.getCarrierName() ?? ""
-            location = ["longitude": -122.149349, "latitude": 37.459609]  // Get actual location and ask user for permission
+            devName = "franklin-mobiledgex" // franklin-mobiledgex
+            carrierName = "TDG"
+            //carrierName = matchingEngine.getCarrierName() ?? "TDG"
+            //location = ["longitude": -122.149349, "latitude": 37.459609]  // Get actual location and ask user for permission
+            location = ["latitude": 53.112, "longitude": 13.4223] // Get actual location and ask user for permission
         }
     } 
     
@@ -78,6 +82,7 @@ class LoginViewController: UIViewController {
             registerPromise = try matchingEngine.registerClient(request: registerClientRequest)
             .then { registerClientReply in
                 SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
+                print("RegisterClientReply: \(registerClientReply)")
                 // Find closest edge cloudlet
                 self.findCloudletPromise = try self.matchingEngine.findCloudlet(request:        self.matchingEngine.createFindCloudletRequest(
                     carrierName: self.carrierName!,
@@ -87,20 +92,20 @@ class LoginViewController: UIViewController {
                     appVers: self.appVers!))
                 .then { findCloudletReply in
                     SKToast.show(withMessage: "FindCloudletReply is \(findCloudletReply)")
+                    print("FindCloudletReply is \(findCloudletReply)")
                     self.host = findCloudletReply["fqdn"] as? String
+                    guard let ports = findCloudletReply["ports"] as? [String: Any] else {
+                        return
+                    }
+                    self.port = ports["public_port"] as! Int
                 }
-                //Verify location of user
-                /*self.verifyLocationPromise = try self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
-                                                        carrierName: self.carrierName,                    gpsLocation: self.location!))
-                .then { verifyLocationReply in
-                    SKToast.show(withMessage: "VerifyLocationReply is \(verifyLocationReply)")
-                }*/
-                // List of App installations
+                // List of App instances
                 self.appInstListPromise = try self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
                     carrierName: self.carrierName!,
                     gpsLocation: self.location!))
                 .then { appInstListReply in
                     SKToast.show(withMessage: "AppInstListReply is \(appInstListReply)")
+                    print("AppInstListReply is \(appInstListReply)")
                 }
             }
         } catch let error as DmeDnsError {
@@ -119,17 +124,30 @@ class LoginViewController: UIViewController {
     
     @IBAction func pressSubmit(_ sender: UIButton) {
         let gameViewController = self.storyboard?.instantiateViewController(withIdentifier: "game") as! GameViewController
-        // Pass on gameID and userName to GameViewController
+        // Make sure gameID and userName are not nil
         guard let _  = gameID else {
             return
         }
         guard let _ = userName else {
             return
         }
+        
+        if host == nil {
+            host = "arshootereucluster.berlin-main.tdg.mobiledgex.net"
+        }
+        if port == nil {
+            port = 1337
+        }
+        let url = "wss://\(host!):\(String(port!))/"
+        //let url = "wss://frankfurt-main.tdg.mobiledgex.net:1337/"
+        let manager = SocketManager(socketURL: URL(string: url)!)
+        // Set variables for next GameViewController
         gameViewController.gameID = gameID
         gameViewController.userName = userName
         gameViewController.peers[userName!] = 0
         gameViewController.host = host
+        gameViewController.port = port
+        gameViewController.manager = manager
         moveToGameViewController(gameViewController: gameViewController)
     }
 }

@@ -18,10 +18,14 @@ extension GameViewController: SCNPhysicsContactDelegate {
             let nodeB = contact.nodeB
             if nodeA.physicsBody?.categoryBitMask == BitMaskCategory.bullet.rawValue {  // if node A has the bitmask category of a bullet
                 self.Target = nodeB
-                self.peers[nodeA.name!]! += 1
+                if nodeA.name != nil {
+                    self.peers[nodeA.name!]! += 1
+                }
             } else if nodeB.physicsBody?.categoryBitMask == BitMaskCategory.bullet.rawValue {
                 self.Target = nodeA
-                self.peers[nodeB.name!]! += 1
+                if nodeB.name != nil {
+                    self.peers[nodeB.name!]! += 1 // TODO: crashes after send world map...
+                }
             }
             self.scoreTextView.text = self.peers.description
         }

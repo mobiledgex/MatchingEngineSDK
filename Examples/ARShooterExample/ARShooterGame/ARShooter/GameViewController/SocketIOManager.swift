@@ -31,19 +31,17 @@ extension GameViewController {
         }
         
         socket.on("bullet") { [weak self] data, ack in
-            print("received bullet")
             guard let bulletData = data[0] as? Data else { return }
             do {
                 if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: bulletData) {
                     // add anchor to the session, ARSCNView delegate adds visible content
                     self?.sceneView.session.add(anchor: anchor)
-                    Swift.print("successfully added bullet anchor")
                 }
             } catch {
-                print("could not get bullet")
+                print("Could not get bullet")
             }
         }
-        
+                
         socket.on("worldMap") { [weak self] data , ack in
             SKToast.show(withMessage: "Received World Map")
             guard let worldData = data[0] as? Data else { return }
@@ -56,6 +54,7 @@ extension GameViewController {
                     configuration.initialWorldMap = worldMap
                     self?.sceneView.session.run(configuration)
                     self?.addTargets(worldMap) // sends the eggs to the other device
+                    self?.worldMapConfigured = true
                 }
             } catch {
                 SKToast.show(withMessage: "Could not parse world map")
@@ -63,7 +62,6 @@ extension GameViewController {
         }
         
         socket.on("otherUsers") { [weak self] data, ack in
-            print("received otherUsers \(data)")
             guard let otherUsers = data[0] as? NSDictionary else { return }
             self?.peers = otherUsers as! [String : Int]
             self?.scoreTextView.text = self?.peers.description

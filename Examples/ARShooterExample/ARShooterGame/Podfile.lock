@@ -1,8 +1,8 @@
 PODS:
-  - MatchingEngine (1.4.2.3):
+  - IOSMatchingEngine (1.4.2.3):
     - NSLogger/Swift
     - PromisesSwift
-    - SwiftyJSON
+    - Socket.IO-Client-Swift (~> 15.1.0)
   - NSLogger/ObjC (1.9.7)
   - NSLogger/Swift (1.9.7):
     - NSLogger/ObjC
@@ -11,34 +11,30 @@ PODS:
     - PromisesObjC (= 1.2.8)
   - Socket.IO-Client-Swift (15.1.0):
     - Starscream (~> 3.1)
-  - Starscream (3.1.0)
-  - SwiftyJSON (5.0.0)
+  - Starscream (3.1.1)
 
 DEPENDENCIES:
-  - MatchingEngine
+  - IOSMatchingEngine
   - Socket.IO-Client-Swift (~> 15.1.0)
-  - Starscream
 
 SPEC REPOS:
-  "https://artifactory.mobiledgex.net/artifactory/api/pods/cocoapods-releases\n":
-    - MatchingEngine
+  https://artifactory.mobiledgex.net/artifactory/api/pods/cocoapods-releases:
+    - IOSMatchingEngine
   https://github.com/CocoaPods/Specs.git:
     - NSLogger
     - PromisesObjC
     - PromisesSwift
     - Socket.IO-Client-Swift
     - Starscream
-    - SwiftyJSON
 
 SPEC CHECKSUMS:
-  MatchingEngine: bff96adba845b0ca83199124077dcbef1031192c
+  IOSMatchingEngine: f19be480f53d46ad0ce76203dcd2aa3cdabf7be1
   NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
-  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
 
-PODFILE CHECKSUM: 905d1718026571aaefee9c3e0e82bc99d95adb27
+PODFILE CHECKSUM: 54fd7b552ed760668e1519fec9d619f6ceb40127
 
 COCOAPODS: 1.8.3

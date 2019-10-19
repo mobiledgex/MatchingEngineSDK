@@ -14,6 +14,9 @@ extension GameViewController: ARSCNViewDelegate {
     // Part of ARSCNView Delegate class
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         // Renders other player's bullets when receive data from server
+        if !worldMapConfigured {
+            return
+        }
         let bullet = renderBullet(transform: SCNMatrix4.init(anchor.transform))
         bullet.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         bullet.name = anchor.name
