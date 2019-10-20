@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wEZ-Ar-4QA">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -10,13 +10,13 @@
         <!--Login View Controller-->
         <scene sceneID="vLY-yO-lCd">
             <objects>
-                <viewController storyboardIdentifier="login" id="wEZ-Ar-4QA" customClass="LoginViewController" customModule="ARShooter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="login" id="wEZ-Ar-4QA" customClass="LoginViewController" customModule="ARShooterSkeletonSkeleton" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qgP-xl-iBv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K8Y-fA-VSr">
-                                <rect key="frame" x="139" y="82" width="97" height="30"/>
+                                <rect key="frame" x="132" y="185" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -26,7 +26,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6xU-wk-uRc">
-                                <rect key="frame" x="139" y="252" width="97" height="30"/>
+                                <rect key="frame" x="132" y="321" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -37,23 +37,23 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPH-Sd-f3e">
-                                <rect key="frame" x="164" y="298" width="49" height="30"/>
+                                <rect key="frame" x="156" y="366" width="49" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Submit"/>
                                 <connections>
                                     <action selector="pressSubmit:" destination="wEZ-Ar-4QA" eventType="touchUpInside" id="frw-io-eXa"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Enter Game ID" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7B-98-Esg">
-                                <rect key="frame" x="132" y="40" width="113" height="34"/>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Enter Game ID" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XQ6-kg-vHD">
+                                <rect key="frame" x="126" y="140" width="108" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Enter Username" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2IK-K2-KuW">
-                                <rect key="frame" x="130" y="207" width="114" height="37"/>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Enter Username" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tmg-l8-DUp">
+                                <rect key="frame" x="120" y="269" width="121" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -72,28 +72,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7uu-oE-372" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-602.39999999999998" y="150.67466266866569"/>
+            <point key="canvasLocation" x="-602.39999999999998" y="150.73891625615764"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="game" id="BYZ-38-t0r" customClass="GameViewController" customModule="ARShooter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="game" id="BYZ-38-t0r" customClass="GameViewController" customModule="ARShooterSkeletonSkeleton" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJE-CK-BEY">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="0x8-EY-4fB" appends="YES" id="uIU-5C-98B"/>
                                 </connections>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNf-oY-Q4t">
-                                <rect key="frame" x="175.5" y="321.5" width="24" height="24"/>
+                                <rect key="frame" x="175.66666666666666" y="394" width="24" height="24"/>
                                 <state key="normal" image="plus"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h28-0v-bJT">
-                                <rect key="frame" x="140" y="601" width="95" height="36"/>
+                                <rect key="frame" x="140" y="673.66666666666663" width="95" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="6qy-mL-IhO"/>
                                     <constraint firstAttribute="width" constant="95" id="jVl-BR-pFU"/>

@@ -14,9 +14,7 @@ import SocketIO
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var gameIDLabel: UILabel!
     @IBOutlet weak var gameIDField: UITextField!
-    @IBOutlet weak var userNameLable: UILabel!
     @IBOutlet weak var userNameField: UITextField!
     @IBOutlet weak var submitButton: UIButton!
     
@@ -125,12 +123,18 @@ class LoginViewController: UIViewController {
     @IBAction func pressSubmit(_ sender: UIButton) {
         let gameViewController = self.storyboard?.instantiateViewController(withIdentifier: "game") as! GameViewController
         // Make sure gameID and userName are not nil
-        guard let _  = gameID else {
-            return
+        if gameID == nil {
+            if gameIDField.text == "" {
+                return
+            }
         }
-        guard let _ = userName else {
-            return
+        if userName == nil {
+            if userNameField.text == "" {
+                return
+            }
         }
+        userNameField.isEnabled = false
+        gameIDField.isEnabled = false
         
         if host == nil {
             host = "arshootereucluster.berlin-main.tdg.mobiledgex.net"
