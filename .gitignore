@@ -1,6 +1,7 @@
 # OS X
 .DS_Store
-Pods/
+Examples/ARShooterExample/ARShooterGame/Pods
+IOSMatchingEngineSDK/Example/Pods
 node_modules/
 
 # Xcode
