@@ -11,7 +11,7 @@ import UIKit
 
 extension LoginViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    private func getUsernameAndGameID(_ textField: UITextField) {
         if textField == userNameField {
             Swift.print("end editing username")
             userName = textField.text
@@ -20,18 +20,15 @@ extension LoginViewController: UITextFieldDelegate {
             gameID = textField.text
         }
         textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        getUsernameAndGameID(textField)
         return true
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField == userNameField {
-            Swift.print("end editing username")
-            userName = textField.text
-        } else {
-            Swift.print("end editing gameid")
-            gameID = textField.text
-        }
-        textField.resignFirstResponder()
+        getUsernameAndGameID(textField)
         return true
     }
 }

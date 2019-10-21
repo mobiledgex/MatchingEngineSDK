@@ -8,7 +8,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 plugin 'cocoapods-art', :sources => ['cocoapods-releases'] 
 
 target 'ARShooter' do
-  #pod 'Starscream'
   pod 'IOSMatchingEngine'
   pod 'Socket.IO-Client-Swift', '~> 15.1.0'
 

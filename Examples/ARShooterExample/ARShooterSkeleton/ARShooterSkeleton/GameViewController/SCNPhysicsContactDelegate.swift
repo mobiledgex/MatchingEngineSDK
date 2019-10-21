@@ -11,8 +11,8 @@ import SceneKit
 
 extension GameViewController: SCNPhysicsContactDelegate {
     
-    // Called when some contact happens (Case: Bullet hits another bullet) (Bitwise & instead of ==)
-    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) { // gets triggered when the bullet hits the egg since both the bullet and egg are categorized into two different numbers
+    // Called when some contact happens (Case: Bullet hits another bullet) (TODO: Bitwise & instead of ==)
+    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
         DispatchQueue.main.async { // Run on background thread
             let nodeA = contact.nodeA
             let nodeB = contact.nodeB
@@ -24,7 +24,7 @@ extension GameViewController: SCNPhysicsContactDelegate {
             } else if nodeB.physicsBody?.categoryBitMask == BitMaskCategory.bullet.rawValue {
                 self.Target = nodeA
                 if nodeB.name != nil {
-                    self.peers[nodeB.name!]! += 1 // TODO: crashes after send world map...
+                    self.peers[nodeB.name!]! += 1
                 }
             }
             self.scoreTextView.text = self.peers.description

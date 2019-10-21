@@ -7,7 +7,6 @@
 //
 
 import UIKit
-// import MatchingEngine
 import IOSMatchingEngine
 import Promises
 import SocketIO
@@ -142,7 +141,8 @@ class LoginViewController: UIViewController {
         if port == nil {
             port = 1337
         }
-        let url = "wss://\(host!):\(String(port!))/"
+        //let url = "wss://\(host!):\(String(port!))/"
+        let url = "wss://10.227.71.46:1337/"
         //let url = "wss://frankfurt-main.tdg.mobiledgex.net:1337/"
         let manager = SocketManager(socketURL: URL(string: url)!)
         // Set variables for next GameViewController

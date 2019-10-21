@@ -61,6 +61,7 @@ extension GameViewController {
             }
         }
         
+        // Update score for all users in game
         socket.on("otherUsers") { [weak self] data, ack in
             guard let otherUsers = data[0] as? NSDictionary else { return }
             self?.peers = otherUsers as! [String : Int]

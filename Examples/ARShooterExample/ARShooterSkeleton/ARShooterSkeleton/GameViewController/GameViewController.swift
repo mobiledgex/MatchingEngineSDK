@@ -7,7 +7,6 @@
 //
 
 import ARKit
-import Starscream
 import SocketIO
 
 enum BitMaskCategory: Int {
@@ -53,7 +52,7 @@ class GameViewController: UIViewController {
         super.viewDidAppear(animated)
         configuration.planeDetection = .horizontal
         self.sceneView.session.run(configuration)
-        sceneView.session.delegate = self // set a delegate to track the number of plane anchors for providing UI feedback
+        sceneView.session.delegate = self // set session delegate to self
         sceneView.delegate = self
         self.sceneView.autoenablesDefaultLighting = true
         self.sceneView.scene.physicsWorld.contactDelegate = self // executes the physics world function
@@ -67,17 +66,17 @@ class GameViewController: UIViewController {
     }
     
     func renderBullet(transform: SCNMatrix4) -> SCNNode {
-        let orientation = SCNVector3(-transform.m31,-transform.m32,-transform.m33) // orientation is encoded in the third column matrix. -Z axis points from camera out
-        let location = SCNVector3(transform.m41,transform.m42,transform.m43) // position of the camera/user. Translation vector is encoded in the fourth column matrix
+        let orientation = SCNVector3(-transform.m31,-transform.m32,-transform.m33) // orientation is encoded in the third column vector. -Z axis points from camera out
+        let location = SCNVector3(transform.m41,transform.m42,transform.m43) // position of the camera/user. Translation vector is encoded in the fourth column vector
         let position = location
         let bullet = SCNNode(geometry: SCNSphere(radius: 0.1))
         bullet.position = position
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: bullet, options: nil)) // needs the physics body in order to shoot the bullet, dynamic in order for our bullet to be affected by forces , shape of a bullet
-        body.isAffectedByGravity = false // doesn't experience any gravity
+        body.isAffectedByGravity = false
         bullet.physicsBody = body
-        bullet.physicsBody?.applyForce(SCNVector3(orientation.x*power,orientation.y*power,orientation.z*power), asImpulse: true) // makes the sphere shoot like a bullet
-        bullet.physicsBody?.categoryBitMask = BitMaskCategory.bullet.rawValue // gives the value of bullet to two
-        bullet.physicsBody?.contactTestBitMask = BitMaskCategory.target.rawValue // tells the physicsworld to watch out for any collision between the bullet and the raw value (egg)
+    bullet.physicsBody?.applyForce(SCNVector3(orientation.x*power,orientation.y*power,orientation.z*power), asImpulse: true) // makes the sphere shoot like a bullet
+        bullet.physicsBody?.categoryBitMask = BitMaskCategory.bullet.rawValue
+        bullet.physicsBody?.contactTestBitMask = BitMaskCategory.target.rawValue
         return bullet
     }
     
@@ -98,31 +97,37 @@ class GameViewController: UIViewController {
         print("send bullet anchor.name is \(anchor.name)")
         self.sceneView.scene.rootNode.addChildNode(bullet)
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true) else{fatalError("can't encode anchor")}
-
+        // send bullet to server
         socket.emit("bullet", gameID!, data)
     }
     
-    // sends the world map and the eggs to be displayed on the screen
-    @IBAction func addTargets(_ sender: Any) { // eggs are added to the AR World
+    // eggs are added to the AR World when add targets button is clicked
+    @IBAction func addTargets(_ sender: Any) {
         for i in -2...2 {
             self.addegg(x: Float(i), y: 0, z: -2)
         }
     }
     
     // creates the eggnode and displays the egg image into ARSCNView
-    func addegg(x: Float, y: Float, z: Float){ // creates a node that includes the image of the egg and sends the information to the other user
+    func addegg(x: Float, y: Float, z: Float){
         let eggScene = SCNScene(named: "Media.scnassets/egg.scn")
-        let eggNode = (eggScene?.rootNode.childNode(withName: "egg", recursively: false))! // creates the egg node and
+        let eggNode = (eggScene?.rootNode.childNode(withName: "egg", recursively: false))! // creates the egg node
         eggNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5) // Make egg smaller
         eggNode.position = SCNVector3(x,y,z)
         eggNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: eggNode, options: nil)) // makes it so that the objecgt is in the form of a egg
-        eggNode.physicsBody?.categoryBitMask = BitMaskCategory.target.rawValue // gave the category of the target value
-        eggNode.physicsBody?.contactTestBitMask = BitMaskCategory.bullet.rawValue // watch for any collisions between egg and bullet
+        eggNode.physicsBody?.categoryBitMask = BitMaskCategory.target.rawValue
+        eggNode.physicsBody?.contactTestBitMask = BitMaskCategory.bullet.rawValue
         self.sceneView.scene.rootNode.addChildNode(eggNode)
     }
     
-    // shares the AR World Map between peer devices ,
-    @IBAction func shareSession(_ sender: UIButton) { // shares the AR World map with server, which will forward to other devices
+    // Shares the AR World map with server, which will forward to other devices
+    @IBAction func shareSession(_ sender: UIButton) {
+        // Set origin to an anchor, so it is more stable
+        guard let anchor = self.sceneView.session.currentFrame?.anchors.first else {
+            return
+        }
+        self.sceneView.session.setWorldOrigin(relativeTransform: anchor.transform)
+        // Gets world map and sends to server
         sceneView.session.getCurrentWorldMap { worldMap, error in
             guard let map = worldMap
                 else { print("Error: \(error!.localizedDescription)"); return }
@@ -130,11 +135,11 @@ class GameViewController: UIViewController {
                 else { fatalError("can't encode map") }
             Swift.print("sending world map")
             self.worldMapConfigured = true
-            //self.sendWorldMapData(data: data)
             self.socket.emit("worldMap", self.gameID!, data)
         }
     }
 }
 
-func +(left: SCNVector3, right: SCNVector3) -> SCNVector3{ // method to add SCNVectors together
+// method to add SCNVectors together
+func +(left: SCNVector3, right: SCNVector3) -> SCNVector3{
     return SCNVector3Make(left.x + right.x, left.y + right.y, left.z + right.z)}

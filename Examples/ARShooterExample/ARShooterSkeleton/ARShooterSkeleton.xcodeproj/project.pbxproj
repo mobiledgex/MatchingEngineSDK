@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		548A15F4D41ADEF2BDA42CA3 /* Pods_ARShooterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630FDBD7BA36D174DB4091C2 /* Pods_ARShooterTests.framework */; };
 		59098CAF2350F3FA002117CF /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59098CAE2350F3FA002117CF /* SocketIOManager.swift */; };
 		59098D1B2357991A002117CF /* SKToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59098D172357991A002117CF /* SKToastView.swift */; };
 		593EC4D923455C7B00AD377D /* SCNPhysicsContactDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4D823455C7B00AD377D /* SCNPhysicsContactDelegate.swift */; };
@@ -16,7 +15,7 @@
 		593EC4DF2346809400AD377D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4DE2346809200AD377D /* Player.swift */; };
 		593EC4E12346E52100AD377D /* UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593EC4E02346E52000AD377D /* UITextFieldDelegate.swift */; };
 		59FE01ED2347EA1F0008CA0F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FE01EC2347EA1F0008CA0F /* LoginViewController.swift */; };
-		7199E988D542B6A813583B60 /* Pods_ARShooter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC807F395588B02C84E6D2AE /* Pods_ARShooter.framework */; };
+		75A817C5E1D3493B92B20520 /* Pods_ARShooterSkeletonUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAF1E258232301A870D9059 /* Pods_ARShooterSkeletonUITests.framework */; };
 		AB7FABC122F102AD00669E8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7FABC022F102AD00669E8D /* AppDelegate.swift */; };
 		AB7FABC322F102AD00669E8D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7FABC222F102AD00669E8D /* GameViewController.swift */; };
 		AB7FABC622F102AD00669E8D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB7FABC422F102AD00669E8D /* Main.storyboard */; };
@@ -27,7 +26,8 @@
 		AB7FABF122F104AF00669E8D /* Media.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = AB7FABF022F104AF00669E8D /* Media.scnassets */; };
 		ABBA549B22FE077400754E98 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBA549A22FE077400754E98 /* Utilities.swift */; };
 		ABBA549D2301C6AC00754E98 /* OtherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBA549C2301C6AC00754E98 /* OtherButton.swift */; };
-		C887536BEF62D43299D3E44C /* Pods_ARShooterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EED34A1E22782BE2EAB0FA79 /* Pods_ARShooterUITests.framework */; };
+		B7E6BB5A620A1B0EBC6DC58D /* Pods_ARShooterSkeletonTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB2834302656144914D569B /* Pods_ARShooterSkeletonTests.framework */; };
+		C4AC4357CD1BFEA529BF3EF2 /* Pods_ARShooterSkeleton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424759C19EB95DD50CC24111 /* Pods_ARShooterSkeleton.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +49,10 @@
 
 /* Begin PBXFileReference section */
 		22F1A753DCE76103D54BEFEA /* Pods-ARShooterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterUITests.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterUITests/Pods-ARShooterUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		348C4E4863A20B374B0F74BB /* Pods-ARShooterSkeletonTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeletonTests.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeletonTests/Pods-ARShooterSkeletonTests.debug.xcconfig"; sourceTree = "<group>"; };
+		413A020B7D326A5C16AE9630 /* Pods-ARShooterSkeleton.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeleton.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeleton/Pods-ARShooterSkeleton.debug.xcconfig"; sourceTree = "<group>"; };
+		424759C19EB95DD50CC24111 /* Pods_ARShooterSkeleton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooterSkeleton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5286A838449F4F76E01E2416 /* Pods-ARShooterSkeletonUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeletonUITests.release.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeletonUITests/Pods-ARShooterSkeletonUITests.release.xcconfig"; sourceTree = "<group>"; };
 		59098CAE2350F3FA002117CF /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		59098D172357991A002117CF /* SKToastView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKToastView.swift; sourceTree = "<group>"; };
 		59098DB0235941C7002117CF /* IOSMatchingEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IOSMatchingEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,8 +71,10 @@
 		593EC4E02346E52000AD377D /* UITextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldDelegate.swift; sourceTree = "<group>"; };
 		59FE01EC2347EA1F0008CA0F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		615DFDE5AA2807AC8C0BEF3E /* Pods-ARShooter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooter.debug.xcconfig"; path = "Target Support Files/Pods-ARShooter/Pods-ARShooter.debug.xcconfig"; sourceTree = "<group>"; };
-		630FDBD7BA36D174DB4091C2 /* Pods_ARShooterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65EC8F74B83D76FBC0EDDD15 /* Pods-ARShooter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooter.release.xcconfig"; path = "Target Support Files/Pods-ARShooter/Pods-ARShooter.release.xcconfig"; sourceTree = "<group>"; };
+		679E39FF5F402325BB909C23 /* Pods-ARShooterSkeleton.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeleton.release.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeleton/Pods-ARShooterSkeleton.release.xcconfig"; sourceTree = "<group>"; };
+		7A14B8351FCCF011CF3C1307 /* Pods-ARShooterSkeletonUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeletonUITests.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeletonUITests/Pods-ARShooterSkeletonUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		9A995891658A6BE22D98AB03 /* Pods-ARShooterSkeletonTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterSkeletonTests.release.xcconfig"; path = "Target Support Files/Pods-ARShooterSkeletonTests/Pods-ARShooterSkeletonTests.release.xcconfig"; sourceTree = "<group>"; };
 		AB7FABBD22F102AD00669E8D /* ARShooterSkeletonSkeleton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARShooterSkeletonSkeleton.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB7FABC022F102AD00669E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB7FABC222F102AD00669E8D /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -85,11 +91,11 @@
 		AB7FABF022F104AF00669E8D /* Media.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Media.scnassets; sourceTree = "<group>"; };
 		ABBA549A22FE077400754E98 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		ABBA549C2301C6AC00754E98 /* OtherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherButton.swift; sourceTree = "<group>"; };
+		BBB2834302656144914D569B /* Pods_ARShooterSkeletonTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooterSkeletonTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3F8DC2D53D1771389E9507 /* Pods-ARShooterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterUITests.release.xcconfig"; path = "Target Support Files/Pods-ARShooterUITests/Pods-ARShooterUITests.release.xcconfig"; sourceTree = "<group>"; };
-		DC807F395588B02C84E6D2AE /* Pods_ARShooter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B0AD92B21D23D8494399C1 /* Pods-ARShooterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterTests.release.xcconfig"; path = "Target Support Files/Pods-ARShooterTests/Pods-ARShooterTests.release.xcconfig"; sourceTree = "<group>"; };
 		EE9752D1F2D031E8688EBB8E /* Pods-ARShooterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARShooterTests.debug.xcconfig"; path = "Target Support Files/Pods-ARShooterTests/Pods-ARShooterTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EED34A1E22782BE2EAB0FA79 /* Pods_ARShooterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FDAF1E258232301A870D9059 /* Pods_ARShooterSkeletonUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARShooterSkeletonUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7199E988D542B6A813583B60 /* Pods_ARShooter.framework in Frameworks */,
+				C4AC4357CD1BFEA529BF3EF2 /* Pods_ARShooterSkeleton.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				548A15F4D41ADEF2BDA42CA3 /* Pods_ARShooterTests.framework in Frameworks */,
+				B7E6BB5A620A1B0EBC6DC58D /* Pods_ARShooterSkeletonTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C887536BEF62D43299D3E44C /* Pods_ARShooterUITests.framework in Frameworks */,
+				75A817C5E1D3493B92B20520 /* Pods_ARShooterSkeletonUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,9 +138,9 @@
 				593EC4D2234515A800AD377D /* SwiftWebSocket.framework */,
 				593EC4D02345154D00AD377D /* libz.1.2.8.tbd */,
 				5936BE952344217A00C53480 /* SwiftWebSocket.framework */,
-				DC807F395588B02C84E6D2AE /* Pods_ARShooter.framework */,
-				630FDBD7BA36D174DB4091C2 /* Pods_ARShooterTests.framework */,
-				EED34A1E22782BE2EAB0FA79 /* Pods_ARShooterUITests.framework */,
+				424759C19EB95DD50CC24111 /* Pods_ARShooterSkeleton.framework */,
+				BBB2834302656144914D569B /* Pods_ARShooterSkeletonTests.framework */,
+				FDAF1E258232301A870D9059 /* Pods_ARShooterSkeletonUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -148,6 +154,12 @@
 				E7B0AD92B21D23D8494399C1 /* Pods-ARShooterTests.release.xcconfig */,
 				22F1A753DCE76103D54BEFEA /* Pods-ARShooterUITests.debug.xcconfig */,
 				CE3F8DC2D53D1771389E9507 /* Pods-ARShooterUITests.release.xcconfig */,
+				413A020B7D326A5C16AE9630 /* Pods-ARShooterSkeleton.debug.xcconfig */,
+				679E39FF5F402325BB909C23 /* Pods-ARShooterSkeleton.release.xcconfig */,
+				348C4E4863A20B374B0F74BB /* Pods-ARShooterSkeletonTests.debug.xcconfig */,
+				9A995891658A6BE22D98AB03 /* Pods-ARShooterSkeletonTests.release.xcconfig */,
+				7A14B8351FCCF011CF3C1307 /* Pods-ARShooterSkeletonUITests.debug.xcconfig */,
+				5286A838449F4F76E01E2416 /* Pods-ARShooterSkeletonUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -395,15 +407,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ARShooter/Pods-ARShooter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARShooterSkeleton/Pods-ARShooterSkeleton-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ARShooter/Pods-ARShooter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARShooterSkeleton/Pods-ARShooterSkeleton-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ARShooter/Pods-ARShooter-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ARShooterSkeleton/Pods-ARShooterSkeleton-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E40F9AD31698544A28C3D00 /* [CP] Check Pods Manifest.lock */ = {
@@ -421,7 +433,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ARShooterTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARShooterSkeletonTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -443,7 +455,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ARShooterUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARShooterSkeletonUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -465,7 +477,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ARShooter-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARShooterSkeleton-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -663,7 +675,7 @@
 		};
 		AB7FABE622F102AE00669E8D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 615DFDE5AA2807AC8C0BEF3E /* Pods-ARShooter.debug.xcconfig */;
+			baseConfigurationReference = 413A020B7D326A5C16AE9630 /* Pods-ARShooterSkeleton.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -682,7 +694,7 @@
 		};
 		AB7FABE722F102AE00669E8D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65EC8F74B83D76FBC0EDDD15 /* Pods-ARShooter.release.xcconfig */;
+			baseConfigurationReference = 679E39FF5F402325BB909C23 /* Pods-ARShooterSkeleton.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -701,7 +713,7 @@
 		};
 		AB7FABE922F102AE00669E8D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE9752D1F2D031E8688EBB8E /* Pods-ARShooterTests.debug.xcconfig */;
+			baseConfigurationReference = 348C4E4863A20B374B0F74BB /* Pods-ARShooterSkeletonTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -723,7 +735,7 @@
 		};
 		AB7FABEA22F102AE00669E8D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7B0AD92B21D23D8494399C1 /* Pods-ARShooterTests.release.xcconfig */;
+			baseConfigurationReference = 9A995891658A6BE22D98AB03 /* Pods-ARShooterSkeletonTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -745,7 +757,7 @@
 		};
 		AB7FABEC22F102AE00669E8D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22F1A753DCE76103D54BEFEA /* Pods-ARShooterUITests.debug.xcconfig */;
+			baseConfigurationReference = 7A14B8351FCCF011CF3C1307 /* Pods-ARShooterSkeletonUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -766,7 +778,7 @@
 		};
 		AB7FABED22F102AE00669E8D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE3F8DC2D53D1771389E9507 /* Pods-ARShooterUITests.release.xcconfig */;
+			baseConfigurationReference = 5286A838449F4F76E01E2416 /* Pods-ARShooterSkeletonUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
