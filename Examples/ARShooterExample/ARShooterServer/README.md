@@ -1,5 +1,5 @@
-This is the PongServer, for the PongGame. It is based around Node.JS Websockets
+This is the ARShooter Server. It is based around Node.JS Socket.IO 
 API.
 
-It has a Dockerfile, that can create an image to be submitted to MobieldgeX to
+It has a Dockerfile, that can create an image to be submitted to MobiledgeX to
 run it on the low latency MobiledgeX edge cloudlet services.

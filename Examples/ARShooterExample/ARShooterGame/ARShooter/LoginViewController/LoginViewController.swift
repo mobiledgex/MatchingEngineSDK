@@ -70,37 +70,45 @@ class LoginViewController: UIViewController {
             //location = ["longitude": -122.149349, "latitude": 37.459609]  // Get actual location and ask user for permission
             location = ["latitude": 53.112, "longitude": 13.4223] // Get actual location and ask user for permission
         }
-    } 
+    }
     
     func callMatchingEngineAPIs() {
-        let registerClientRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken)
+        let registerClientRequest = matchingEngine.createRegisterClientRequest(
+                                                devName: devName,
+                                                appName: appName,
+                                                appVers: appVers,
+                                                carrierName: carrierName,
+                                                authToken: authToken)
         do {
-            // Register user to begin using edge cloudlet
-            registerPromise = try matchingEngine.registerClient(request: registerClientRequest)
+            try matchingEngine.registerClient(request: registerClientRequest)
             .then { registerClientReply in
-                SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
-                print("RegisterClientReply: \(registerClientReply)")
-                // Find closest edge cloudlet
-                self.findCloudletPromise = try self.matchingEngine.findCloudlet(request:        self.matchingEngine.createFindCloudletRequest(
-                    carrierName: self.carrierName!,
-                    gpsLocation: self.location!,
-                    devName: self.devName!,
-                    appName: self.appName!,
-                    appVers: self.appVers!))
-                .then { findCloudletReply in
+                let findCloudletRequest = self.matchingEngine.createFindCloudletRequest(
+                                                carrierName: self.carrierName!,
+                                                gpsLocation: self.location!,
+                                                devName: self.devName!,
+                                                appName: self.appName!,
+                                                appVers: self.appVers!)
+                self.findCloudletPromise = try self.matchingEngine.findCloudlet(request: findCloudletRequest)
+              
+                    
+                let appInstListRequest = self.matchingEngine.createGetAppInstListRequest(
+                                                carrierName: self.carrierName!,
+                                                gpsLocation: self.location!)
+                self.appInstListPromise = try self.matchingEngine.getAppInstList(request: appInstListRequest)
+                    
+                all([self.findCloudletPromise!, self.appInstListPromise!])
+                .then { value in
+                    // Handle findCloudlet reply
+                    let findCloudletReply = value[0]
                     SKToast.show(withMessage: "FindCloudletReply is \(findCloudletReply)")
                     print("FindCloudletReply is \(findCloudletReply)")
                     self.host = findCloudletReply["fqdn"] as? String
                     guard let ports = findCloudletReply["ports"] as? [String: Any] else {
                         return
                     }
-                    self.port = ports["public_port"] as! Int
-                }
-                // List of App instances
-                self.appInstListPromise = try self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
-                    carrierName: self.carrierName!,
-                    gpsLocation: self.location!))
-                .then { appInstListReply in
+                    self.port = ports["public_port"] as? Int
+                    // Handle getAppInstList reply
+                    let appInstListReply = value[1]
                     SKToast.show(withMessage: "AppInstListReply is \(appInstListReply)")
                     print("AppInstListReply is \(appInstListReply)")
                 }
