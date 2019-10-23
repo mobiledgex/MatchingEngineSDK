@@ -1,10 +1,20 @@
+// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  ViewController.swift
 //  ARShooter
-//
-//  Created by Daniel Kim on 7/30/19.
-//  Copyright © 2019 Daniel Kim. All rights reserved.
-//
 
 import ARKit
 import Starscream
@@ -95,7 +105,6 @@ class GameViewController: UIViewController {
         bullet.geometry?.firstMaterial?.diffuse.contents = UIColor.red
         bullet.runAction(SCNAction.sequence([SCNAction.wait(duration: 2.0), SCNAction.removeFromParentNode()])) // makes it as soon as the bullet is shot, it is removed after 2 seconds
         let anchor = ARAnchor(name: userName!, transform: simd_float4x4(transform))
-        print("send bullet anchor.name is \(anchor.name)")
         self.sceneView.scene.rootNode.addChildNode(bullet)
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true) else{fatalError("can't encode anchor")}
         // send bullet to server

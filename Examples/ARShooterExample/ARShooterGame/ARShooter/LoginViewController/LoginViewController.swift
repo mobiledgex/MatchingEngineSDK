@@ -1,10 +1,20 @@
+// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  LoginViewController.swift
 //  ARShooter
-//
-//  Created by Franlin Huang on 10/4/19.
-//  Copyright © 2019 Daniel Kim. All rights reserved.
-//
 
 import UIKit
 import IOSMatchingEngine
@@ -36,7 +46,6 @@ class LoginViewController: UIViewController {
     var registerPromise: Promise<[String: AnyObject]>? // AnyObject --> RegisterClientReply
     var findCloudletPromise: Promise<[String: AnyObject]>?
     var verifyLocationPromise: Promise<[String: AnyObject]>?
-    var appInstListPromise: Promise<[String: AnyObject]>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +73,7 @@ class LoginViewController: UIViewController {
         } else {
             appName = matchingEngine.getAppName()
             appVers = matchingEngine.getAppVersion()
-            devName = "franklin-mobiledgex" // franklin-mobiledgex
+            devName = "franklin-mobiledgex"
             carrierName = "TDG"
             //carrierName = matchingEngine.getCarrierName() ?? "TDG"
             //location = ["longitude": -122.149349, "latitude": 37.459609]  // Get actual location and ask user for permission
@@ -90,27 +99,30 @@ class LoginViewController: UIViewController {
                                                 appVers: self.appVers!)
                 self.findCloudletPromise = try self.matchingEngine.findCloudlet(request: findCloudletRequest)
               
-                    
-                let appInstListRequest = self.matchingEngine.createGetAppInstListRequest(
+                let verifyLocationRequest = self.matchingEngine.createVerifyLocationRequest(
                                                 carrierName: self.carrierName!,
                                                 gpsLocation: self.location!)
-                self.appInstListPromise = try self.matchingEngine.getAppInstList(request: appInstListRequest)
-                    
-                all([self.findCloudletPromise!, self.appInstListPromise!])
+                
+                self.verifyLocationPromise = try self.matchingEngine.verifyLocation(request: verifyLocationRequest)
+                
+                all([self.findCloudletPromise!, self.verifyLocationPromise!])
                 .then { value in
                     // Handle findCloudlet reply
                     let findCloudletReply = value[0]
                     SKToast.show(withMessage: "FindCloudletReply is \(findCloudletReply)")
                     print("FindCloudletReply is \(findCloudletReply)")
                     self.host = findCloudletReply["fqdn"] as? String
-                    guard let ports = findCloudletReply["ports"] as? [String: Any] else {
+                    // ports is mapped to an _NSSingleObjectArrayI with a map inside (can have multiple ports)
+                    guard let arr = findCloudletReply["ports"] as? [[String: Any]] else {
                         return
                     }
+                    let ports = arr[0] as [String: Any]
                     self.port = ports["public_port"] as? Int
-                    // Handle getAppInstList reply
-                    let appInstListReply = value[1]
-                    SKToast.show(withMessage: "AppInstListReply is \(appInstListReply)")
-                    print("AppInstListReply is \(appInstListReply)")
+                    
+                    // Handle verifyLocation reply
+                    let verifyLocationReply = value[1]
+                    SKToast.show(withMessage: "VerifyLocationReply is \(verifyLocationReply)")
+                    print("VerifyLocationReply is \(verifyLocationReply)")
                 }
             }
         } catch let error as DmeDnsError {
@@ -149,9 +161,7 @@ class LoginViewController: UIViewController {
         if port == nil {
             port = 1337
         }
-        //let url = "wss://\(host!):\(String(port!))/"
-        let url = "wss://10.227.71.46:1337/"
-        //let url = "wss://frankfurt-main.tdg.mobiledgex.net:1337/"
+        let url = "wss://\(host!):\(String(port!))/"
         let manager = SocketManager(socketURL: URL(string: url)!)
         // Set variables for next GameViewController
         gameViewController.gameID = gameID
