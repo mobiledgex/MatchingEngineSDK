@@ -22,7 +22,7 @@ import Promises
 
 extension MatchingEngine {
 
-    public func getRawTCPConnection(findCloudletReply: [String: AnyObject]) -> Promise<UnsafeMutablePointer<addrinfo>>
+    public func getBSDTCPConnection(host: String, port: String) -> Promise<UnsafeMutablePointer<addrinfo>>
     {
         let promiseInputs: Promise<UnsafeMutablePointer<addrinfo>> = Promise<UnsafeMutablePointer<addrinfo>>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
@@ -30,28 +30,16 @@ extension MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
-        // list of available TCP ports
-        guard let ports = self.getTCPPorts(findCloudletReply: findCloudletReply) else {
-            Logger.shared.log(.network, .debug, "Cannot get public port")
-            promiseInputs.reject(GetConnectionError.missingServerPort)
-            return promiseInputs
-        }
-        let port = ports[0]
-        // server host
-        guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
-            Logger.shared.log(.network, .debug, "Cannot get server fqdn")
-            promiseInputs.reject(GetConnectionError.missingServerFqdn)
-            return promiseInputs
-        }
+
         // initialize addrinfo fields
         var addrInfo = addrinfo.init()
         addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
         addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
 
-        return self.bindClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port)
+        return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
         }
 
-    public func getRawUDPConnection(findCloudletReply: [String: AnyObject]) -> Promise<UnsafeMutablePointer<addrinfo>>
+    public func getBSDUDPConnection(host: String, port: String) -> Promise<UnsafeMutablePointer<addrinfo>>
     {
         let promiseInputs: Promise<UnsafeMutablePointer<addrinfo>> = Promise<UnsafeMutablePointer<addrinfo>>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
@@ -59,35 +47,16 @@ extension MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
-        // list of available UDP ports
-        guard let ports = self.getUDPPorts(findCloudletReply: findCloudletReply) else {
-            Logger.shared.log(.network, .debug, "Cannot get public port")
-            promiseInputs.reject(GetConnectionError.missingServerPort)
-            return promiseInputs
-        }
-        let port = ports[0]
-        // server host
-        guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
-            Logger.shared.log(.network, .debug, "Cannot get server fqdn")
-            promiseInputs.reject(GetConnectionError.missingServerFqdn)
-            return promiseInputs
-        }
-        let port = ports[0]
-        // server host
-        guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
-            Logger.shared.log(.network, .debug, "Cannot get server fqdn")
-            promiseInputs.reject(GetConnectionError.missingServerFqdn)
-            return promiseInputs
-        }
+
         // initialize addrinfo fields
         var addrInfo = addrinfo.init()
         addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
         addrInfo.ai_socktype = SOCK_DGRAM // UDP
 
-        return self.bindClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port)
+        return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
     }
 
-    private func bindClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<UnsafeMutablePointer<addrinfo>>
+    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<UnsafeMutablePointer<addrinfo>>
     {
         return Promise<UnsafeMutablePointer<addrinfo>>(on: self.executionQueue) { fulfill, reject in
 
