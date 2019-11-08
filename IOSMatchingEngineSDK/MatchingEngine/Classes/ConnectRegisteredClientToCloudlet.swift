@@ -16,10 +16,12 @@
 //
 //  ConnectRegisteredClientToCloudlet.swift
 //
+// Wrapper functions to RegisterClient, FindCloudlet, and GetConnection using the findCloudletReply
 
 import Promises
 import SocketIO
 import Network
+import NSLogger
 
 extension MatchingEngine {
     
@@ -32,7 +34,7 @@ extension MatchingEngine {
                                                                      carrierName: carrierName,
                                                                      authToken: nil)
         return self.registerClient(request: registerClientRequest)
-            .then { (registerClientReply) -> Promise<[String: AnyObject]> in
+        .then { (registerClientReply) -> Promise<[String: AnyObject]> in
             print("RegisterClientReply is \(registerClientReply)")
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
                                                                      gpsLocation: location,
@@ -42,48 +44,35 @@ extension MatchingEngine {
             return self.findCloudlet(request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getTCPConnection(findCloudletReply: findCloudletReply)
-        }.catch { error in
-            return error
-        }
-    }
-    
-    // RegisterClient -> FindCloudlet -> GetTCPConnection (returns Promise<CFSocket>)
-    @available(iOS 12.0, *)
-    public func registerAndFindTCPTLSConnection(devName: String, appName: String, appVers: String, carrierName: String, location: [String: Any]) -> Promise<NWConnection>
-    {
-        let registerClientRequest = self.createRegisterClientRequest(devName: devName,
-                                                                     appName: appName,
-                                                                     appVers: appVers,
-                                                                     carrierName: carrierName,
-                                                                     authToken: nil)
-        return self.registerClient(request: registerClientRequest)
-            .then { (registerClientReply) -> Promise<[String: AnyObject]> in
-            print("RegisterClientReply is \(registerClientReply)")
-            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
-                                                                     gpsLocation: location,
-                                                                     devName: devName,
-                                                                     appName: appName,
-                                                                     appVers: appVers)
-            return self.findCloudlet(request: findCloudletRequest)
-        }.then { findCloudletReply in
-            print("FindCloudletReply is \(findCloudletReply)")
-            if #available(iOS 12.0, *) {
-                return self.getTCPTLSConnection(findCloudletReply: findCloudletReply)
-            } else {
-                // Fallback on earlier versions
-                let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-                promiseInputs.reject(GetConnectionError.outdatedIOS)
+            let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
+            // list of available TCP ports on server
+            guard let ports = self.getTCPPorts(findCloudletReply: findCloudletReply) else {
+                Logger.shared.log(.network, .debug, "Cannot get public port")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
                 return promiseInputs
             }
+            // Make sure there are ports for specified protocol
+            if ports.capacity == 0 {
+                Logger.shared.log(.network, .debug, "Cannot find ports for TCP")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            let port = ports[0]
+            //let port = "6667"
+            // server host
+            guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
+                Logger.shared.log(.network, .debug, "Cannot get server fqdn")
+                promiseInputs.reject(GetConnectionError.missingServerFqdn)
+                return promiseInputs
+            }
+            return self.getTCPConnection(host: serverFqdn, port: port)
         }.catch { error in
             return error
         }
     }
     
-    // DME host and port specified (returns Promise<CFSocket>)
-    @available(iOS 12.0, *)
-    public func registerAndFindTCPConnection(host: String, port: UInt, devName: String, appName: String, appVers: String, carrierName: String, location: [String: Any]) -> Promise<NWConnection>
+    // DME host and port are specified (returns Promise<CFSocket>)
+    public func registerAndFindTCPConnection(host: String, port: UInt, devName: String, appName: String, appVers: String, carrierName: String, location: [String: Any]) -> Promise<CFSocket>
     {
         let registerClientRequest = self.createRegisterClientRequest(devName: devName,
                                                                      appName: appName,
@@ -102,8 +91,55 @@ extension MatchingEngine {
             return self.findCloudlet(host: host, port: port, request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
+            return self.getTCPConnection(host: host, port: String(port))
+        }.catch { error in
+            return error
+        }
+    }
+    
+    // RegisterClient -> FindCloudlet -> GetTCPConnection (returns Promise<CFSocket>)
+    @available(iOS 12.0, *)
+    public func registerAndFindTCPTLSConnection(devName: String, appName: String, appVers: String, carrierName: String, location: [String: Any]) -> Promise<NWConnection>
+    {
+        let registerClientRequest = self.createRegisterClientRequest(devName: devName,
+                                                                     appName: appName,
+                                                                     appVers: appVers,
+                                                                     carrierName: carrierName,
+                                                                     authToken: nil)
+        return self.registerClient(request: registerClientRequest)
+        .then { (registerClientReply) -> Promise<[String: AnyObject]> in
+            print("RegisterClientReply is \(registerClientReply)")
+            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
+                                                                     gpsLocation: location,
+                                                                     devName: devName,
+                                                                     appName: appName,
+                                                                     appVers: appVers)
+            return self.findCloudlet(request: findCloudletRequest)
+        }.then { findCloudletReply in
+            print("FindCloudletReply is \(findCloudletReply)")
             if #available(iOS 12.0, *) {
-                return self.getTCPTLSConnection(findCloudletReply: findCloudletReply)
+                let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
+                // list of available TCP ports on server
+                guard let ports = self.getTCPPorts(findCloudletReply: findCloudletReply) else {
+                    Logger.shared.log(.network, .debug, "Cannot get public port")
+                    promiseInputs.reject(GetConnectionError.missingServerPort)
+                    return promiseInputs
+                }
+                // Make sure there are ports for specified protocol
+                if ports.capacity == 0 {
+                    Logger.shared.log(.network, .debug, "Cannot find ports for TCP")
+                    promiseInputs.reject(GetConnectionError.missingServerPort)
+                    return promiseInputs
+                }
+                let port = ports[0]
+                //let port = "6667"
+                // server host
+                guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
+                    Logger.shared.log(.network, .debug, "Cannot get server fqdn")
+                    promiseInputs.reject(GetConnectionError.missingServerFqdn)
+                    return promiseInputs
+                }
+                return self.getTCPTLSConnection(host: serverFqdn, port: port)
             } else {
                 // Fallback on earlier versions
                 let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
@@ -125,7 +161,7 @@ extension MatchingEngine {
                                                                      carrierName: carrierName,
                                                                      authToken: nil)
         return self.registerClient(request: registerClientRequest)
-            .then { (registerClientReply) -> Promise<[String: AnyObject]> in
+        .then { (registerClientReply) -> Promise<[String: AnyObject]> in
             print("RegisterClientReply is \(registerClientReply)")
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
                                                                      gpsLocation: location,
@@ -135,7 +171,28 @@ extension MatchingEngine {
             return self.findCloudlet(request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getUDPConnection(findCloudletReply: findCloudletReply)
+            let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
+            // list of available TCP ports on server
+            guard let ports = self.getUDPPorts(findCloudletReply: findCloudletReply) else {
+                Logger.shared.log(.network, .debug, "Cannot get public port")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            // Make sure there are ports for specified protocol
+            if ports.capacity == 0 {
+                Logger.shared.log(.network, .debug, "Cannot find ports for TCP")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            let port = ports[0]
+            //let port = "6667"
+            // server host
+            guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
+                Logger.shared.log(.network, .debug, "Cannot get server fqdn")
+                promiseInputs.reject(GetConnectionError.missingServerFqdn)
+                return promiseInputs
+            }
+            return self.getUDPConnection(host: serverFqdn, port: port)
         }.catch { error in
             return error
         }
@@ -161,7 +218,7 @@ extension MatchingEngine {
             return self.findCloudlet(host: host, port: port, request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getUDPConnection(findCloudletReply: findCloudletReply)
+            return self.getUDPConnection(host: host, port: String(port))
         }.catch { error in
             return error
         }
@@ -177,7 +234,7 @@ extension MatchingEngine {
                                                                      carrierName: carrierName,
                                                                      authToken: nil)
         return self.registerClient(request: registerClientRequest)
-            .then { (registerClientReply) -> Promise<[String: AnyObject]> in
+        .then { (registerClientReply) -> Promise<[String: AnyObject]> in
             print("RegisterClientReply is \(registerClientReply)")
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
                                                                      gpsLocation: location,
@@ -187,7 +244,28 @@ extension MatchingEngine {
             return self.findCloudlet(request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getHTTPConnection(findCloudletReply: findCloudletReply)
+            let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
+            // list of available TCP ports on server
+            guard let ports = self.getHTTPPorts(findCloudletReply: findCloudletReply) else {
+                Logger.shared.log(.network, .debug, "Cannot get public port")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            // Make sure there are ports for specified protocol
+            if ports.capacity == 0 {
+                Logger.shared.log(.network, .debug, "Cannot find ports for TCP")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            let port = ports[0]
+            //let port = "6667"
+            // server host
+            guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
+                Logger.shared.log(.network, .debug, "Cannot get server fqdn")
+                promiseInputs.reject(GetConnectionError.missingServerFqdn)
+                return promiseInputs
+            }
+            return self.getHTTPConnection(host: serverFqdn, port: port)
         }.catch { error in
             return error
         }
@@ -213,7 +291,7 @@ extension MatchingEngine {
             return self.findCloudlet(host: host, port: port, request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getHTTPConnection(findCloudletReply: findCloudletReply)
+            return self.getHTTPConnection(host: host, port: String(port))
         }.catch { error in
             return error
         }
@@ -229,7 +307,7 @@ extension MatchingEngine {
                                                                      carrierName: carrierName,
                                                                      authToken: nil)
         return self.registerClient(request: registerClientRequest)
-            .then { (registerClientReply) -> Promise<[String: AnyObject]> in
+        .then { (registerClientReply) -> Promise<[String: AnyObject]> in
             print("RegisterClientReply is \(registerClientReply)")
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName,
                                                                      gpsLocation: location,
@@ -239,7 +317,28 @@ extension MatchingEngine {
             return self.findCloudlet(request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getWebsocketConnection(findCloudletReply: findCloudletReply)
+            let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
+            // list of available TCP ports on server
+            guard let ports = self.getTCPPorts(findCloudletReply: findCloudletReply) else {
+                Logger.shared.log(.network, .debug, "Cannot get public port")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            // Make sure there are ports for specified protocol
+            if ports.capacity == 0 {
+                Logger.shared.log(.network, .debug, "Cannot find ports for TCP")
+                promiseInputs.reject(GetConnectionError.missingServerPort)
+                return promiseInputs
+            }
+            let port = ports[0]
+            //let port = "6667"
+            // server host
+            guard let serverFqdn = self.getAppFqdn(findCloudletReply: findCloudletReply, port: port) else {
+                Logger.shared.log(.network, .debug, "Cannot get server fqdn")
+                promiseInputs.reject(GetConnectionError.missingServerFqdn)
+                return promiseInputs
+            }
+            return self.getWebsocketConnection(host: serverFqdn, port: port)
         }.catch { error in
             return error
         }
@@ -265,7 +364,7 @@ extension MatchingEngine {
             return self.findCloudlet(host: host, port: port, request: findCloudletRequest)
         }.then { findCloudletReply in
             print("FindCloudletReply is \(findCloudletReply)")
-            return self.getWebsocketConnection(findCloudletReply: findCloudletReply)
+            return self.getWebsocketConnection(host: host, port: String(port))
         }.catch { error in
             return error
         }
