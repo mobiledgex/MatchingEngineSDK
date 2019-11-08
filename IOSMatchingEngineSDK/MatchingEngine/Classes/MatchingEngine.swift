@@ -54,7 +54,7 @@ enum MatchingEngineError: Error {
     case verifyLocationFailed
 }
 
-public enum DmeDnsError: Error {
+enum DmeDnsError: Error {
     case verifyDmeHostFailure(host: String, systemError: SystemError)
     case missingMCC
     case missingMNC
@@ -72,11 +72,26 @@ public enum DmeDnsError: Error {
     }
 }
 
-public enum SystemError: Error {
+enum SystemError: Error {
     case getaddrinfo(Int32, Int32?)
     case socket(Int32, Int32?)
     case bind(Int32, Int32?)
     case connect(Int32, Int32?)
+}
+
+enum GetConnectionError: Error {
+    case invalidNetworkInterface
+    case missingServerFqdn
+    case missingServerPort
+    case unableToCreateSocket
+    case unableToCreateStream
+    case variableConversionError
+    case unableToSetSSLProperty
+    case unableToConnectToServer
+    case connectionTimeout
+    case unableToCreateSocketSignature
+    case outdatedIOS
+    case unableToBind
 }
 
 class MatchingEngineState {
@@ -157,6 +172,7 @@ public class MatchingEngine
 {
     var state: MatchingEngineState = MatchingEngineState()
     let networkInfo = CTTelephonyNetworkInfo()
+    var portToPathPrefixDict = [String: String]()
     
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
     var executionQueue = DispatchQueue.global(qos: .default)
@@ -459,6 +475,7 @@ public class MexUtil // common to Mex... below
         }
         
         let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
+        //let url = "111-111.dme.mobiledgex.net"
         try verifyDmeHost(host: url)
         return url
     }
