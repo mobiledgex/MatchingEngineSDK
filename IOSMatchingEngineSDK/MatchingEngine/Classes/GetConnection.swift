@@ -145,7 +145,6 @@ extension MatchingEngine {
             print("urlRequest is nil")
         }
         urlRequest.allowsCellularAccess = true
-        print("urlRequest is \(urlRequest)")
         promiseInputs.fulfill(urlRequest)
         return promiseInputs
     }
@@ -157,7 +156,6 @@ extension MatchingEngine {
         
         let url = "wss://\(host):\(port)/"
         let manager = SocketManager(socketURL: URL(string: url)!)
-        //let socket = manager.defaultSocket
         promiseInputs.fulfill(manager)
         return promiseInputs
     }
