@@ -20,11 +20,16 @@ import Foundation
 import NSLogger
 import Promises
 
+public struct Socket {
+    var addrInfo: UnsafeMutablePointer<addrinfo>
+    var sockfd: Int32
+}
+
 extension MatchingEngine {
 
-    public func getBSDTCPConnection(host: String, port: String) -> Promise<UnsafeMutablePointer<addrinfo>>
+    public func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
     {
-        let promiseInputs: Promise<UnsafeMutablePointer<addrinfo>> = Promise<UnsafeMutablePointer<addrinfo>>.pending()
+        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
@@ -39,9 +44,9 @@ extension MatchingEngine {
         return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
         }
 
-    public func getBSDUDPConnection(host: String, port: String) -> Promise<UnsafeMutablePointer<addrinfo>>
+    public func getBSDUDPConnection(host: String, port: String) -> Promise<Socket>
     {
-        let promiseInputs: Promise<UnsafeMutablePointer<addrinfo>> = Promise<UnsafeMutablePointer<addrinfo>>.pending()
+        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
@@ -56,57 +61,65 @@ extension MatchingEngine {
         return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
     }
 
-    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<UnsafeMutablePointer<addrinfo>>
+    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<Socket>
     {
-        return Promise<UnsafeMutablePointer<addrinfo>>(on: self.executionQueue) { fulfill, reject in
+        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
 
-            // Bind to client cellular interface
-            // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
-            var res: UnsafeMutablePointer<addrinfo>!
-            // getaddrinfo function makes ip + port conversion to sockaddr easy
-            let error = getaddrinfo(clientIP, port, addrInfo, &res)
-            if error != 0 {
-                let sysError = SystemError.getaddrinfo(error, errno)
-                Logger.shared.log(.network, .debug, "Client get addrinfo error is \(sysError)")
-                reject(sysError)
-            }
-            // socket returns a socket descriptor
-            let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
-            if s == -1 {
-                let sysError = SystemError.socket(s, errno)
-                Logger.shared.log(.network, .debug, "Client socket error is \(sysError)")
-                reject(sysError)
-            }
-            // bind to socket to client cellular network interface
-            let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
-            if b == -1 {
-                let sysError = SystemError.bind(b, errno)
-                Logger.shared.log(.network, .debug, "Client bind error is \(sysError)")
-                reject(sysError)
-            }
-
-            // Connect to server
-            var serverRes: UnsafeMutablePointer<addrinfo>!
-            let serverError = getaddrinfo(serverFqdn, port, addrInfo, &serverRes)
-            if serverError != 0 {
-                let sysError = SystemError.getaddrinfo(serverError, errno)
-                Logger.shared.log(.network, .debug, "Server get addrinfo error is \(sysError)")
-                reject(sysError)
-            }
-            let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
-            if serverSocket == -1 {
-                let sysError = SystemError.connect(serverSocket, errno)
-                Logger.shared.log(.network, .debug, "Server socket error is \(sysError)")
-                reject(sysError)
-            }
-            // connect our socket to the provisioned socket
-            let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
-            if c == -1 {
-                let sysError = SystemError.connect(c, errno)
-                Logger.shared.log(.network, .debug, "Connection error is \(sysError)")
-                reject(sysError)
-            }
-            fulfill(res)
+        // Bind to client cellular interface
+        // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
+        var res: UnsafeMutablePointer<addrinfo>!
+        // getaddrinfo function makes ip + port conversion to sockaddr easy
+        let error = getaddrinfo(clientIP, port, addrInfo, &res)
+        if error != 0 {
+            let sysError = SystemError.getaddrinfo(error, errno)
+            Logger.shared.log(.network, .debug, "Client get addrinfo error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
         }
+        // socket returns a socket descriptor
+        let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
+        if s == -1 {
+            let sysError = SystemError.socket(s, errno)
+            Logger.shared.log(.network, .debug, "Client socket error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
+        }
+        // bind to socket to client cellular network interface
+        let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
+        if b == -1 {
+            let sysError = SystemError.bind(b, errno)
+            Logger.shared.log(.network, .debug, "Client bind error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
+        }
+
+        // Connect to server
+        var serverRes: UnsafeMutablePointer<addrinfo>!
+        let serverError = getaddrinfo(serverFqdn, port, addrInfo, &serverRes)
+        if serverError != 0 {
+            let sysError = SystemError.getaddrinfo(serverError, errno)
+            Logger.shared.log(.network, .debug, "Server get addrinfo error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
+        }
+        let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
+        if serverSocket == -1 {
+            let sysError = SystemError.connect(serverSocket, errno)
+            Logger.shared.log(.network, .debug, "Server socket error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
+        }
+        // connect our socket to the provisioned socket
+        let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
+        if c == -1 {
+            let sysError = SystemError.connect(c, errno)
+            Logger.shared.log(.network, .debug, "Connection error is \(sysError)")
+            promiseInputs.reject(sysError)
+            return promiseInputs
+        }
+            
+        let socket = Socket(addrInfo: res, sockfd: s)
+        promiseInputs.fulfill(socket)
+        return promiseInputs
     }
 }
