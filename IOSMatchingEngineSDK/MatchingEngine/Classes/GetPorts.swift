@@ -17,13 +17,29 @@
 //
 
 import Foundation
-//import NSLogger
-//import Promises
-//import SocketIO
-//import Network
+
+public class Protocol {
+    public static let tcp = "L_PROTO_TCP"
+    public static let udp = "L_PROTO_UDP"
+    public static let http = "L_PROTO_HTTP"
+    public static let unknown = "L_PROTO_UNKNOWN"
+}
 
 extension MatchingEngine {
-
+    
+    // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
+    public func getAppFqdn(findCloudletReply: [String: AnyObject], port: String) -> String?
+    {
+        guard let appFqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
+            return nil
+        }
+        let baseFqdn = appFqdn
+        // get fqdn prefix from port dictionary
+        guard let fqdnPrefix = portToPathPrefixDict[port] else {
+            return baseFqdn
+        }
+        return fqdnPrefix + baseFqdn
+    }
 
     // Can get port by any protocol, customized or not
     public func getPortsByProtocol(findCloudletReply: [String: AnyObject], proto: String) -> [String]?

@@ -11,7 +11,7 @@ target 'MatchingEngine_Example' do
   pod 'MatchingEngine', :path => '../'
  
   pod 'PromisesSwift'
-
+  pod 'Socket.IO-Client-Swift'
   pod 'DropDown'
   pod 'SwiftLocation'
   pod 'SwiftyJSON'
