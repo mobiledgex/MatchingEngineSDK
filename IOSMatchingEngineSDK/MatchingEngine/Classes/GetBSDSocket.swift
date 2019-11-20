@@ -30,7 +30,7 @@ extension MatchingEngine {
     public func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
     {
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
@@ -47,7 +47,7 @@ extension MatchingEngine {
     public func getBSDUDPConnection(host: String, port: String) -> Promise<Socket>
     {
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
