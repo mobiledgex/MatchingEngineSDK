@@ -63,7 +63,7 @@ extension MatchingEngine {
         }
         
         let verifyLocRequest = createVerifyLocationRequest(carrierName: getCarrierName(), gpsLocation: gpsLocation)
-        return try self.verifyLocation(request: verifyLocRequest)
+        return self.verifyLocation(request: verifyLocRequest)
     }
     
     /// <#Description#>
@@ -200,7 +200,7 @@ extension MatchingEngine {
         return tokenizedRequest
     }
     
-    public func verifyLocation(request: [String: Any]) throws -> Promise<[String: AnyObject]> {
+    public func verifyLocation(request: [String: Any]) -> Promise<[String: AnyObject]> {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
@@ -209,9 +209,14 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
-        let port = state.defaultRestDmePort
-        
+        var host: String
+        do {
+            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+        let port = self.state.defaultRestDmePort
         return verifyLocation(host: host, port: port, request: request)
     }
     

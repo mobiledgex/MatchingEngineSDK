@@ -102,8 +102,7 @@ extension MatchingEngine {
     /// - Parameters:
     ///   - request: FindCloudlet dictionary, from createFindCloudletReqwuest.
     /// - Returns: API Dictionary/json
-    public func findCloudlet(request: [String: Any])
-        throws -> Promise<[String: AnyObject]>
+    public func findCloudlet(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
 
@@ -113,9 +112,14 @@ extension MatchingEngine {
             return promiseInputs
         }
         
-        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
-        let port = state.defaultRestDmePort
-        
+        var host: String
+        do {
+            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+        let port = self.state.defaultRestDmePort
         return findCloudlet(host: host, port: port, request: request)
     }
     
