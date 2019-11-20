@@ -35,7 +35,8 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.dependency 'NSLogger/Swift'
   s.dependency 'SwiftyJSON'
   s.dependency 'PromisesSwift'
-  
+  s.dependency 'Socket.IO-Client-Swift'
+ 
   # s.resource_bundles = {
   #   'MatchingEngine' => ['MatchingEngine/Assets/*.png']
   # }
