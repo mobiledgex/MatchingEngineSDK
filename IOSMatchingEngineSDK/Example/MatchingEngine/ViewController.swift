@@ -488,8 +488,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
                             SKToast.show(withMessage: "RegisterClient Error: \(error)")
                         }
-                    } catch let error as DmeDnsError {
-                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
                         Swift.print("Error: \(error.localizedDescription)")
                     }
@@ -522,8 +520,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
                             SKToast.show(withMessage: "appInstList error: \(error)")
                         }
-                    } catch let error as DmeDnsError {
-                            Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
                         Swift.print("Error: \(error.localizedDescription)")
                     }
@@ -566,8 +562,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                 Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
                                 SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                             }
-                        } catch let error as DmeDnsError {
-                            Swift.print("DmeHost Error: \(error.errorDescription)")
                         } catch {
                             Swift.print("Error: \(error.localizedDescription)")
                         }
@@ -609,8 +603,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
                             SKToast.show(withMessage: "findCloudlet error: \(error)")
                         }
-                    } catch let error as DmeDnsError {
-                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
                         Swift.print("Error: \(error.localizedDescription)")
                     }
@@ -646,8 +638,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
                             SKToast.show(withMessage: "getQoSPosition error: \(error)")
                         }
-                    } catch let error as DmeDnsError {
-                        Swift.print("DmeHost Error: \(error.errorDescription)")
                     } catch {
                         Swift.print("Error: \(error.localizedDescription)")
                     }
@@ -746,8 +736,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             var hostName: String!
             do {
                 hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
-            } catch let error as DmeDnsError {
-                Swift.print("Did not generate a valid DME host. Error: \(error.errorDescription)")
             } catch {
                 Swift.print("Error: \(error.localizedDescription)")
             }
