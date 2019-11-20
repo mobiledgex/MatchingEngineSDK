@@ -21,6 +21,7 @@ PODS:
   - MatchingEngine (1.4.2.3):
     - NSLogger/Swift
     - PromisesSwift
+    - Socket.IO-Client-Swift
     - SwiftyJSON
   - NSLogger/ObjC (1.9.7)
   - NSLogger/Swift (1.9.7):
@@ -28,7 +29,10 @@ PODS:
   - PromisesObjC (1.2.8)
   - PromisesSwift (1.2.8):
     - PromisesObjC (= 1.2.8)
+  - Socket.IO-Client-Swift (15.2.0):
+    - Starscream (~> 3.1)
   - SPPermission (2.9)
+  - Starscream (3.1.1)
   - SwiftLocation (4.0.2)
   - SwiftLog (1.0.0)
   - SwiftyJSON (5.0.0)
@@ -40,13 +44,14 @@ DEPENDENCIES:
   - MatchingEngine (from `../`)
   - NSLogger/Swift
   - PromisesSwift
+  - Socket.IO-Client-Swift
   - SPPermission
   - SwiftLocation
   - SwiftLog
   - SwiftyJSON
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - DropDown
     - GoogleMaps
     - GoogleSignIn
@@ -55,7 +60,9 @@ SPEC REPOS:
     - NSLogger
     - PromisesObjC
     - PromisesSwift
+    - Socket.IO-Client-Swift
     - SPPermission
+    - Starscream
     - SwiftLocation
     - SwiftLog
     - SwiftyJSON
@@ -70,15 +77,17 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  MatchingEngine: 571b57d4960a51e6835a115947d80d83bbaa2e27
+  MatchingEngine: 2bb514f39cf08bee24be9c94d021f08cbd8d242a
   NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
+  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
   SPPermission: 82d2071b4a6fd91e1f29ba68ef1d9e0485c26eeb
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftLocation: 4f030832331a21abaa4e0c5189d0f80ab8d3e377
   SwiftLog: f6c4f9a4ade06263555ab34b2c0f72025ffcda9e
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: f4420c444ff716f1ea4e8e36e946b8fd19da1287
+PODFILE CHECKSUM: ad36cea2d2a0f04cc1e9c6a2b80bbe5708c7f3de
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.8.3

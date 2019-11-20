@@ -115,7 +115,7 @@ extension MatchingEngine
     /// - Parameters:
     ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
-    public func registerClient(request: [String: Any]) throws -> Promise<[String: AnyObject]>
+    public func registerClient(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         Logger.shared.log(.network, .debug, "registerClient")
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
@@ -126,11 +126,16 @@ extension MatchingEngine
             return promiseInputs
         }
         
-        let host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
-        let port = state.defaultRestDmePort
-        
+        var host: String
+        do {
+            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+        let port = self.state.defaultRestDmePort
         // Return a promise:
-        return registerClient(host: host, port: port, request: request)
+        return self.registerClient(host: host, port: port, request: request)
     }
     
     /// API registerClient

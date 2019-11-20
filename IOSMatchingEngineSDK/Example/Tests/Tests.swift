@@ -17,6 +17,8 @@ import XCTest
 
 @testable import MatchingEngine
 @testable import Promises
+@testable import SocketIO
+import Network
 
 class Tests: XCTestCase {
     
@@ -46,16 +48,16 @@ class Tests: XCTestCase {
         matchingEngine = MatchingEngine()
         if TEST
         {
-            do {
-                host = try MexUtil.shared.generateDmeHost(carrierName: "sdkdemo")
+            /*do {
+                host = MexUtil.shared.generateDmeHost(carrierName: "sdkdemo")
             } catch {
                 Swift.print("Did not generate a valid DME host. Error: \(error)")
-            }
+            }*/
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"
-            carrierName = "gddt"
+            carrierName = "GDDT"
             authToken = nil
         }
         else
@@ -84,18 +86,11 @@ class Tests: XCTestCase {
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: request)
+        //do {
+            replyPromise = matchingEngine.registerClient(request: request)
                 .catch { error in
                     XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
@@ -114,10 +109,9 @@ class Tests: XCTestCase {
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
+                    self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
                                                         carrierName: self.carrierName,
                                                         gpsLocation: loc,
                                                         devName: self.devName,
@@ -126,13 +120,6 @@ class Tests: XCTestCase {
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let val = replyPromise.value else {
@@ -149,22 +136,16 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
+                    self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
                                                         carrierName: self.carrierName, // Test override values
                                                         gpsLocation: loc))
                 }.catch { error in
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
+
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let val = replyPromise.value else {
@@ -184,20 +165,15 @@ class Tests: XCTestCase {
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
+                    self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
                                                         carrierName: self.carrierName,
                                                         gpsLocation: loc))
-            }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
+                    }.catch { error in
+                        XCTAssert(false, "AppInstList hit an error: \(error).")
+                    }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let val = replyPromise.value else {
@@ -259,23 +235,16 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+        
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(
+                    self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(
                                                             requests: positions,
                                                             lte_category: nil,
                                                             band_selection: nil))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
@@ -292,21 +261,14 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+        
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.getLocation(request: self.matchingEngine.createGetLocationRequest(
+                    self.matchingEngine.getLocation(request: self.matchingEngine.createGetLocationRequest(
                                                         carrierName: self.carrierName))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
@@ -321,22 +283,15 @@ class Tests: XCTestCase {
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
+
+            replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    try self.matchingEngine.addUserToGroup(request: self.matchingEngine.createDynamicLocGroupRequest(
+                    self.matchingEngine.addUserToGroup(request: self.matchingEngine.createDynamicLocGroupRequest(
                                                             commType: nil,
                                                             userData: nil))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
@@ -345,39 +300,5 @@ class Tests: XCTestCase {
         }
         XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "AddUserToGroup Failed.")
         XCTAssertNil(replyPromise.error)
-    }
-    
-    func testGetConnection() {
-        let loc = ["longitude": -122.149349, "latitude": 37.459609]
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
-        
-        var replyPromise: Promise<UnsafeMutablePointer<addrinfo>>!
-        do {
-            replyPromise = try matchingEngine.registerClient(request: regRequest)
-                .then { reply in
-                    try self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
-                                                        carrierName: self.carrierName,
-                                                        gpsLocation: loc,
-                                                        devName: self.devName,
-                                                        appName: self.appName,
-                                                        appVers: self.appVers))
-                        .then { reply in
-                            self.matchingEngine.getConnection(netInterfaceType: "pdp_ip0", findCloudletReply: reply, ports: nil, proto: "TCP")
-                    }
-            }
-        } catch let error as DmeDnsError {
-            XCTAssert(false, "DmeHost Error: \(error.errorDescription)")
-            return
-        } catch {
-            XCTAssert(false, "Error: \(error.localizedDescription)")
-            return
-        }
-        
-        XCTAssert(waitForPromises(timeout: 20))
-        guard let promiseValue = replyPromise.value else {
-            XCTAssert(false, "GetConnection did not return a value.")
-            return
-        }
-        Swift.print("promiseValue is \(promiseValue.pointee)")
     }
 }
