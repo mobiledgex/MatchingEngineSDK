@@ -19,9 +19,8 @@
 import Foundation
 
 public class NetworkInterface {
-    public static let cellular = "pdp_ip0"
-    public static let wifi = "en0"
-    public static let currConnection = "ap1"
+    public static let CELLULAR = "pdp_ip0"
+    public static let WIFI = "en0"
 }
 
 extension MatchingEngine {
@@ -41,7 +40,7 @@ extension MatchingEngine {
             if addrFamily == UInt8(AF_INET) {  // Returns a MAC address if wifi is not on
                 // Check interface name:
                 let name = String(cString: interface.ifa_name)
-                if name == NetworkInterface.wifi {
+                if name == NetworkInterface.WIFI {
                     return true
                 }
             }
@@ -62,7 +61,7 @@ extension MatchingEngine {
             
             // Check interface name:
             let name = String(cString: interface.ifa_name)
-            if name == NetworkInterface.cellular {
+            if name == NetworkInterface.CELLULAR {
                 return true
             }
         }
