@@ -38,7 +38,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
@@ -63,7 +63,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
@@ -88,7 +88,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
@@ -113,7 +113,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.cellular) else {
+        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
             Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
