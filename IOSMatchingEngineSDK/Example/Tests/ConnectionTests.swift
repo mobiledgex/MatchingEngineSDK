@@ -25,6 +25,10 @@ class ConnectionTests: XCTestCase {
     var matchingEngine: MatchingEngine!
     var connection: NWConnection!
     let queue = DispatchQueue.global(qos: .background)
+    
+    enum TestError: Error {
+        case runtimeError(String)
+    }
 
     override func setUp() {
         super.setUp()
@@ -57,23 +61,23 @@ class ConnectionTests: XCTestCase {
         }
     }
     
-    // NWConnection send data
+    // Helper function for NWConnection send data
     private func sendData(data: String) {
         self.connection.send(content: Data(data.utf8), completion: .contentProcessed { (sendError) in
-            print("sendError is \(sendError)")
+            print("NWConnection sendError is \(sendError)")
         })
     }
     
-    // NWConnection receive data
+    // Helper function for NWConnection receive data
     private func receiveData() {
         self.connection.receiveMessage { (data, context, isComplete, error) in
-            print("Got it")
-            print(data)
+            print("data received by NWConnection is \(data)")
         }
     }
     
-    // Set up NWConnection path and state handlers
+    // Helper function to set up NWConnection path and state handlers
     private func connectWithNWConnection() {
+        // Implement Path UpdateHandler
         connection.pathUpdateHandler = { path in
             if path.status == .satisfied {
                 return
@@ -81,6 +85,7 @@ class ConnectionTests: XCTestCase {
                 self.connection.restart()
             }
         }
+        // Implement State UpdateHandler
         connection.stateUpdateHandler = { (newState) in
             switch newState {
             case .ready:
@@ -98,12 +103,14 @@ class ConnectionTests: XCTestCase {
         }
     }
     
-    // If Path is satisfied and state is ready, connection has been made
+    // Helper function to check NWConnection State and and Path State
     private func checkPathAndState() -> Promise<Bool> {
         let promiseInputs: Promise<Bool> = Promise<Bool>.pending()
+        // Real app would time this out
         while(connection.currentPath == nil || connection.state != .ready) {
             print("currentPath is \(connection.currentPath) and currentState is \(connection.state)")
         }
+        // If Path is satisfied and state is ready, connection has been made
         self.sendData(data: "test")
         self.receiveData()
         promiseInputs.fulfill(true)
@@ -114,19 +121,21 @@ class ConnectionTests: XCTestCase {
     func testTCPTLSConnection() {
         let host = "google.com"
         let port = "443"
-        
+        // replyPromise is a Promise<Bool>
+        // Bool states if Path is Satisfied and State is Ready -> successfule connection
         var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port)
+            
         .then { c -> Promise<Bool> in
             self.connection = c
-            print("params are \(self.connection.parameters)")
             self.connectWithNWConnection()
             self.connection.start(queue: .global())
             return self.checkPathAndState()
+            
         }.catch { error in
             print("Did not succeed registerAndFindTCPConnection. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 15))
+        XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "GetTCPConnection did not return a value.")
             return
@@ -138,45 +147,26 @@ class ConnectionTests: XCTestCase {
     }
     
     func testBSDTCPConnection() {
-        let host = "iostestcluster.fairview-main.gddt.mobiledgex.net"
-        let port = "6667"
+        let host = "mextest-app-cluster.fairview-main.gddt.mobiledgex.net"
+        let port = "3001"
         
         var replyPromise: Promise<Socket>!
         replyPromise = matchingEngine.getBSDTCPConnection(host: host, port: port)
+            
         .then { socket in
-            
-            // returns Socket struct with fields: file descriptor and addrinfo struct
-            let sockfd = socket.sockfd
-            let addrInfo = socket.addrInfo
-            
-            // format string to write to server
-            let test = "test string"
-            let data = test.data(using: .utf8) as! NSData
-            let bytes = data.bytes
-            let length = data.length
-            
-            // write data to server
-            let writeError = write(sockfd, bytes, length)
-            if writeError == -1 {
-                let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
-                XCTAssert(false, "Error in writing data: \(sysError)")
-            } else if writeError != length {
-                let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
-                XCTAssert(false, "Error in amount of data written: \(sysError)")
+            let string = try self.readAndWriteBSDSocket(socket: socket)
+            // make sure to close socket on completion and errors
+            close(socket.sockfd)
+            if !string.contains("Data") {
+                XCTAssert(false, "Echoed data is not correct")
+                throw TestError.runtimeError("Echoed data is not correct")
             }
             
-            // read data echoed from server
-            var buffer = UnsafeMutableRawPointer.allocate(byteCount: length, alignment: MemoryLayout<CChar>.size)
-            let readError = read(sockfd, &buffer, length)
-            let s = String(bytesNoCopy: &buffer, length: length, encoding: .utf8, freeWhenDone: false)
-            if s! != test {
-                XCTAssert(false, "Not the same string returned")
-            }
         }.catch { error in
             print("error is \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 15))
+        XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "GetTCPConnection did not return a value.")
             return
@@ -186,11 +176,13 @@ class ConnectionTests: XCTestCase {
     func testWebsocketConnection() {
         var socket: SocketIOClient!
         var manager: SocketManager!
+        
         let host = "iostestcluster.fairview-main.gddt.mobiledgex.net"
         let port = "6668"
         var connected = false
         
         let replyPromise = matchingEngine.getWebsocketConnection(host: host, port: port)
+            
         .then { m in
             manager = m
             socket = manager.defaultSocket
@@ -198,13 +190,14 @@ class ConnectionTests: XCTestCase {
                 print("connected")
                 connected = true
             }
-            print("connecting")
             socket.connect()
+            socket.disconnect()
+            
         }.catch { error in
             print("Did not succeed registerAndFindWebsocketConnection. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 15))
+        XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "GetWebsocketConnection did not return a value.")
             return
@@ -212,21 +205,24 @@ class ConnectionTests: XCTestCase {
         if !connected {
             XCTAssert(false, "never connected")
         }
-        Swift.print("promiseValue is \(promiseValue)")
     }
     
     func testHTTPConnection() {
         var urlRequest: URLRequest!
-        let host = "iostestcluster.fairview-main.gddt.mobiledgex.net"
-        let port = "6666"
         
-        let replyPromise = matchingEngine.getHTTPConnection(host: host, port: port)
+        let host = "mextest-app-cluster.fairview-main.gddt.mobiledgex.net"
+        let port = "3001"
+        let uri = "http://" + host + ":" + port
+        let url = URL(string: uri)
+        
+        let replyPromise = matchingEngine.getHTTPClient(url: url!)
+            
         .then { request -> Promise<URLResponse> in
             let promiseInputs: Promise<URLResponse> = Promise<URLResponse>.pending()
-            
+            // Initialize HTTP request
             urlRequest = request
             let testString = "test string"
-            let testDict: [String: String] = ["data": testString]
+            let testDict: [String: String] = ["Data": testString]
             let jsonRequest = try JSONSerialization.data(withJSONObject: testDict)
             urlRequest.httpBody = jsonRequest
             urlRequest.httpMethod = "POST"
@@ -240,14 +236,15 @@ class ConnectionTests: XCTestCase {
                 if response == nil {
                     XCTAssert(false, "No response")
                 }
-                print("result: \(String(describing: response))")
                 guard let data = data else {
                     XCTAssert(false, "Nothing echoed")
                     return
                 }
                 do {
+                    // Converts json object to a Swift [String: String]? object
                     let d = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String : String]
-                    guard let value = d!["data"] else {
+                    // Make sure echo is correct
+                    guard let value = d!["Data"] else {
                         XCTAssert(false, "Can't access response")
                         return
                     }
@@ -262,71 +259,111 @@ class ConnectionTests: XCTestCase {
             })
             task.resume()
             return(promiseInputs)
+            
         }.catch { error in
             print("Did not succeed getHTTPConnection. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 15))
+        XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "GetHTTPConnection did not return a value.")
             return
         }
     }
     
-    func testRegisterAndFindHTTPConnection() {
+    // Test the developer workflow: RegisterAndFindCloudlet() -> Pick App Port -> GetConnection()
+    func testGetConnectionWorkflow() {
         let loc = ["longitude": -122.149349, "latitude": 37.459609]
-        var urlRequest: URLRequest!
         
-        let replyPromise = matchingEngine.registerAndFindHTTPConnection(devName: "franklin-mobiledgex", appName: "ios_connection_test", appVers: "1.0", carrierName: "GDDT", location: loc)
-        .then { request -> Promise<URLResponse> in
-            let promiseInputs: Promise<URLResponse> = Promise<URLResponse>.pending()
-
-            urlRequest = request
-            let testString = "test string"
-            let testDict: [String: String] = ["data": testString]
-            let jsonRequest = try JSONSerialization.data(withJSONObject: testDict)
-            urlRequest.httpBody = jsonRequest
-            urlRequest.httpMethod = "POST"
-        
-            //send request via URLSession API
-            let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
-                if (error != nil) {
-                    XCTAssert(false, "Error in response: \(error)")
-                    return
-                }
-                if response == nil {
-                    XCTAssert(false, "No response")
-                }
-                guard let data = data else {
-                    XCTAssert(false, "Nothing echoed")
-                    return
-                }
-                do {
-                    let d = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String : String]
-                    guard let value = d!["data"] else {
-                        XCTAssert(false, "Can't access response")
-                        return
-                    }
-                    if value != testString {
-                        XCTAssert(false, "Value is not correct")
-                    }
-                    promiseInputs.fulfill(response!)
-                } catch {
-                    XCTAssert(false, "unable to deserialize json \(error.localizedDescription)")
-                    return
-                }
-            })
-            task.resume()
-            return(promiseInputs)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", authToken: nil, gpsLocation: loc)
+            
+        .then { findCloudletReply -> Promise<Socket> in
+            // Get Dictionary: key -> internal port, value -> AppPort Dictionary
+            guard let appPortsDict = self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
+                XCTAssert(false, "GetTCPPorts returned nil")
+                throw TestError.runtimeError("GetTCPPorts returned nil")
+            }
+            if appPortsDict.capacity == 0 {
+                XCTAssert(false, "No AppPorts in dictionary")
+                throw TestError.runtimeError("No AppPorts in dictionary")
+            }
+            // Select AppPort Dictionary corresponding to internal port 3001
+            guard let appPort = appPortsDict["3001"] else {
+                XCTAssert(false, "No app ports with specified internal port")
+                throw TestError.runtimeError("No app ports with specified internal port")
+            }
+            
+            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5)
+            
+        }.then { socket in
+            let string = try self.readAndWriteBSDSocket(socket: socket)
+            close(socket.sockfd)
+            if !string.contains("Data") {
+                XCTAssert(false, "Echoed data is not correct")
+                throw TestError.runtimeError("Echoed data is not correct")
+            }
+            
         }.catch { error in
-            print("Did not succeed registerAndFindHTTPConnection. Error: \(error)")
+            XCTAssert(false, "Error is \(error.localizedDescription)")
         }
         
-        XCTAssert(waitForPromises(timeout: 15))
+        XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
-            XCTAssert(false, "GetHTTPConnection did not return a value.")
+            XCTAssert(false, "TestGetConnection workflow did not return a value.")
             return
         }
+    }
+    
+    // Helper function for reading the writing data for Socket struct
+    private func readAndWriteBSDSocket(socket: Socket) throws -> String {
+        // returns Socket struct with fields: file descriptor and addrinfo struct
+        let sockfd = socket.sockfd
+        let addrInfo = socket.addrInfo
+        
+        // format string to write to HTTP server
+        let test = "{\"Data\": \"test string\"}"
+        var post = "POST / HTTP/1.1\r\n" +
+            "Host: 10.227.69.96:3001\r\n" +
+            "User-Agent: curl/7.54.0\r\n" +
+            "Accept: */*\r\n" +
+            "Content-Length: " +
+            String(describing: test.count) + "\r\n" +
+            "Content-Type: application/json\r\n" + "\r\n" + test
+        // Convert string to data
+        let data = post.data(using: .utf8) as! NSData
+        let bytes = data.bytes
+        let length = data.length
+        
+        // write data to server
+        let writeError = write(sockfd, bytes, length)
+        // WriteError tells number of bytes written or -1 for error
+        if writeError == -1 {
+            let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
+            close(socket.sockfd)
+            throw(sysError)
+        } else if writeError != length {
+            let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
+            close(socket.sockfd)
+            throw(sysError)
+        }
+        
+        // read data echoed from server
+        var buffer = UnsafeMutableRawPointer.allocate(byteCount: 4096, alignment: MemoryLayout<CChar>.size)
+        let readError = read(sockfd, buffer, length)
+        // ReadError tells number of bytes read or -1 for error
+        if readError <= 0 {
+            XCTAssert(false, "Nothing returned")
+            close(socket.sockfd)
+            throw TestError.runtimeError("nothing returned")
+        }
+        // Reads from buffer and converts data to String
+        let s = String(bytesNoCopy: buffer, length: readError, encoding: .utf8, freeWhenDone: false)
+        if s == nil {
+            XCTAssert(false, "Unable to convert string")
+            close(socket.sockfd)
+            throw TestError.runtimeError("Unable to convert string")
+        }
+        return s!
     }
 }
 
