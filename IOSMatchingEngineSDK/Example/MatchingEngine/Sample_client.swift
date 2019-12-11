@@ -29,7 +29,7 @@ import GoogleMaps
 
 import SwiftLocation
 
-import NSLogger
+import os.log
 import Promises
 import MatchingEngine
 
@@ -290,7 +290,7 @@ public func updateLocSimLocation(hostName: String, latitude: Double, longitude: 
         urlRequest.httpMethod = "POST"
         urlRequest.allowsCellularAccess = true
     
-        Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+        os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
     
         //send request via URLSession API
         let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
@@ -307,7 +307,7 @@ public func updateLocSimLocation(hostName: String, latitude: Double, longitude: 
         })
         task.resume()
     } catch {
-            Logger.shared.log(.network, .debug, "JSON Serialization error")
+            os_log("JSON Serialization error", log: OSLog.default, type: .debug)
     }
 }
 
@@ -502,7 +502,7 @@ class MexFaceRecognition
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
             
-            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
             
             //send request via URLSession API
             let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
@@ -594,7 +594,6 @@ class MexFaceRecognition
                 self.doNextFaceRecognition()     //   next
                 
             }
-            //Log.logger.name = "FaceDetection"
             //logw("\FaceDetection result: \(registerClientReply)")
         }
         .catch { print("FaceRecognition failed with error: \($0)")
@@ -645,7 +644,7 @@ class MexFaceRecognition
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
             
-            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
             
             //send request via URLSession API
             let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in

@@ -18,7 +18,6 @@
 //
 
 import Foundation
-import NSLogger
 import Promises
 
 extension MatchingEngine
