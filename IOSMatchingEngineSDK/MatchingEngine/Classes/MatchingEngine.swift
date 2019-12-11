@@ -85,10 +85,11 @@ enum GetConnectionError: Error {
     case missingServerPort
     case unableToCreateSocket
     case unableToCreateStream
-    case variableConversionError
+    case variableConversionError(message: String)
     case unableToSetSSLProperty
     case unableToConnectToServer
     case connectionTimeout
+    case invalidTimeout
     case unableToCreateSocketSignature
     case outdatedIOS
     case unableToBind
