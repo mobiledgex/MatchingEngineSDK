@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 import SocketIO
 import Network
@@ -30,7 +30,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         // local ip bind to cellular network interface
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
@@ -55,7 +55,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         // local ip bind to cellular network interface
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
@@ -80,7 +80,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         // local ip bind to cellular network interface
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
@@ -105,7 +105,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         // local ip bind to cellular network interface
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
@@ -195,7 +195,7 @@ extension MatchingEngine {
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
                 let sysError = SystemError.getaddrinfo(error, errno)
-                Logger.shared.log(.network, .debug, "Get addrinfo error is \(sysError)")
+                os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }
             fulfill(res.pointee.ai_addr)

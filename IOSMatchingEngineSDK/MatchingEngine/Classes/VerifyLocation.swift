@@ -18,7 +18,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 enum MatchingEngineParameterError: Error {
@@ -58,7 +58,7 @@ extension MatchingEngine {
         let count = tokenServerUri.count
         if count == 0
         {
-            Logger.shared.log(.network, .error, "ERROR: TokenURI is empty!")
+            os_log("ERROR: TokenURI is empty!", log: OSLog.default, type: .debug)
             return nil
         }
         
@@ -109,7 +109,7 @@ extension MatchingEngine {
     private func getTokenPost(uri: String) // Dictionary/json
         -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "uri: \(uri) request\n")
+        os_log("uri: %@ request\n", log: OSLog.default, type: .debug, uri)
         
         return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
             //Create URLRequest object
@@ -121,7 +121,7 @@ extension MatchingEngine {
             urlRequest.allHTTPHeaderFields = self.headers
             urlRequest.allowsCellularAccess = true
             
-            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
             
             //Create new URLSession in order to use delegates
             let session = URLSession.init(configuration: URLSessionConfiguration.default, delegate: SessionDelegate(), delegateQueue: OperationQueue.main)
@@ -132,7 +132,7 @@ extension MatchingEngine {
                     reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
                 } else {
                     guard let httpResponse = response as? HTTPURLResponse else {
-                        Logger.shared.log(.network, .debug, "Cant cast response at HTTPURLResponse")
+                        os_log("Cant cast response at HTTPURLResponse", log: OSLog.default, type: .debug)
                         return
                     }
                     if let location = httpResponse.allHeaderFields["Location"] as? String {
@@ -141,11 +141,11 @@ extension MatchingEngine {
                             let dtId = location.components(separatedBy: "dt-id=")
                             let s1 = dtId[1].components(separatedBy: ",")
                             let token = s1[0]
-                            Logger.shared.log(.network, .debug, "\(token)")
+                            os_log("token is %@", log: OSLog.default, type: .debug, token)
                             fulfill(["token": token as AnyObject])
                         } else {
                             //Missing Token
-                            Logger.shared.log(.network, .debug, "Missing token response \(location)")
+                            os_log("Missing token response %@", log: OSLog.default, type: .debug, location)
                             reject(InvalidTokenServerTokenError.invalidTokenServerResponse)
                         }
                     }
@@ -166,7 +166,7 @@ extension MatchingEngine {
     
     private func getToken(uri: String) -> Promise<String> // async
     {
-        Logger.shared.log(.network, .debug, "In Get Token, with uri: \(uri)")
+        os_log("In Get Token, with uri: %@", log: OSLog.default, type: .debug, uri)
         
         return Promise<String>() { fulfill, reject in
             if uri.count == 0 {
@@ -204,7 +204,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
-            Logger.shared.log(.network, .info, "MatchingEngine is unable to retrieve a carrierName to create a network request.")
+            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
