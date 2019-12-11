@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 public struct Socket {
@@ -31,16 +31,14 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
-
         // initialize addrinfo fields
         var addrInfo = addrinfo.init()
         addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
         addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
-
         return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
         }
 
@@ -48,7 +46,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+            os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
             promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
             return promiseInputs
         }
@@ -72,7 +70,7 @@ extension MatchingEngine {
         let error = getaddrinfo(clientIP, port, addrInfo, &res)
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)
-            Logger.shared.log(.network, .debug, "Client get addrinfo error is \(sysError)")
+            os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
@@ -80,7 +78,7 @@ extension MatchingEngine {
         let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
         if s == -1 {
             let sysError = SystemError.socket(s, errno)
-            Logger.shared.log(.network, .debug, "Client socket error is \(sysError)")
+            os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
@@ -88,7 +86,7 @@ extension MatchingEngine {
         let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
         if b == -1 {
             let sysError = SystemError.bind(b, errno)
-            Logger.shared.log(.network, .debug, "Client bind error is \(sysError)")
+            os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
@@ -98,14 +96,14 @@ extension MatchingEngine {
         let serverError = getaddrinfo(serverFqdn, port, addrInfo, &serverRes)
         if serverError != 0 {
             let sysError = SystemError.getaddrinfo(serverError, errno)
-            Logger.shared.log(.network, .debug, "Server get addrinfo error is \(sysError)")
+            os_log("Server get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
         let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
         if serverSocket == -1 {
             let sysError = SystemError.connect(serverSocket, errno)
-            Logger.shared.log(.network, .debug, "Server socket error is \(sysError)")
+            os_log("Server socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
@@ -113,7 +111,7 @@ extension MatchingEngine {
         let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
         if c == -1 {
             let sysError = SystemError.connect(c, errno)
-            Logger.shared.log(.network, .debug, "Connection error is \(sysError)")
+            os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }

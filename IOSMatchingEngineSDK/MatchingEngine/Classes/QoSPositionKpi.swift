@@ -18,7 +18,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 //QosPosition fields (right QosPosition is just Dict: positionid -> gps_location)
@@ -98,11 +98,11 @@ extension MatchingEngine {
     /// - Returns: API Dictionary/json
     public func getQosKPIPosition(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "getQosKPIPosition")
+        os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
-            Logger.shared.log(.network, .info, "MatchingEngine is unable to retrieve a carrierName to create a network request.")
+            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
@@ -129,7 +129,7 @@ extension MatchingEngine {
     public func getQosKPIPosition(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-        Logger.shared.log(.network, .debug, "getQosKPIPosition")
+        os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         
         let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
         let urlStr = baseuri + MexUtil.shared.qospositionkpiAPI

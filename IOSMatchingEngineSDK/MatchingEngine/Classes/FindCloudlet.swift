@@ -18,7 +18,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 //FindCloudletRequest fields
@@ -107,7 +107,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
 
         guard let carrierName = state.carrierName ?? getCarrierName() else {
-            Logger.shared.log(.network, .info, "MatchingEngine is unable to retrieve a carrierName to create a network request.")
+            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
@@ -135,8 +135,8 @@ extension MatchingEngine {
     public func findCloudlet(host: String, port: UInt, request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "Finding nearest Cloudlet appInsts matching this MatchingEngine client.")
-        Logger.shared.log(.network, .debug, "======================================================================")
+        os_log("Finding nearest Cloudlet appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)
+        os_log("======================================================================", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)

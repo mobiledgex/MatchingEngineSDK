@@ -18,7 +18,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 // MARK: RegisterClient code.
@@ -117,11 +117,11 @@ extension MatchingEngine
     /// - Returns: API Dictionary/json
     public func registerClient(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "registerClient")
+        os_log("registerClient", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
-            Logger.shared.log(.network, .info, "MatchingEngine is unable to retrieve a carrierName to create a network request.")
+            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
@@ -150,10 +150,10 @@ extension MatchingEngine
     public func registerClient(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-        Logger.shared.log(.network, .debug, "registerClient")
+        os_log("registerClient", log: OSLog.default, type: .debug)
         
         let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        Logger.shared.log(.network, .debug, "BaseURI: \(baseuri)")
+        os_log("BaseURI: %@", log: OSLog.default, type: .debug, baseuri)
         let urlStr = baseuri + MexUtil.shared.registerAPI
         
         do {
@@ -171,14 +171,14 @@ extension MatchingEngine
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingSessionCookie)
             }
             self.state.setSessionCookie(sessionCookie: sessionCookie)
-            Logger.shared.log(.network, .debug, " saved sessioncookie")
+            os_log("saved sessioncookie", log: OSLog.default, type: .debug)
             
             guard let tokenServerUri = replyDict[RegisterClientReply.token_server_uri] as? String else {
                 self.state.setTokenServerUri(tokenServerUri: nil);
                 return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingTokenServerURI)
             }
             self.state.setTokenServerUri(tokenServerUri: tokenServerUri)
-            Logger.shared.log(.network, .debug, " saved tokenserveruri\n")
+            os_log("saved tokenserveruri\n", log: OSLog.default, type: .debug)
             
             // Implicit return replyDict.
         }
