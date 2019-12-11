@@ -23,7 +23,7 @@ import UIKit
 
 import GoogleMaps
 import Promises
-import NSLogger
+import os.log
 
 import DropDown
 
@@ -71,7 +71,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
         if demo
         {
-            host = MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            do {
+                host = try MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+            } catch {
+                print("unable to get host. error: \(error)")
+            }
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
@@ -157,7 +161,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             }
         }
         guard let _ = carrierName else {
-            Logger.shared.log(.network, .debug, "Register Client needs a valid carrierName!")
+            os_log("Register Client needs a valid carrierName!", log: OSLog.default, type: .debug)
             return;
         }
         Swift.print("RegisterClient not implemented yet. Copy and Paste initial call to RegisterClient")
@@ -195,7 +199,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "processAppInstList"), object: appInstList)
                 }
                 .catch { error in
-                    Logger.shared.log(.network, .info, "Error getting appInstList: \(error)")
+                    os_log("Error getting appInstList: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                 }
         }
         
@@ -544,7 +548,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             // For demo purposes, we're going to use the carrierName override.
             let cn = self.overrideDmeCarrierName ?? self.matchingEngine.getCarrierName() ?? "mexdemo"
             
-            let hostName: String = MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            var hostName: String!
+            do {
+                let hostName: String = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
             updateLocSimLocation(hostName: hostName,
                                  latitude: userMarker!.position.latitude,
                                  longitude: userMarker!.position.longitude)

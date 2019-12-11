@@ -20,7 +20,6 @@ target 'MatchingEngine_Example' do
   pod 'GoogleSignIn'
 
   pod 'SwiftLog'
-  pod 'NSLogger/Swift'
   
   pod 'SPPermission'
   
