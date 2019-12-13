@@ -27,38 +27,55 @@ public struct Socket {
 
 extension MatchingEngine {
 
-    public func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
+    func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
     {
-        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
+        let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
+            
+            //let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+                Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+                reject(GetConnectionError.invalidNetworkInterface)
+                return
+            }
+
+            // initialize addrinfo fields
+            var addrInfo = addrinfo.init()
+            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+            addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
+
+            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
+            .then { socket in
+                    fulfill(socket)
+            }.catch { error in
+                reject(error)
+            }
         }
+        return promise
+    }
 
-        // initialize addrinfo fields
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
-
-        return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
-        }
-
-    public func getBSDUDPConnection(host: String, port: String) -> Promise<Socket>
+    func getBSDUDPConnection(host: String, port: String) -> Promise<Socket>
     {
-        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
+        let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
+            
+            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+                Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+                reject(GetConnectionError.invalidNetworkInterface)
+                return
+            }
+
+            // initialize addrinfo fields
+            var addrInfo = addrinfo.init()
+            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+            addrInfo.ai_socktype = SOCK_DGRAM // UDP
+
+            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
+            .then { socket in
+                    fulfill(socket)
+            }.catch { error in
+                reject(error)
+            }
         }
-
-        // initialize addrinfo fields
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_DGRAM // UDP
-
-        return self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
+        return promise
     }
 
     private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<Socket>
