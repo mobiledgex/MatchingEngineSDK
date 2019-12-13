@@ -174,7 +174,8 @@ public class MatchingEngine
     var state: MatchingEngineState = MatchingEngineState()
     let networkInfo = CTTelephonyNetworkInfo()
     var portToPathPrefixDict = [String: String]()
-    
+    var timedOut = false // used to break loops
+        
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
     var executionQueue = DispatchQueue.global(qos: .default)
     
@@ -428,6 +429,7 @@ public class MexUtil // common to Mex... below
         return carrierName + "." + baseDmeHostInUse
     }
     
+    // DNS Lookup 
     public func verifyDmeHost(host: String) throws {
         var addrInfo = addrinfo.init()
         var result: UnsafeMutablePointer<addrinfo>!

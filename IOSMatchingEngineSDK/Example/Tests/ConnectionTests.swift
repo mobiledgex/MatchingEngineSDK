@@ -121,15 +121,14 @@ class ConnectionTests: XCTestCase {
     func testTCPTLSConnection() {
         let host = "google.com"
         let port = "443"
-        // replyPromise is a Promise<Bool>
-        // Bool states if Path is Satisfied and State is Ready -> successfule connection
+        // Bool states if Path is Satisfied and State is Ready -> successful connection
         var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port)
-            
+
         .then { c -> Promise<Bool> in
+            let promiseInputs: Promise<Bool> = Promise<Bool>.pending()
             self.connection = c
-            self.connectWithNWConnection()
-            self.connection.start(queue: .global())
-            return self.checkPathAndState()
+            promiseInputs.fulfill(true)
+            return promiseInputs
             
         }.catch { error in
             print("Did not succeed registerAndFindTCPConnection. Error: \(error)")
@@ -194,7 +193,7 @@ class ConnectionTests: XCTestCase {
             socket.disconnect()
             
         }.catch { error in
-            print("Did not succeed registerAndFindWebsocketConnection. Error: \(error)")
+            print("Did not succeed WebsocketConnection. Error: \(error)")
         }
         
         XCTAssert(waitForPromises(timeout: 5))
@@ -364,6 +363,43 @@ class ConnectionTests: XCTestCase {
             throw TestError.runtimeError("Unable to convert string")
         }
         return s!
+    }
+    
+    func testTimeout() {
+        let loc = ["longitude": -122.149349, "latitude": 37.459609]
+        
+        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "TDG", authToken: nil, gpsLocation: loc)
+            
+        .then { findCloudletReply -> Promise<NWConnection> in
+            // Get Dictionary: key -> internal port, value -> AppPort Dictionary
+            print("findCloudletReply is \(findCloudletReply)")
+            guard let appPortsDict = self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
+                XCTAssert(false, "GetTCPPorts returned nil")
+                throw TestError.runtimeError("GetTCPPorts returned nil")
+            }
+            if appPortsDict.capacity == 0 {
+                XCTAssert(false, "No AppPorts in dictionary")
+                throw TestError.runtimeError("No AppPorts in dictionary")
+            }
+            // Select AppPort Dictionary corresponding to internal port 3001
+            guard let appPort = appPortsDict["3001"] else {
+                XCTAssert(false, "No app ports with specified internal port")
+                throw TestError.runtimeError("No app ports with specified internal port")
+            }
+            
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 0.1)
+        }.then { connection in
+            XCTAssert(false, "Should have timed out")
+        }.catch { error in
+            if error as? PromiseError == PromiseError.timedOut {
+                print("error is \(error)")
+                XCTAssert(true, "error is \(error)")
+            } else {
+                XCTAssert(false, "other error \(error)")
+            }
+        }
+        
+        XCTAssert(waitForPromises(timeout: 15))
     }
 }
 
