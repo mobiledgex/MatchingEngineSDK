@@ -83,7 +83,7 @@ class Tests: XCTestCase {
     
     func testRegisterClient() {
         let request = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
-        
+
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
         //do {
@@ -91,6 +91,10 @@ class Tests: XCTestCase {
                 .catch { error in
                     XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
             }
+        /*replyPromise = matchingEngine.registerClient(host: "262-01.global.dme.mobiledgex.net", port: 38001, request: request)
+            .catch { error in
+                XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
+            }*/
         
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {

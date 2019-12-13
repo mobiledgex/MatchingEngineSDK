@@ -25,6 +25,15 @@ public class Protocol {
     public static let unknown = "L_PROTO_UNKNOWN"
 }
 
+class Ports {
+    public static let proto = "proto"
+    public static let internal_port = "internal_port"
+    public static let public_port = "public_port"
+    public static let path_prefix = "path_prefix"
+    public static let fqdn_prefix = "fqdn_prefix"
+    public static let end_port = "end_port"
+}
+
 extension MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
@@ -40,32 +49,31 @@ extension MatchingEngine {
         }
         return fqdnPrefix + baseFqdn
     }
-
-    // Can get port by any protocol, customized or not
-    public func getPortsByProtocol(findCloudletReply: [String: AnyObject], proto: String) -> [String]?
+    
+    // Returns dictionary: key -> internal port, value -> "AppPort" dictionary
+    public func getAppPortsByProtocol(findCloudletReply: [String: AnyObject], proto: String) -> [String: [String: Any]]?
     {
-        var portsList = [String]()
-        // array of dictionaries
+        var appPortsByProtocol: [String: [String: Any]]?
+        // array of "AppPort" dictionaries returned in findCloudlet
         guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
             return nil
         }
-        // iterate through all dictionaries
+        // iterate through all "AppPorts"
         for portDict in portDicts {
             // check for protocol
             if portDict[Ports.proto] as! String == proto {
-                if let publicPort = portDict[Ports.public_port] as? String {
-                    portsList.append(publicPort)
-                    portToPathPrefixDict[publicPort] = portDict[Ports.path_prefix] as? String
+                if let internalPort = portDict[Ports.internal_port] {
+                    appPortsByProtocol![String(describing: internalPort)] = portDict
                 }
             }
         }
-        return portsList
+        return appPortsByProtocol
     }
-
-    // Return list of TCP ports given in findCloudletReply
-    public func getTCPPorts(findCloudletReply: [String: AnyObject]) -> [String]?
+    
+    // Return dictionary of TCP AppPorts given in findCloudletReply
+    public func getTCPAppPorts(findCloudletReply: [String: AnyObject]) -> [String: [String: Any]]?
     {
-        var portsList = [String]()
+        var tcpAppPorts = [String: [String: Any]]()
         // array of dictionaries
         guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
             return nil
@@ -74,19 +82,18 @@ extension MatchingEngine {
         for portDict in portDicts {
             // check for protocol
             if portDict[Ports.proto] as! String == Protocol.tcp {
-                if let publicPort = portDict[Ports.public_port] as? NSNumber {
-                    portsList.append("\(publicPort)")
-                    portToPathPrefixDict["\(publicPort)"] = portDict[Ports.path_prefix] as? String
+                if let internalPort = portDict[Ports.internal_port] {
+                    tcpAppPorts[String(describing: internalPort)] = portDict
                 }
             }
         }
-        return portsList
+        return tcpAppPorts
     }
-
-    // Return list of UDP ports given in findCloudletReply
-    public func getUDPPorts(findCloudletReply: [String: AnyObject]) -> [String]?
+    
+    // Return dictionary of UDP AppPorts given in findCloudletReply
+    public func getUDPAppPorts(findCloudletReply: [String: AnyObject]) -> [String: [String: Any]]?
     {
-        var portsList = [String]()
+        var udpAppPorts: [String: [String: Any]]?
         // array of dictionaries
         guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
             return nil
@@ -95,19 +102,18 @@ extension MatchingEngine {
         for portDict in portDicts {
             // check for protocol
             if portDict[Ports.proto] as! String == Protocol.udp {
-                if let publicPort = portDict[Ports.public_port] as? String {
-                    portsList.append(publicPort)
-                    portToPathPrefixDict[publicPort] = portDict[Ports.path_prefix] as? String
+                if let internalPort = portDict[Ports.internal_port] {
+                    udpAppPorts![String(describing: internalPort)] = portDict
                 }
             }
         }
-        return portsList
+        return udpAppPorts
     }
-
-    // Return list of HTTP ports given in findCloudletReply
-    public func getHTTPPorts(findCloudletReply: [String: AnyObject]) -> [String]?
+    
+    // Return dictionary of HTTP AppPorts given in findCloudletReply
+    public func getHTTPAppPorts(findCloudletReply: [String: AnyObject]) -> [String: [String: Any]]?
     {
-        var portsList = [String]()
+        var httpAppPorts: [String: [String: Any]]?
         // array of dictionaries
         guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
             return nil
@@ -116,12 +122,11 @@ extension MatchingEngine {
         for portDict in portDicts {
             // check for protocol
             if portDict[Ports.proto] as! String == Protocol.http {
-                if let publicPort = portDict[Ports.public_port] as? String {
-                    portsList.append(publicPort)
-                    portToPathPrefixDict[publicPort] = portDict[Ports.path_prefix] as? String
+                if let internalPort = portDict[Ports.internal_port] {
+                    httpAppPorts![String(describing: internalPort)] = portDict
                 }
             }
         }
-        return portsList
+        return httpAppPorts
     }
 }

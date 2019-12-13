@@ -22,191 +22,315 @@ import Promises
 import SocketIO
 import Network
 
-class Ports {
-    public static let proto = "proto"
-    public static let internal_port = "internal_port"
-    public static let public_port = "public_port"
-    public static let path_prefix = "path_prefix"
-    public static let fqdn_prefix = "fqdn_prefix"
-    public static let end_port = "end_port"
-}
-
 extension MatchingEngine {
     
-    // Returns TCP CFSocket promise
-    public func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
-    {
+    public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<CFSocket> {
+        
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
-        
-        // initialize CFSocket (no callbacks provided -> developer will implement)
-        guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, nil, nil) else {
-            promiseInputs.reject(GetConnectionError.unableToCreateSocket)
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getTCPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
             return promiseInputs
         }
-        // initialize addrinfo fields, depending on protocol
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
-        
-        return connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
     }
     
-    // returns a TCP NWConnection promise
+    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<Socket> {
+        
+        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
+        }
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getBSDTCPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+    }
+    
     @available(iOS 12.0, *)
-    public func getTCPTLSConnection(host: String, port: String) -> Promise<NWConnection>
-    {
+    public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<NWConnection> {
+        
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
-        
-        let localEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
-        let serverEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!)
-        // default tls and tcp options, developer can adjust
-        let parameters = NWParameters(tls: .init(), tcp: .init())
-        // bind to specific local cellular ip
-        parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
-        parameters.requiredLocalEndpoint = localEndpoint
-        // create NWConnection object with connection to server host and port
-        let nwConnection = NWConnection(to: serverEndpoint, using: parameters)
-        //ensureStateAndPathReady(connection: nwConnection)
-        promiseInputs.fulfill(nwConnection)
-        return promiseInputs
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getTCPTLSConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
     }
     
-    // Returns UDP CFSocket promise
-    public func getUDPConnection(host: String, port: String) -> Promise<CFSocket>
-    {
+    public func getUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<CFSocket> {
+        
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
-        }
         
-        // initialize socket (no callbacks provided -> developer will implement)
-        guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, nil, nil) else {
-            promiseInputs.reject(GetConnectionError.unableToCreateSocket)
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
-        // initialize addrinfo fields, depending on protocol
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_DGRAM // UDP datagrams
-                        
-        return connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getUDPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
     }
     
-    // returns a UDP NWConnection promise
+    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<Socket> {
+        
+        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
+        }
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getBSDUDPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+    }
+    
     @available(iOS 12.0, *)
-    public func getUDPDTLSConnection(host: String, port: String) -> Promise<NWConnection>
-    {
+    public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<NWConnection> {
+        
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
-        
-        // default tls and tcp options
-        let parameters = NWParameters(dtls: .init(), udp: .init())
-        // bind to specific cellular ip
-        parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
-        parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
-        let nwConnection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!, using: parameters)
-        
-        promiseInputs.fulfill(nwConnection)
-        return promiseInputs
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getUDPDTLSConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
     }
     
-    // Returns URLRequest promise
-    public func getHTTPConnection(host: String, port: String) -> Promise<URLRequest>
-    {
+    public func getHTTPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<URLRequest> {
+        
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
-        let uri = "http://\(host):\(port)"
-        let url = URL(string: uri)
-        if url == nil {
-            print("url is nil")
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
         }
-        var urlRequest = URLRequest(url: url!)
-        if urlRequest == nil {
-            print("urlRequest is nil")
-        }
-        urlRequest.allowsCellularAccess = true
-        promiseInputs.fulfill(urlRequest)
-        return promiseInputs
-    }
-    
-    // Returns SocketIOClient promise
-    public func getWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
-    {
-        let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
-        
-        let url = "wss://\(host):\(port)/"
-        let manager = SocketManager(socketURL: URL(string: url)!)
-        promiseInputs.fulfill(manager)
-        return promiseInputs
-    }
-    
-    // Connect CFSocket to given host and port and bind to cellular interface
-    private func connectAndBindCFSocket(serverHost: String, clientHost: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>, socket: CFSocket) -> Promise<CFSocket>
-    {
-        let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        return all (
-            getSockAddr(host: serverHost, port: port, addrInfo: addrInfo),
-            getSockAddr(host: clientHost, port: port, addrInfo: addrInfo)
-        ).then { serverSockAddr, clientSockAddr -> Promise<CFSocket> in // getSockAddr promises returns a pointer to sockaddr struct
-            // connect to server
-            let serverData = NSData(bytes: serverSockAddr, length: MemoryLayout<sockaddr>.size) as CFData
-            let serverError = CFSocketConnectToAddress(socket, serverData, 5) // 5 second timeout
-            // bind to client cellular interface
-            let clientData = NSData(bytes: clientSockAddr, length: MemoryLayout<sockaddr>.size) as CFData
-            let clientError = CFSocketSetAddress(socket, clientData)
-            if clientError != CFSocketError.success {
-                promiseInputs.reject(GetConnectionError.unableToBind)
+
+        do {
+            var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
+            uri = "http://" + uri
+            guard let url = URL(string: uri) else {
+                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
                 return promiseInputs
             }
-            
-            switch serverError {
-            case .success:
-                promiseInputs.fulfill(socket)
-            case .error:
-                promiseInputs.reject(GetConnectionError.unableToConnectToServer)
-            case .timeout:
-                promiseInputs.reject(GetConnectionError.connectionTimeout)
-            }
-            return promiseInputs
-        }.catch { error in
+            // call helper function and timeout
+            return getHTTPClient(url: url).timeout(TimeInterval(timeout))
+        } catch {
             promiseInputs.reject(error)
+            return promiseInputs
         }
     }
     
-    // creates an addrinfo object, which stores sockaddr struct, return sockaddr struct
-    private func getSockAddr(host: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>) -> Promise<UnsafeMutablePointer<sockaddr>>
-    {
-        return Promise<UnsafeMutablePointer<sockaddr>>(on: self.executionQueue) { fulfill, reject in
-            // Stores addrinfo fields like sockaddr struct, socket type, protocol, and address length
-            var res: UnsafeMutablePointer<addrinfo>!
-            
-            let error = getaddrinfo(host, port, addrInfo, &res)
-            if error != 0 {
-                let sysError = SystemError.getaddrinfo(error, errno)
-                Logger.shared.log(.network, .debug, "Get addrinfo error is \(sysError)")
-                reject(sysError)
-            }
-            fulfill(res.pointee.ai_addr)
+    public func getHTTPSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<URLRequest> {
+        
+        let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
         }
+
+        do {
+            var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
+            uri = "https://" + uri
+            guard let url = URL(string: uri) else {
+                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
+                return promiseInputs
+            }
+            // call helper function and timeout
+            return getHTTPClient(url: url).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+    }
+    
+    public func getWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<SocketManager> {
+        
+        let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
+        }
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getWebsocketConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+    }
+    
+    public func getSecureWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<SocketManager> {
+        
+        let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
+        
+        // Check if valid timeout
+        if timeout <= 0 {
+            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            promiseInputs.reject(GetConnectionError.invalidTimeout)
+            return promiseInputs
+        }
+
+        do {
+            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            // call helper function and timeout
+            return getSecureWebsocketConnection(host: host, port: port).timeout(TimeInterval(timeout))
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
+        }
+    }
+    
+    private func constructHost(findCloudletReply: [String: AnyObject], appPort: [String: Any]) throws -> String {
+        // Convert fqdn_prefix and fqdn to string
+        guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
+            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
+        }
+        guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
+            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
+        }
+        
+        let host = fqdnPrefix + fqdn
+        return host
+    }
+    
+    private func getPort(appPort: [String: Any], desiredPort: String) throws -> String {
+        var port: String
+        
+        guard let publicPortAny = appPort[Ports.public_port] else {
+            Logger.shared.log(.network, .debug, "Unable to cast public port as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to cast public port as String")
+        }
+        let publicPort = String(describing: publicPortAny)
+        // If desired port is -1, then default to public port
+        if desiredPort == "-1" {
+            port = publicPort
+        } else {
+            port = desiredPort
+        }
+        
+        // Check if port is in AppPort range
+        do {
+            let _ = try self.isInPortRange(appPort: appPort, port: desiredPort)
+        } catch {
+            Logger.shared.log(.network, .debug, "Port range check error")
+            throw error
+        }
+        return port
+    }
+    
+    private func constructHTTPUri(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String) throws -> String {
+        // Convert fqdn_prefix and fqdn to string
+        guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
+            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
+        }
+        guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
+            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
+        }
+        guard let pathPrefix = appPort[Ports.path_prefix] as? String else {
+            Logger.shared.log(.network, .debug, "Unable to cast path prefix as String")
+            throw GetConnectionError.variableConversionError(message: "Unable to case path prefix as String")
+        }
+        
+        let host = fqdnPrefix + fqdn
+        let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+        let uri = host + ":" + port + pathPrefix
+        return uri
+    }
+    
+    
+    private func isInPortRange(appPort: [String: Any], port: String) throws -> Bool
+    {
+        guard let publicPort = appPort[Ports.public_port] as? Int else {
+            throw GetConnectionError.variableConversionError(message: "Unable to cast public_port to Int")
+        }
+        guard let endPort = appPort[Ports.end_port] as? Int else {
+            throw GetConnectionError.variableConversionError(message: "Unable to cast end_port to Int")
+        }
+        guard let intPort = Int(port) else {
+            throw GetConnectionError.variableConversionError(message: "Unable to cast port to Int")
+        }
+        // Checks if a range exists -> if not, check if specified port equals public_port
+        if (endPort == 0 || endPort < publicPort) {
+            return intPort == publicPort
+        }
+        return (intPort >= publicPort && intPort <= endPort)
     }
 }
