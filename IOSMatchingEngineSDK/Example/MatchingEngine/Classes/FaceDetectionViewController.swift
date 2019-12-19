@@ -285,8 +285,7 @@ class FaceDetectionViewController: UIViewController
         os_log("network latency: %@) ", log: OSLog.default, type: .debug, networkLatencyEdgeLabel.text ?? "")
         os_log("name %@) ", log: OSLog.default, type: .debug, faceRecognitonNameEdgeLabel.text ?? "")
         os_log("stddev: %@) ", log: OSLog.default, type: .debug, stddevEdgeLabel.text ?? "")
-            
-        }
+        
         
         UserDefaults.standard.set( "", forKey: "latencyCloud")
         UserDefaults.standard.set( "", forKey: "latencyEdge")

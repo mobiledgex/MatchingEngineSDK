@@ -93,6 +93,7 @@ enum GetConnectionError: Error {
     case unableToCreateSocketSignature
     case outdatedIOS
     case unableToBind
+    case incorrectURLSyntax
 }
 
 class MatchingEngineState {
