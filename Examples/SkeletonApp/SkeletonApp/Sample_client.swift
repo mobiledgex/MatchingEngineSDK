@@ -27,12 +27,11 @@ import MapKit
 import Security
 import UIKit
 
-import Alamofire
 import GoogleMaps
 
 import SwiftLocation
 
-import NSLogger
+import os.log
 import Promises
 import MatchingEngine
 
@@ -280,32 +279,37 @@ private func useCloudlets(_ findCloudletReply: [String: Any]) // unused
  */
 public func updateLocSimLocation(hostName: String, latitude: Double, longitude: Double)
 {
-    // Swift.print("\(#function)")
-
-    let jd: [String: Any]? = ["latitude": latitude, "longitude": longitude]    // Dictionary/json
-    let urlString: URLConvertible = "http://\(hostName):8888/updateLocation"
-
-    Swift.print("\(urlString)")
-
-    Alamofire.request( urlString,
-                      method: HTTPMethod.post,
-                      parameters: jd,
-                      encoding: JSONEncoding.default)
-        .responseString
-    { response in
-        Swift.print("----\n")
-        Swift.print("\(response)")
-        //     debugPrint(response)
-
-        switch response.result {
-        case .success:
-            //      debugPrint(response)
-            SKToast.show(withMessage: "UpdateLocSimLocation result: \(response)")
-
-        case let .failure(error):
-            print(error)
-            SKToast.show(withMessage: "UpdateLocSimLocation Failed: \(error)")
-        }
+    do {
+        let jd: [String: Any] = ["latitude": latitude, "longitude": longitude]    // Dictionary/json
+        let url = URL(string: "http://\(hostName):8888/updateLocation")
+        Swift.print("\(String(describing: url))")
+    
+        var urlRequest = URLRequest(url: url!)
+    
+        //fill in body/configure URLRequest
+        let jsonRequest = try JSONSerialization.data(withJSONObject: jd)
+        urlRequest.httpBody = jsonRequest
+        urlRequest.httpMethod = "POST"
+        urlRequest.allowsCellularAccess = true
+    
+        os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
+    
+        //send request via URLSession API
+        let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+            Swift.print("----\n")
+            Swift.print("\(String(describing: response))")
+            //debugPrint(response)
+            
+            if (error != nil) {
+                print(error!)
+                SKToast.show(withMessage: "UpdateLocSimLocation Failed: \(error!)")
+            } else {
+                SKToast.show(withMessage: "UpdateLocSimLocation result: \(String(describing: response))")
+            }
+        })
+        task.resume()
+    } catch {
+            os_log("JSON Serialization error", log: OSLog.default, type: .debug)
     }
 }
 
@@ -513,7 +517,7 @@ class MexFaceRecognition
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
             
-            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
             
             //send request via URLSession API
             let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
@@ -607,7 +611,6 @@ class MexFaceRecognition
                 self.doNextFaceRecognition()     //   next
                 
             }
-            //Log.logger.name = "FaceDetection"
             //logw("\FaceDetection result: \(registerClientReply)")
             }
             .catch { print("FaceRecognition failed with error: \($0)")
@@ -627,9 +630,7 @@ class MexFaceRecognition
         // Swift.print("\(#function)")
         
         let promise = Promise<[String: AnyObject]>.pending()
-        
-        // Logger.shared.log(.network, .info, image! )      //
-        
+                
         // detector/detect
         // Used to send a face image to the server and get back a set of coordinates for any detected faces.
         // POST http://<hostname>:8008/detector/detect/
@@ -668,7 +669,7 @@ class MexFaceRecognition
             urlRequest.allHTTPHeaderFields = headers
             urlRequest.allowsCellularAccess = true
             
-            Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+            os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
             
             //send request via URLSession API
             let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in

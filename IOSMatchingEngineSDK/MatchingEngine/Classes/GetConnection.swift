@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 import SocketIO
 import Network
@@ -30,7 +30,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -51,7 +51,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -72,7 +72,7 @@ extension MatchingEngine {
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
 
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -105,7 +105,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -127,7 +127,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -150,7 +150,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -183,7 +183,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -192,7 +192,7 @@ extension MatchingEngine {
             var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
             uri = "http://" + uri
             guard let url = URL(string: uri) else {
-                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
                 return promiseInputs
             }
@@ -210,7 +210,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -219,7 +219,7 @@ extension MatchingEngine {
             var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
             uri = "https://" + uri
             guard let url = URL(string: uri) else {
-                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
                 return promiseInputs
             }
@@ -237,7 +237,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -259,7 +259,7 @@ extension MatchingEngine {
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -278,11 +278,11 @@ extension MatchingEngine {
     private func constructHost(findCloudletReply: [String: AnyObject], appPort: [String: Any]) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
         }
         guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
         }
         
@@ -294,7 +294,7 @@ extension MatchingEngine {
         var port: String
         
         guard let publicPortAny = appPort[Ports.public_port] else {
-            Logger.shared.log(.network, .debug, "Unable to cast public port as String")
+            os_log("Unable to cast public port as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast public port as String")
         }
         let publicPort = String(describing: publicPortAny)
@@ -309,7 +309,7 @@ extension MatchingEngine {
         do {
             let _ = try self.isInPortRange(appPort: appPort, port: desiredPort)
         } catch {
-            Logger.shared.log(.network, .debug, "Port range check error")
+            os_log("Port range check error", log: OSLog.default, type: .debug)
             throw error
         }
         return port
@@ -318,15 +318,15 @@ extension MatchingEngine {
     private func constructHTTPUri(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
         }
         guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
         }
         guard let pathPrefix = appPort[Ports.path_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast path prefix as String")
+            os_log("Unable to cast path prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to case path prefix as String")
         }
         
