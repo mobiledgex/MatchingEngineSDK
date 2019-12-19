@@ -30,7 +30,7 @@ extension MatchingEngine {
             
             // local ip bind to cellular network interface
             guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-                Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
             }
@@ -62,7 +62,7 @@ extension MatchingEngine {
             
             // local ip bind to cellular network interface
             guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-                Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
+                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
             }
@@ -90,9 +90,13 @@ extension MatchingEngine {
     func getHTTPClient(url: URL) -> Promise<URLRequest>
     {
         let promise = Promise<URLRequest>(on: .global(qos: .background)) { fulfill, reject in
+            guard let host = url.host else {
+                reject(GetConnectionError.incorrectURLSyntax)
+                return
+            }
             // DNS lookup
             do {
-                try MexUtil.shared.verifyDmeHost(host: url.absoluteString)
+                try MexUtil.shared.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
@@ -107,7 +111,6 @@ extension MatchingEngine {
     func getWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
     {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
-            
             // DNS Lookup
             do {
                 try MexUtil.shared.verifyDmeHost(host: host)
