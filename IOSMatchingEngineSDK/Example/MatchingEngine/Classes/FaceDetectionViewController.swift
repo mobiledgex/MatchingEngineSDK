@@ -272,24 +272,19 @@ class FaceDetectionViewController: UIViewController
         super.viewWillDisappear(animated)
         
         
-        if true
-        {
-            os_log("CLOUD \n", log: OSLog.default, type: .debug)
-            os_log("latency: %@) ", log: OSLog.default, type: .debug, latencyCloudLabel.text ?? "")
-            os_log("latency rec: %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyCloudLabel.text ?? "")
-            os_log("latency network: %@) ", log: OSLog.default, type: .debug, networkLatencyCloudLabel.text ?? "")
-            os_log(" stddev: %@) ", log: OSLog.default, type: .debug, stddevCloudLabel.text ?? "")
-            os_log("name: %@) ", log: OSLog.default, type: .debug, faceRecognitonNameCloudLabel.text ?? "")
+        os_log("CLOUD \n", log: OSLog.default, type: .debug)
+        os_log("latency: %@) ", log: OSLog.default, type: .debug, latencyCloudLabel.text ?? "")
+        os_log("latency rec: %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyCloudLabel.text ?? "")
+        os_log("latency network: %@) ", log: OSLog.default, type: .debug, networkLatencyCloudLabel.text ?? "")
+        os_log(" stddev: %@) ", log: OSLog.default, type: .debug, stddevCloudLabel.text ?? "")
+        os_log("name: %@) ", log: OSLog.default, type: .debug, faceRecognitonNameCloudLabel.text ?? "")
 
-        }
-        if true
-        {
-            os_log("EDGE \n", log: OSLog.default, type: .debug)
-            os_log("latency detect: %@) ", log: OSLog.default, type: .debug, latencyEdgeLabel.text ?? "")
-            os_log("latency rec %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyEdgeLabel.text ?? "")
-            os_log("network latency: %@) ", log: OSLog.default, type: .debug, networkLatencyEdgeLabel.text ?? "")
-            os_log("name %@) ", log: OSLog.default, type: .debug, faceRecognitonNameEdgeLabel.text ?? "")
-            os_log("stddev: %@) ", log: OSLog.default, type: .debug, stddevEdgeLabel.text ?? "")
+        os_log("EDGE \n", log: OSLog.default, type: .debug)
+        os_log("latency detect: %@) ", log: OSLog.default, type: .debug, latencyEdgeLabel.text ?? "")
+        os_log("latency rec %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyEdgeLabel.text ?? "")
+        os_log("network latency: %@) ", log: OSLog.default, type: .debug, networkLatencyEdgeLabel.text ?? "")
+        os_log("name %@) ", log: OSLog.default, type: .debug, faceRecognitonNameEdgeLabel.text ?? "")
+        os_log("stddev: %@) ", log: OSLog.default, type: .debug, stddevEdgeLabel.text ?? "")
             
         }
         
