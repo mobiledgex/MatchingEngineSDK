@@ -19,7 +19,7 @@
 //  GetLocation.swift
 //
 import Foundation
-import NSLogger
+import os.log
 import Promises
 
 class GetLocationRequest {
@@ -72,11 +72,11 @@ extension MatchingEngine {
     /// - Returns: API Dictionary/json
     public func getLocation(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
-        Logger.shared.log(.network, .debug, "getLocation")
+        os_log("getLocation", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         guard let carrierName = state.carrierName ?? getCarrierName() else {
-            Logger.shared.log(.network, .info, "MatchingEngine is unable to retrieve a carrierName to create a network request.")
+            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
@@ -103,7 +103,7 @@ extension MatchingEngine {
     public func getLocation(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-        Logger.shared.log(.network, .debug, "getLocation")
+        os_log("getLocation", log: OSLog.default, type: .debug)
         
         let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
         let urlStr = baseuri + MexUtil.shared.getlocationAPI

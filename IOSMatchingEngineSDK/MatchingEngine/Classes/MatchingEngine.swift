@@ -21,7 +21,7 @@
 
 import Foundation
 
-import NSLogger
+import os.log
 import Promises
 
 import CoreTelephony
@@ -326,20 +326,20 @@ public class MatchingEngine
                 urlRequest.allHTTPHeaderFields = self.headers
                 urlRequest.allowsCellularAccess = true
                 
-                Logger.shared.log(.network, .debug, "URL Request is \(urlRequest)")
+                os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
                 
                 //send request via URLSession API
                 let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
                     guard let httpResponse = response as? HTTPURLResponse else
                     {
-                        Logger.shared.log(.network, .debug, "Response not HTTPURLResponse")
+                        os_log("Response not HTTPURLResponse", log: OSLog.default, type: .debug)
                         return
                     }
                     
                     //checks if http request succeeded (200 == success)
                     let statusCode = httpResponse.statusCode
                     if (statusCode != 200) {
-                        Logger.shared.log(.network, .debug, "HTTP Status Code: \(String(describing: statusCode))")
+                        os_log("HTTP Status Code: %@", log: OSLog.default, type: .debug, String(describing: statusCode))
                         return
                     }
                     
@@ -351,10 +351,10 @@ public class MatchingEngine
                                 //let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
                                 // Convert the data to JSON
                                 let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
-                                Logger.shared.log(.network, .debug, "uri: \(uri) reply json\n \(String(describing: jsonSerialized)) \n")
+                                os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: jsonSerialized))
                                 fulfill(jsonSerialized!)
                             } catch {
-                                Logger.shared.log(.network, .debug, "json = \(data) error")
+                                os_log("json = %@ error", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!)
                                 return
                             }
                         }
@@ -362,13 +362,13 @@ public class MatchingEngine
                     }
                     
                     //Error is not nil
-                    Logger.shared.log(.network, .debug, "Error is \(String(describing: error.localizedDescription))")
+                    os_log("Error is: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                     reject(error)
                     
                 })
                 task.resume()
             } catch {
-                Logger.shared.log(.network, .debug, "Request JSON serialization error")
+                os_log("Request JSON serialization error", log: OSLog.default, type: .debug)
                 return
             }
         }
@@ -438,7 +438,7 @@ public class MexUtil // common to Mex... below
         let error = getaddrinfo(host, nil, &addrInfo, &result)
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)
-            Logger.shared.log(.network, .debug, "Cannot verifyDmeHost error: \(sysError)")
+            os_log("Cannot verifyDmeHost error: %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             throw DmeDnsError.verifyDmeHostFailure(host: host, systemError: sysError)
         }
     }
@@ -465,15 +465,15 @@ public class MexUtil // common to Mex... below
         
         lastCarrier = networkInfo.subscriberCellularProvider
         if lastCarrier == nil {
-            Logger.shared.log(.network, .debug, "Cannot find Subscriber Cellular Provider Info")
+            os_log("Cannot find Subscriber Cellular Provider Info", log: OSLog.default, type: .debug)
             throw DmeDnsError.missingCellularProviderInfo
         }
         guard let mcc = lastCarrier!.mobileCountryCode else {
-            Logger.shared.log(.network, .debug, "Cannot get Mobile Country Code")
+            os_log("Cannot get Mobile Country Code", log: OSLog.default, type: .debug)
             throw DmeDnsError.missingMCC
         }
         guard let mnc = lastCarrier!.mobileNetworkCode else {
-            Logger.shared.log(.network, .debug, "Cannot get Mobile Network Code")
+            os_log("Cannot get Mobile Network Code", log: OSLog.default, type: .debug)
             throw DmeDnsError.missingMNC
         }
         

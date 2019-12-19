@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 import SocketIO
 
@@ -164,7 +164,7 @@ extension MatchingEngine {
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
                 let sysError = SystemError.getaddrinfo(error, errno)
-                Logger.shared.log(.network, .debug, "Get addrinfo error is \(sysError)")
+                os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }
             fulfill(res.pointee.ai_addr)
