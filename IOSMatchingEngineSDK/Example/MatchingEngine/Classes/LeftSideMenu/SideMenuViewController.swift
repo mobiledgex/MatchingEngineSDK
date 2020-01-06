@@ -24,19 +24,21 @@ import UIKit
 
 import GoogleSignIn
 
-class SideMenuViewController: FormViewController, GIDSignInUIDelegate
+class SideMenuViewController: FormViewController, GIDSignInDelegate
 {
-    // @IBOutlet var signInButton: GIDSignInButton!
-
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
         title = "Menu"
 
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
 
         sideMenu() //  eurekaForm
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
     }
 
     func sideMenu()

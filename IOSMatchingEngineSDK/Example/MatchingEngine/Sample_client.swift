@@ -27,8 +27,6 @@ import UIKit
 
 import GoogleMaps
 
-import SwiftLocation
-
 import os.log
 import Promises
 import MatchingEngine
