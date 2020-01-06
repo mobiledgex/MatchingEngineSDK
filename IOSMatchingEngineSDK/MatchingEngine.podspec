@@ -32,7 +32,6 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
 
   s.source_files = 'MatchingEngine/Classes/**/*'
   
-  s.dependency 'NSLogger/Swift'
   s.dependency 'SwiftyJSON'
   s.dependency 'PromisesSwift'
   s.dependency 'Socket.IO-Client-Swift'

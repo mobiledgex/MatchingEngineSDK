@@ -25,7 +25,7 @@ import UIKit
 import GoogleMaps
 import GoogleSignIn
 
-import NSLogger
+import os.log
 import MatchingEngine
 
 @UIApplicationMain
@@ -61,24 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         GMSServices.provideAPIKey(kAPIKey) // for maps
         services = GMSServices.sharedServices()
 
-        // ---
-        // NSLogger options
-        
-        enum loggerOption : UInt32 {
-            case kLoggerOption_LogToConsole                        = 0x01
-            case kLoggerOption_BufferLogsUntilConnection            = 0x02
-            case kLoggerOption_BrowseBonjour                        = 0x04
-            case kLoggerOption_BrowseOnlyLocalDomain                = 0x08
-            case kLoggerOption_UseSSL                                = 0x10
-        };
-        
-        let options:UInt32 =
-            loggerOption.kLoggerOption_BufferLogsUntilConnection.rawValue
-                | loggerOption.kLoggerOption_BrowseBonjour.rawValue
-                |  loggerOption.kLoggerOption_BrowseOnlyLocalDomain.rawValue
-        let lptr :OpaquePointer? = nil
-        LoggerSetOptions( lptr,  options)
-        
         return true
     }
 

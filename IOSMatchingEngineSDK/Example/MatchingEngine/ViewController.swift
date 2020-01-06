@@ -22,7 +22,7 @@ import UIKit
 
 import GoogleMaps
 import Promises
-import NSLogger
+import os.log
 
 import DropDown
 
@@ -158,7 +158,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             }
         }
         guard let _ = carrierName else {
-            Logger.shared.log(.network, .debug, "Register Client needs a valid carrierName!")
+            os_log("Register Client needs a valid carrierName!", log: OSLog.default, type: .debug)
             return;
         }
         
@@ -172,10 +172,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                           request: registerClientRequest)
         .then { registerReply in
             // Update UI. The MatchingEngine SDK keeps track of details for next calls.
-            Logger.shared.log(.network, .debug, "RegisterReply: \(registerReply)")
+            os_log("RegisterReply: %@", log: OSLog.default, type: .debug, registerReply)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Client Registered"), object: nil)
         }.catch { error in
-            Logger.shared.log(.network, .debug, "RegisterReply Error: \(error)")
+            os_log("RegisterReply Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
         }
     }
     
@@ -211,7 +211,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "processAppInstList"), object: appInstList)
                 }
                 .catch { error in
-                    Logger.shared.log(.network, .info, "Error getting appInstList: \(error)")
+                    os_log("Error getting appInstList: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                 }
         }
         
@@ -469,11 +469,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
                     .then { registerClientReply in
-                        Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                        os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, registerClientReply)
                         SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                     }
                     .catch { error in
-                        Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                        os_log("RegisterClient Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                         SKToast.show(withMessage: "RegisterClient Error: \(error)")
                     }
                 } else {
@@ -481,11 +481,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         self!.registerPromise = try self!.matchingEngine.registerClient(
                             request: registerClientRequest)
                         .then { registerClientReply in
-                            Logger.shared.log(.network, .debug, "RegisterClientReply: \(registerClientReply)")
+                            os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, registerClientReply)
                             SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                         }
                         .catch { error in
-                            Logger.shared.log(.network, .debug, "RegisterClient Error: \(error)")
+                            os_log("RegisterClient Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "RegisterClient Error: \(error)")
                         }
                     } catch {
@@ -500,24 +500,24 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 if (self!.demo) {
                     self!.matchingEngine.getAppInstList(host: self!.demoHost, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
-                        Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
+                        os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, appInstListReply)
                         SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
                         // TODO: observers
                     }
                     .catch { error in
-                        Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                        os_log("appInstList Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                         SKToast.show(withMessage: "appInstList error: \(error)")
                     }
                 } else {
                     do {
                         try self!.matchingEngine.getAppInstList(request: appInstListRequest)
                         .then { appInstListReply in
-                            Logger.shared.log(.network, .debug, "appInstList Reply: \(appInstListReply)")
+                            os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, appInstListReply)
                             SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
                             // TODO: observers
                         }
                         .catch { error in
-                            Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                            os_log("appInstList Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "appInstList error: \(error)")
                         }
                     } catch {
@@ -542,24 +542,24 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     if (self!.demo) {
                         self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
                         .then { verifyLocationReply in
-                            Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
+                            os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, verifyLocationReply)
                             SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
                                 // TODO: observers
                         }
                         .catch { error in
-                            Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                            os_log("verifyLocation Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                         }
                     } else {
                         do {
                             self!.verifyLocationPromise = try self!.matchingEngine.verifyLocation(request: verifyLocRequest)
                             .then { verifyLocationReply in
-                                Logger.shared.log(.network, .debug, "verifyLocationReply: \(verifyLocationReply)")
+                                os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, verifyLocationReply)
                                 SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
                                     // TODO: observers
                             }
                             .catch { error in
-                                Logger.shared.log(.network, .debug, "verifyLocation Error: \(error)")
+                                os_log("verifyLocation Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                                 SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                             }
                         } catch {
@@ -585,22 +585,22 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 if (self!.demo) {
                     self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
                     .then { findCloudletReply in
-                        Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
+                        os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, findCloudletReply)
                         SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                     }
                     .catch { error in
-                        Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
+                        os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                         SKToast.show(withMessage: "findCloudlet error: \(error)")
                     }
                 } else {
                     do {
                         try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
                         .then { findCloudletReply in
-                            Logger.shared.log(.network, .debug, "findCloudlet Reply: \(findCloudletReply)")
+                            os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, findCloudletReply)
                             SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                         }
                         .catch { error in
-                            Logger.shared.log(.network, .debug, "findCloudlet Error: \(error)")
+                            os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "findCloudlet error: \(error)")
                         }
                     } catch {
@@ -620,22 +620,22 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 if (self!.demo) {
                     self!.matchingEngine.getQosKPIPosition(host: self!.demoHost, port: self!.port, request: getQoSPositionRequest)
                     .then { getQoSPositionReply in
-                        Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                        os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, getQoSPositionReply)
                         SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
                     }
                     .catch { error in
-                        Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
+                        os_log("getQoSPosition Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                         SKToast.show(withMessage: "getQoSPosition error: \(error)")
                     }
                 } else {
                     do {
                         try self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
                         .then { getQoSPositionReply in
-                            Logger.shared.log(.network, .debug, "getQoSPosition Reply: \(getQoSPositionReply)")
+                            os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, getQoSPositionReply)
                             SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
                         }
                         .catch { error in
-                            Logger.shared.log(.network, .debug, "getQoSPosition Error: \(error)")
+                            os_log("getQoSPosition Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "getQoSPosition error: \(error)")
                         }
                     } catch {

@@ -25,7 +25,7 @@ import AVFoundation
 import UIKit
 import Vision
 
-import NSLogger
+import os.log
 import Promises
 import MatchingEngine
 
@@ -64,7 +64,7 @@ class FaceDetectionViewController: UIViewController
     @IBOutlet var networkLatencyCloudLabel: UILabel! //
     @IBOutlet var networkLatencyEdgeLabel: UILabel! //
 
-    // @IBOutlet weak var faceRecognitonNameLabel: UILabel! // todo remove
+    // @IBOutlet weak var faceRecognitionNameLabel: UILabel! // todo remove
     @IBOutlet var faceRecognitonNameCloudLabel: UILabel! //
     @IBOutlet var faceRecognitonNameEdgeLabel: UILabel! //
 
@@ -272,26 +272,20 @@ class FaceDetectionViewController: UIViewController
         super.viewWillDisappear(animated)
         
         
-        if true
-        {
-            Logger.shared.log(.network, .info, "CLOUD \n" )
-            Logger.shared.log(.network, .info, "latency: \(latencyCloudLabel.text)) " )
-            Logger.shared.log(.network, .info, "latency rec:\(faceRecognitionLatencyCloudLabel.text)) " )
-           Logger.shared.log(.network, .info, "latency network \(networkLatencyCloudLabel.text)) " )
-            Logger.shared.log(.network, .info, " stddev\(stddevCloudLabel.text)) " )
-            Logger.shared.log(.network, .info, "name: \(faceRecognitonNameCloudLabel.text)) " )
+        os_log("CLOUD \n", log: OSLog.default, type: .debug)
+        os_log("latency: %@) ", log: OSLog.default, type: .debug, latencyCloudLabel.text ?? "")
+        os_log("latency rec: %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyCloudLabel.text ?? "")
+        os_log("latency network: %@) ", log: OSLog.default, type: .debug, networkLatencyCloudLabel.text ?? "")
+        os_log(" stddev: %@) ", log: OSLog.default, type: .debug, stddevCloudLabel.text ?? "")
+        os_log("name: %@) ", log: OSLog.default, type: .debug, faceRecognitonNameCloudLabel.text ?? "")
 
-        }
-        if true
-        {
-            Logger.shared.log(.network, .info, "EDGE \n" )
-            Logger.shared.log(.network, .info, "latency detect \(latencyEdgeLabel.text)) " )
-            Logger.shared.log(.network, .info, "latency rec \(faceRecognitionLatencyEdgeLabel.text)) " )
-            Logger.shared.log(.network, .info, "network latency \(networkLatencyEdgeLabel.text)) " )
-            Logger.shared.log(.network, .info, "name \(faceRecognitonNameEdgeLabel.text)) " )
-            Logger.shared.log(.network, .info, "stddev: \(stddevEdgeLabel.text)) " )
-            
-        }
+        os_log("EDGE \n", log: OSLog.default, type: .debug)
+        os_log("latency detect: %@) ", log: OSLog.default, type: .debug, latencyEdgeLabel.text ?? "")
+        os_log("latency rec %@) ", log: OSLog.default, type: .debug, faceRecognitionLatencyEdgeLabel.text ?? "")
+        os_log("network latency: %@) ", log: OSLog.default, type: .debug, networkLatencyEdgeLabel.text ?? "")
+        os_log("name %@) ", log: OSLog.default, type: .debug, faceRecognitonNameEdgeLabel.text ?? "")
+        os_log("stddev: %@) ", log: OSLog.default, type: .debug, stddevEdgeLabel.text ?? "")
+        
         
         UserDefaults.standard.set( "", forKey: "latencyCloud")
         UserDefaults.standard.set( "", forKey: "latencyEdge")
@@ -390,7 +384,7 @@ class FaceDetectionViewController: UIViewController
             defaultVideoDevice = (usingFrontCamera ? getFrontCamera() : getBackCamera())
 
             guard let _ = defaultVideoDevice else {
-                Logger.shared.log(.network, .info, "There is no available video capture device!")
+                os_log("There is no available video capture device!", log: OSLog.default, type: .debug)
                 setupResult = .configurationFailed
                 return
             }
@@ -1135,11 +1129,10 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
             }
             //Swift.print("-- \(faceDetectCount.add(0))")  // JT
             
-            // Log.logger.name = "FaceDetection"
             // logw("\FaceDetection result: \(registerClientReply)")
         }
         .catch { error in
-            Logger.shared.log(.network, .info, "Error encoutered for face detection on Edge: \(error)")
+            os_log("Error encoutered for face detection on Edge: %@", log: OSLog.default, type: .debug, error.localizedDescription)
         }
         .always {
             Swift.print("completion edge")
@@ -1182,11 +1175,10 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
                 
                // Swift.print("-X- \(faceDetectCount.add(0))")  // JT
                 
-                // Log.logger.name = "FaceDetection"
                 // logw("\FaceDetection result: \(registerClientReply)")
         }
         .catch { error in
-            Logger.shared.log(.network, .info, "FaceDetection failed with error: \(error)")
+            os_log("FaceDetection failed with error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
         }
         .always {
             Swift.print("completion Cloud")
