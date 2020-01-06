@@ -118,11 +118,12 @@ class ConnectionTests: XCTestCase {
     }
     
     // test this against google
+    @available(iOS 13.0, *)
     func testTCPTLSConnection() {
         let host = "google.com"
         let port = "443"
         // Bool states if Path is Satisfied and State is Ready -> successful connection
-        var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port)
+        var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port, timeout: 5)
 
         .then { c -> Promise<Bool> in
             let promiseInputs: Promise<Bool> = Promise<Bool>.pending()
@@ -365,6 +366,7 @@ class ConnectionTests: XCTestCase {
         return s!
     }
     
+    @available(iOS 13.0, *)
     func testTimeout() {
         let loc = ["longitude": -122.149349, "latitude": 37.459609]
         
@@ -391,7 +393,7 @@ class ConnectionTests: XCTestCase {
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in
-            if error as? PromiseError == PromiseError.timedOut {
+            if case GetConnectionError.connectionTimeout = error {
                 print("error is \(error)")
                 XCTAssert(true, "error is \(error)")
             } else {
