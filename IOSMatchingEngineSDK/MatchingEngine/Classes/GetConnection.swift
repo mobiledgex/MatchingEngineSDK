@@ -17,20 +17,20 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 import SocketIO
 import Network
 
 extension MatchingEngine {
     
-    public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<CFSocket> {
+    public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -39,19 +39,19 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getTCPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getTCPConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<Socket> {
+    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<Socket> {
         
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -59,21 +59,20 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDTCPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getBSDTCPConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
-    
-    @available(iOS 12.0, *)
-    public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<NWConnection> {
+        
+    @available(iOS 13.0, *)
+    public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        
-        // Check if valid timeout
+
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -81,21 +80,22 @@ extension MatchingEngine {
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            
             // call helper function and timeout
-            return getTCPTLSConnection(host: host, port: port).timeout(TimeInterval(timeout))
-        } catch {
+            return self.getTCPTLSConnection(host: host, port: port, timeout: timeout)
+        } catch { // catch getPort and contructHost errors
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<CFSocket> {
+    public func getUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -104,20 +104,20 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getUDPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getUDPConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<Socket> {
+    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<Socket> {
         
         let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -126,21 +126,21 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDUDPConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getBSDUDPConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    @available(iOS 12.0, *)
-    public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<NWConnection> {
+    @available(iOS 13.0, *)
+    public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -148,21 +148,22 @@ extension MatchingEngine {
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            
             // call helper function and timeout
-            return getUDPDTLSConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return self.getUDPDTLSConnection(host: host, port: port, timeout: timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getHTTPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<URLRequest> {
+    public func getHTTPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -171,25 +172,25 @@ extension MatchingEngine {
             var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
             uri = "http://" + uri
             guard let url = URL(string: uri) else {
-                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
                 return promiseInputs
             }
             // call helper function and timeout
-            return getHTTPClient(url: url).timeout(TimeInterval(timeout))
+            return getHTTPClient(url: url).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getHTTPSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<URLRequest> {
+    public func getHTTPSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -198,25 +199,25 @@ extension MatchingEngine {
             var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
             uri = "https://" + uri
             guard let url = URL(string: uri) else {
-                Logger.shared.log(.network, .debug, "Unable to create URL struct")
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
                 return promiseInputs
             }
             // call helper function and timeout
-            return getHTTPClient(url: url).timeout(TimeInterval(timeout))
+            return getHTTPClient(url: url).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<SocketManager> {
+    public func getWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -225,20 +226,20 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getWebsocketConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getWebsocketConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
     }
     
-    public func getSecureWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Int) -> Promise<SocketManager> {
+    public func getSecureWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {
-            Logger.shared.log(.network, .debug, "Invalid timeout: \(timeout)")
+            os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
@@ -247,7 +248,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getSecureWebsocketConnection(host: host, port: port).timeout(TimeInterval(timeout))
+            return getSecureWebsocketConnection(host: host, port: port).timeout(timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -257,11 +258,11 @@ extension MatchingEngine {
     private func constructHost(findCloudletReply: [String: AnyObject], appPort: [String: Any]) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
         }
         guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
         }
         
@@ -273,7 +274,7 @@ extension MatchingEngine {
         var port: String
         
         guard let publicPortAny = appPort[Ports.public_port] else {
-            Logger.shared.log(.network, .debug, "Unable to cast public port as String")
+            os_log("Unable to cast public port as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast public port as String")
         }
         let publicPort = String(describing: publicPortAny)
@@ -288,7 +289,7 @@ extension MatchingEngine {
         do {
             let _ = try self.isInPortRange(appPort: appPort, port: desiredPort)
         } catch {
-            Logger.shared.log(.network, .debug, "Port range check error")
+            os_log("Port range check error", log: OSLog.default, type: .debug)
             throw error
         }
         return port
@@ -297,15 +298,15 @@ extension MatchingEngine {
     private func constructHTTPUri(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn prefix as String")
+            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
         }
         guard let fqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast fqdn as String")
+            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
         }
         guard let pathPrefix = appPort[Ports.path_prefix] as? String else {
-            Logger.shared.log(.network, .debug, "Unable to cast path prefix as String")
+            os_log("Unable to cast path prefix as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to case path prefix as String")
         }
         

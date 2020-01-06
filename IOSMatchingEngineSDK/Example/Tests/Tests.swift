@@ -86,16 +86,10 @@ class Tests: XCTestCase {
 
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
-        //do {
-            replyPromise = matchingEngine.registerClient(request: request)
-                .catch { error in
-                    XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
-            }
-        /*replyPromise = matchingEngine.registerClient(host: "262-01.global.dme.mobiledgex.net", port: 38001, request: request)
-            .catch { error in
-                XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
-            }*/
-        
+        replyPromise = matchingEngine.registerClient(request: request)
+        .catch { error in
+            XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
+        }
         XCTAssert(waitForPromises(timeout: 10))
         guard let promiseValue = replyPromise.value else {
             XCTAssert(false, "Register did not return a value.")

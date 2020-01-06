@@ -17,139 +17,111 @@
 //
 
 import Foundation
-import NSLogger
+import os.log
 import Promises
 import SocketIO
-import Network
 
 extension MatchingEngine {
     
     // Returns TCP CFSocket promise
-    public func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
+    func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
     {
-        let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
-        }
+        let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
+            
+            // local ip bind to cellular network interface
+            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
+                reject(GetConnectionError.invalidNetworkInterface)
+                return
+            }
         
-        // initialize CFSocket (no callbacks provided -> developer will implement)
-        guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, nil, nil) else {
-            promiseInputs.reject(GetConnectionError.unableToCreateSocket)
-            return promiseInputs
-        }
-        // initialize addrinfo fields, depending on protocol
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
+            // initialize CFSocket (no callbacks provided -> developer will implement)
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, nil, nil) else {
+                reject(GetConnectionError.unableToCreateSocket)
+                return
+            }
+            // initialize addrinfo fields, depending on protocol
+            var addrInfo = addrinfo.init()
+            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+            addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
         
-        return connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
-    }
-    
-    // returns a TCP NWConnection promise
-    @available(iOS 12.0, *)
-    public func getTCPTLSConnection(host: String, port: String) -> Promise<NWConnection>
-    {
-        let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
+            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
+            .then { socket in
+                    fulfill(socket)
+            }.catch { error in
+                reject(error)
+            }
         }
-        
-        let localEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
-        let serverEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!)
-        // default tls and tcp options, developer can adjust
-        let parameters = NWParameters(tls: .init(), tcp: .init())
-        // bind to specific local cellular ip
-        parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
-        parameters.requiredLocalEndpoint = localEndpoint
-        // create NWConnection object with connection to server host and port
-        let nwConnection = NWConnection(to: serverEndpoint, using: parameters)
-        //ensureStateAndPathReady(connection: nwConnection)
-        promiseInputs.fulfill(nwConnection)
-        return promiseInputs
+        return promise
     }
     
     // Returns UDP CFSocket promise
-    public func getUDPConnection(host: String, port: String) -> Promise<CFSocket>
+    func getUDPConnection(host: String, port: String) -> Promise<CFSocket>
     {
-        let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
-        }
+        let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
+            
+            // local ip bind to cellular network interface
+            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
+                reject(GetConnectionError.invalidNetworkInterface)
+                return
+            }
         
-        // initialize socket (no callbacks provided -> developer will implement)
-        guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, nil, nil) else {
-            promiseInputs.reject(GetConnectionError.unableToCreateSocket)
-            return promiseInputs
-        }
-        // initialize addrinfo fields, depending on protocol
-        var addrInfo = addrinfo.init()
-        addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-        addrInfo.ai_socktype = SOCK_DGRAM // UDP datagrams
+            // initialize socket (no callbacks provided -> developer will implement)
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, nil, nil) else {
+                reject(GetConnectionError.unableToCreateSocket)
+                return
+            }
+            // initialize addrinfo fields, depending on protocol
+            var addrInfo = addrinfo.init()
+            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+            addrInfo.ai_socktype = SOCK_DGRAM // UDP datagrams
                         
-        return connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
-    }
-    
-    // returns a UDP NWConnection promise
-    @available(iOS 12.0, *)
-    public func getUDPDTLSConnection(host: String, port: String) -> Promise<NWConnection>
-    {
-        let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        // local ip bind to cellular network interface
-        guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
-            Logger.shared.log(.network, .debug, "Cannot get ip address with specified network interface")
-            promiseInputs.reject(GetConnectionError.invalidNetworkInterface)
-            return promiseInputs
+            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
+            .then { socket in
+                    fulfill(socket)
+            }.catch { error in
+                reject(error)
+            }
         }
-        
-        // default tls and tcp options
-        let parameters = NWParameters(dtls: .init(), udp: .init())
-        // bind to specific cellular ip
-        parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
-        parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
-        let nwConnection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!, using: parameters)
-        
-        promiseInputs.fulfill(nwConnection)
-        return promiseInputs
+        return promise
     }
     
-    public func getHTTPClient(url: URL) -> Promise<URLRequest>
+    func getHTTPClient(url: URL) -> Promise<URLRequest>
     {
-        let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
-        var urlRequest = URLRequest(url: url)
-        urlRequest.allowsCellularAccess = true
-        promiseInputs.fulfill(urlRequest)
-        return promiseInputs
-    }
-    
-    // Returns SocketIOClient promise
-    public func getWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
-    {
-        let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
-        
-        let url = "ws://\(host):\(port)/"
-        let manager = SocketManager(socketURL: URL(string: url)!)
-        promiseInputs.fulfill(manager)
-        return promiseInputs
+        let promise = Promise<URLRequest>(on: .global(qos: .background)) { fulfill, reject in
+            guard let host = url.host else {
+                reject(GetConnectionError.incorrectURLSyntax)
+                return
+            }
+            // DNS lookup
+            do {
+                try MexUtil.shared.verifyDmeHost(host: host)
+            } catch {
+                reject(error)
+            }
+            var urlRequest = URLRequest(url: url)
+            urlRequest.allowsCellularAccess = true
+            fulfill(urlRequest)
+        }
+        return promise
     }
     
     // Returns SocketIOClient promise
-    public func getSecureWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
+    func getWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
     {
-        let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
-        
-        let url = "wss://\(host):\(port)/"
-        let manager = SocketManager(socketURL: URL(string: url)!)
-        promiseInputs.fulfill(manager)
-        return promiseInputs
+        let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
+            // DNS Lookup
+            do {
+                try MexUtil.shared.verifyDmeHost(host: host)
+            } catch {
+                reject(error)
+            }
+            let url = "ws://\(host):\(port)/"
+            let manager = SocketManager(socketURL: URL(string: url)!)
+            fulfill(manager)
+        }
+        return promise
     }
     
     // Connect CFSocket to given host and port and bind to cellular interface
@@ -195,7 +167,7 @@ extension MatchingEngine {
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
                 let sysError = SystemError.getaddrinfo(error, errno)
-                Logger.shared.log(.network, .debug, "Get addrinfo error is \(sysError)")
+                os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }
             fulfill(res.pointee.ai_addr)
