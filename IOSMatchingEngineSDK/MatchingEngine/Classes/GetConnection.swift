@@ -66,7 +66,7 @@ extension MatchingEngine {
         }
     }
         
-    @available(iOS 12.0, *)
+    @available(iOS 13.0, *)
     public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
@@ -82,17 +82,7 @@ extension MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            self.getTCPTLSConnection(host: host, port: port).timeout(timeout)
-            .then { connection in
-                promiseInputs.fulfill(connection)
-            }.catch { error in
-                if error as? PromiseError == PromiseError.timedOut {
-                    self.timedOut = true // signal to while loop that function timed out
-                }
-                promiseInputs.reject(error)
-            }
-            return promiseInputs
-            
+            return self.getTCPTLSConnection(host: host, port: port, timeout: timeout)
         } catch { // catch getPort and contructHost errors
             promiseInputs.reject(error)
             return promiseInputs
@@ -143,7 +133,7 @@ extension MatchingEngine {
         }
     }
     
-    @available(iOS 12.0, *)
+    @available(iOS 13.0, *)
     public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
@@ -160,17 +150,7 @@ extension MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            self.getUDPDTLSConnection(host: host, port: port).timeout(timeout)
-            .then { connection in
-                promiseInputs.fulfill(connection)
-            }.catch { error in
-                if error as? PromiseError == PromiseError.timedOut {
-                    self.timedOut = true // signal to while loop that function timed out
-                }
-                promiseInputs.reject(error)
-            }
-            return promiseInputs
-            
+            return self.getUDPDTLSConnection(host: host, port: port, timeout: timeout)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

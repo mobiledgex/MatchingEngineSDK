@@ -25,8 +25,8 @@ import SocketIO
 extension MatchingEngine {
     
     // returns a TCP NWConnection promise
-    @available(iOS 12.0, *)
-    func getTCPTLSConnection(host: String, port: String) -> Promise<NWConnection>
+    @available(iOS 13.0, *)
+    func getTCPTLSConnection(host: String, port: String, timeout: Double) -> Promise<NWConnection>
     {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
 
@@ -47,9 +47,15 @@ extension MatchingEngine {
             parameters.requiredLocalEndpoint = localEndpoint
             // create NWConnection object with connection to server host and port
             let nwConnection = NWConnection(to: serverEndpoint, using: parameters)
-        
+            
+            let semaphore = DispatchSemaphore(value: 0)
+            self.setUpStateHandler(connection: nwConnection, semaphore: semaphore)
+
             nwConnection.start(queue: DispatchQueue.global(qos: .background))
-            self.checkPathAndState(connection: nwConnection)
+            
+            if semaphore.wait(timeout: .now() + timeout) == .timedOut {
+                reject(GetConnectionError.connectionTimeout)
+            }
             
             fulfill(nwConnection)
         }
@@ -57,8 +63,8 @@ extension MatchingEngine {
     }
     
     // returns a UDP NWConnection promise
-    @available(iOS 12.0, *)
-    func getUDPDTLSConnection(host: String, port: String) -> Promise<NWConnection>
+    @available(iOS 13.0, *)
+    func getUDPDTLSConnection(host: String, port: String, timeout: Double) -> Promise<NWConnection>
     {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
             // local ip bind to cellular network interface
@@ -74,9 +80,15 @@ extension MatchingEngine {
             parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
             parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
             let nwConnection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!, using: parameters)
-        
+            
+            let semaphore = DispatchSemaphore(value: 0)
+            self.setUpStateHandler(connection: nwConnection, semaphore: semaphore)
+            
             nwConnection.start(queue: DispatchQueue.global(qos: .background))
-            self.checkPathAndState(connection: nwConnection)
+            
+            if semaphore.wait(timeout: .now() + timeout) == .timedOut {
+                reject(GetConnectionError.connectionTimeout)
+            }
             
             fulfill(nwConnection)
         }
@@ -101,17 +113,15 @@ extension MatchingEngine {
         return promise
     }
     
-    // Helper function to check NWConnection State and and Path State
-    @available(iOS 12.0, *)
-    private func checkPathAndState(connection: NWConnection) {
-        // If Path exists and the state is ready, the connection has been made
-        while(connection.currentPath == nil || connection.state != .ready) {
-            if timedOut {
-                timedOut = false // reset timeout
-                connection.cancel()
-                break
+    @available(iOS 13.0, *)
+    private func setUpStateHandler(connection: NWConnection, semaphore: DispatchSemaphore) {
+        connection.stateUpdateHandler = { state in
+            switch state {
+            case .ready:
+                semaphore.signal()
+            default:
+                print("state update is \(state)")
             }
-            print("currentPath is \(connection.currentPath) and currentState is \(connection.state)")
         }
     }
 }
