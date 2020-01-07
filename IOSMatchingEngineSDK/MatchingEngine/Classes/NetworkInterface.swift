@@ -26,7 +26,7 @@ public class NetworkInterface {
 extension MatchingEngine {
     
     // Returns true if device has wifi interface (ie. on wifi network)
-    public func isWifi() -> Bool {
+    public func hasWifiInterface() -> Bool {
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0 else { return false }
@@ -49,7 +49,7 @@ extension MatchingEngine {
     }
     
     // Returns true if device has cellular interface
-    public func isCellular() -> Bool {
+    public func hasCellularInterface() -> Bool {
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0 else { return false }
