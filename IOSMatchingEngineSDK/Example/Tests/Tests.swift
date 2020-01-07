@@ -299,4 +299,9 @@ class Tests: XCTestCase {
         XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "AddUserToGroup Failed.")
         XCTAssertNil(replyPromise.error)
     }
+    
+    func testGetCarrierName() {
+        let carrierName = matchingEngine.getCarrierName()
+        XCTAssert(carrierName == "telecom.de", "Incorrect carrier name \(carrierName)")
+    }
 }
