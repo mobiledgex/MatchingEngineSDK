@@ -35,6 +35,6 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.dependency 'SwiftyJSON', '~> 5.0.0'
   s.dependency 'PromisesSwift', '~> 1.2.8'
   s.dependency 'Socket.IO-Client-Swift', '~> 15.2.0'
- 
+  
   s.swift_version = '4.2'
 end

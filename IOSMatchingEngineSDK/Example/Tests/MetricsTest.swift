@@ -41,13 +41,22 @@ class MetricsTest: XCTestCase {
     
     @available(iOS 13.0, *)
     func testNetTest() {
-        let site1 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "1", port: "1")
-        let site2 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "2", port: "2")
-        let sites = [site1, site2]
+        // Initialize sites
+        let site1 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site2 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "mextest-app-cluster.fairview-main.gddt.mobiledgex.net", port: "3001", testType: PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
+        let site3 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "www.google.com", port: "443", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        // put sites in an array
+        let sites = [site1, site2, site3]
+        // Initialize NetTest and run in background
         let netTest = PerformanceMetrics.NetTest(sites: sites)
-        netTest.runTest(interval: 1000)
+        netTest.runTest(interval: 100)
         
         sleep(10)
+        
+        XCTAssert(site1.avg > 0 && site1.stdDev != nil, "No data from site1")
+        XCTAssert(site2.avg > 0 && site2.stdDev != nil, "No data from site2")
+        XCTAssert(site3.avg > 0 && site3.stdDev != nil, "No data from site3")
+    
+        netTest.cancelTest()
     }
-
 }
