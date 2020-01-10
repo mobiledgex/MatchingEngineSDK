@@ -19,14 +19,12 @@
 import Foundation
 
 public class NetworkInterface {
+    
     public static let CELLULAR = "pdp_ip0"
     public static let WIFI = "en0"
-}
-
-extension MatchingEngine {
     
     // Returns true if device has wifi interface (ie. on wifi network)
-    public func hasWifiInterface() -> Bool {
+    public static func hasWifiInterface() -> Bool {
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0 else { return false }
@@ -49,7 +47,7 @@ extension MatchingEngine {
     }
     
     // Returns true if device has cellular interface
-    public func hasCellularInterface() -> Bool {
+    public static func hasCellularInterface() -> Bool {
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0 else { return false }
@@ -70,7 +68,7 @@ extension MatchingEngine {
     
     // Gets the client IP Address on the interface specified
     // TODO: check for multiple cellular ip addresses (multiple SIM subscriptions possible)
-    public func getIPAddress(netInterfaceType: String?) -> String?
+    public static func getIPAddress(netInterfaceType: String?) -> String?
     {
         var specifiedNetInterface: Bool
         if netInterfaceType == nil {
@@ -104,6 +102,4 @@ extension MatchingEngine {
         freeifaddrs(ifaddr)
         return address
     }
-    
-    
 }

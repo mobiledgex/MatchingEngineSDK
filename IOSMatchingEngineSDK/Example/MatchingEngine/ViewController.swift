@@ -177,16 +177,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }.catch { error in
             os_log("RegisterReply Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
         }
-                
-        let site1 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "1", port: "1")
-        let site2 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "2", port: "2")
-        let sites = [site1, site2]
-        let netTest = PerformanceMetrics.NetTest(sites: sites)
-        if #available(iOS 13.0, *) {
-            netTest.runTest(interval: 1000)
-        } else {
-            print("outdated ios")
-        }
     }
     
     func getInitialLatencies()
