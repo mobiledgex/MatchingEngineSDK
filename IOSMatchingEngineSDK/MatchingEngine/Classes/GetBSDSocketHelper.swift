@@ -85,7 +85,7 @@ extension MatchingEngine {
         // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
         var res: UnsafeMutablePointer<addrinfo>!
         // getaddrinfo function makes ip + port conversion to sockaddr easy
-        let error = getaddrinfo(clientIP, port, addrInfo, &res)
+        let error = getaddrinfo(clientIP, nil, addrInfo, &res)
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)
             os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
