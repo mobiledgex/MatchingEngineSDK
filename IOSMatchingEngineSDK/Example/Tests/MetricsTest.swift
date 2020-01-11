@@ -44,14 +44,18 @@ class MetricsTest: XCTestCase {
         // Initialize sites
         let site1 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         let site2 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "mextest-app-cluster.fairview-main.gddt.mobiledgex.net", port: "3001", testType: PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
-        let site3 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "www.google.com", port: "443", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site3 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "google.com", port: "443", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         // put sites in an array
-        let sites = [site1, site2, site3]
+        let sites = [site1, site2]
         // Initialize NetTest and run in background
         let netTest = PerformanceMetrics.NetTest(sites: sites)
         netTest.runTest(interval: 100)
         
-        sleep(10)
+        sleep(5)
+        
+        netTest.sites.append(site3)
+        
+        sleep(5)
         
         // Make sure avg and stdDev are populated
         XCTAssert(site1.avg > 0 && site1.stdDev != nil, "No data from site1")
