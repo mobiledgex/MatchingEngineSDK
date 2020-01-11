@@ -53,7 +53,7 @@ class MetricsTest: XCTestCase {
         
         sleep(5)
         
-        netTest.sites.append(site3)
+        netTest.addSite(site: site3)
         
         sleep(5)
         

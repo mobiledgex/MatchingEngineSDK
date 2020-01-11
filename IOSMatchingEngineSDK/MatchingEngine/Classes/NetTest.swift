@@ -81,9 +81,6 @@ public class PerformanceMetrics {
                 removed = samples.remove(at: 0)
             }
             updateStats(removedVal: removed)
-            
-            let h = l7Path != nil ? l7Path : host
-            print("avg at site \(h) is \(avg)")
         }
         
         private func updateStats(removedVal: Double?) {
@@ -162,8 +159,9 @@ public class PerformanceMetrics {
         
         var netTestDispatchQueue: DispatchQueue?
         public var sites: [Site]
-        public var test: Cancellable?
+        public var tests: [AnyCancellable]
         public var timeout = 5.0
+        var interval: Int?
         
         let NANO_TO_MILLI = 1.0 / 1000000.0
         
@@ -175,13 +173,15 @@ public class PerformanceMetrics {
         public init(sites: [Site]) {
             self.sites = sites
             netTestDispatchQueue = DispatchQueue(label: "nettest.queue", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
+            tests = [AnyCancellable]()
         }
 
         // interval in milliseconds
         public func runTest(interval: Int) {
-            self.test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
-            {
-                for site in self.sites {
+            self.interval = interval
+            for site in sites {
+                let test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
+                {
                     switch site.testType {
                     case .CONNECT:
                         if site.l7Path != nil {
@@ -197,16 +197,36 @@ public class PerformanceMetrics {
                             self.connectAndDisconnectSocket(site: site)
                         }
                     }
-                }
-            })
+                })
+                test.store(in: &tests)
+            }
         }
         
         public func cancelTest() {
-            guard let test = self.test else {
-                os_log("No test to cancel", log: OSLog.default, type: .debug)
+            for test in tests {
+                test.cancel()
+            }
+            tests.removeAll()
+        }
+        
+        public func addSite(site: Site) {
+            self.sites.append(site)
+            guard let interval = self.interval else {
                 return
             }
-            test.cancel()
+            self.cancelTest()
+            self.runTest(interval: interval)
+        }
+        
+        public func removeSite(site: Site) {
+            if let idx = sites.firstIndex(of: site) {
+                self.sites.remove(at: idx)
+            }
+            guard let interval = self.interval else {
+                return
+            }
+            self.cancelTest()
+            self.runTest(interval: interval)
         }
         
         public func connectAndDisconnect(site: Site) {
@@ -334,5 +354,15 @@ public class PerformanceMetrics {
             let elapsedTime = after.uptimeNanoseconds - before.uptimeNanoseconds
             site.addSample(sample: Double(elapsedTime) * self.NANO_TO_MILLI) // convert to milliseconds
         }
+    }
+}
+
+@available(iOS 13.0, *)
+extension PerformanceMetrics.Site: Equatable {
+    public static func == (lhs: PerformanceMetrics.Site, rhs: PerformanceMetrics.Site) -> Bool {
+        return
+            lhs.l7Path == rhs.l7Path &&
+            lhs.host == rhs.host &&
+            lhs.port == rhs.port
     }
 }
