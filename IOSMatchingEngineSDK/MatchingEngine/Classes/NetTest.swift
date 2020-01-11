@@ -326,6 +326,9 @@ public class PerformanceMetrics {
                 return
             }
             
+            close(s)
+            close(serverSocket)
+            
             let elapsedTime = after.uptimeNanoseconds - before.uptimeNanoseconds
             site.addSample(sample: Double(elapsedTime) * self.NANO_TO_MILLI) // convert to milliseconds
         }
