@@ -81,6 +81,9 @@ public class PerformanceMetrics {
                 removed = samples.remove(at: 0)
             }
             updateStats(removedVal: removed)
+            
+            let h = l7Path != nil ? l7Path : host
+            print("avg at site \(h) is \(avg)")
         }
         
         private func updateStats(removedVal: Double?) {
@@ -159,7 +162,7 @@ public class PerformanceMetrics {
         
         var netTestDispatchQueue: DispatchQueue?
         public var sites: [Site]
-        public var tests: [AnyCancellable]
+        public var test: Cancellable?
         public var timeout = 5.0
         
         let NANO_TO_MILLI = 1.0 / 1000000.0
@@ -172,14 +175,13 @@ public class PerformanceMetrics {
         public init(sites: [Site]) {
             self.sites = sites
             netTestDispatchQueue = DispatchQueue(label: "nettest.queue", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
-            tests = [AnyCancellable]()
         }
 
         // interval in milliseconds
         public func runTest(interval: Int) {
-            for site in sites {
-                let test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
-                {
+            self.test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
+            {
+                for site in self.sites {
                     switch site.testType {
                     case .CONNECT:
                         if site.l7Path != nil {
@@ -195,16 +197,16 @@ public class PerformanceMetrics {
                             self.connectAndDisconnectSocket(site: site)
                         }
                     }
-                })
-                test.store(in: &tests)
-            }
+                }
+            })
         }
         
         public func cancelTest() {
-            for test in tests {
-                test.cancel()
+            guard let test = self.test else {
+                os_log("No test to cancel", log: OSLog.default, type: .debug)
+                return
             }
-            tests.removeAll()
+            test.cancel()
         }
         
         public func connectAndDisconnect(site: Site) {
