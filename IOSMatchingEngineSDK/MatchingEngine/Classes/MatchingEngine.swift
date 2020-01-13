@@ -224,8 +224,8 @@ public class MatchingEngine
         if let carrierNames = getCarrierNames()
         {
             var firstName: String? = nil
-            for (name, _) in carrierNames { // Dictionary.
-                firstName = name;
+            for (_, ctcarrier) in carrierNames { // Dictionary.
+                firstName = ctcarrier.carrierName
                 break
             }
             return firstName;
@@ -434,7 +434,7 @@ public class MexUtil // common to Mex... below
         var addrInfo = addrinfo.init()
         var result: UnsafeMutablePointer<addrinfo>!
         
-        //getaddrinfo function makes ip + port conversion to sockaddr easy
+        // getaddrinfo function makes ip + port conversion to sockaddr easy
         let error = getaddrinfo(host, nil, &addrInfo, &result)
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)

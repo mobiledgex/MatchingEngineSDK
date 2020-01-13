@@ -32,17 +32,9 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
 
   s.source_files = 'MatchingEngine/Classes/**/*'
   
-  s.dependency 'SwiftyJSON'
-  s.dependency 'PromisesSwift'
-  s.dependency 'Socket.IO-Client-Swift'
- 
-  # s.resource_bundles = {
-  #   'MatchingEngine' => ['MatchingEngine/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
-
+  s.dependency 'SwiftyJSON', '~> 5.0.0'
+  s.dependency 'PromisesSwift', '~> 1.2.8'
+  s.dependency 'Socket.IO-Client-Swift', '~> 15.2.0'
+  
   s.swift_version = '4.2'
 end

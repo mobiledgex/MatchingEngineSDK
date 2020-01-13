@@ -1,64 +1,65 @@
 PODS:
+  - AppAuth (1.3.0):
+    - AppAuth/Core (= 1.3.0)
+    - AppAuth/ExternalUserAgent (= 1.3.0)
+  - AppAuth/Core (1.3.0)
+  - AppAuth/ExternalUserAgent (1.3.0)
   - DropDown (2.3.13)
-  - GoogleMaps (3.3.0):
-    - GoogleMaps/Maps (= 3.3.0)
-  - GoogleMaps/Base (3.3.0)
-  - GoogleMaps/Maps (3.3.0):
+  - GoogleMaps (3.6.0):
+    - GoogleMaps/Maps (= 3.6.0)
+  - GoogleMaps/Base (3.6.0)
+  - GoogleMaps/Maps (3.6.0):
     - GoogleMaps/Base
-  - GoogleSignIn (4.4.0):
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.2.1):
-    - GoogleToolboxForMac/Defines (= 2.2.1)
-  - GoogleToolboxForMac/Defines (2.2.1)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
-    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
-    - GoogleToolboxForMac/Defines (= 2.2.1)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
-  - GTMSessionFetcher/Core (1.2.2)
+  - GTMAppAuth (1.0.0):
+    - AppAuth/Core (~> 1.0)
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.3.0):
+    - GTMSessionFetcher/Full (= 1.3.0)
+  - GTMSessionFetcher/Core (1.3.0)
+  - GTMSessionFetcher/Full (1.3.0):
+    - GTMSessionFetcher/Core (= 1.3.0)
   - MatchingEngine (1.4.2.3):
-    - PromisesSwift
-    - Socket.IO-Client-Swift
-    - SwiftyJSON
+    - PromisesSwift (~> 1.2.8)
+    - Socket.IO-Client-Swift (~> 15.2.0)
+    - SwiftyJSON (~> 5.0.0)
   - PromisesObjC (1.2.8)
   - PromisesSwift (1.2.8):
     - PromisesObjC (= 1.2.8)
   - Socket.IO-Client-Swift (15.2.0):
     - Starscream (~> 3.1)
-  - SPPermission (2.9)
+  - SPPermissions/Camera (5.2.5):
+    - SPPermissions/Core
+  - SPPermissions/Core (5.2.5)
+  - SPPermissions/Location (5.2.5):
+    - SPPermissions/Core
   - Starscream (3.1.1)
-  - SwiftLocation (4.0.2)
-  - SwiftLog (1.0.0)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
-  - DropDown
-  - GoogleMaps (= 3.3.0)
-  - GoogleSignIn
+  - DropDown (= 2.3.13)
+  - GoogleMaps (= 3.6.0)
+  - GoogleSignIn (= 5.0.2)
   - MatchingEngine (from `../`)
-  - PromisesSwift
-  - Socket.IO-Client-Swift
-  - SPPermission
-  - SwiftLocation
-  - SwiftLog
-  - SwiftyJSON
+  - SPPermissions/Camera (= 5.2.5)
+  - SPPermissions/Location (= 5.2.5)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AppAuth
     - DropDown
     - GoogleMaps
     - GoogleSignIn
-    - GoogleToolboxForMac
+    - GTMAppAuth
     - GTMSessionFetcher
     - PromisesObjC
     - PromisesSwift
     - Socket.IO-Client-Swift
-    - SPPermission
+    - SPPermissions
     - Starscream
-    - SwiftLocation
-    - SwiftLog
     - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -66,21 +67,20 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
-  GoogleMaps: cfee83da305b9aaeccf92c24ac79df11c3003492
-  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
-  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  MatchingEngine: d5ad147565d31dfdb2f86103b395ba311281462e
+  GoogleMaps: 82f8fe307193bb4de6ef6bf9e88f1d624b718f9d
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
+  GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
+  MatchingEngine: e2471fda96d8a547f3106f69b463a20d20c16e21
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
-  SPPermission: 0d9649a0fa3a3d308eb787da6780ed3abdd83cab
+  SPPermissions: d3ec7baf5865e152057a2352cff075333e19042f
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
-  SwiftLocation: 4f030832331a21abaa4e0c5189d0f80ab8d3e377
-  SwiftLog: f6c4f9a4ade06263555ab34b2c0f72025ffcda9e
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 02376d61309b52a2bcd127fb5c3411d6befb0abf
+PODFILE CHECKSUM: 34a4c939ef2a070bb632c64ac00ad83cedb5224c
 
 COCOAPODS: 1.8.4

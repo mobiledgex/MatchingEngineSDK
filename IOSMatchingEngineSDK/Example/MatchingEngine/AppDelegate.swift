@@ -66,9 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(_: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool
     {
         // Swift.print("\(#function)")
-        return GIDSignIn.sharedInstance().handle(url as URL?,
-                                                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-                                                 annotation: options[UIApplication.OpenURLOptionsKey.annotation])
+        return GIDSignIn.sharedInstance().handle(url as URL?)
     }
 
 
