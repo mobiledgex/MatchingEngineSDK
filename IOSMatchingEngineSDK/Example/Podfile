@@ -10,18 +10,13 @@ source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
 target 'MatchingEngine_Example' do
   pod 'MatchingEngine', :path => '../'
  
-  pod 'PromisesSwift'
-  pod 'Socket.IO-Client-Swift'
-  pod 'DropDown'
-  pod 'SwiftLocation'
-  pod 'SwiftyJSON'
+  pod 'DropDown', '= 2.3.13'
   
-  pod 'GoogleMaps', '= 3.3.0'
-  pod 'GoogleSignIn'
+  pod 'GoogleMaps', '= 3.6.0'
+  pod 'GoogleSignIn', '= 5.0.2'
 
-  pod 'SwiftLog'
-  
-  pod 'SPPermission'
+  pod 'SPPermissions/Camera', '= 5.2.5'
+  pod 'SPPermissions/Location', '= 5.2.5'
   
   target 'MatchingEngine_Tests' do
     inherit! :search_paths
