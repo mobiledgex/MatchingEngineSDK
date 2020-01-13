@@ -43,13 +43,13 @@ extension MatchingEngine {
     /// - Parameters:
     ///   - carrierName: carrierName description
     /// - Returns: API  Dictionary/json
-    public func createGetLocationRequest(carrierName: String) -> [String: Any]
+    public func createGetLocationRequest(carrierName: String?) -> [String: Any]
     {
         var getLocationRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
         getLocationRequest[GetLocationRequest.ver] = 1
         getLocationRequest[GetLocationRequest.session_cookie] = self.state.getSessionCookie()
-        getLocationRequest[GetLocationRequest.carrier_name] = carrierName
+        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
         
         return getLocationRequest
     }
@@ -75,11 +75,7 @@ extension MatchingEngine {
         os_log("getLocation", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
+        let carrierName = state.carrierName
         
         var host: String
         do {

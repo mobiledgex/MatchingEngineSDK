@@ -187,7 +187,6 @@ class ConnectionTests: XCTestCase {
             manager = m
             socket = manager.defaultSocket
             socket.on(clientEvent: .connect) { data, ack in
-                print("connected")
                 connected = true
             }
             socket.connect()
@@ -275,7 +274,7 @@ class ConnectionTests: XCTestCase {
     func testGetConnectionWorkflow() {
         let loc = ["longitude": -122.149349, "latitude": 37.459609]
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", authToken: nil, gpsLocation: loc)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: nil, authToken: nil, gpsLocation: loc)
             
         .then { findCloudletReply -> Promise<Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
