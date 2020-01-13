@@ -47,16 +47,16 @@ class ConnectionTests: XCTestCase {
     }
     
     func testIsCellular() {
-        let isCellular = matchingEngine.isCellular()
-        if !isCellular {
+        let hasCellular = NetworkInterface.hasCellularInterface()
+        if !hasCellular {
             XCTAssert(false, "Failed")
         }
     }
     
     func testIsWifi() {
         let wifiOn = true // tester specifies this
-        let isWifi = matchingEngine.isWifi()
-        if isWifi != wifiOn {
+        let hasWifi = NetworkInterface.hasWifiInterface()
+        if hasWifi != wifiOn {
             XCTAssert(false, "Failed")
         }
     }

@@ -31,7 +31,7 @@ extension MatchingEngine {
     {
         let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
             
-            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -56,7 +56,7 @@ extension MatchingEngine {
     {
         let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
             
-            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -85,7 +85,7 @@ extension MatchingEngine {
         // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
         var res: UnsafeMutablePointer<addrinfo>!
         // getaddrinfo function makes ip + port conversion to sockaddr easy
-        let error = getaddrinfo(clientIP, port, addrInfo, &res)
+        let error = getaddrinfo(clientIP, nil, addrInfo, &res)
         if error != 0 {
             let sysError = SystemError.getaddrinfo(error, errno)
             os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)

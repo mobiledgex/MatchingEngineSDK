@@ -31,7 +31,7 @@ extension MatchingEngine {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
 
             // local ip bind to cellular network interface
-            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -68,7 +68,7 @@ extension MatchingEngine {
     {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
             // local ip bind to cellular network interface
-            guard let clientIP = self.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
