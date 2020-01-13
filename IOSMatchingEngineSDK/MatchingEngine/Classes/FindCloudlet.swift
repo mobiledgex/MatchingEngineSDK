@@ -53,7 +53,7 @@ extension MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(carrierName: String, gpsLocation: [String: Any],
+    public func createFindCloudletRequest(carrierName: String?, gpsLocation: [String: Any],
                                           devName: String, appName: String?, appVers: String?)
         -> [String: Any]
     {
@@ -62,7 +62,7 @@ extension MatchingEngine {
         
         findCloudletRequest[FindCloudletRequest.ver] = 1
         findCloudletRequest[FindCloudletRequest.session_cookie] = self.state.getSessionCookie()
-        findCloudletRequest[FindCloudletRequest.carrier_name] = carrierName
+        findCloudletRequest[FindCloudletRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
         findCloudletRequest[FindCloudletRequest.gps_location] = gpsLocation
         findCloudletRequest[FindCloudletRequest.dev_name] = devName
         findCloudletRequest[FindCloudletRequest.app_name] = appName ?? state.appName
@@ -106,11 +106,7 @@ extension MatchingEngine {
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
 
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
+        let carrierName = state.carrierName
         
         var host: String
         do {

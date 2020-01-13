@@ -101,11 +101,7 @@ extension MatchingEngine {
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
+        let carrierName = state.carrierName
         
         var host: String
         do {

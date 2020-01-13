@@ -139,6 +139,7 @@
 		407D580322A744B5009CF705 /* ButtonRowWithPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407D57BD22A744B5009CF705 /* ButtonRowWithPresent.swift */; };
 		407D580422A744B5009CF705 /* PickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407D57BE22A744B5009CF705 /* PickerInputRow.swift */; };
 		59A324D9237DB7EF00145D30 /* ConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A324D7237DB7EF00145D30 /* ConnectionTests.swift */; };
+		59C2C52523CD0334007DCFA9 /* MetricsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C2C52423CD0334007DCFA9 /* MetricsTest.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -300,6 +301,7 @@
 		52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngine_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngine_Tests/Pods-MatchingEngine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		554544867A48F54828025417 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		59A324D7237DB7EF00145D30 /* ConnectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionTests.swift; sourceTree = "<group>"; };
+		59C2C52423CD0334007DCFA9 /* MetricsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetricsTest.swift; sourceTree = "<group>"; };
 		5D74431C21D3748FD310C745 /* MatchingEngine.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MatchingEngine.podspec; path = ../MatchingEngine.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		607FACD01AFB9204008FA782 /* MatchingEngine_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatchingEngine_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -772,6 +774,7 @@
 			children = (
 				59A324D7237DB7EF00145D30 /* ConnectionTests.swift */,
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				59C2C52423CD0334007DCFA9 /* MetricsTest.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -1138,6 +1141,7 @@
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 				59A324D9237DB7EF00145D30 /* ConnectionTests.swift in Sources */,
+				59C2C52523CD0334007DCFA9 /* MetricsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

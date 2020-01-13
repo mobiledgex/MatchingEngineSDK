@@ -50,7 +50,7 @@ extension MatchingEngine {
         
         appInstListRequest[AppInstListRequest.ver] = 1
         appInstListRequest[AppInstListRequest.session_cookie] = state.getSessionCookie()
-        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? state.carrierName
+        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
         appInstListRequest[AppInstListRequest.gps_location] = gpsLocation
         
         return appInstListRequest
@@ -73,11 +73,8 @@ extension MatchingEngine {
     public func getAppInstList(request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
+        
+        let carrierName = state.carrierName
         
         var host: String
         do {
