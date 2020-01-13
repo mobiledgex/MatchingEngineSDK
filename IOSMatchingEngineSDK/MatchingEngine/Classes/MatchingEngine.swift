@@ -439,7 +439,7 @@ public class MexUtil // common to Mex... below
             mccMnc = try getMCCMNC()
         } catch {
             if NetworkInterface.hasWifiInterface() {
-                return generateFallbackDmeHost(carrierName: carrierName)
+                return generateFallbackDmeHost(carrierName: wifiAlias)
             } else {
                 throw error
             }
