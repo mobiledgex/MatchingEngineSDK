@@ -292,7 +292,7 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5)
+            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5000)
             
         }.then { socket in
             let string = try self.readAndWriteBSDSocket(socket: socket)
@@ -388,7 +388,7 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 0.1)
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 100)
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in

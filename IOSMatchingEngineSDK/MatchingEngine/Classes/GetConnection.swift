@@ -24,6 +24,7 @@ import Network
 
 extension MatchingEngine {
     
+    // timeout: milliseconds
     public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
@@ -39,7 +40,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getTCPConnection(host: host, port: port).timeout(timeout)
+            return getTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -59,7 +60,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDTCPConnection(host: host, port: port).timeout(timeout)
+            return getBSDTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -82,7 +83,7 @@ extension MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            return self.getTCPTLSConnection(host: host, port: port, timeout: timeout)
+            return self.getTCPTLSConnection(host: host, port: port, timeout: timeout / 1000.0)
         } catch { // catch getPort and contructHost errors
             promiseInputs.reject(error)
             return promiseInputs
@@ -104,7 +105,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getUDPConnection(host: host, port: port).timeout(timeout)
+            return getUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -126,7 +127,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDUDPConnection(host: host, port: port).timeout(timeout)
+            return getBSDUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -150,7 +151,7 @@ extension MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            return self.getUDPDTLSConnection(host: host, port: port, timeout: timeout)
+            return self.getUDPDTLSConnection(host: host, port: port, timeout: timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -177,7 +178,7 @@ extension MatchingEngine {
                 return promiseInputs
             }
             // call helper function and timeout
-            return getHTTPClient(url: url).timeout(timeout)
+            return getHTTPClient(url: url).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -204,7 +205,7 @@ extension MatchingEngine {
                 return promiseInputs
             }
             // call helper function and timeout
-            return getHTTPClient(url: url).timeout(timeout)
+            return getHTTPClient(url: url).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -226,7 +227,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getWebsocketConnection(host: host, port: port).timeout(timeout)
+            return getWebsocketConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -248,7 +249,7 @@ extension MatchingEngine {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getSecureWebsocketConnection(host: host, port: port).timeout(timeout)
+            return getSecureWebsocketConnection(host: host, port: port).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
