@@ -48,7 +48,7 @@ class Tests: XCTestCase {
         matchingEngine = MobiledgeXSDK.MatchingEngine()
         if TEST
         {
-            port = matchingEngine.getDefaultDmePort()
+            port = MobiledgeXSDK.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"
@@ -293,6 +293,20 @@ class Tests: XCTestCase {
         }
         XCTAssert(promiseValue["status"] as? String ?? "" == "RS_SUCCESS", "AddUserToGroup Failed.")
         XCTAssertNil(replyPromise.error)
+    }
+    
+    func testRegisterAndFindCloudlet() {
+        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil, gpsLocation: loc)
+        .catch { error in
+            XCTAssert(false, "Error is \(error.localizedDescription)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 5))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "TestRegisterAndFindCloudlet did not return a value.")
+            return
+        }
     }
     
     func testGetCarrierName() {

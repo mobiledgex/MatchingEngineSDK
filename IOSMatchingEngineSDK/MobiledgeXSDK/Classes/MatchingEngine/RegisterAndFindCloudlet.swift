@@ -28,7 +28,20 @@ extension MobiledgeXSDK.MatchingEngine
         
         return self.registerClient(request: registerRequest)
         .then { registerClientReply -> Promise<[String: AnyObject]> in
+            
+            let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+            
+            guard let status = registerClientReply[RegisterClientReply.status] as? String else {
+                promiseInputs.reject(MatchingEngineError.registerFailed)
+                return promiseInputs
+            }
+            if status != DMEConstants.registerClientSuccess {
+                promiseInputs.reject(MatchingEngineError.registerFailed)
+                return promiseInputs
+            }
+            
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, devName: devName!, appName: appName, appVers: appVers)
+            
             return self.findCloudlet(request: findCloudletRequest)
         }
     }

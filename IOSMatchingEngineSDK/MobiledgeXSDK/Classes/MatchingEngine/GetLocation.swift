@@ -83,7 +83,7 @@ extension MobiledgeXSDK.MatchingEngine {
             promiseInputs.reject(error)
             return promiseInputs
         }
-        let port = self.state.defaultRestDmePort
+        let port = DMEConstants.dmeRestPort
         return getLocation(host: host, port: port, request: request);
     }
     

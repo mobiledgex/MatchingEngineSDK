@@ -21,12 +21,7 @@ import os.log
 import CoreLocation
 
 extension MobiledgeXSDK.MatchingEngine {
-    
-    public func getDefaultDmePort() -> UInt
-    {
-        return state.defaultRestDmePort
-    }
-    
+
     public func getAppName() -> String
     {
         return state.appName
@@ -69,9 +64,9 @@ extension MobiledgeXSDK.MatchingEngine {
             mccMnc = try state.getMCCMNC()
         } catch {
             if MobiledgeXSDK.NetworkInterface.hasWifiInterface() { // && !NetworkInterface.hasCellularInterface()
-                return wifiAlias
+                return DMEConstants.wifiAlias
             } else {
-                return carrierNameInUse
+                return DMEConstants.fallbackCarrierName
             }
         }
         
@@ -88,7 +83,7 @@ extension MobiledgeXSDK.MatchingEngine {
             mccMnc = try state.getMCCMNC()
         } catch {
             if MobiledgeXSDK.NetworkInterface.hasWifiInterface() {
-                return generateFallbackDmeHost(carrierName: wifiAlias)
+                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
             } else {
                 throw error
             }
@@ -96,7 +91,7 @@ extension MobiledgeXSDK.MatchingEngine {
            
         let mcc = mccMnc[0]
         let mnc = mccMnc[1]
-        let url = "\(mcc)-\(mnc).\(baseDmeHost)"
+        let url = "\(mcc)-\(mnc).\(DMEConstants.baseDmeHost)"
         try verifyDmeHost(host: url)
         return url
     }
@@ -105,9 +100,9 @@ extension MobiledgeXSDK.MatchingEngine {
     {
         guard let carrier = carrierName else
         {
-            return carrierNameInUse + "." + baseDmeHost
+            return DMEConstants.fallbackCarrierName + "." + DMEConstants.baseDmeHost
         }
-        return carrier + "." + baseDmeHost
+        return carrier + "." + DMEConstants.baseDmeHost
     }
     
     // DNS Lookup
