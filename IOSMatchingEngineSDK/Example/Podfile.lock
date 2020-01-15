@@ -22,7 +22,7 @@ PODS:
   - GTMSessionFetcher/Core (1.3.0)
   - GTMSessionFetcher/Full (1.3.0):
     - GTMSessionFetcher/Core (= 1.3.0)
-  - MobiledgeXSDK (1.4.2.3):
+  - MobiledgeXiOSLibrary (1.4.2.3):
     - PromisesSwift (~> 1.2.8)
     - Socket.IO-Client-Swift (~> 15.2.0)
     - SwiftyJSON (~> 5.0.0)
@@ -43,7 +43,7 @@ DEPENDENCIES:
   - DropDown (= 2.3.13)
   - GoogleMaps (= 3.6.0)
   - GoogleSignIn (= 5.0.2)
-  - MobiledgeXSDK (from `../`)
+  - MobiledgeXiOSLibrary (from `../`)
   - SPPermissions/Camera (= 5.2.5)
   - SPPermissions/Location (= 5.2.5)
 
@@ -63,7 +63,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 EXTERNAL SOURCES:
-  MobiledgeXSDK:
+  MobiledgeXiOSLibrary:
     :path: "../"
 
 SPEC CHECKSUMS:
@@ -73,7 +73,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
-  MobiledgeXSDK: fd31cdf201302b8d4e8e0b1439b14ea952fbf066
+  MobiledgeXiOSLibrary: 9cc093acd99098649c20c404a64668bcd5450491
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
@@ -81,6 +81,6 @@ SPEC CHECKSUMS:
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: d86ec0de5e5bfafbbc3783e0febf591b4a60bf9f
+PODFILE CHECKSUM: b6592a17651030d3c58e1b0b3e782993fb3a86ff
 
 COCOAPODS: 1.8.4

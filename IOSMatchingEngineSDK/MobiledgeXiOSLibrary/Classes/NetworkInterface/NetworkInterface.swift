@@ -16,7 +16,7 @@
 //  NetworkInterface.swift
 //
 
-extension MobiledgeXSDK {
+extension MobiledgeXiOSLibrary {
 
     public enum NetworkInterface {
         

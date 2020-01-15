@@ -15,7 +15,7 @@
 
 import XCTest
 
-@testable import MobiledgeXSDK
+@testable import MobiledgeXiOSLibrary
 @testable import Promises
 @testable import SocketIO
 import Network
@@ -30,7 +30,7 @@ class Tests: XCTestCase {
     var devName: String!
     var carrierName: String!
     var authToken: String?
-    var matchingEngine: MobiledgeXSDK.MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     func propertyAssert(propertyNameList: [String], object: [String: AnyObject]) {
         for propertyName in propertyNameList {
@@ -45,10 +45,10 @@ class Tests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        matchingEngine = MobiledgeXSDK.MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
         if TEST
         {
-            port = MobiledgeXSDK.MatchingEngine.DMEConstants.dmeRestPort
+            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"

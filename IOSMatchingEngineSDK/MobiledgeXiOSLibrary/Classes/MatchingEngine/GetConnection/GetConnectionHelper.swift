@@ -20,7 +20,7 @@ import os.log
 import Promises
 import SocketIO
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns TCP CFSocket promise
     func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
@@ -28,7 +28,7 @@ extension MobiledgeXSDK.MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -60,7 +60,7 @@ extension MobiledgeXSDK.MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -165,7 +165,7 @@ extension MobiledgeXSDK.MatchingEngine {
             
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
-                let sysError = MobiledgeXSDK.SystemError.getaddrinfo(error, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
                 os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }

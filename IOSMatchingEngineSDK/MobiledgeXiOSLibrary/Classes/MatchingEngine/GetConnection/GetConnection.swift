@@ -21,7 +21,7 @@ import Promises
 import SocketIO
 import Network
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public enum GetConnectionError: Error {
         case invalidNetworkInterface

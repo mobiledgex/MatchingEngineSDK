@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public enum MatchingEngineError: Error {
         case networkFailure

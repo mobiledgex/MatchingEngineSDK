@@ -42,7 +42,7 @@ class VerifyLocationReply {
     public static let gps_location_accuracy_km = "gps_location_accuracy_km"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func doVerifyLocation(gpsLocation: [String: AnyObject])
         throws -> Promise<[String: AnyObject]>?

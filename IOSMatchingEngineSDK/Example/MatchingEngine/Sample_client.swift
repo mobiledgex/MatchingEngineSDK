@@ -29,7 +29,7 @@ import GoogleMaps
 
 import os.log
 import Promises
-import MobiledgeXSDK
+import MobiledgeXiOSLibrary
 
 // ----------------------------------------
 //

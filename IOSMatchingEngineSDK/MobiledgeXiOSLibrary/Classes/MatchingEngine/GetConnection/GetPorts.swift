@@ -32,7 +32,7 @@ class Ports {
     public static let end_port = "end_port"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
     public func getAppFqdn(findCloudletReply: [String: AnyObject], port: String) -> String?

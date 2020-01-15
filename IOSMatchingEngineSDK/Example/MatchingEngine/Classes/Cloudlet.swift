@@ -23,7 +23,7 @@ import Foundation
 
 import GoogleMaps
 import Promises
-import MobiledgeXSDK
+import MobiledgeXiOSLibrary
 
 public class Cloudlet: CustomStringConvertible // implements Serializable? todo?
 {

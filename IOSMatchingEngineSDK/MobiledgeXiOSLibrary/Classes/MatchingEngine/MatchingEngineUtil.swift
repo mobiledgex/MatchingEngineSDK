@@ -20,7 +20,7 @@
 import os.log
 import CoreLocation
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
 
     public func getAppName() -> String
     {
@@ -63,7 +63,7 @@ extension MobiledgeXSDK.MatchingEngine {
         do {
             mccMnc = try state.getMCCMNC()
         } catch {
-            if MobiledgeXSDK.NetworkInterface.hasWifiInterface() { // && !NetworkInterface.hasCellularInterface()
+            if MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() { // && !NetworkInterface.hasCellularInterface()
                 return DMEConstants.wifiAlias
             } else {
                 return DMEConstants.fallbackCarrierName
@@ -82,7 +82,7 @@ extension MobiledgeXSDK.MatchingEngine {
         do {
             mccMnc = try state.getMCCMNC()
         } catch {
-            if MobiledgeXSDK.NetworkInterface.hasWifiInterface() {
+            if MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
                 return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
             } else {
                 throw error
@@ -113,9 +113,9 @@ extension MobiledgeXSDK.MatchingEngine {
         // getaddrinfo function makes ip + port conversion to sockaddr easy
         let error = getaddrinfo(host, nil, &addrInfo, &result)
         if error != 0 {
-            let sysError = MobiledgeXSDK.SystemError.getaddrinfo(error, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
             os_log("Cannot verifyDmeHost error: %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
-            throw MobiledgeXSDK.DmeDnsError.verifyDmeHostFailure(host: host, systemError: sysError)
+            throw MobiledgeXiOSLibrary.DmeDnsError.verifyDmeHostFailure(host: host, systemError: sysError)
         }
     }
     

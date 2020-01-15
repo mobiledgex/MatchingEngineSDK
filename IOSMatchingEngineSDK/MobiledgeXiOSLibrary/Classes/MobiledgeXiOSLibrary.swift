@@ -15,15 +15,14 @@
 // limitations under the License.
 
 //
-//  MobiledgeXSDK.swift
-//  MobiledgeXSDK
+//  MobiledgeXiOSLibrary.swift
+//  MobiledgeXiOSLibrary
 //
-//  List of MobiledgeXSDK classes
 
 // Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
 // NetworkInterface, etc.)
 
-public enum MobiledgeXSDK {
+public enum MobiledgeXiOSLibrary {
     
     public enum DmeDnsError: Error {
         case verifyDmeHostFailure(host: String, systemError: SystemError)

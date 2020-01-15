@@ -17,7 +17,7 @@
 //  Site.swift
 //
 
-extension MobiledgeXSDK.PerformanceMetrics {
+extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
     @available(iOS 13.0, *)
     public class Site {
@@ -153,8 +153,8 @@ extension MobiledgeXSDK.PerformanceMetrics {
 }
 
 @available(iOS 13.0, *)
-extension MobiledgeXSDK.PerformanceMetrics.Site: Equatable {
-    public static func == (lhs: MobiledgeXSDK.PerformanceMetrics.Site, rhs: MobiledgeXSDK.PerformanceMetrics.Site) -> Bool {
+extension MobiledgeXiOSLibrary.PerformanceMetrics.Site: Equatable {
+    public static func == (lhs: MobiledgeXiOSLibrary.PerformanceMetrics.Site, rhs: MobiledgeXiOSLibrary.PerformanceMetrics.Site) -> Bool {
         return
             lhs.l7Path == rhs.l7Path &&
             lhs.host == rhs.host &&
