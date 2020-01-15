@@ -18,7 +18,7 @@
 //
 //  GetLocation.swift
 //
-import Foundation
+
 import os.log
 import Promises
 
@@ -36,7 +36,7 @@ class GetLocationReply {
     public static let network_location = "network_location"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     /// createGetLocationRequest
     ///
@@ -49,7 +49,7 @@ extension MatchingEngine {
         
         getLocationRequest[GetLocationRequest.ver] = 1
         getLocationRequest[GetLocationRequest.session_cookie] = self.state.getSessionCookie()
-        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
+        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? getCarrierName()
         
         return getLocationRequest
     }
@@ -76,10 +76,9 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         let carrierName = state.carrierName
-        
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -101,8 +100,8 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("getLocation", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.getlocationAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.getlocationAPI
         
         do {
             try validateGetLocationRequest(request: request)

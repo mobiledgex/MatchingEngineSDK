@@ -17,7 +17,6 @@
 //  FindCloudlet.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -43,7 +42,7 @@ class VerifyLocationReply {
     public static let gps_location_accuracy_km = "gps_location_accuracy_km"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     public func doVerifyLocation(gpsLocation: [String: AnyObject])
         throws -> Promise<[String: AnyObject]>?
@@ -61,7 +60,7 @@ extension MatchingEngine {
             os_log("ERROR: TokenURI is empty!", log: OSLog.default, type: .debug)
             return nil
         }
-        
+
         let verifyLocRequest = createVerifyLocationRequest(carrierName: getCarrierName(), gpsLocation: gpsLocation)
         return self.verifyLocation(request: verifyLocRequest)
     }
@@ -203,7 +202,7 @@ extension MatchingEngine {
     public func verifyLocation(request: [String: Any]) -> Promise<[String: AnyObject]> {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
+        guard let carrierName = state.carrierName else {
             os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
@@ -211,7 +210,7 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -227,7 +226,7 @@ extension MatchingEngine {
         // Dummy promise to check inputs:
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
 
-        guard let _ = request[VerifyLocationRequest.carrier_name] ?? self.state.carrierName ?? getCarrierName() else {
+        guard let _ = request[VerifyLocationRequest.carrier_name] ?? self.state.carrierName else {
             promiseInputs.reject(MatchingEngineParameterError.missingCarrierName)
             return promiseInputs
         }
@@ -244,9 +243,9 @@ extension MatchingEngine {
         
          // This doesn't catch anything. It does throw errors to the caller.
         return self.getToken(uri: tokenServerUri).then(on: self.executionQueue) { verifyLocationToken in
-
-            let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-            let verifylocationAPI: String = MexUtil.shared.verifylocationAPI
+            
+            let baseuri = self.generateBaseUri(host: host, port: port)
+            let verifylocationAPI: String = APIPaths.verifylocationAPI
             let uri = baseuri + verifylocationAPI
             
             if (verifyLocationToken.count == 0) {

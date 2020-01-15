@@ -25,8 +25,7 @@ import Promises
 import os.log
 
 import DropDown
-
-import MatchingEngine
+import MobiledgeXSDK
 
 // quick and dirty global scope
 
@@ -35,7 +34,7 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXSDK.MatchingEngine!
     
     var host = ""
     var port: UInt = 38001
@@ -735,7 +734,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             var hostName: String!
             do {
-                hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+                hostName = try self.matchingEngine.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
             } catch {
                 Swift.print("Error: \(error.localizedDescription)")
             }

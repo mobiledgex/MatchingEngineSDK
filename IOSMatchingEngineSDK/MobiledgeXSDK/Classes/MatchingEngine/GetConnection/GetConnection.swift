@@ -16,13 +16,29 @@
 //  GetConnection.swift
 //
 
-import Foundation
 import os.log
 import Promises
 import SocketIO
 import Network
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
+    
+    public enum GetConnectionError: Error {
+        case invalidNetworkInterface
+        case missingServerFqdn
+        case missingServerPort
+        case unableToCreateSocket
+        case unableToCreateStream
+        case variableConversionError(message: String)
+        case unableToSetSSLProperty
+        case unableToConnectToServer
+        case connectionTimeout
+        case invalidTimeout
+        case unableToCreateSocketSignature
+        case outdatedIOS
+        case unableToBind
+        case incorrectURLSyntax
+    }
     
     // timeout: milliseconds
     public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {

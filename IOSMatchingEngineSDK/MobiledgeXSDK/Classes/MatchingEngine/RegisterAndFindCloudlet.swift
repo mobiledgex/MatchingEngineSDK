@@ -17,10 +17,9 @@
 //  RegisterAndFindCloudlet.swift
 //
 
-import Foundation
 import Promises
 
-extension MatchingEngine
+extension MobiledgeXSDK.MatchingEngine
 {
 
     public func registerAndFindCloudlet(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: [String: Any]) -> Promise<[String: AnyObject]> {
