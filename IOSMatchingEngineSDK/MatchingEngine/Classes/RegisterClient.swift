@@ -86,7 +86,7 @@ extension MatchingEngine
         regClientRequest[RegisterClientRequest.app_name] = appName ?? getAppName()
         regClientRequest[RegisterClientRequest.app_vers] = appVers ?? getAppVersion()
         regClientRequest[RegisterClientRequest.dev_name] = devName
-        regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? getCarrierName()
+        regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
         regClientRequest[RegisterClientRequest.auth_token] = authToken ?? ""
         
         return regClientRequest
@@ -120,12 +120,7 @@ extension MatchingEngine
         os_log("registerClient", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        guard let carrierName = state.carrierName ?? getCarrierName() else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
-        
+        let carrierName = state.carrierName
         var host: String
         do {
             host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)

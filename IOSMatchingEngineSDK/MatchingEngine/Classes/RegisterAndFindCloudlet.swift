@@ -29,7 +29,7 @@ extension MatchingEngine
         
         return self.registerClient(request: registerRequest)
         .then { registerClientReply -> Promise<[String: AnyObject]> in
-            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName!, gpsLocation: gpsLocation, devName: devName!, appName: appName, appVers: appVers)
+            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, devName: devName!, appName: appName, appVers: appVers)
             return self.findCloudlet(request: findCloudletRequest)
         }
     }

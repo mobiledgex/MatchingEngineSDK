@@ -48,11 +48,6 @@ class Tests: XCTestCase {
         matchingEngine = MatchingEngine()
         if TEST
         {
-            /*do {
-                host = MexUtil.shared.generateDmeHost(carrierName: "sdkdemo")
-            } catch {
-                Swift.print("Did not generate a valid DME host. Error: \(error)")
-            }*/
             port = matchingEngine.getDefaultDmePort()
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
@@ -103,14 +98,14 @@ class Tests: XCTestCase {
     func testFindCloudlet() {
         let loc = [ "longitude": -122.149349, "latitude": 37.459609]
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
             replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
                     self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
-                                                        carrierName: self.carrierName,
+                                                        carrierName: nil,
                                                         gpsLocation: loc,
                                                         devName: self.devName,
                                                         appName: self.appName,
@@ -128,17 +123,17 @@ class Tests: XCTestCase {
         XCTAssertNil(replyPromise.error)
     }
     
-    func testVerfiyLocation() {
+    func testVerifyLocation() {
         let loc = [ "longitude": -122.149349, "latitude": 37.459609]
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
 
             replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
                     self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
-                                                        carrierName: self.carrierName, // Test override values
+                                                        carrierName: nil,
                                                         gpsLocation: loc))
                 }.catch { error in
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
@@ -159,7 +154,7 @@ class Tests: XCTestCase {
     func testAppInstList() {
         let loc = [ "longitude": -122.149349, "latitude": 37.459609]
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<[String: AnyObject]>!
@@ -167,7 +162,7 @@ class Tests: XCTestCase {
             replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
                     self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
-                                                        carrierName: self.carrierName,
+                                                        carrierName: nil,
                                                         gpsLocation: loc))
                     }.catch { error in
                         XCTAssert(false, "AppInstList hit an error: \(error).")
@@ -230,7 +225,7 @@ class Tests: XCTestCase {
                                               totalDistanceKm: 200,
                                               increment: 1)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
         
@@ -256,14 +251,14 @@ class Tests: XCTestCase {
     }
     
     func testGetLocation() {
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
         
             replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
                     self.matchingEngine.getLocation(request: self.matchingEngine.createGetLocationRequest(
-                                                        carrierName: self.carrierName))
+                                                        carrierName: nil))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
@@ -278,7 +273,7 @@ class Tests: XCTestCase {
     }
     
     func testAddUsertoGroup() {
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: nil)
+        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil)
         
         var replyPromise: Promise<[String: AnyObject]>!
 
