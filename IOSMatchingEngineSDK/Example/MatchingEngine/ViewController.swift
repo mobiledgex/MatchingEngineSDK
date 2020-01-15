@@ -25,7 +25,7 @@ import Promises
 import os.log
 
 import DropDown
-import MobiledgeXSDK
+import MobiledgeXiOSLibrary
 
 // quick and dirty global scope
 
@@ -34,7 +34,7 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    var matchingEngine: MobiledgeXSDK.MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     var host = ""
     var port: UInt = 38001
@@ -71,7 +71,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if demo
         {
             host = demoHost
-            port = MobiledgeXSDK.MatchingEngine.DMEConstants.dmeRestPort
+            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"

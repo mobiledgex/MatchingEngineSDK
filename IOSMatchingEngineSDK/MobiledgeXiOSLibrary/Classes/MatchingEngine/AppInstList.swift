@@ -35,7 +35,7 @@ class AppInstListReply {
     public static let cloudlets = "cloudlets"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     /// createGetAppInstListRequest
     ///
     /// - Parameters:

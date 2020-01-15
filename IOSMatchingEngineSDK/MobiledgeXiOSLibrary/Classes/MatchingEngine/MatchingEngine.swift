@@ -23,7 +23,7 @@ import os.log
 import Promises
 import CoreTelephony
 
-extension MobiledgeXSDK {
+extension MobiledgeXiOSLibrary {
     
     /// MobiledgeX MatchingEngine APIs
     public class MatchingEngine

@@ -17,7 +17,7 @@
 //  PerformanceMetrics.swift
 //
 
-extension MobiledgeXSDK {
+extension MobiledgeXiOSLibrary {
     
     public enum PerformanceMetrics { }
     

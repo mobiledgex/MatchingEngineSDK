@@ -41,7 +41,7 @@ class RegisterClientReply {
     public static let token_server_uri = "token_server_uri"
 }
 
-extension MobiledgeXSDK.MatchingEngine
+extension MobiledgeXiOSLibrary.MatchingEngine
 {
     // Sets: sessioncookie, tokenserveruri
     

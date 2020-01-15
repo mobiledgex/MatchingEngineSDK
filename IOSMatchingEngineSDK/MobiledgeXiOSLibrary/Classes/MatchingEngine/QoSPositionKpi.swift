@@ -57,7 +57,7 @@ class QosPositionKpiReply {
     public static let position_results = "position_results"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     /// createQosKPIRequest
     ///

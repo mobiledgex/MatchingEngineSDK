@@ -40,7 +40,7 @@ class FindCloudletReply {
     public static let cloudlet_location = "cloudlet_location"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     // Carrier name can change depending on cell tower.
     //
     

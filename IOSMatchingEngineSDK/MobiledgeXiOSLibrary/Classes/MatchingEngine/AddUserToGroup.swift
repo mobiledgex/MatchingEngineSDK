@@ -35,7 +35,7 @@ class DynamicLocGroupReply {
     public static let group_cookie = "group_cookie"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     /// createDynamicLocGroupRequest
     ///

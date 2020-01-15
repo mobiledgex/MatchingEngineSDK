@@ -22,7 +22,7 @@ import Foundation
 import CoreTelephony
 import os.log
 
-extension MobiledgeXSDK {
+extension MobiledgeXiOSLibrary {
     
     public class MatchingEngineState {
         
@@ -102,7 +102,7 @@ extension MobiledgeXSDK {
             if #available(iOS 12.0, *) {
                 ctCarriers = networkInfo.serviceSubscriberCellularProviders
             } else {
-                throw MobiledgeXSDK.DmeDnsError.outdatedIOS
+                throw MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS
                 // Fallback on earlier versions
             }
             if #available(iOS 12.1, *) {
@@ -117,15 +117,15 @@ extension MobiledgeXSDK {
             lastCarrier = networkInfo.subscriberCellularProvider
             if lastCarrier == nil {
                 os_log("Cannot find Subscriber Cellular Provider Info", log: OSLog.default, type: .debug)
-                throw MobiledgeXSDK.DmeDnsError.missingCellularProviderInfo
+                throw MobiledgeXiOSLibrary.DmeDnsError.missingCellularProviderInfo
             }
             guard let mcc = lastCarrier!.mobileCountryCode else {
                 os_log("Cannot get Mobile Country Code", log: OSLog.default, type: .debug)
-                throw MobiledgeXSDK.DmeDnsError.missingMCC
+                throw MobiledgeXiOSLibrary.DmeDnsError.missingMCC
             }
             guard let mnc = lastCarrier!.mobileNetworkCode else {
                 os_log("Cannot get Mobile Network Code", log: OSLog.default, type: .debug)
-                throw MobiledgeXSDK.DmeDnsError.missingMNC
+                throw MobiledgeXiOSLibrary.DmeDnsError.missingMNC
             }
             
             return [mcc, mnc]

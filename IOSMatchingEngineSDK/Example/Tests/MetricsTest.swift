@@ -15,7 +15,7 @@
 
 import XCTest
 
-@testable import MobiledgeXSDK
+@testable import MobiledgeXiOSLibrary
 @testable import Promises
 import Network
 
@@ -40,15 +40,15 @@ class MetricsTest: XCTestCase {
     func testNetTest() {
         
         // Initialize sites
-        let site1 = MobiledgeXSDK.PerformanceMetrics.Site(network: MobiledgeXSDK.NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: MobiledgeXSDK.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site2 = MobiledgeXSDK.PerformanceMetrics.Site(network: MobiledgeXSDK.NetworkInterface.CELLULAR, host: "mextest-app-cluster.frankfurt-main.tdg.mobiledgex.net", port: "3001", testType: MobiledgeXSDK.PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
-        let site3 = MobiledgeXSDK.PerformanceMetrics.Site(network: MobiledgeXSDK.NetworkInterface.CELLULAR, host: "google.com", port: "443", testType: MobiledgeXSDK.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site1 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site2 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, host: "mextest-app-cluster.frankfurt-main.tdg.mobiledgex.net", port: "3001", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
+        let site3 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, host: "google.com", port: "443", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         
         // put sites in an array
         let sites = [site1, site2]
         
         // Initialize NetTest and run in background
-        let netTest = MobiledgeXSDK.PerformanceMetrics.NetTest(sites: sites)
+        let netTest = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest(sites: sites)
         netTest.runTest(interval: 100)
         sleep(5)
         netTest.addSite(site: site3)

@@ -20,7 +20,7 @@
 import os.log
 import Combine
 
-extension MobiledgeXSDK.PerformanceMetrics {
+extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
     @available(iOS 13.0, *)
     public class NetTest {
@@ -108,7 +108,7 @@ extension MobiledgeXSDK.PerformanceMetrics {
             //initialize urlRequest
             var urlRequest = URLRequest(url: url!)
             urlRequest.httpMethod = "HEAD"
-            if site.network == MobiledgeXSDK.NetworkInterface.CELLULAR {
+            if site.network == MobiledgeXiOSLibrary.NetworkInterface.CELLULAR {
                 urlRequest.allowsCellularAccess = true
             }
             
@@ -144,11 +144,11 @@ extension MobiledgeXSDK.PerformanceMetrics {
             }
             
             var ip: String?
-            if site.network != MobiledgeXSDK.NetworkInterface.WIFI {
+            if site.network != MobiledgeXiOSLibrary.NetworkInterface.WIFI {
                 // default to Cellular interface unless wifi specified
-                ip = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR)
+                ip = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR)
             } else {
-                ip = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.WIFI)
+                ip = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.WIFI)
             }
             
             guard let localIP = ip else {
@@ -173,21 +173,21 @@ extension MobiledgeXSDK.PerformanceMetrics {
             // getaddrinfo function makes ip + port conversion to sockaddr easy
             let error = getaddrinfo(localIP, nil, addrInfo, &res)
             if error != 0 {
-                let sysError = MobiledgeXSDK.SystemError.getaddrinfo(error, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
                 os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             // socket returns a socket descriptor
             let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
-                let sysError = MobiledgeXSDK.SystemError.socket(s, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.socket(s, errno)
                 os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             // bind to socket to client cellular network interface
             let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
             if b == -1 {
-                let sysError = MobiledgeXSDK.SystemError.bind(b, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.bind(b, errno)
                 os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
@@ -196,13 +196,13 @@ extension MobiledgeXSDK.PerformanceMetrics {
             var serverRes: UnsafeMutablePointer<addrinfo>!
             let serverError = getaddrinfo(site.host, site.port, addrInfo, &serverRes)
             if serverError != 0 {
-                let sysError = MobiledgeXSDK.SystemError.getaddrinfo(serverError, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(serverError, errno)
                 os_log("Server get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
             if serverSocket == -1 {
-                let sysError = MobiledgeXSDK.SystemError.connect(serverSocket, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.connect(serverSocket, errno)
                 os_log("Server socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
@@ -211,7 +211,7 @@ extension MobiledgeXSDK.PerformanceMetrics {
             let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
             let after = DispatchTime.now()
             if c == -1 {
-                let sysError = MobiledgeXSDK.SystemError.connect(c, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.connect(c, errno)
                 os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }

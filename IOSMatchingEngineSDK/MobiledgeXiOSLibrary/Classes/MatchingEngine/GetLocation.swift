@@ -36,7 +36,7 @@ class GetLocationReply {
     public static let network_location = "network_location"
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     /// createGetLocationRequest
     ///

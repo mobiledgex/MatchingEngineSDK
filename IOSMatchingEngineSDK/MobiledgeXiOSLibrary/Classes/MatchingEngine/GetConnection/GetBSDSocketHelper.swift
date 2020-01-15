@@ -24,13 +24,13 @@ public struct Socket {
     var sockfd: Int32
 }
 
-extension MobiledgeXSDK.MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
 
     func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
     {
         let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
             
-            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -55,7 +55,7 @@ extension MobiledgeXSDK.MatchingEngine {
     {
         let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
             
-            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -86,7 +86,7 @@ extension MobiledgeXSDK.MatchingEngine {
         // getaddrinfo function makes ip + port conversion to sockaddr easy
         let error = getaddrinfo(clientIP, nil, addrInfo, &res)
         if error != 0 {
-            let sysError = MobiledgeXSDK.SystemError.getaddrinfo(error, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
             os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
@@ -94,7 +94,7 @@ extension MobiledgeXSDK.MatchingEngine {
         // socket returns a socket descriptor
         let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
         if s == -1 {
-            let sysError = MobiledgeXSDK.SystemError.socket(s, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.socket(s, errno)
             os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
@@ -102,7 +102,7 @@ extension MobiledgeXSDK.MatchingEngine {
         // bind to socket to client cellular network interface
         let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
         if b == -1 {
-            let sysError = MobiledgeXSDK.SystemError.bind(b, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.bind(b, errno)
             os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
@@ -112,14 +112,14 @@ extension MobiledgeXSDK.MatchingEngine {
         var serverRes: UnsafeMutablePointer<addrinfo>!
         let serverError = getaddrinfo(serverFqdn, port, addrInfo, &serverRes)
         if serverError != 0 {
-            let sysError = MobiledgeXSDK.SystemError.getaddrinfo(serverError, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(serverError, errno)
             os_log("Server get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
         let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
         if serverSocket == -1 {
-            let sysError = MobiledgeXSDK.SystemError.connect(serverSocket, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.connect(serverSocket, errno)
             os_log("Server socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
@@ -127,7 +127,7 @@ extension MobiledgeXSDK.MatchingEngine {
         // connect our socket to the provisioned socket
         let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
         if c == -1 {
-            let sysError = MobiledgeXSDK.SystemError.connect(c, errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.connect(c, errno)
             os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
