@@ -17,7 +17,6 @@
 //  QosPositionKpi.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -58,7 +57,7 @@ class QosPositionKpiReply {
     public static let position_results = "position_results"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     /// createQosKPIRequest
     ///
@@ -105,7 +104,7 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -127,8 +126,8 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.qospositionkpiAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.qospositionkpiAPI
         
         do {
             try validateQosKPIRequest(request: request)

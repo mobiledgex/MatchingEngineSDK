@@ -16,12 +16,11 @@
 //  GetConnectionHelper.swift
 //
 
-import Foundation
 import os.log
 import Promises
 import SocketIO
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     // Returns TCP CFSocket promise
     func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
@@ -29,7 +28,7 @@ extension MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -61,7 +60,7 @@ extension MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXSDK.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXSDK.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -96,7 +95,7 @@ extension MatchingEngine {
             }
             // DNS lookup
             do {
-                try MexUtil.shared.verifyDmeHost(host: host)
+                try self.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
@@ -113,7 +112,7 @@ extension MatchingEngine {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
             // DNS Lookup
             do {
-                try MexUtil.shared.verifyDmeHost(host: host)
+                try self.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
@@ -166,7 +165,7 @@ extension MatchingEngine {
             
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
-                let sysError = SystemError.getaddrinfo(error, errno)
+                let sysError = MobiledgeXSDK.SystemError.getaddrinfo(error, errno)
                 os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }

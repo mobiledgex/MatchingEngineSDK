@@ -17,7 +17,6 @@
 //  AddUserToGroup.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -36,7 +35,7 @@ class DynamicLocGroupReply {
     public static let group_cookie = "group_cookie"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     /// createDynamicLocGroupRequest
     ///
@@ -83,7 +82,7 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -106,8 +105,8 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("addUserToGroup", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.addusertogroupAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.addusertogroupAPI
         
         do {
             try validateQosKPIRequest(request: request)

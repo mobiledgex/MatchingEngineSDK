@@ -16,8 +16,6 @@
 //  GetPorts.swift
 //
 
-import Foundation
-
 public class Protocol {
     public static let tcp = "L_PROTO_TCP"
     public static let udp = "L_PROTO_UDP"
@@ -34,7 +32,7 @@ class Ports {
     public static let end_port = "end_port"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
     public func getAppFqdn(findCloudletReply: [String: AnyObject], port: String) -> String?

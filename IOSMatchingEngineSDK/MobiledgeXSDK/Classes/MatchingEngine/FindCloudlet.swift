@@ -17,7 +17,6 @@
 //  FindCloudlet.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -41,7 +40,7 @@ class FindCloudletReply {
     public static let cloudlet_location = "cloudlet_location"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     // Carrier name can change depending on cell tower.
     //
     
@@ -57,12 +56,11 @@ extension MatchingEngine {
                                           devName: String, appName: String?, appVers: String?)
         -> [String: Any]
     {
-        //    findCloudletRequest;
         var findCloudletRequest = [String: Any]() // Dictionary/json
         
         findCloudletRequest[FindCloudletRequest.ver] = 1
         findCloudletRequest[FindCloudletRequest.session_cookie] = self.state.getSessionCookie()
-        findCloudletRequest[FindCloudletRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
+        findCloudletRequest[FindCloudletRequest.carrier_name] = carrierName ?? getCarrierName()
         findCloudletRequest[FindCloudletRequest.gps_location] = gpsLocation
         findCloudletRequest[FindCloudletRequest.dev_name] = devName
         findCloudletRequest[FindCloudletRequest.app_name] = appName ?? state.appName
@@ -110,7 +108,7 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -135,8 +133,8 @@ extension MatchingEngine {
         os_log("======================================================================", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.findcloudletAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.findcloudletAPI
         
         do
         {

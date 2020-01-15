@@ -17,7 +17,6 @@
 //  AppInstList.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -36,7 +35,7 @@ class AppInstListReply {
     public static let cloudlets = "cloudlets"
 }
 
-extension MatchingEngine {
+extension MobiledgeXSDK.MatchingEngine {
     /// createGetAppInstListRequest
     ///
     /// - Parameters:
@@ -50,7 +49,7 @@ extension MatchingEngine {
         
         appInstListRequest[AppInstListRequest.ver] = 1
         appInstListRequest[AppInstListRequest.session_cookie] = state.getSessionCookie()
-        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
+        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? getCarrierName()
         appInstListRequest[AppInstListRequest.gps_location] = gpsLocation
         
         return appInstListRequest
@@ -78,7 +77,7 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -95,8 +94,8 @@ extension MatchingEngine {
         os_log("============================================================", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.appinstlistAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.appinstlistAPI
         
         do {
             try validateAppInstListRequest(request: request)

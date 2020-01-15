@@ -27,7 +27,7 @@ import Vision
 
 import os.log
 import Promises
-import MatchingEngine
+import MobiledgeXSDK
 
 //var doAFaceDetection = true
 var faceDetectCount:OSAtomicInt32 = OSAtomicInt32(0)

@@ -29,7 +29,7 @@ import GoogleMaps
 
 import os.log
 import Promises
-import MatchingEngine
+import MobiledgeXSDK
 
 // ----------------------------------------
 //
@@ -340,7 +340,7 @@ func processFindCloudletResult(_ d: [String: Any])
             let v = cld.value
             Swift.print("•FQDN• \(v)")
             
-            MexUtil.shared.closestCloudlet = v as! String
+            // closestCloudlet = v as! String
             
             Swift.print("")
         }

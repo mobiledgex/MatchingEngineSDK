@@ -15,7 +15,7 @@
 
 import XCTest
 
-@testable import MatchingEngine
+@testable import MobiledgeXSDK
 @testable import Promises
 @testable import SocketIO
 import Network
@@ -30,7 +30,7 @@ class Tests: XCTestCase {
     var devName: String!
     var carrierName: String!
     var authToken: String?
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXSDK.MatchingEngine!
     
     func propertyAssert(propertyNameList: [String], object: [String: AnyObject]) {
         for propertyName in propertyNameList {
@@ -45,7 +45,7 @@ class Tests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        matchingEngine = MatchingEngine()
+        matchingEngine = MobiledgeXSDK.MatchingEngine()
         if TEST
         {
             port = matchingEngine.getDefaultDmePort()
@@ -297,6 +297,6 @@ class Tests: XCTestCase {
     
     func testGetCarrierName() {
         let carrierName = matchingEngine.getCarrierName()
-        XCTAssert(carrierName == "telecom.de", "Incorrect carrier name \(carrierName)")
+        XCTAssert(carrierName == "26201", "Incorrect carrier name \(carrierName)")
     }
 }
