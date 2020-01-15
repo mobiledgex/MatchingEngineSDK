@@ -98,6 +98,7 @@ enum GetConnectionError: Error {
 
 class MatchingEngineState {
     var DEBUG: Bool = true
+    
     init()
     {
         print(Bundle.main.object)
@@ -165,15 +166,14 @@ class MatchingEngineState {
     }
 }
 
-/// MexSDK MobiledgeX SDK APIs
-
-// MARK: -
-
 /// MobiledgeX MatchingEngine SDK APIs
 public class MatchingEngine
 {
     var state: MatchingEngineState = MatchingEngineState()
-    let networkInfo = CTTelephonyNetworkInfo()
+    
+    public let networkInfo = CTTelephonyNetworkInfo() // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
+    
+    // Used to correlate port to Path Prefix from findCloudletReply
     var portToPathPrefixDict = [String: String]()
         
     // Just standard GCD Queues to dispatch promises into, user initiated priority.
@@ -192,8 +192,8 @@ public class MatchingEngine
         executionQueue = DispatchQueue.global(qos: .default)
         
         print(state.appName)
-        
     }
+    
     // set a didUpdates closure for carrierName via NetworkInfo in the MatchingEngine SDK.
     private func addServiceSubscriberCellularProvidersDidUpdateNotifier()
     {
@@ -201,8 +201,8 @@ public class MatchingEngine
         {
             self.networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = {
                 (carrierNameKey: String) -> () in
-                self.state.previousCarrierName = self.state.carrierName;
-                self.state.carrierName = carrierNameKey;
+                self.state.previousCarrierName = self.state.carrierName
+                self.state.carrierName = carrierNameKey
             }
         }
         else
@@ -210,13 +210,12 @@ public class MatchingEngine
             // Deprecated path:
             self.networkInfo.subscriberCellularProviderDidUpdateNotifier = {
                 (ctCarrier: CTCarrier) -> () in
-                self.state.previousCarrierName = self.state.carrierName;
-                self.state.carrierName = ctCarrier.carrierName;
+                self.state.previousCarrierName = self.state.carrierName
+                self.state.carrierName = ctCarrier.carrierName
             }
         }
     }
     
-    // MARK: getCarrierName
     /// Get SIM card carrierName, or the first entry.
     /// - Returns: String optional, the first unordered name from available carrierNames.
     public func getCarrierName() -> String?
@@ -373,10 +372,8 @@ public class MatchingEngine
             }
         }
     }
-} // end MatchingEngineSDK
+}
 
-
-// MARK:- MexUtil
 
 // common
 // FIXME: Util class contents belong in main MatchingEnigne class, and not shared.
@@ -405,28 +402,63 @@ public class MexUtil // common to Mex... below
     public let getlocationAPI: String = "/v1/getlocation";
     public let addusertogroupAPI: String = "/v1/addusertogroup"
     
-    public let dmeList: Set = ["262-01.dme.mobiledgex.net", "310-260.dme.mobiledgex.net"] //dme urls (with mcc-mnc format) that work
-    
     public var closestCloudlet = ""
+    
+    private let wifiAlias = "wifi"
     
     private init() //   singleton called as of first access to shared
     {
         baseDmeHostInUse = baseDmeHost // dme.mobiledgex.net
     }
     
-    // Retrieve the carrier name of the cellular network interface.
+    // Retrieve the carrier name of the cellular network interface (MCC and MNC)
     public func getCarrierName() -> String
     {
-        return carrierNameInUse
+        var mccMnc = [String]()
+        
+        do {
+            mccMnc = try getMCCMNC()
+        } catch {
+            if NetworkInterface.hasWifiInterface() { // && !NetworkInterface.hasCellularInterface()
+                return wifiAlias
+            } else {
+                return carrierNameInUse
+            }
+        }
+        
+        let mcc = mccMnc[0]
+        let mnc = mccMnc[1]
+        return "\(mcc)\(mnc)"
     }
     
-    public func generateFallbackDmeHost(carrierName: String) -> String
+    public func generateDmeHost(carrierName: String?) throws -> String
     {
-        if carrierName == ""
+        var mccMnc = [String]()
+           
+        do {
+            mccMnc = try getMCCMNC()
+        } catch {
+            if NetworkInterface.hasWifiInterface() {
+                return generateFallbackDmeHost(carrierName: wifiAlias)
+            } else {
+                throw error
+            }
+        }
+           
+        let mcc = mccMnc[0]
+        let mnc = mccMnc[1]
+        let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
+        try verifyDmeHost(host: url)
+        return url
+    }
+    
+    public func generateFallbackDmeHost(carrierName: String?) -> String
+    {
+        guard let carrier = carrierName else
         {
             return carrierNameInUse + "." + baseDmeHostInUse
         }
-        return carrierName + "." + baseDmeHostInUse
+        return carrier + "." + baseDmeHostInUse
     }
     
     // DNS Lookup 
@@ -443,11 +475,11 @@ public class MexUtil // common to Mex... below
         }
     }
     
-    public func generateDmeHost(carrierName: String) throws -> String
+    // Returns Array with MCC in zeroth index and MNC in first index
+    public func getMCCMNC() throws -> [String]
     {
         let networkInfo = CTTelephonyNetworkInfo()
-        let fallbackURL = generateFallbackDmeHost(carrierName: carrierName)
-      
+        
         if #available(iOS 12.0, *) {
             ctCarriers = networkInfo.serviceSubscriberCellularProviders
         } else {
@@ -462,7 +494,7 @@ public class MexUtil // common to Mex... below
                 }
             };
         }
-        
+          
         lastCarrier = networkInfo.subscriberCellularProvider
         if lastCarrier == nil {
             os_log("Cannot find Subscriber Cellular Provider Info", log: OSLog.default, type: .debug)
@@ -477,10 +509,7 @@ public class MexUtil // common to Mex... below
             throw DmeDnsError.missingMNC
         }
         
-        let url = "\(mcc)-\(mnc).\(baseDmeHostInUse)"
-        //let url = "111-111.dme.mobiledgex.net"
-        try verifyDmeHost(host: url)
-        return url
+        return [mcc, mnc]
     }
     
     public func generateBaseUri(carrierName: String, port: UInt) throws -> String
@@ -496,7 +525,6 @@ public class MexUtil // common to Mex... below
 } // end MexUtil
 
 
-// MARK: -
 
 public extension Dictionary
 {
