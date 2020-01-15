@@ -40,9 +40,18 @@ extension MobiledgeXSDK {
             public static let addusertogroupAPI: String = "/v1/addusertogroup"
         }
         
+        public enum DMEConstants {
+            public static let baseDmeHost: String = "dme.mobiledgex.net"
+            public static let dmeRestPort: UInt = 38001
+            public static let fallbackCarrierName: String = "sdkdemo"
+            public static let wifiAlias: String = "wifi"
+            public static let registerClientSuccess = "RS_SUCCESS"
+        }
+        
         var state: MatchingEngineState
         
-        public let networkInfo = CTTelephonyNetworkInfo() // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
+        // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
+        public let networkInfo = CTTelephonyNetworkInfo()
         
         // Used to correlate port to Path Prefix from findCloudletReply
         var portToPathPrefixDict = [String: String]()
@@ -56,16 +65,8 @@ extension MobiledgeXSDK {
             "Charsets": "utf-8",
         ]
         
-        public let baseDmeHost: String = "dme.mobiledgex.net"
-        public let dmePort: UInt = 38001
-        public let carrierNameDefault_TDG: String = "TDG"
-        public var baseDmeHostInUse: String = "TDG" // baseDmeHost
-        public var carrierNameInUse: String = "sdkdemo" // carrierNameDefault_mexdemo
-        public var ctCarriers: [String: CTCarrier]?
-        public var lastCarrier: CTCarrier?
         public var closestCloudlet = ""
-        public let wifiAlias = "wifi"
-        
+
         public init()
         {
             executionQueue = DispatchQueue.global(qos: .default)
@@ -137,20 +138,5 @@ extension MobiledgeXSDK {
                 }
             }
         }
-    }
-}
-
-
-// Move to MobiledgeXSDK.swift??
-public extension Dictionary
-{
-    static func += (lhs: inout [Key: Value], rhs: [Key: Value])
-    {
-        lhs.merge(rhs) { $1 }
-    }
-    
-    static func + (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value]
-    {
-        return lhs.merging(rhs) { $1 }
     }
 }

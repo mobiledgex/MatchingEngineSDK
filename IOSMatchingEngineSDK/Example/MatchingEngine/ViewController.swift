@@ -71,7 +71,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if demo
         {
             host = demoHost
-            port = matchingEngine.getDefaultDmePort()
+            port = MobiledgeXSDK.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"

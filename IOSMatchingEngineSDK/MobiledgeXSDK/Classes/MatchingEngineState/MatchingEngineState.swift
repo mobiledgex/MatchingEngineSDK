@@ -29,20 +29,16 @@ extension MobiledgeXSDK {
         var DEBUG: Bool = true
         
         var networkInfo: CTTelephonyNetworkInfo
+        var carrierName: String?
+        var previousCarrierName: String?
+        public var ctCarriers: [String: CTCarrier]?
+        public var lastCarrier: CTCarrier?
         
         init()
         {
             print(Bundle.main.object)
             networkInfo = CTTelephonyNetworkInfo()
         }
-        
-        let defaultCarrierName = "TDG"
-        public let defaultRestDmePort: UInt = 38001
-        
-        var carrierName: String?
-        var previousCarrierName: String?
-        public var ctCarriers: [String: CTCarrier]?
-        public var lastCarrier: CTCarrier?
         
         public var appName: String
         {
