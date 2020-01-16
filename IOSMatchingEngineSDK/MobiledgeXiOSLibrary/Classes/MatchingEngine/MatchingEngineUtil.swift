@@ -60,14 +60,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     {
         var mccMnc = [String]()
         
+        if state.isUseWifiOnly() && MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
+            return DMEConstants.wifiAlias
+        }
+        
         do {
             mccMnc = try state.getMCCMNC()
         } catch {
-            if MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() { // && !NetworkInterface.hasCellularInterface()
-                return DMEConstants.wifiAlias
-            } else {
-                return DMEConstants.fallbackCarrierName
-            }
+            return DMEConstants.fallbackCarrierName
         }
         
         let mcc = mccMnc[0]
@@ -77,17 +77,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func generateDmeHost(carrierName: String?) throws -> String
     {
-        var mccMnc = [String]()
-           
-        do {
-            mccMnc = try state.getMCCMNC()
-        } catch {
-            if MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
-                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
-            } else {
-                throw error
-            }
+        if state.isUseWifiOnly() && MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
+            return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
         }
+        
+        let mccMnc = try state.getMCCMNC()
            
         let mcc = mccMnc[0]
         let mnc = mccMnc[1]

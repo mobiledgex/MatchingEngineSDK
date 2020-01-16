@@ -159,7 +159,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     // creates an addrinfo object, which stores sockaddr struct, return sockaddr struct
     private func getSockAddr(host: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>) -> Promise<UnsafeMutablePointer<sockaddr>>
     {
-        return Promise<UnsafeMutablePointer<sockaddr>>(on: self.executionQueue) { fulfill, reject in
+        return Promise<UnsafeMutablePointer<sockaddr>>(on: self.state.executionQueue) { fulfill, reject in
             // Stores addrinfo fields like sockaddr struct, socket type, protocol, and address length
             var res: UnsafeMutablePointer<addrinfo>!
             

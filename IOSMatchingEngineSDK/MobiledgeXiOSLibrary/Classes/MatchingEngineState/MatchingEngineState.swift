@@ -28,11 +28,21 @@ extension MobiledgeXiOSLibrary {
         
         var DEBUG: Bool = true
         
-        var networkInfo: CTTelephonyNetworkInfo
-        var carrierName: String?
-        var previousCarrierName: String?
+        // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
+        public var networkInfo: CTTelephonyNetworkInfo
+        public var carrierName: String?
         public var ctCarriers: [String: CTCarrier]?
         public var lastCarrier: CTCarrier?
+        
+        public var closestCloudlet = ""
+        
+        // Used to correlate port to Path Prefix from findCloudletReply
+        var portToPathPrefixDict = [String: String]()
+            
+        // Just standard GCD Queues to dispatch promises into, user initiated priority.
+        public var executionQueue = DispatchQueue.global(qos: .default)
+        
+        public var useWifiOnly: Bool = false
         
         init()
         {
@@ -66,6 +76,14 @@ extension MobiledgeXiOSLibrary {
         var verifyLocationResult: [String: AnyObject]?
         var location = [String: Any]()
         
+        public func setUseWifiOnly(enabled: Bool) {
+            useWifiOnly = enabled
+        }
+        
+        public func isUseWifiOnly() -> Bool {
+            return useWifiOnly
+        }
+        
         func setSessionCookie(sessionCookie: String?)
         {
             self.sessionCookie = sessionCookie
@@ -97,7 +115,7 @@ extension MobiledgeXiOSLibrary {
         }
         
         // Returns Array with MCC in zeroth index and MNC in first index
-        public func getMCCMNC() throws -> [String]
+        func getMCCMNC() throws -> [String]
         {
             if #available(iOS 12.0, *) {
                 ctCarriers = networkInfo.serviceSubscriberCellularProviders

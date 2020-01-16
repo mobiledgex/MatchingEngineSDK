@@ -42,7 +42,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         let baseFqdn = appFqdn
         // get fqdn prefix from port dictionary
-        guard let fqdnPrefix = portToPathPrefixDict[port] else {
+        guard let fqdnPrefix = state.portToPathPrefixDict[port] else {
             return baseFqdn
         }
         return fqdnPrefix + baseFqdn
