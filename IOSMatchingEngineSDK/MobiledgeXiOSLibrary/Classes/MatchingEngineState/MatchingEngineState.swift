@@ -42,7 +42,7 @@ extension MobiledgeXiOSLibrary {
         // Just standard GCD Queues to dispatch promises into, user initiated priority.
         public var executionQueue = DispatchQueue.global(qos: .default)
         
-        public var useWifiOnly: Bool = false
+        private var useWifiOnly: Bool = false
         
         init()
         {
@@ -71,7 +71,6 @@ extension MobiledgeXiOSLibrary {
         private var tokenServerToken: String?
         
         var deviceGpsLocation: [String: AnyObject]?
-        
         // Various known states (should create non-dictionary classes)
         var verifyLocationResult: [String: AnyObject]?
         var location = [String: Any]()
