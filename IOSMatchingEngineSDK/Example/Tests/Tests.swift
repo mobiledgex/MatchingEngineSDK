@@ -46,6 +46,7 @@ class Tests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
+        // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests
         if TEST
         {
             port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort

@@ -48,28 +48,16 @@ extension MobiledgeXiOSLibrary {
             public static let registerClientSuccess = "RS_SUCCESS"
         }
         
-        var state: MatchingEngineState
-        
-        // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
-        public let networkInfo = CTTelephonyNetworkInfo()
-        
-        // Used to correlate port to Path Prefix from findCloudletReply
-        var portToPathPrefixDict = [String: String]()
-            
-        // Just standard GCD Queues to dispatch promises into, user initiated priority.
-        var executionQueue = DispatchQueue.global(qos: .default)
-        
         let headers = [
             "Accept": "application/json",
             "Content-Type": "application/json", // This is the default
             "Charsets": "utf-8",
         ]
         
-        public var closestCloudlet = ""
+        var state: MatchingEngineState
 
         public init()
         {
-            executionQueue = DispatchQueue.global(qos: .default)
             state = MatchingEngineState()
         }
         
@@ -78,7 +66,7 @@ extension MobiledgeXiOSLibrary {
                                 request: [String: Any])
             -> Promise<[String: AnyObject]>
         {
-            return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+            return Promise<[String: AnyObject]>(on: self.state.executionQueue) { fulfill, reject in
                 
                 do {
                     //create URLRequest object

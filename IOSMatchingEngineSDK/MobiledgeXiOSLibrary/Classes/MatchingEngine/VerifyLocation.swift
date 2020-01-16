@@ -110,7 +110,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     {
         os_log("uri: %@ request\n", log: OSLog.default, type: .debug, uri)
         
-        return Promise<[String: AnyObject]>(on: self.executionQueue) { fulfill, reject in
+        return Promise<[String: AnyObject]>(on: self.state.executionQueue) { fulfill, reject in
             //Create URLRequest object
             let url = URL(string: uri)
             var urlRequest = URLRequest(url: url!)
@@ -242,7 +242,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
          // This doesn't catch anything. It does throw errors to the caller.
-        return self.getToken(uri: tokenServerUri).then(on: self.executionQueue) { verifyLocationToken in
+        return self.getToken(uri: tokenServerUri).then(on: self.state.executionQueue) { verifyLocationToken in
             
             let baseuri = self.generateBaseUri(host: host, port: port)
             let verifylocationAPI: String = APIPaths.verifylocationAPI
