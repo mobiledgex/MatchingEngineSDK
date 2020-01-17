@@ -61,9 +61,9 @@ class Tests: XCTestCase {
             devName =  "MobiledgeX"
             carrierName = "TDG"
             authToken = nil
-            uniqueIDType = nil
+            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
             uniqueID = matchingEngine.getUniqueID()
-            cellID = nil
+            cellID = 0
             tags = nil
         }
         else
@@ -74,9 +74,9 @@ class Tests: XCTestCase {
             devName =  "MobiledgeX"             //   replace this with your devName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
-            uniqueIDType = nil
+            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
             uniqueID = matchingEngine.getUniqueID()
-            cellID = nil
+            cellID = 0
             tags = nil
         }
     }
