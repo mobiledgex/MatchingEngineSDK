@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 //  RegisterAndFindCloudlet.swift
 //
 
-import Foundation
 import Promises
 
-extension MatchingEngine
+extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
     public func registerAndFindCloudlet(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: [String: Any]) -> Promise<[String: AnyObject]> {
@@ -29,7 +28,20 @@ extension MatchingEngine
         
         return self.registerClient(request: registerRequest)
         .then { registerClientReply -> Promise<[String: AnyObject]> in
+            
+            let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+            
+            guard let status = registerClientReply[RegisterClientReply.status] as? String else {
+                promiseInputs.reject(MatchingEngineError.registerFailed)
+                return promiseInputs
+            }
+            if status != DMEConstants.registerClientSuccess {
+                promiseInputs.reject(MatchingEngineError.registerFailed)
+                return promiseInputs
+            }
+            
             let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, devName: devName!, appName: appName, appVers: appVers)
+            
             return self.findCloudlet(request: findCloudletRequest)
         }
     }

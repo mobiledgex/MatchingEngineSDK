@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 //  QosPositionKpi.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
@@ -58,7 +57,7 @@ class QosPositionKpiReply {
     public static let position_results = "position_results"
 }
 
-extension MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     /// createQosKPIRequest
     ///
@@ -105,12 +104,12 @@ extension MatchingEngine {
         
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
-        let port = self.state.defaultRestDmePort
+        let port = DMEConstants.dmeRestPort
         return getQosKPIPosition(host: host, port: port, request: request);
     }
     
@@ -127,8 +126,8 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.qospositionkpiAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.qospositionkpiAPI
         
         do {
             try validateQosKPIRequest(request: request)

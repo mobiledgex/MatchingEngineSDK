@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 
 import XCTest
 
-@testable import MatchingEngine
+@testable import MobiledgeXiOSLibrary
 @testable import Promises
 @testable import SocketIO
 import Network
@@ -30,7 +30,7 @@ class Tests: XCTestCase {
     var devName: String!
     var carrierName: String!
     var authToken: String?
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     func propertyAssert(propertyNameList: [String], object: [String: AnyObject]) {
         for propertyName in propertyNameList {
@@ -45,10 +45,11 @@ class Tests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        matchingEngine = MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
+        // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests
         if TEST
         {
-            port = matchingEngine.getDefaultDmePort()
+            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"
@@ -295,8 +296,22 @@ class Tests: XCTestCase {
         XCTAssertNil(replyPromise.error)
     }
     
+    func testRegisterAndFindCloudlet() {
+        let loc = [ "longitude": -122.149349, "latitude": 37.459609]
+        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: devName, appName: appName, appVers: appVers, carrierName: nil, authToken: nil, gpsLocation: loc)
+        .catch { error in
+            XCTAssert(false, "Error is \(error.localizedDescription)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 5))
+        guard let promiseValue = replyPromise.value else {
+            XCTAssert(false, "TestRegisterAndFindCloudlet did not return a value.")
+            return
+        }
+    }
+    
     func testGetCarrierName() {
         let carrierName = matchingEngine.getCarrierName()
-        XCTAssert(carrierName == "telecom.de", "Incorrect carrier name \(carrierName)")
+        XCTAssert(carrierName == "26201", "Incorrect carrier name \(carrierName)")
     }
 }

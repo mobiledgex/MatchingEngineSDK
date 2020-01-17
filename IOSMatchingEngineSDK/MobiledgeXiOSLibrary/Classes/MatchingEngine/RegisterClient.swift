@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,11 @@
 //  RegisterClient.swift
 //
 
-import Foundation
 import os.log
 import Promises
 
-// MARK: RegisterClient code.
+// RegisterClient code.
 // TODO: GRPC for Swift (none available).
-
-// MARK: RegisterClient Extension
 
 //RegisterClientRequest fields
 class RegisterClientRequest {
@@ -44,10 +41,8 @@ class RegisterClientReply {
     public static let token_server_uri = "token_server_uri"
 }
 
-extension MatchingEngine
+extension MobiledgeXiOSLibrary.MatchingEngine
 {
-    // MARK:
-    
     // Sets: sessioncookie, tokenserveruri
     
     func registerClientResult(_ registerClientReply: [String: Any])
@@ -86,7 +81,7 @@ extension MatchingEngine
         regClientRequest[RegisterClientRequest.app_name] = appName ?? getAppName()
         regClientRequest[RegisterClientRequest.app_vers] = appVers ?? getAppVersion()
         regClientRequest[RegisterClientRequest.dev_name] = devName
-        regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
+        regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? getCarrierName()
         regClientRequest[RegisterClientRequest.auth_token] = authToken ?? ""
         
         return regClientRequest
@@ -123,12 +118,12 @@ extension MatchingEngine
         let carrierName = state.carrierName
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
-        let port = self.state.defaultRestDmePort
+        let port = DMEConstants.dmeRestPort
         // Return a promise:
         return self.registerClient(host: host, port: port, request: request)
     }
@@ -147,9 +142,9 @@ extension MatchingEngine
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("registerClient", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
+        let baseuri = generateBaseUri(host: host, port: port)
         os_log("BaseURI: %@", log: OSLog.default, type: .debug, baseuri)
-        let urlStr = baseuri + MexUtil.shared.registerAPI
+        let urlStr = baseuri + APIPaths.registerAPI
         
         do {
             try validateRegisterClientRequest(request: request)

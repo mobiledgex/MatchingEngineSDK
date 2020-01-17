@@ -1,5 +1,5 @@
 
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@
 //
 //  GetLocation.swift
 //
-import Foundation
+
 import os.log
 import Promises
 
@@ -36,7 +36,7 @@ class GetLocationReply {
     public static let network_location = "network_location"
 }
 
-extension MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     /// createGetLocationRequest
     ///
@@ -49,7 +49,7 @@ extension MatchingEngine {
         
         getLocationRequest[GetLocationRequest.ver] = 1
         getLocationRequest[GetLocationRequest.session_cookie] = self.state.getSessionCookie()
-        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? MexUtil.shared.getCarrierName()
+        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? getCarrierName()
         
         return getLocationRequest
     }
@@ -76,15 +76,14 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         
         let carrierName = state.carrierName
-        
         var host: String
         do {
-            host = try MexUtil.shared.generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost(carrierName: carrierName)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
-        let port = self.state.defaultRestDmePort
+        let port = DMEConstants.dmeRestPort
         return getLocation(host: host, port: port, request: request);
     }
     
@@ -101,8 +100,8 @@ extension MatchingEngine {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("getLocation", log: OSLog.default, type: .debug)
         
-        let baseuri = MexUtil.shared.generateBaseUri(host: host, port: port)
-        let urlStr = baseuri + MexUtil.shared.getlocationAPI
+        let baseuri = generateBaseUri(host: host, port: port)
+        let urlStr = baseuri + APIPaths.getlocationAPI
         
         do {
             try validateGetLocationRequest(request: request)

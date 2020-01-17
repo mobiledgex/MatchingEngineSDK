@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,14 @@
 
 import XCTest
 
-@testable import MatchingEngine
+@testable import MobiledgeXiOSLibrary
 @testable import Promises
 import Network
 
 class MetricsTest: XCTestCase {
-    
-    var performanceMetrics: PerformanceMetrics!
 
     override func setUp() {
         super.setUp()
-        performanceMetrics = PerformanceMetrics()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -43,15 +40,15 @@ class MetricsTest: XCTestCase {
     func testNetTest() {
         
         // Initialize sites
-        let site1 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site2 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "mextest-app-cluster.fairview-main.gddt.mobiledgex.net", port: "3001", testType: PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
-        let site3 = PerformanceMetrics.Site(network: NetworkInterface.CELLULAR, host: "google.com", port: "443", testType: PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site1 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site2 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, host: "mextest-app-cluster.fairview-main.gddt.mobiledgex.net", port: "3001", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
+        let site3 = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR, host: "google.com", port: "443", testType: MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         
         // put sites in an array
         let sites = [site1, site2]
         
         // Initialize NetTest and run in background
-        let netTest = PerformanceMetrics.NetTest(sites: sites)
+        let netTest = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest(sites: sites)
         netTest.runTest(interval: 100)
         sleep(5)
         netTest.addSite(site: site3)

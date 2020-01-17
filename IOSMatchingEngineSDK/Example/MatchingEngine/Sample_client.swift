@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ import GoogleMaps
 
 import os.log
 import Promises
-import MatchingEngine
+import MobiledgeXiOSLibrary
 
 // ----------------------------------------
 //
@@ -340,7 +340,7 @@ func processFindCloudletResult(_ d: [String: Any])
             let v = cld.value
             Swift.print("•FQDN• \(v)")
             
-            MexUtil.shared.closestCloudlet = v as! String
+            // closestCloudlet = v as! String
             
             Swift.print("")
         }

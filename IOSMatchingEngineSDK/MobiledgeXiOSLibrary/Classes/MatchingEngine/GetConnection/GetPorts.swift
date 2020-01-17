@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,6 @@
 //  GetPorts.swift
 //
 
-import Foundation
-
 public class Protocol {
     public static let tcp = "L_PROTO_TCP"
     public static let udp = "L_PROTO_UDP"
@@ -34,7 +32,7 @@ class Ports {
     public static let end_port = "end_port"
 }
 
-extension MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
     public func getAppFqdn(findCloudletReply: [String: AnyObject], port: String) -> String?
@@ -44,7 +42,7 @@ extension MatchingEngine {
         }
         let baseFqdn = appFqdn
         // get fqdn prefix from port dictionary
-        guard let fqdnPrefix = portToPathPrefixDict[port] else {
+        guard let fqdnPrefix = state.portToPathPrefixDict[port] else {
             return baseFqdn
         }
         return fqdnPrefix + baseFqdn
