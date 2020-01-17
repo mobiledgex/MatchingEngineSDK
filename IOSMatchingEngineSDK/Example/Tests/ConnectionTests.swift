@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 
 import XCTest
 
-@testable import MatchingEngine
+@testable import MobiledgeXiOSLibrary
 @testable import Promises
 @testable import SocketIO
 import Network
 
 class ConnectionTests: XCTestCase {
     
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     var connection: NWConnection!
     let queue = DispatchQueue.global(qos: .background)
     
@@ -32,7 +32,7 @@ class ConnectionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        matchingEngine = MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -47,7 +47,7 @@ class ConnectionTests: XCTestCase {
     }
     
     func testIsCellular() {
-        let hasCellular = NetworkInterface.hasCellularInterface()
+        let hasCellular = MobiledgeXiOSLibrary.NetworkInterface.hasCellularInterface()
         if !hasCellular {
             XCTAssert(false, "Failed")
         }
@@ -55,7 +55,7 @@ class ConnectionTests: XCTestCase {
     
     func testIsWifi() {
         let wifiOn = true // tester specifies this
-        let hasWifi = NetworkInterface.hasWifiInterface()
+        let hasWifi = MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface()
         if hasWifi != wifiOn {
             XCTAssert(false, "Failed")
         }
@@ -292,7 +292,7 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5)
+            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5000)
             
         }.then { socket in
             let string = try self.readAndWriteBSDSocket(socket: socket)
@@ -337,11 +337,11 @@ class ConnectionTests: XCTestCase {
         let writeError = write(sockfd, bytes, length)
         // WriteError tells number of bytes written or -1 for error
         if writeError == -1 {
-            let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(Int32(writeError), errno)
             close(socket.sockfd)
             throw(sysError)
         } else if writeError != length {
-            let sysError = SystemError.getaddrinfo(Int32(writeError), errno)
+            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(Int32(writeError), errno)
             close(socket.sockfd)
             throw(sysError)
         }
@@ -388,11 +388,11 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 0.1)
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 100)
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in
-            if case GetConnectionError.connectionTimeout = error {
+            if case MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.connectionTimeout = error {
                 print("error is \(error)")
                 XCTAssert(true, "error is \(error)")
             } else {

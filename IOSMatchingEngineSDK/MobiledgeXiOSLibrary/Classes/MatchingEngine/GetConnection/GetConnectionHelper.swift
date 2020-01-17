@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,11 @@
 //  GetConnectionHelper.swift
 //
 
-import Foundation
 import os.log
 import Promises
 import SocketIO
 
-extension MatchingEngine {
+extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns TCP CFSocket promise
     func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
@@ -29,7 +28,7 @@ extension MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -61,7 +60,7 @@ extension MatchingEngine {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // local ip bind to cellular network interface
-            guard let clientIP = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR) else {
+            guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
                 reject(GetConnectionError.invalidNetworkInterface)
                 return
@@ -96,7 +95,7 @@ extension MatchingEngine {
             }
             // DNS lookup
             do {
-                try MexUtil.shared.verifyDmeHost(host: host)
+                try self.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
@@ -113,7 +112,7 @@ extension MatchingEngine {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
             // DNS Lookup
             do {
-                try MexUtil.shared.verifyDmeHost(host: host)
+                try self.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
@@ -160,13 +159,13 @@ extension MatchingEngine {
     // creates an addrinfo object, which stores sockaddr struct, return sockaddr struct
     private func getSockAddr(host: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>) -> Promise<UnsafeMutablePointer<sockaddr>>
     {
-        return Promise<UnsafeMutablePointer<sockaddr>>(on: self.executionQueue) { fulfill, reject in
+        return Promise<UnsafeMutablePointer<sockaddr>>(on: self.state.executionQueue) { fulfill, reject in
             // Stores addrinfo fields like sockaddr struct, socket type, protocol, and address length
             var res: UnsafeMutablePointer<addrinfo>!
             
             let error = getaddrinfo(host, port, addrInfo, &res)
             if error != 0 {
-                let sysError = SystemError.getaddrinfo(error, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
                 os_log("Get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 reject(sysError)
             }

@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,143 +17,11 @@
 //  NetTest.swift
 //
 
-import Combine
 import os.log
+import Combine
 
-public class PerformanceMetrics {
+extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
-    @available(iOS 13.0, *)
-    public class Site {
-    
-        public var host: String?
-        public var port: String?
-        public var l7Path: String? // http path
-        public var network: String
-        public var testType: NetTest.TestType
-    
-        public var lastPingMs: Double?
-        public var avg: Double
-        public var stdDev: Double?
-        
-        public var samples: [Double]
-        public var capacity: Int
-        
-        var unbiasedAvg: Double // take average to prevent imprecision
-        var unbiasedSquareAvg: Double
-        
-        let DEFAULT_CAPACITY = 5
-        
-        // initialize size with host and port
-        public init(network: String, host: String, port: String, testType: NetTest.TestType?, numSamples: Int?) {
-            self.network = network
-            self.host = host
-            self.port = port
-            samples = [Double]()
-            avg = 0.0
-            unbiasedAvg = 0.0
-            unbiasedSquareAvg = 0.0
-            
-            self.testType = testType != nil ? testType! : NetTest.TestType.CONNECT // default
-            self.capacity = numSamples != nil ? numSamples! : DEFAULT_CAPACITY
-        }
-        
-        // initialize http site
-        public init(network: String, l7Path: String, testType: NetTest.TestType?, numSamples: Int?) {
-            self.network = network
-            self.l7Path = l7Path
-            samples = [Double]()
-            avg = 0.0
-            unbiasedAvg = 0.0
-            unbiasedSquareAvg = 0.0
-            
-            self.testType = testType != nil ? testType! : NetTest.TestType.CONNECT // default
-            self.capacity = numSamples != nil ? numSamples! : DEFAULT_CAPACITY
-        }
-        
-        public func addSample(sample: Double) {
-            self.lastPingMs = sample
-            samples.append(sample)
-            lastPingMs = sample
-            
-            // rolling average
-            var removed: Double?
-            if samples.count > capacity {
-                removed = samples.remove(at: 0)
-            }
-            updateStats(removedVal: removed)
-        }
-        
-        private func updateStats(removedVal: Double?) {
-            updateAvg(removedVal: removedVal)
-            updateStdDev(removedVal: removedVal)
-        }
-        
-        // constant time update to average
-        private func updateAvg(removedVal: Double?) {
-            var sum: Double
-            // check if adding to samples or replacing element in samples
-            if let remove = removedVal {
-                sum = avg * Double(samples.count)
-                sum -= remove
-            } else {
-                sum = avg * Double(samples.count - 1)
-            }
-            sum += lastPingMs!
-            self.avg = sum / Double(samples.count)
-        }
-        
-        // constant time update to stdDev
-        // Expanding the formula for standard deviation yields 3 terms:
-        // 1) sum of squared samples
-        // 2) sum of samples multiplied by 2*mean
-        // 3) squared mean multiplied by number of samples
-        // (each of these terms are divided by n-1 for an unbiased sample standard deviation)
-        private func updateStdDev(removedVal: Double?) {
-            
-            // prevent dividing by 0, no stddev from sample size <= 1
-            if (samples.count > 1) {
-                
-                var sum: Double
-                var sumSquare: Double
-                
-                // samples is full, replacing oldest sample (rolling window)
-                if let remove = removedVal {
-                    
-                    sum = unbiasedAvg * Double(samples.count - 1)
-                    sum -= remove
-                    sum += lastPingMs!
-                    self.unbiasedAvg = sum / Double(samples.count - 1)
-                    
-                    sumSquare = unbiasedSquareAvg * Double(samples.count - 1)
-                    sumSquare -= remove * remove
-                    sumSquare += lastPingMs! * lastPingMs!
-                    self.unbiasedSquareAvg = sumSquare / Double(samples.count - 1)
-                
-                // samples is not yet filled
-                } else {
-                    
-                    sum = samples.count == 2 ? unbiasedAvg * Double(self.samples.count - 1) : unbiasedAvg * Double(samples.count - 2)
-                    sum += lastPingMs!
-                    self.unbiasedAvg = sum / Double(samples.count - 1)
-                    
-                    sumSquare = samples.count == 2 ? unbiasedSquareAvg * Double(samples.count - 1): unbiasedSquareAvg * Double(samples.count - 2)
-                    sumSquare += lastPingMs! * lastPingMs!
-                    self.unbiasedSquareAvg = sumSquare / Double(samples.count - 1)
-                }
-                
-                let term1 = unbiasedSquareAvg
-                let term2 = 2.0 * avg * unbiasedAvg
-                let term3 = Double(samples.count) * avg * avg / Double(samples.count - 1)
-                self.stdDev = sqrt(term1 - term2 + term3)
-                
-            } else {
-                
-                self.unbiasedAvg += lastPingMs!
-                self.unbiasedSquareAvg += lastPingMs! * lastPingMs!
-            }
-        }
-    }
-
     @available(iOS 13.0, *)
     public class NetTest {
         
@@ -240,7 +108,7 @@ public class PerformanceMetrics {
             //initialize urlRequest
             var urlRequest = URLRequest(url: url!)
             urlRequest.httpMethod = "HEAD"
-            if site.network == NetworkInterface.CELLULAR {
+            if site.network == MobiledgeXiOSLibrary.NetworkInterface.CELLULAR {
                 urlRequest.allowsCellularAccess = true
             }
             
@@ -276,11 +144,11 @@ public class PerformanceMetrics {
             }
             
             var ip: String?
-            if site.network != NetworkInterface.WIFI {
+            if site.network != MobiledgeXiOSLibrary.NetworkInterface.WIFI {
                 // default to Cellular interface unless wifi specified
-                ip = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.CELLULAR)
+                ip = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR)
             } else {
-                ip = NetworkInterface.getIPAddress(netInterfaceType: NetworkInterface.WIFI)
+                ip = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.WIFI)
             }
             
             guard let localIP = ip else {
@@ -305,21 +173,21 @@ public class PerformanceMetrics {
             // getaddrinfo function makes ip + port conversion to sockaddr easy
             let error = getaddrinfo(localIP, nil, addrInfo, &res)
             if error != 0 {
-                let sysError = SystemError.getaddrinfo(error, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(error, errno)
                 os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             // socket returns a socket descriptor
             let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
-                let sysError = SystemError.socket(s, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.socket(s, errno)
                 os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             // bind to socket to client cellular network interface
             let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
             if b == -1 {
-                let sysError = SystemError.bind(b, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.bind(b, errno)
                 os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
@@ -328,13 +196,13 @@ public class PerformanceMetrics {
             var serverRes: UnsafeMutablePointer<addrinfo>!
             let serverError = getaddrinfo(site.host, site.port, addrInfo, &serverRes)
             if serverError != 0 {
-                let sysError = SystemError.getaddrinfo(serverError, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(serverError, errno)
                 os_log("Server get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
             let serverSocket = socket(serverRes.pointee.ai_family, serverRes.pointee.ai_socktype, 0)
             if serverSocket == -1 {
-                let sysError = SystemError.connect(serverSocket, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.connect(serverSocket, errno)
                 os_log("Server socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
@@ -343,7 +211,7 @@ public class PerformanceMetrics {
             let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
             let after = DispatchTime.now()
             if c == -1 {
-                let sysError = SystemError.connect(c, errno)
+                let sysError = MobiledgeXiOSLibrary.SystemError.connect(c, errno)
                 os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return
             }
@@ -357,12 +225,3 @@ public class PerformanceMetrics {
     }
 }
 
-@available(iOS 13.0, *)
-extension PerformanceMetrics.Site: Equatable {
-    public static func == (lhs: PerformanceMetrics.Site, rhs: PerformanceMetrics.Site) -> Bool {
-        return
-            lhs.l7Path == rhs.l7Path &&
-            lhs.host == rhs.host &&
-            lhs.port == rhs.port
-    }
-}

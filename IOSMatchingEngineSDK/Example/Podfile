@@ -8,7 +8,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
 
 target 'MatchingEngine_Example' do
-  pod 'MatchingEngine', :path => '../'
+  pod 'MobiledgeXiOSLibrary', :path => '../'
  
   pod 'DropDown', '= 2.3.13'
   

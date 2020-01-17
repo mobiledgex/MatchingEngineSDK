@@ -1,4 +1,4 @@
-// Copyright 2019 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +25,7 @@ import Promises
 import os.log
 
 import DropDown
-
-import MatchingEngine
+import MobiledgeXiOSLibrary
 
 // quick and dirty global scope
 
@@ -35,7 +34,7 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     var host = ""
     var port: UInt = 38001
@@ -72,7 +71,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if demo
         {
             host = demoHost
-            port = matchingEngine.getDefaultDmePort()
+            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"
@@ -735,7 +734,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             var hostName: String!
             do {
-                hostName = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+                hostName = try self.matchingEngine.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
             } catch {
                 Swift.print("Error: \(error.localizedDescription)")
             }

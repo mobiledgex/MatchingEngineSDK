@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'MatchingEngine'
+  s.name 	     = 'MobiledgeXiOSLibrary' 
   s.version          = '1.4.2.3'
   s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure'
 
@@ -30,8 +30,8 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
 
   s.ios.deployment_target = '11.4'
 
-  s.source_files = 'MatchingEngine/Classes/**/*'
-  
+  s.source_files = 'MobiledgeXiOSLibrary/Classes/**/*'  
+ 
   s.dependency 'SwiftyJSON', '~> 5.0.0'
   s.dependency 'PromisesSwift', '~> 1.2.8'
   s.dependency 'Socket.IO-Client-Swift', '~> 15.2.0'
