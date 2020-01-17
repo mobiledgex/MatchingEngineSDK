@@ -52,7 +52,7 @@ class Tests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
-        // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests
+        matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
         if TEST
         {
             port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
@@ -167,7 +167,7 @@ class Tests: XCTestCase {
             }
 
         
-        XCTAssert(waitForPromises(timeout: 10))
+        XCTAssert(waitForPromises(timeout: 20))
         guard let val = replyPromise.value else {
             XCTAssert(false, "VerifyLocationReply missing a return value.")
             return
@@ -240,11 +240,12 @@ class Tests: XCTestCase {
         let addLongitude = (cos(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLong
         let addLatitude = (sin(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLat
         var i = 0.0;
-        var longitude = loc["longitude"] ?? 0
-        var latitude = loc["latitude"] ?? 0
+        let Loc = MobiledgeXiOSLibrary.MatchingEngine.Loc.self
+        var longitude = loc[Loc.longitude] ?? 0
+        var latitude = loc[Loc.latitude] ?? 0
         
         while i < totalDistanceKm {
-            let loc = [ "longitude": longitude, "latitude": latitude]
+            let loc = [Loc.longitude: longitude, Loc.latitude: latitude]
             
             qosPositionList.append(loc)
             
