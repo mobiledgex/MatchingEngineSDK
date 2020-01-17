@@ -20,27 +20,38 @@
 import os.log
 import Promises
 
-//FindCloudletRequest fields
-class FindCloudletRequest {
-    public static let ver = "ver"
-    public static let session_cookie = "session_cookie"
-    public static let carrier_name = "carrier_name"
-    public static let gps_location = "gps_location"
-    public static let dev_name = "dev_name"
-    public static let app_name = "app_name"
-    public static let app_vers = "app_vers"
-}
-
-//FindCloudletReply fields
-class FindCloudletReply {
-    public static let ver = "ver"
-    public static let status = "status"
-    public static let fqdn = "fqdn"
-    public static let ports = "ports"
-    public static let cloudlet_location = "cloudlet_location"
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
+    
+    // FindCloudletRequest fields
+    public class FindCloudletRequest {
+        public static let ver = "ver"
+        public static let session_cookie = "session_cookie"
+        public static let carrier_name = "carrier_name"
+        public static let gps_location = "gps_location"
+        public static let dev_name = "dev_name"
+        public static let app_name = "app_name"
+        public static let app_vers = "app_vers"
+        public static let cell_id = "cell_id"
+        public static let tags = "tags"
+    }
+
+    // FindCloudletReply fields
+    public class FindCloudletReply {
+        public static let ver = "ver"
+        public static let status = "status"
+        public static let fqdn = "fqdn"
+        public static let ports = "ports"
+        public static let cloudlet_location = "cloudlet_location"
+        public static let tags = "tags"
+        
+        // Values for FindCloudletReply status field
+        public enum FindStatus {
+            public static let FIND_UNKNOWN = "FIND_UNKNOWN"
+            public static let FIND_FOUND = "FIND_FOUND"
+            public static let FIND_NOTFOUND = "FIND_NOTFOUND"
+        }
+    }
+    
     // Carrier name can change depending on cell tower.
     //
     
@@ -53,7 +64,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Carrier name can change depending on cell tower.
     public func createFindCloudletRequest(carrierName: String?, gpsLocation: [String: Any],
-                                          devName: String, appName: String?, appVers: String?)
+                                          devName: String, appName: String?, appVers: String?, cellID: UInt32?, tags: [[String: String]]?)
         -> [String: Any]
     {
         var findCloudletRequest = [String: Any]() // Dictionary/json
@@ -65,6 +76,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         findCloudletRequest[FindCloudletRequest.dev_name] = devName
         findCloudletRequest[FindCloudletRequest.app_name] = appName ?? state.appName
         findCloudletRequest[FindCloudletRequest.app_vers] = appVers ?? state.appVersion
+        findCloudletRequest[FindCloudletRequest.cell_id] = cellID
+        findCloudletRequest[FindCloudletRequest.tags] = tags
         
         return findCloudletRequest
     }

@@ -123,4 +123,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     {
         return "https://\(host):\(port)"
     }
+    
+    public func getUniqueID() -> String? {
+        return state.uuid
+    }
 }

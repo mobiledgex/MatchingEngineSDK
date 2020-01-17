@@ -22,9 +22,9 @@ import Promises
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
-    public func registerAndFindCloudlet(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: [String: Any]) -> Promise<[String: AnyObject]> {
+    public func registerAndFindCloudlet(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: [String: Any], uniqueIDType: String?, uniqueID: String?, cellID: UInt32?, tags: [[String: String]]?) -> Promise<[String: AnyObject]> {
                 
-        let registerRequest = self.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken)
+        let registerRequest = self.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         return self.registerClient(request: registerRequest)
         .then { registerClientReply -> Promise<[String: AnyObject]> in
@@ -40,7 +40,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
                 return promiseInputs
             }
             
-            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, devName: devName!, appName: appName, appVers: appVers)
+            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, devName: devName, appName: appName, appVers: appVers, cellID: cellID, tags: tags)
             
             return self.findCloudlet(request: findCloudletRequest)
         }
