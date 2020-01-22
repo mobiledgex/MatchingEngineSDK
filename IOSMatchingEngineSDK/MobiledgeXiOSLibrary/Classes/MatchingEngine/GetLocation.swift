@@ -22,34 +22,48 @@
 import os.log
 import Promises
 
-class GetLocationRequest {
-    public static let ver = "ver"
-    public static let session_cookie = "session_cookie"
-    public static let carrier_name = "carrier_name"
-}
-
-class GetLocationReply {
-    public static let ver = "ver"
-    public static let status = "status"    //LOC_UNKNOWN, LOC_FOUND, LOC_DENIED
-    public static let carrier_name = "carrier_name"
-    public static let tower = "tower"
-    public static let network_location = "network_location"
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
+    
+    // GetLocationRequest fields
+    public class GetLocationRequest {
+        public static let ver = "ver"
+        public static let session_cookie = "session_cookie"
+        public static let carrier_name = "carrier_name"
+        public static let cell_id = "cell_id"
+        public static let tags = "tags"
+    }
+
+    // GetLocationReply fields
+    public class GetLocationReply {
+        public static let ver = "ver"
+        public static let status = "status"
+        public static let carrier_name = "carrier_name"
+        public static let tower = "tower"
+        public static let network_location = "network_location"
+        public static let tags = "tags"
+        
+        // Values for GetLocationReply status field
+        public enum LocStatus {
+            public static let LOC_UNKNOWN = "LOC_UNKNOWN"
+            public static let LOC_FOUND = "LOC_FOUND"
+            public static let LOC_DENIED = "LOC_DENIED"
+        }
+    }
     
     /// createGetLocationRequest
     ///
     /// - Parameters:
     ///   - carrierName: carrierName description
     /// - Returns: API  Dictionary/json
-    public func createGetLocationRequest(carrierName: String?) -> [String: Any]
+    public func createGetLocationRequest(carrierName: String?, cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
     {
         var getLocationRequest = [String: Any]() // Dictionary/json qosKPIRequest
         
         getLocationRequest[GetLocationRequest.ver] = 1
         getLocationRequest[GetLocationRequest.session_cookie] = self.state.getSessionCookie()
         getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? getCarrierName()
+        getLocationRequest[GetLocationRequest.cell_id] = cellID
+        getLocationRequest[GetLocationRequest.tags] = tags
         
         return getLocationRequest
     }

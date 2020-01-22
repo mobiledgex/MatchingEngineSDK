@@ -47,6 +47,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var devName = ""
     var appVers = ""
     var authToken: String? = nil
+    var uniqueID: String?
+    var uniqueIDType: String?
+    var cellID: UInt32?
+    var tags: [[String: String]]?
     
     // For the overriding me.getCarrierName() for contacting the DME host
     var overrideDmeCarrierName: String? = "sdkdemo"
@@ -77,6 +81,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             devName =  "MobiledgeX"
             carrierName = "gddt"
             authToken = nil
+            uniqueID = matchingEngine.getUniqueID()
+            uniqueIDType = nil
+            cellID = nil
+            tags = nil
         }
         else
         {
@@ -86,6 +94,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             devName =  "MobiledgeX"             //   replace this with your devName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
+            uniqueID = matchingEngine.getUniqueID()
+            uniqueIDType = nil
+            cellID = nil
+            tags = nil
         }
     }
     
@@ -165,7 +177,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                    appName: appName,
                                                                    appVers: appVers,
                                                                    carrierName: carrierName,
-                                                                   authToken: authToken)
+                                                                   authToken: authToken,
+                                                                   uniqueIDType: uniqueIDType,
+                                                                   uniqueID: uniqueID,
+                                                                   cellID: cellID,
+                                                                   tags: tags)
         matchingEngine.registerClient(host: host,
                           port: port,
                           request: registerClientRequest)
@@ -203,7 +219,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
+            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
             self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: request)
                 .then { appInstList in
                     // Ick. Refactor, to just "Toast" the SDK usage status in UI at each promises chain stage:
@@ -463,7 +479,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                                                  appName: self!.appName,
                                                                                  appVers: self!.appVers,
                                                                                  carrierName: self!.carrierName,
-                                                                                 authToken: self!.authToken)
+                                                                                 authToken: self!.authToken,
+                                                                                 uniqueIDType: self!.uniqueIDType,
+                                                                                 uniqueID: self!.uniqueID,
+                                                                                 cellID: self!.cellID,
+                                                                                 tags: self!.tags)
                 if (self!.demo) {  //used for demo purposes
                     self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
@@ -495,7 +515,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             case 1:
                 let loc = retrieveLocation()
                 
-                let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
+                let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
                 if (self!.demo) {
                     self!.matchingEngine.getAppInstList(host: self!.demoHost, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
@@ -537,7 +557,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     let loc = retrieveLocation()
                     
                     let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
-                        carrierName: self!.carrierName, gpsLocation: loc)
+                        carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
                     if (self!.demo) {
                         self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
                         .then { verifyLocationReply in
@@ -580,7 +600,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
                                                                              gpsLocation: loc, devName: self!.devName,
-                                                                             appName: self!.appName, appVers: self!.appVers)
+                                                                             appName: self!.appName, appVers: self!.appVers, cellID: self!.cellID, tags: self!.tags)
                 if (self!.demo) {
                     self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
                     .then { findCloudletReply in
@@ -615,7 +635,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       totalDistanceKm: 200,
                                                       increment: 1)
                 
-                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil)
+                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil, cellID: self!.cellID, tags: self!.tags)
                 if (self!.demo) {
                     self!.matchingEngine.getQosKPIPosition(host: self!.demoHost, port: self!.port, request: getQoSPositionRequest)
                     .then { getQoSPositionReply in

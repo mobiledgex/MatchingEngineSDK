@@ -20,22 +20,34 @@
 import os.log
 import Promises
 
-class DynamicLocGroupRequest {
-    public static let ver = "ver"
-    public static let session_cookie = "session_cookie"
-    public static let lg_id = "lg_id"  //Dynamic Location Group ID
-    public static let comm_type = "comm_type" //DLG_UNDEFINED, DLG_SECURE, DLG_OPEN
-    public static let user_data = "user_data"
-}
-
-class DynamicLocGroupReply {
-    public static let ver = "ver"
-    public static let status = "status"
-    public static let error_code = "error_code"
-    public static let group_cookie = "group_cookie"
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
+    
+    // DynamicLocGroupRequest fields
+    public class DynamicLocGroupRequest {
+        public static let ver = "ver"
+        public static let session_cookie = "session_cookie"
+        public static let lg_id = "lg_id"  //Dynamic Location Group ID
+        public static let comm_type = "comm_type"
+        public static let user_data = "user_data"
+        public static let cell_id = "cell_id"
+        public static let tags = "tags"
+        
+        // Values for DynamicLocGroupRequest comm_type field
+        public enum DlgCommType {
+            public static let DLG_UNDEFINED = "DLG_UNDEFINED"
+            public static let DLG_SECURE = "DLG_UNDEFINED"
+            public static let DLG_OPEN = "DLG_UNDEFINED"
+        }
+    }
+    
+    // DynamicLocGroupReply fields
+    public class DynamicLocGroupReply {
+        public static let ver = "ver"
+        public static let status = "status"
+        public static let error_code = "error_code"
+        public static let group_cookie = "group_cookie"
+        public static let tags = "tags"
+    }
     
     /// createDynamicLocGroupRequest
     ///
@@ -44,17 +56,19 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    public func createDynamicLocGroupRequest(commType: String?, userData: String?) -> [String: Any]
+    public func createDynamicLocGroupRequest(lg_id: UInt64?, commType: String?, userData: String?, cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
     {
         var dynamicLocGroupRequest = [String: Any]() // Dictionary/json
         
         dynamicLocGroupRequest[DynamicLocGroupRequest.ver] = 1
         dynamicLocGroupRequest[DynamicLocGroupRequest.session_cookie] = state.getSessionCookie()
-        dynamicLocGroupRequest[DynamicLocGroupRequest.lg_id] = 1001 //NOT IMPLEMENTED
+        dynamicLocGroupRequest[DynamicLocGroupRequest.lg_id] = lg_id ?? 1001 //NOT IMPLEMENTED
         dynamicLocGroupRequest[DynamicLocGroupRequest.user_data] = userData
+        dynamicLocGroupRequest[DynamicLocGroupRequest.cell_id] = cellID
+        dynamicLocGroupRequest[DynamicLocGroupRequest.tags] = tags
         
-        guard let commType = commType, commType != "DLG_UNDEFINED" else {
-            dynamicLocGroupRequest[DynamicLocGroupRequest.comm_type] = "DLG_SECURE"
+        guard let commType = commType, commType != DynamicLocGroupRequest.DlgCommType.DLG_UNDEFINED else {
+            dynamicLocGroupRequest[DynamicLocGroupRequest.comm_type] = DynamicLocGroupRequest.DlgCommType.DLG_SECURE
             return dynamicLocGroupRequest
         }
         dynamicLocGroupRequest[DynamicLocGroupRequest.comm_type] = commType
