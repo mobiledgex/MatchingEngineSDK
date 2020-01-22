@@ -17,6 +17,7 @@
 //  NetTest.swift
 //
 
+import Foundation
 import os.log
 import Combine
 

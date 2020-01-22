@@ -16,6 +16,8 @@
 //  NetworkInterface.swift
 //
 
+import Foundation
+
 extension MobiledgeXiOSLibrary {
 
     public enum NetworkInterface {
