@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint MatchingEngine.podspec' to ensure this is a
+# Be sure to run `pod lib lint MobiledgeXiOSLibrary.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name 	     = 'MobiledgeXiOSLibrary' 
-  s.version          = '1.4.2.3'
+  s.version          = '1.4.2.5'
   s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure'
 
 # This description is used to generate tags and improve search results.
