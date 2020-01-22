@@ -19,16 +19,11 @@
 import os.log
 import Promises
 
-public struct Socket {
-    var addrInfo: UnsafeMutablePointer<addrinfo>
-    var sockfd: Int32
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
-    func getBSDTCPConnection(host: String, port: String) -> Promise<Socket>
+    func getBSDTCPConnection(host: String, port: String) -> Promise<MobiledgeXiOSLibrary.Socket>
     {
-        let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
+        let promise = Promise<MobiledgeXiOSLibrary.Socket>(on: .global(qos: .background)) { fulfill, reject in
             
             guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
@@ -51,9 +46,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return promise
     }
 
-    func getBSDUDPConnection(host: String, port: String) -> Promise<Socket>
+    func getBSDUDPConnection(host: String, port: String) -> Promise<MobiledgeXiOSLibrary.Socket>
     {
-        let promise = Promise<Socket>(on: .global(qos: .background)) { fulfill, reject in
+        let promise = Promise<MobiledgeXiOSLibrary.Socket>(on: .global(qos: .background)) { fulfill, reject in
             
             guard let clientIP = MobiledgeXiOSLibrary.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibrary.NetworkInterface.CELLULAR) else {
                 os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
@@ -76,9 +71,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return promise
     }
 
-    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<Socket>
+    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<MobiledgeXiOSLibrary.Socket>
     {
-        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+        let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
 
         // Bind to client cellular interface
         // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
@@ -133,7 +128,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             return promiseInputs
         }
             
-        let socket = Socket(addrInfo: res, sockfd: s)
+        let socket = MobiledgeXiOSLibrary.Socket(addrInfo: res, sockfd: s)
         promiseInputs.fulfill(socket)
         return promiseInputs
     }

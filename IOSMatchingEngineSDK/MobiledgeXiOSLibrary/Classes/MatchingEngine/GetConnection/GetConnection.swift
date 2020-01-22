@@ -63,9 +63,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<Socket> {
+    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
-        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+        let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -128,9 +128,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<Socket> {
+    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
-        let promiseInputs: Promise<Socket> = Promise<Socket>.pending()
+        let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         
         // Check if valid timeout
         if timeout <= 0 {

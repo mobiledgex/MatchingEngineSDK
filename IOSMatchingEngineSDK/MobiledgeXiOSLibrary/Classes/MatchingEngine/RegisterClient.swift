@@ -23,27 +23,32 @@ import Promises
 // RegisterClient code.
 // TODO: GRPC for Swift (none available).
 
-//RegisterClientRequest fields
-class RegisterClientRequest {
-    public static let ver = "ver"
-    public static let dev_name = "dev_name"
-    public static let app_name = "app_name"
-    public static let app_vers = "app_vers"
-    public static let carrier_name = "carrier_name"
-    public static let auth_token = "auth_token"
-}
-
-//RegisterClientReply fields
-class RegisterClientReply {
-    public static let ver = "ver"
-    public static let status = "status"
-    public static let session_cookie = "session_cookie"
-    public static let token_server_uri = "token_server_uri"
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
-    // Sets: sessioncookie, tokenserveruri
+    // RegisterClientRequest fields
+    public class RegisterClientRequest {
+       public static let ver = "ver"
+       public static let dev_name = "dev_name"
+       public static let app_name = "app_name"
+       public static let app_vers = "app_vers"
+       public static let carrier_name = "carrier_name"
+       public static let auth_token = "auth_token"
+       public static let cell_id = "cell_id"
+       public static let unique_id = "unique_id"
+       public static let unique_id_type = "unique_id_type"
+       public static let tags = "tags"
+    }
+
+    // RegisterClientReply fields
+    public class RegisterClientReply {
+       public static let ver = "ver"
+       public static let status = "status"
+       public static let session_cookie = "session_cookie"
+       public static let token_server_uri = "token_server_uri"
+       public static let unique_id_type = "unique_id_type"
+       public static let unique_id = "unique_id"
+       public static let tags = "tags"
+    }
     
     func registerClientResult(_ registerClientReply: [String: Any])
     {
@@ -72,17 +77,21 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - carrierName: Name of the mobile carrier.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(devName: String?, appName: String?, appVers: String?, carrierName: String?, authToken: String?)
+    public func createRegisterClientRequest(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, uniqueIDType: String?, uniqueID: String?, cellID: UInt32?, tags: [[String: String]]?) // need [[String: String]?]?
         -> [String: Any] // Dictionary/json
     {
         var regClientRequest = [String: Any]() // Dictionary/json regClientRequest
         
         regClientRequest[RegisterClientRequest.ver] = 1
+        regClientRequest[RegisterClientRequest.dev_name] = devName
         regClientRequest[RegisterClientRequest.app_name] = appName ?? getAppName()
         regClientRequest[RegisterClientRequest.app_vers] = appVers ?? getAppVersion()
-        regClientRequest[RegisterClientRequest.dev_name] = devName
         regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? getCarrierName()
-        regClientRequest[RegisterClientRequest.auth_token] = authToken ?? ""
+        regClientRequest[RegisterClientRequest.auth_token] = authToken
+        regClientRequest[RegisterClientRequest.unique_id_type] = uniqueIDType
+        regClientRequest[RegisterClientRequest.unique_id] = uniqueID
+        regClientRequest[RegisterClientRequest.cell_id] = cellID
+        regClientRequest[RegisterClientRequest.tags] = tags
         
         return regClientRequest
     }

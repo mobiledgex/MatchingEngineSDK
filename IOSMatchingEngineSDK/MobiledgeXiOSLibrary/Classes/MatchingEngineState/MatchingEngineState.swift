@@ -34,6 +34,9 @@ extension MobiledgeXiOSLibrary {
         public var ctCarriers: [String: CTCarrier]?
         public var lastCarrier: CTCarrier?
         
+        // Information about state of device
+        public var device: UIDevice
+        
         public var closestCloudlet = ""
         
         // Used to correlate port to Path Prefix from findCloudletReply
@@ -48,6 +51,7 @@ extension MobiledgeXiOSLibrary {
         {
             print(Bundle.main.object)
             networkInfo = CTTelephonyNetworkInfo()
+            device = UIDevice.init()
         }
         
         public var appName: String
@@ -63,6 +67,17 @@ extension MobiledgeXiOSLibrary {
             get
             {
                 return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+            }
+        }
+        
+        var uuid: String?
+        {
+            get
+            {
+                guard let uuid = device.identifierForVendor else {
+                    return nil
+                }
+                return uuid.uuidString
             }
         }
         

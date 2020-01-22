@@ -19,8 +19,6 @@
 //  MatchingEngineSDK
 //
 
-import Foundation
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public enum MatchingEngineError: Error {
