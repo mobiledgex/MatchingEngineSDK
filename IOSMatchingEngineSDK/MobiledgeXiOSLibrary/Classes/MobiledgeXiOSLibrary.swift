@@ -48,6 +48,11 @@ public enum MobiledgeXiOSLibrary {
         case bind(Int32, Int32?)
         case connect(Int32, Int32?)
     }
+    
+    public struct Socket {
+        var addrInfo: UnsafeMutablePointer<addrinfo>
+        var sockfd: Int32
+    }
 }
 
 public extension Dictionary

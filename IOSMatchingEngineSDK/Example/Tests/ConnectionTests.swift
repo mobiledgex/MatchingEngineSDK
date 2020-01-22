@@ -150,7 +150,7 @@ class ConnectionTests: XCTestCase {
         let host = "mextest-app-cluster.fairview-main.gddt.mobiledgex.net"
         let port = "3001"
         
-        var replyPromise: Promise<Socket>!
+        var replyPromise: Promise<MobiledgeXiOSLibrary.Socket>!
         replyPromise = matchingEngine.getBSDTCPConnection(host: host, port: port)
             
         .then { socket in
@@ -276,7 +276,7 @@ class ConnectionTests: XCTestCase {
         
         let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: nil, authToken: nil, gpsLocation: loc, uniqueIDType: nil, uniqueID: nil, cellID: nil, tags: nil)
             
-        .then { findCloudletReply -> Promise<Socket> in
+        .then { findCloudletReply -> Promise<MobiledgeXiOSLibrary.Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
             guard let appPortsDict = self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
                 XCTAssert(false, "GetTCPPorts returned nil")
@@ -314,7 +314,7 @@ class ConnectionTests: XCTestCase {
     }
     
     // Helper function for reading the writing data for Socket struct
-    private func readAndWriteBSDSocket(socket: Socket) throws -> String {
+    private func readAndWriteBSDSocket(socket: MobiledgeXiOSLibrary.Socket) throws -> String {
         // returns Socket struct with fields: file descriptor and addrinfo struct
         let sockfd = socket.sockfd
         let addrInfo = socket.addrInfo
