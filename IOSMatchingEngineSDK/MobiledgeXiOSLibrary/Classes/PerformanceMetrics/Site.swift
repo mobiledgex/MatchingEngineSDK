@@ -17,6 +17,8 @@
 //  Site.swift
 //
 
+import Foundation
+
 extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
     @available(iOS 13.0, *)

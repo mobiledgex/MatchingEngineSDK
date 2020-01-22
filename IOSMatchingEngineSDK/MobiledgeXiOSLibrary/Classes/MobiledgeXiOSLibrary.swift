@@ -22,6 +22,8 @@
 // Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
 // NetworkInterface, etc.)
 
+import Foundation
+
 public enum MobiledgeXiOSLibrary {
     
     public enum DmeDnsError: Error {
