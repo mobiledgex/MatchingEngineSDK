@@ -27,7 +27,7 @@ import os.log
 
 import DropDown
 
-import MatchingEngine
+import MobiledgeXiOSLibrary
 
 // quick and dirty global scope
 
@@ -36,10 +36,10 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     var host = ""
-    var port: UInt = 38001
+    var port: UInt16 = 38001
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -48,6 +48,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var devName = ""
     var appVers = ""
     var authToken: String? = nil
+    var cellID: UInt32 = 0
+    var tags: [[String: String]]? = nil
     
     // For the overriding me.getCarrierName() for contacting the DME host
     var overrideDmeCarrierName: String? = "mexdemo"
@@ -72,11 +74,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if demo
         {
             do {
-                host = try MexUtil.shared.generateDmeHost(carrierName: "mexdemo")
+                host = try matchingEngine.generateDmeHost(carrierName: "mexdemo")
             } catch {
                 print("unable to get host. error: \(error)")
             }
-            port = matchingEngine.getDefaultDmePort()
+            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
             devName =  "MobiledgeX"
@@ -192,7 +194,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc)
+            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
             self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: request)
                 .then { appInstList in
                     // Ick. Refactor, to just "Toast" the SDK usage status in UI at each promises chain stage:
@@ -550,7 +552,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             var hostName: String!
             do {
-                let hostName: String = try MexUtil.shared.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
+                let hostName: String = try self.matchingEngine.generateDmeHost(carrierName: cn).replacingOccurrences(of: "dme", with: "locsim")
             } catch {
                 print("Error: \(error.localizedDescription)")
             }

@@ -239,7 +239,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // TODO: This should be paramaterized:
-    public func verifyLocation(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func verifyLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         
         // Dummy promise to check inputs:

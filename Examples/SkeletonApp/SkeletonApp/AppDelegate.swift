@@ -26,13 +26,13 @@ import GoogleMaps
 import GoogleSignIn
 
 import os.log
-import MatchingEngine
+import MobiledgeXiOSLibrary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var services: Any? //   = GMSServices.sharedServices()
-    var matchingEngine: MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     var myViewController: ViewController!
 
     #warning ("Action item: you need to replace the values assigned: API Key and ClientID are specific to each app.")
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     /// init loggng options
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        matchingEngine = MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
 
         #if true    // GIDSignIn
             GIDSignIn.sharedInstance().clientID = kClientID

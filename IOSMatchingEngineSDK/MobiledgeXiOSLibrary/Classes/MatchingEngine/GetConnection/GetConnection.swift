@@ -41,7 +41,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // timeout: milliseconds
-    public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {
+    public func getTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -63,7 +63,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
+    public func getBSDTCPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         // Check if valid timeout
@@ -84,7 +84,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
         
     @available(iOS 13.0, *)
-    public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
+    public func getTCPTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
 
@@ -106,7 +106,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<CFSocket> {
+    public func getUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -128,7 +128,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
+    public func getBSDUDPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         
@@ -151,7 +151,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     @available(iOS 13.0, *)
-    public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<NWConnection> {
+    public func getUDPDTLSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         
@@ -174,7 +174,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
@@ -201,7 +201,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPSConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
@@ -228,7 +228,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<SocketManager> {
+    public func getWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
@@ -250,7 +250,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getSecureWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String, timeout: Double) -> Promise<SocketManager> {
+    public func getSecureWebsocketConnection(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int, timeout: Double) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
@@ -287,24 +287,23 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return host
     }
     
-    private func getPort(appPort: [String: Any], desiredPort: String) throws -> String {
-        var port: String
+    private func getPort(appPort: [String: Any], desiredPort: Int) throws -> UInt16 {
+        var port: UInt16
         
-        guard let publicPortAny = appPort[Ports.public_port] else {
+        guard let publicPort = appPort[Ports.public_port] as? UInt16 else {
             os_log("Unable to cast public port as String", log: OSLog.default, type: .debug)
             throw GetConnectionError.variableConversionError(message: "Unable to cast public port as String")
         }
-        let publicPort = String(describing: publicPortAny)
         // If desired port is -1, then default to public port
-        if desiredPort == "-1" {
+        if desiredPort == -1 {
             port = publicPort
         } else {
-            port = desiredPort
+            port = UInt16(desiredPort)
         }
         
         // Check if port is in AppPort range
         do {
-            let _ = try self.isInPortRange(appPort: appPort, port: desiredPort)
+            let _ = try self.isInPortRange(appPort: appPort, port: port)
         } catch {
             os_log("Port range check error", log: OSLog.default, type: .debug)
             throw error
@@ -312,7 +311,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return port
     }
     
-    private func constructHTTPUri(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: String) throws -> String {
+    private func constructHTTPUri(findCloudletReply: [String: AnyObject], appPort: [String: Any], desiredPort: Int) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         guard let fqdnPrefix = appPort[Ports.fqdn_prefix] as? String else {
             os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
@@ -329,26 +328,23 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let host = fqdnPrefix + fqdn
         let port = try getPort(appPort: appPort, desiredPort: desiredPort)
-        let uri = host + ":" + port + pathPrefix
+        let uri = host + ":" + String(describing: port) + pathPrefix
         return uri
     }
     
     
-    private func isInPortRange(appPort: [String: Any], port: String) throws -> Bool
+    private func isInPortRange(appPort: [String: Any], port: UInt16) throws -> Bool
     {
-        guard let publicPort = appPort[Ports.public_port] as? Int else {
+        guard let publicPort = appPort[Ports.public_port] as? UInt16 else {
             throw GetConnectionError.variableConversionError(message: "Unable to cast public_port to Int")
         }
-        guard let endPort = appPort[Ports.end_port] as? Int else {
+        guard let endPort = appPort[Ports.end_port] as? UInt16 else {
             throw GetConnectionError.variableConversionError(message: "Unable to cast end_port to Int")
-        }
-        guard let intPort = Int(port) else {
-            throw GetConnectionError.variableConversionError(message: "Unable to cast port to Int")
         }
         // Checks if a range exists -> if not, check if specified port equals public_port
         if (endPort == 0 || endPort < publicPort) {
-            return intPort == publicPort
+            return port == publicPort
         }
-        return (intPort >= publicPort && intPort <= endPort)
+        return (port >= publicPort && port <= endPort)
     }
 }

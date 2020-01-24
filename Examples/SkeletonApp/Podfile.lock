@@ -18,10 +18,10 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GTMSessionFetcher/Core (1.2.2)
-  - MatchingEngine (1.4.2.3):
-    - PromisesSwift
-    - Socket.IO-Client-Swift
-    - SwiftyJSON
+  - MobiledgeXiOSLibrary (1.4.2.5):
+    - PromisesSwift (~> 1.2.8)
+    - Socket.IO-Client-Swift (~> 15.2.0)
+    - SwiftyJSON (~> 5.0.0)
   - PromisesObjC (1.2.8)
   - PromisesSwift (1.2.8):
     - PromisesObjC (= 1.2.8)
@@ -37,7 +37,7 @@ DEPENDENCIES:
   - DropDown
   - GoogleMaps (= 3.3.0)
   - GoogleSignIn
-  - MatchingEngine (from `../../IOSMatchingEngineSDK/`)
+  - MobiledgeXiOSLibrary (from `../../IOSMatchingEngineSDK/`)
   - PromisesSwift
   - SPPermission (= 2.9)
   - SwiftLocation
@@ -61,7 +61,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 EXTERNAL SOURCES:
-  MatchingEngine:
+  MobiledgeXiOSLibrary:
     :path: "../../IOSMatchingEngineSDK/"
 
 SPEC CHECKSUMS:
@@ -70,7 +70,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  MatchingEngine: d5ad147565d31dfdb2f86103b395ba311281462e
+  MobiledgeXiOSLibrary: ada29c23f19b2eb22732c4c6917f39d7349c1e7c
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
@@ -80,6 +80,6 @@ SPEC CHECKSUMS:
   SwiftLog: f6c4f9a4ade06263555ab34b2c0f72025ffcda9e
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 94d7b84b085041442cb32fbb45b1e65bb376008c
+PODFILE CHECKSUM: 3756cd3b067c38311299ee423955c0475143aa8b
 
 COCOAPODS: 1.8.4

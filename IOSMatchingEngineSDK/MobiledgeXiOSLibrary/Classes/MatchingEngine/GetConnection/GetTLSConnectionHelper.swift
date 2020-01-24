@@ -25,7 +25,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // returns a TCP NWConnection promise
     @available(iOS 13.0, *)
-    func getTCPTLSConnection(host: String, port: String, timeout: Double) -> Promise<NWConnection>
+    func getTCPTLSConnection(host: String, port: UInt16, timeout: Double) -> Promise<NWConnection>
     {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
 
@@ -36,9 +36,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 return
             }
         
-            let localEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
+            let localEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(String(describing: port))!)
         
-            let serverEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!)
+            let serverEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(String(describing: port))!)
             // default tls and tcp options, developer can adjust
             let parameters = NWParameters(tls: .init(), tcp: .init())
             // bind to specific local cellular ip
@@ -63,7 +63,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // returns a UDP NWConnection promise
     @available(iOS 13.0, *)
-    func getUDPDTLSConnection(host: String, port: String, timeout: Double) -> Promise<NWConnection>
+    func getUDPDTLSConnection(host: String, port: UInt16, timeout: Double) -> Promise<NWConnection>
     {
         let promise = Promise<NWConnection>(on: .global(qos: .background)) { fulfill, reject in
             // local ip bind to cellular network interface
@@ -77,8 +77,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             let parameters = NWParameters(dtls: .init(), udp: .init())
             // bind to specific cellular ip
             parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
-            parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(port)!)
-            let nwConnection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(port)!, using: parameters)
+            parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(clientIP), port: NWEndpoint.Port(String(describing: port))!)
+            let nwConnection = NWConnection(host: NWEndpoint.Host(host), port: NWEndpoint.Port(String(describing: port))!, using: parameters)
             
             let semaphore = DispatchSemaphore(value: 0)
             self.setUpStateHandler(connection: nwConnection, semaphore: semaphore)
@@ -95,7 +95,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns SocketIOClient promise
-    func getSecureWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
+    func getSecureWebsocketConnection(host: String, port: UInt16) -> Promise<SocketManager>
     {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
             

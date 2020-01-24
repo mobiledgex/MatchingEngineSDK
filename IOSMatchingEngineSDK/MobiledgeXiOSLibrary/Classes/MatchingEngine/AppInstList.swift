@@ -117,7 +117,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return getAppInstList(host: host, port: port, request: request)
     }
     
-    public func getAppInstList(host: String, port: UInt, request: [String: Any])
+    public func getAppInstList(host: String, port: UInt16, request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
         os_log("Finding nearby appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)

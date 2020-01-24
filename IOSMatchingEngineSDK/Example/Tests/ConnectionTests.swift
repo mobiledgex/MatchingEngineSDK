@@ -121,7 +121,7 @@ class ConnectionTests: XCTestCase {
     @available(iOS 13.0, *)
     func testTCPTLSConnection() {
         let host = "google.com"
-        let port = "443"
+        let port = UInt16(443)
         // Bool states if Path is Satisfied and State is Ready -> successful connection
         var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port, timeout: 5)
 
@@ -148,7 +148,7 @@ class ConnectionTests: XCTestCase {
     
     func testBSDTCPConnection() {
         let host = "mextest-app-cluster.frankfurt-main.tdg.mobiledgex.net"
-        let port = "3001"
+        let port = UInt16(3001)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.Socket>!
         replyPromise = matchingEngine.getBSDTCPConnection(host: host, port: port)
@@ -178,7 +178,7 @@ class ConnectionTests: XCTestCase {
         var manager: SocketManager!
         
         let host = "iostestcluster.frankfurt-main.tdg.mobiledgex.net"
-        let port = "6668"
+        let port = UInt16(6668)
         var connected = false
         
         let replyPromise = matchingEngine.getWebsocketConnection(host: host, port: port)
@@ -287,12 +287,12 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No AppPorts in dictionary")
             }
             // Select AppPort Dictionary corresponding to internal port 3001
-            guard let appPort = appPortsDict["3001"] else {
+            guard let appPort = appPortsDict[3001] else {
                 XCTAssert(false, "No app ports with specified internal port")
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 5000)
+            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: 3001, timeout: 5000)
             
         }.then { socket in
             let string = try self.readAndWriteBSDSocket(socket: socket)
@@ -383,12 +383,12 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No AppPorts in dictionary")
             }
             // Select AppPort Dictionary corresponding to internal port 3001
-            guard let appPort = appPortsDict["3001"] else {
+            guard let appPort = appPortsDict[3001] else {
                 XCTAssert(false, "No app ports with specified internal port")
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: "3001", timeout: 100)
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: 3001, timeout: 100)
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in
