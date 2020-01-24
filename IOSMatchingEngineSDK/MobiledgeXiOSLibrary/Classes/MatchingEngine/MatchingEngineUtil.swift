@@ -113,13 +113,13 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func generateBaseUri(carrierName: String, port: UInt) throws -> String
+    public func generateBaseUri(carrierName: String, port: UInt16) throws -> String
     {
         let host = try generateDmeHost(carrierName: carrierName)
         return "https://\(host):\(port)"
     }
     
-    public func generateBaseUri(host: String, port: UInt) -> String
+    public func generateBaseUri(host: String, port: UInt16) -> String
     {
         return "https://\(host):\(port)"
     }

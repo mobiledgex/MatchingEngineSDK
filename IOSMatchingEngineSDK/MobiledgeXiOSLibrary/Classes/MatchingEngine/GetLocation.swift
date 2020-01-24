@@ -109,7 +109,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: GetLocationRequest dictionary, from createGetLocationRequest.
     /// - Returns: API Dictionary/json
-    public func getLocation(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func getLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("getLocation", log: OSLog.default, type: .debug)

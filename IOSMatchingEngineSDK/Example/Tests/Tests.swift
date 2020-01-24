@@ -25,7 +25,7 @@ class Tests: XCTestCase {
     let TEST = true
     
     var host = ""
-    var port: UInt = 38001
+    var port: UInt16 = 38001
     var appName: String!
     var appVers: String!
     var devName: String!

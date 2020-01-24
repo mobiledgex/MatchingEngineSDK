@@ -146,7 +146,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - port: port override of the dme server port
     ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
-    public func registerClient(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func registerClient(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
         os_log("registerClient", log: OSLog.default, type: .debug)

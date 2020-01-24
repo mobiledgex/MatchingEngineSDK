@@ -37,7 +37,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
     var host = ""
-    var port: UInt = 38001
+    var port: UInt16 = 38001
     var demoHost = "sdkdemo.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.

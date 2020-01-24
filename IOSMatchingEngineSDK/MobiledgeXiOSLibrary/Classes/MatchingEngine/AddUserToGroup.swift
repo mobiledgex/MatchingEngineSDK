@@ -113,7 +113,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
-    public func addUserToGroup (host: String, port: UInt, request: [String: Any])
+    public func addUserToGroup (host: String, port: UInt16, request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()

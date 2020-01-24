@@ -8,7 +8,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
 
 target 'SkeletonApp' do
-  pod 'MatchingEngine', :path => '../../IOSMatchingEngineSDK/'
+  pod 'MobiledgeXiOSLibrary', :path => '../../IOSMatchingEngineSDK/'
 
   pod 'PromisesSwift'
 

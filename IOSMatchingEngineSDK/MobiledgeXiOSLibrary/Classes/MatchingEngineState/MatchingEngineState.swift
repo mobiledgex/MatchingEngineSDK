@@ -41,7 +41,7 @@ extension MobiledgeXiOSLibrary {
         public var closestCloudlet = ""
         
         // Used to correlate port to Path Prefix from findCloudletReply
-        var portToPathPrefixDict = [String: String]()
+        var portToPathPrefixDict = [UInt16: String]()
             
         // Just standard GCD Queues to dispatch promises into, user initiated priority.
         public var executionQueue = DispatchQueue.global(qos: .default)
