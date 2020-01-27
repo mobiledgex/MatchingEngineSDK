@@ -1,4 +1,4 @@
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -139,7 +139,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: FindCloudlet dictionary, from createFindCloudletReqwuest.
     /// - Returns: API Dictionary/json
-    public func findCloudlet(host: String, port: UInt, request: [String: Any])
+    public func findCloudlet(host: String, port: UInt16, request: [String: Any])
         -> Promise<[String: AnyObject]>
     {
         os_log("Finding nearest Cloudlet appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)

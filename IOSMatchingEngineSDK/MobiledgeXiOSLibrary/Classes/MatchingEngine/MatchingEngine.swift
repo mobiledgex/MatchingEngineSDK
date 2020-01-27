@@ -1,5 +1,5 @@
 
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ extension MobiledgeXiOSLibrary {
         
         public enum DMEConstants {
             public static let baseDmeHost: String = "dme.mobiledgex.net"
-            public static let dmeRestPort: UInt = 38001
+            public static let dmeRestPort: UInt16 = 38001
             public static let fallbackCarrierName: String = "sdkdemo"
             public static let wifiAlias: String = "wifi"
             public static let registerClientSuccess = "RS_SUCCESS"

@@ -1,5 +1,5 @@
 
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@
 //  MatchingEngineState.swift
 //
 
+import UIKit
 import Foundation
 import CoreTelephony
 import os.log
@@ -40,7 +41,7 @@ extension MobiledgeXiOSLibrary {
         public var closestCloudlet = ""
         
         // Used to correlate port to Path Prefix from findCloudletReply
-        var portToPathPrefixDict = [String: String]()
+        var portToPathPrefixDict = [UInt16: String]()
             
         // Just standard GCD Queues to dispatch promises into, user initiated priority.
         public var executionQueue = DispatchQueue.global(qos: .default)

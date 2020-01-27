@@ -1,4 +1,4 @@
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
-    func getBSDTCPConnection(host: String, port: String) -> Promise<MobiledgeXiOSLibrary.Socket>
+    func getBSDTCPConnection(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibrary.Socket>
     {
         let promise = Promise<MobiledgeXiOSLibrary.Socket>(on: .global(qos: .background)) { fulfill, reject in
             
@@ -36,7 +36,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
 
-            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
+            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: String(describing: port))
             .then { socket in
                     fulfill(socket)
             }.catch { error in
@@ -46,7 +46,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return promise
     }
 
-    func getBSDUDPConnection(host: String, port: String) -> Promise<MobiledgeXiOSLibrary.Socket>
+    func getBSDUDPConnection(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibrary.Socket>
     {
         let promise = Promise<MobiledgeXiOSLibrary.Socket>(on: .global(qos: .background)) { fulfill, reject in
             
@@ -61,7 +61,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_DGRAM // UDP
 
-            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: port)
+            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: String(describing: port))
             .then { socket in
                     fulfill(socket)
             }.catch { error in
