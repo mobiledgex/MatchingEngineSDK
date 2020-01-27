@@ -1,4 +1,4 @@
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ import SocketIO
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns TCP CFSocket promise
-    func getTCPConnection(host: String, port: String) -> Promise<CFSocket>
+    func getTCPConnection(host: String, port: UInt16) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
@@ -44,7 +44,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
         
-            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
+            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
                     fulfill(socket)
             }.catch { error in
@@ -55,7 +55,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns UDP CFSocket promise
-    func getUDPConnection(host: String, port: String) -> Promise<CFSocket>
+    func getUDPConnection(host: String, port: UInt16) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
@@ -76,7 +76,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_DGRAM // UDP datagrams
                         
-            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: port, addrInfo: &addrInfo, socket: socket)
+            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
                     fulfill(socket)
             }.catch { error in
@@ -107,7 +107,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns SocketIOClient promise
-    func getWebsocketConnection(host: String, port: String) -> Promise<SocketManager>
+    func getWebsocketConnection(host: String, port: UInt16) -> Promise<SocketManager>
     {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
             // DNS Lookup

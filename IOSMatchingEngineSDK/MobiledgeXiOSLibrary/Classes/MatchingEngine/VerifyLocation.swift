@@ -1,4 +1,4 @@
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -239,7 +239,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // TODO: This should be paramaterized:
-    public func verifyLocation(host: String, port: UInt, request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func verifyLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
         
         // Dummy promise to check inputs:

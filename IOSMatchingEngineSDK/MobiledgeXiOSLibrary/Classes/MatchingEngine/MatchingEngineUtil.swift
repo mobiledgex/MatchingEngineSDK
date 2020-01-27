@@ -1,4 +1,4 @@
-// Copyright 2020 MobiledgeX, Inc. All rights and licenses reserved.
+// Copyright 2018-2020 MobiledgeX, Inc. All rights and licenses reserved.
 // MobiledgeX, Inc. 156 2nd Street #408, San Francisco, CA 94105
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -113,13 +113,13 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func generateBaseUri(carrierName: String, port: UInt) throws -> String
+    public func generateBaseUri(carrierName: String, port: UInt16) throws -> String
     {
         let host = try generateDmeHost(carrierName: carrierName)
         return "https://\(host):\(port)"
     }
     
-    public func generateBaseUri(host: String, port: UInt) -> String
+    public func generateBaseUri(host: String, port: UInt16) -> String
     {
         return "https://\(host):\(port)"
     }
