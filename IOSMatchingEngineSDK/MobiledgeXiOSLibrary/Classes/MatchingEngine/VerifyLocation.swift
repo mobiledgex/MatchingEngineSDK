@@ -98,7 +98,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         verifyLocationRequest[VerifyLocationRequest.ver] = 1
         verifyLocationRequest[VerifyLocationRequest.session_cookie] = self.state.getSessionCookie()
-        verifyLocationRequest[VerifyLocationRequest.carrier_name] = carrierName ?? state.carrierName
+        verifyLocationRequest[VerifyLocationRequest.carrier_name] = carrierName ?? getCarrierName()
         verifyLocationRequest[VerifyLocationRequest.gps_location] = gpsLocation
         verifyLocationRequest[VerifyLocationRequest.cell_id] = cellID
         verifyLocationRequest[VerifyLocationRequest.tags] = tags
@@ -241,19 +241,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     // TODO: This should be paramaterized:
     public func verifyLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
     {
-        
         // Dummy promise to check inputs:
         let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-
+        
         guard let _ = request[VerifyLocationRequest.carrier_name] ?? self.state.carrierName else {
             promiseInputs.reject(MatchingEngineError.missingCarrierName)
             return promiseInputs
         }
+
         guard let _ = request[VerifyLocationRequest.gps_location] ?? self.state.deviceGpsLocation else {
             promiseInputs.reject(MatchingEngineError.missingGPSLocation)
             return promiseInputs
         }
-        
         // mini-check server uri to get token:
         guard let tokenServerUri = self.state.getTokenServerUri() else {
             promiseInputs.reject(InvalidTokenServerTokenError.invalidTokenServerUri)
