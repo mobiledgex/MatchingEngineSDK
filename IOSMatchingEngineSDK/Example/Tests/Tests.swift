@@ -151,16 +151,15 @@ class Tests: XCTestCase {
     
     func testVerifyLocation() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
-        // self.matchingEngine.state.setUseWifiOnly(enabled: true)
 
         let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
 
-        replyPromise = matchingEngine.registerClient(host: "sdkdemo.dme.mobiledgex.net", port: 38001, request: regRequest)
+        replyPromise = matchingEngine.registerClient(request: regRequest)
                 .then { reply in
-                    self.matchingEngine.verifyLocation(host: "sdkdemo.dme.mobiledgex.net", port: 38001, request: self.matchingEngine.createVerifyLocationRequest(
-                                                        carrierName: self.carrierName,
+                    self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
+                                                        carrierName: nil,
                                                         gpsLocation: loc,
                                                         cellID: self.cellID,
                                                         tags: self.tags))

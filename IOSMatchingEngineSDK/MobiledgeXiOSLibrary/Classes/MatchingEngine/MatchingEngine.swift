@@ -104,7 +104,6 @@ extension MobiledgeXiOSLibrary {
                         // No errors
                         if let data = data {
                             do {
-                                print("successful json = \(String(data: data, encoding: .utf8)!)")
                                 // Decode data into type specified in parameter list
                                 let reply = try JSONDecoder().decode(type, from: data)
                                 os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: reply))
