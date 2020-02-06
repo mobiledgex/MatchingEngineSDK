@@ -33,8 +33,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // TODO: Other types are valid.
-    public func validateGpsLocation(gpsLocation: [String: Any]) throws -> Bool {
-        if let longitude = gpsLocation["longitude"] as? CLLocationDegrees {
+    public func validateGpsLocation(gpsLocation: Loc) throws -> Bool {
+        if let longitude = gpsLocation.longitude as? CLLocationDegrees {
             if longitude < -180 as CLLocationDegrees || longitude > 180 as CLLocationDegrees
             {
                 throw MatchingEngineError.invalidGPSLongitude
@@ -43,7 +43,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             throw MatchingEngineError.invalidGPSLongitude
         }
         
-        if let latitude = gpsLocation["latitude"] as? CLLocationDegrees {
+        if let latitude = gpsLocation.latitude as? CLLocationDegrees {
             if latitude < -90 as CLLocationDegrees || latitude > 90 as CLLocationDegrees
             {
                 throw MatchingEngineError.invalidGPSLatitude
@@ -56,23 +56,31 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Retrieve the carrier name of the cellular network interface (MCC and MNC)
-    public func getCarrierName() -> String?
+    public func getCarrierName() -> String
     {
+        if state.carrierName != nil {
+            return state.carrierName!
+        }
+        
         var mccMnc = [String]()
         
         if state.isUseWifiOnly() && MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
+            state.carrierName = DMEConstants.wifiAlias
             return DMEConstants.wifiAlias
         }
         
         do {
             mccMnc = try state.getMCCMNC()
         } catch {
+            state.carrierName = DMEConstants.fallbackCarrierName
             return DMEConstants.fallbackCarrierName
         }
         
         let mcc = mccMnc[0]
         let mnc = mccMnc[1]
-        return "\(mcc)\(mnc)"
+        let concat = mcc + mnc
+        state.carrierName = concat
+        return concat
     }
     
     public func generateDmeHost(carrierName: String?) throws -> String
