@@ -22,46 +22,46 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // AppInstListRequest fields
-    public class AppInstListRequest {
-        public static let ver = "ver"
-        public static let session_cookie = "session_cookie"
-        public static let carrier_name = "carrier_name"
-        public static let gps_location = "gps_location"
-        public static let cell_id = "cell_id"
-        public static let tags = "tags"
+    // AppInstListRequest struct
+    public struct AppInstListRequest: Encodable {
+        public var ver: uint
+        public var session_cookie: String
+        public var carrier_name: String
+        public var gps_location: Loc
+        public var cell_id: uint?
+        public var tags: [Tag]?
     }
 
-    // AppInstListReply fields
-    public class AppInstListReply {
-        public static let ver = "ver"
-        public static let status = "status"
-        public static let cloudlets = "cloudlets"
-        public static let tags = "tags"
+    // AppInstListReply struct
+    public struct AppInstListReply: Decodable {
+        public var ver: uint
+        public var status: AIStatus
+        public var cloudlets: [CloudletLocation]
+        public var tags: [Tag]?
         
         // Values for AppInstList status field
-        public enum AIStatus {
-            public static let AI_UNDEFINED = "AI_UNDEFINED"
-            public static let AI_SUCCESS = "AI_SUCCESS"
-            public static let AI_FAIL = "AI_FAIL"
+        public enum AIStatus: String, Decodable {
+            case AI_UNDEFINED = "AI_UNDEFINED"
+            case AI_SUCCESS = "AI_SUCCESS"
+            case AI_FAIL = "AI_FAIL"
         }
-        
-        // Object returned in AppInstListReply cloudlets field
-        public class CloudletLocation {
-            public static let carrier_name = "carrier_name"
-            public static let cloudlet_name = "cloudlet_name"
-            public static let gps_location = "gps_location"
-            public static let distance = "distance"
-            public static let appinstances = "appinstances"
-            
-            // Object returned in CloudletLocation appinstances field
-            public class Appinstance {
-                public static let app_name = "app_name"
-                public static let app_vers = "app_vers"
-                public static let fqdn = "fqdn"
-                public static let ports = "ports"
-            }
-        }
+    }
+
+    // Object returned in AppInstListReply cloudlets field
+    public struct CloudletLocation: Decodable {
+        public var carrier_name: String
+        public var cloudlet_name: String
+        public var gps_location: Loc
+        public var distance: Double
+        public var appinstances: [Appinstance]
+    }
+
+    // Object returned in CloudletLocation appinstances field
+    public struct Appinstance: Decodable {
+        public var app_name: String
+        public var app_vers: String
+        public var fqdn: String
+        public var ports: [AppPort]
     }
     
     /// createGetAppInstListRequest
@@ -71,37 +71,26 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - gpslocation: A dictionary with at least longitude and latitude key values.
     ///
     /// - Returns: API Dictionary/json
-    public func createGetAppInstListRequest(carrierName: String?, gpsLocation: [String: Any], cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
-    {
-        var appInstListRequest = [String: Any]() // Dictionary/json
+    public func createGetAppInstListRequest(carrierName: String?, gpsLocation: Loc, cellID: uint?, tags: [Tag]?) -> AppInstListRequest {
         
-        appInstListRequest[AppInstListRequest.ver] = 1
-        appInstListRequest[AppInstListRequest.session_cookie] = state.getSessionCookie()
-        appInstListRequest[AppInstListRequest.carrier_name] = carrierName ?? getCarrierName()
-        appInstListRequest[AppInstListRequest.gps_location] = gpsLocation
-        appInstListRequest[AppInstListRequest.cell_id] = cellID
-        appInstListRequest[AppInstListRequest.tags] = tags
-        
-        return appInstListRequest
+        return AppInstListRequest(
+            ver: 1,
+            session_cookie: state.getSessionCookie() ?? "",
+            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            gps_location: gpsLocation,
+            cell_id: cellID,
+            tags: tags)
     }
     
-    func validateAppInstListRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[AppInstListRequest.session_cookie] as? String else {
+    func validateAppInstListRequest(request: AppInstListRequest) throws {
+        if request.session_cookie == "" {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request[AppInstListRequest.carrier_name] as? String else {
-            throw MatchingEngineError.missingCarrierName
-        }
-        guard let gpsLocation = request[AppInstListRequest.gps_location] as? [String: Any] else {
-            throw MatchingEngineError.missingGPSLocation
-        }
-        let _ = try validateGpsLocation(gpsLocation: gpsLocation)
+        let _ = try validateGpsLocation(gpsLocation: request.gps_location)
     }
     
-    public func getAppInstList(request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+    public func getAppInstList(request: AppInstListRequest) -> Promise<AppInstListReply> {
+        let promiseInputs: Promise<AppInstListReply> = Promise<AppInstListReply>.pending()
         
         let carrierName = state.carrierName
         
@@ -117,12 +106,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return getAppInstList(host: host, port: port, request: request)
     }
     
-    public func getAppInstList(host: String, port: UInt16, request: [String: Any])
-        -> Promise<[String: AnyObject]>
-    {
+    public func getAppInstList(host: String, port: UInt16, request: AppInstListRequest)
+        -> Promise<AppInstListReply> {
         os_log("Finding nearby appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)
         os_log("============================================================", log: OSLog.default, type: .debug)
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<AppInstListReply> = Promise<AppInstListReply>.pending()
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.appinstlistAPI
@@ -137,6 +125,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // postRequest is dispatched to background by default:
-        return self.postRequest(uri: urlStr, request: request)
+        return self.postRequest(uri: urlStr, request: request, type: AppInstListReply.self)
     }
 }

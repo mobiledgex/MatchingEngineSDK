@@ -22,20 +22,16 @@ import Promises
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
-    public func registerAndFindCloudlet(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: [String: Any], uniqueIDType: String?, uniqueID: String?, cellID: UInt32?, tags: [[String: String]]?) -> Promise<[String: AnyObject]> {
+    public func registerAndFindCloudlet(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, gpsLocation: Loc, uniqueIDType: IDTypes?, uniqueID: String?, cellID: UInt32?, tags: [Tag]?) -> Promise<FindCloudletReply> {
                 
         let registerRequest = self.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         return self.registerClient(request: registerRequest)
-        .then { registerClientReply -> Promise<[String: AnyObject]> in
+        .then { registerClientReply -> Promise<FindCloudletReply> in
             
-            let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+            let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
             
-            guard let status = registerClientReply[RegisterClientReply.status] as? String else {
-                promiseInputs.reject(MatchingEngineError.registerFailed)
-                return promiseInputs
-            }
-            if status != DMEConstants.registerClientSuccess {
+            if registerClientReply.status != ReplyStatus.RS_SUCCESS {
                 promiseInputs.reject(MatchingEngineError.registerFailed)
                 return promiseInputs
             }

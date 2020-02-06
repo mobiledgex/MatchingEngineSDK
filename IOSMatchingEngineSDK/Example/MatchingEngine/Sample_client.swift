@@ -420,16 +420,16 @@ func doUserMarker(_ loc: CLLocationCoordinate2D)
 
 // MARK: -
 // used by: GetToken, getAppInstNow, verify  loc
- public func retrieveLocation() -> [String: Any]
+public func retrieveLocation() -> MobiledgeXiOSLibrary.MatchingEngine.Loc
 {
     // Swift.print("\(#function)")
 
-    var location:[String: Any] = [ "latitude": -122.149349, "longitude": 37.459609] //     //  json location, somewhere
+    var location = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: -122.149349, longitude: 37.459609)
 
     if userMarker != nil // get app isnt sets userMarker
     {
-        location["latitude"] = userMarker!.position.latitude
-        location["longitude"] = userMarker!.position.longitude
+        location.latitude = userMarker!.position.latitude
+        location.longitude = userMarker!.position.longitude
     }
 
     return location

@@ -26,8 +26,7 @@ import CoreTelephony
 extension MobiledgeXiOSLibrary {
     
     /// MobiledgeX MatchingEngine APIs
-    public class MatchingEngine
-    {
+    public class MatchingEngine {
         
         // API Paths:   See Readme.txt for curl usage examples
         public enum APIPaths {
@@ -45,7 +44,6 @@ extension MobiledgeXiOSLibrary {
             public static let dmeRestPort: UInt16 = 38001
             public static let fallbackCarrierName: String = "sdkdemo"
             public static let wifiAlias: String = "wifi"
-            public static let registerClientSuccess = "RS_SUCCESS"
         }
         
         let headers = [
@@ -56,74 +54,75 @@ extension MobiledgeXiOSLibrary {
         
         var state: MatchingEngineState
 
-        public init()
-        {
+        public init() {
             state = MatchingEngineState()
         }
         
         // API Rest calls use this function to post "requests" (ie. RegisterClient() posts RegisterClientRequest)
-        public func postRequest(uri: String,
-                                request: [String: Any])
-            -> Promise<[String: AnyObject]>
-        {
-            return Promise<[String: AnyObject]>(on: self.state.executionQueue) { fulfill, reject in
+        public func postRequest<Request: Encodable, Reply: Decodable>(uri: String, request: Request, type: Reply.Type) -> Promise<Reply> {
+            
+            return Promise<Reply>(on: self.state.executionQueue) {
+                fulfill, reject in
                 
+                //create URLRequest object
+                let url = URL(string: uri)
+                var urlRequest = URLRequest(url: url!)
+                urlRequest.httpMethod = "POST"
+                urlRequest.allHTTPHeaderFields = self.headers
+                urlRequest.allowsCellularAccess = true
+                
+                //fill in body/configure URLRequest
                 do {
-                    //create URLRequest object
-                    let url = URL(string: uri)
-                    var urlRequest = URLRequest(url: url!)
-                    //fill in body/configure URLRequest
-                    let jsonRequest = try JSONSerialization.data(withJSONObject: request)
-                    urlRequest.httpBody = jsonRequest
-                    urlRequest.httpMethod = "POST"
-                    urlRequest.allHTTPHeaderFields = self.headers
-                    urlRequest.allowsCellularAccess = true
-                    
-                    os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
-                    
-                    //send request via URLSession API
-                    let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
-                        guard let httpResponse = response as? HTTPURLResponse else
-                        {
-                            os_log("Response not HTTPURLResponse", log: OSLog.default, type: .debug)
-                            return
-                        }
-                        
-                        //checks if http request succeeded (200 == success)
-                        let statusCode = httpResponse.statusCode
-                        if (statusCode != 200) {
-                            os_log("HTTP Status Code: %@", log: OSLog.default, type: .debug, String(describing: statusCode))
-                            return
-                        }
-                        
-                        guard let error = error as NSError? else
-                        {
-                            //No errors
-                            if let data = data {
-                                do {
-                                    //let string1 = String(data: data, encoding: String.Encoding.utf8) ?? "Data could not be printed"
-                                    // Convert the data to JSON
-                                    let jsonSerialized = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject]
-                                    os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: jsonSerialized))
-                                    fulfill(jsonSerialized!)
-                                } catch {
-                                    os_log("json = %@ error", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!)
-                                    return
-                                }
-                            }
-                            return
-                        }
-                        
-                        //Error is not nil
-                        os_log("Error is: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                        reject(error)
-                        
-                    })
-                    task.resume()
+                    let jsonData = try JSONEncoder().encode(request)
+                    urlRequest.httpBody = jsonData
                 } catch {
-                    os_log("Request JSON serialization error", log: OSLog.default, type: .debug)
-                    return
+                    os_log("Request JSON encoding error %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    reject(error)
                 }
+                
+                os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
+                
+                // Send request via URLSession API
+                let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                    guard let httpResponse = response as? HTTPURLResponse else
+                    {
+                        os_log("Response not HTTPURLResponse", log: OSLog.default, type: .debug)
+                        reject(UrlSessionError.invalidHttpUrlResponse)
+                        return
+                    }
+                    
+                    // Checks if http request succeeded (200 == success)
+                    let statusCode = httpResponse.statusCode
+                    if (statusCode != 200) {
+                        os_log("HTTP Status Code: %@", log: OSLog.default, type: .debug, String(describing: statusCode))
+                        reject(UrlSessionError.badStatusCode(status: statusCode))
+                        return
+                    }
+                    
+                    guard let error = error as NSError? else
+                    {
+                        // No errors
+                        if let data = data {
+                            do {
+                                print("successful json = \(String(data: data, encoding: .utf8)!)")
+                                // Decode data into type specified in parameter list
+                                let reply = try JSONDecoder().decode(type, from: data)
+                                os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: reply))
+                                fulfill(reply)
+                            } catch {
+                                os_log("json = %@. Decoding error is %@", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!, error.localizedDescription)
+                                reject(error)
+                            }
+                        }
+                        return
+                    }
+                    
+                    // Error is not nil
+                    os_log("Error is: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    reject(error)
+                    
+                })
+                task.resume()
             }
         }
     }

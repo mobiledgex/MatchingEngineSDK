@@ -22,60 +22,65 @@
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Object in the tags parameter of API requests and replies (tags is an array of Tag objects)
-    public class Tag {
-        public static let type = "type"
-        public static let data = "data"
+    public struct Tag: Codable {
+        public var type: String
+        public var data: String
     }
     
-    // IDTypes used for unique_id_type in RegisterClientRequest
-    public enum IDTypes {
-        public static let ID_UNDEFINED = "ID_UNDEFINED"
-        public static let IMEI = "IMEI"
-        public static let MSISDN = "MSISDN"
-        public static let IPADDR = "IPADDR"
+    // IDTypes used for unique_id_type in RegisterClientRequest??
+    public enum IDTypes: String, Codable {
+        case ID_UNDEFINED = "ID_UNDEFINED"
+        case IMEI = "IMEI"
+        case MSISDN = "MSISDN"
+        case IPADDR = "IPADDR"
     }
     
     // Values for RegisterClientReply, DynamicLocGroupReply, and QosPositionKpiReply status field
-    public enum ReplyStatus {
-        public static let RS_UNDEFINED = "RS_UNDEFINED"
-        public static let RS_SUCCESS = "RS_SUCCESS"
-        public static let RS_FAIL = "RS_FAIL"
+    public enum ReplyStatus: String, Decodable {
+        case RS_UNDEFINED = "RS_UNDEFINED"
+        case RS_SUCCESS = "RS_SUCCESS"
+        case RS_FAIL = "RS_FAIL"
     }
     
     // Object returned in ports of several API replies
-    public class AppPort {
-        public static let proto = "proto"
-        public static let internal_port = "internal_port"
-        public static let public_port = "public_port"
-        public static let path_prefix = "path_prefix"
-        public static let fqdn_prefix = "fqdn_prefix"
-        public static let end_port = "end_port"
-        
-        
-        // Values for AppPort proto field
-        public enum LProto {
-            public static let L_PROTO_UNKNOWN = "L_PROTO_UNKNOWN"
-            public static let L_PROTO_TCP = "L_PROTO_TCP"
-            public static let L_PROTO_UDP = "L_PROTO_UDP"
-            public static let L_PROTO_HTTP = "L_PROTO_HTTP"
-        }
+    public struct AppPort: Decodable {
+        public var proto: LProto
+        public var internal_port: Int32
+        public var public_port: Int32
+        public var path_prefix: String?
+        public var fqdn_prefix: String?
+        public var end_port: Int32?
+    }
+    
+    // Values for AppPort proto field
+    public enum LProto: String, Decodable {
+        case L_PROTO_UNKNOWN = "L_PROTO_UNKNOWN"
+        case L_PROTO_TCP = "L_PROTO_TCP"
+        case L_PROTO_UDP = "L_PROTO_UDP"
+        case L_PROTO_HTTP = "L_PROTO_HTTP"
     }
     
     // Object used and returned in gps_location field of serveral API requests and replies
-    public class Loc {
-        public static let latitude = "latitude"
-        public static let longitude = "longitude"
-        public static let horizontal_accuracy = "horizontal_accuracy"
-        public static let vertical_accuracy = "vertical_accuracy"
-        public static let altitude = "altitude"
-        public static let course = "course"
-        public static let speed = "speed"
-        public static let timestamp = "timestamp"
+    public struct Loc: Codable {
+        
+        public init(latitude: Double, longitude: Double) {
+            self.latitude = latitude
+            self.longitude = longitude
+        }
+        
+        public var latitude: Double?
+        public var longitude: Double?
+        public var horizontal_accuracy: Double?
+        public var vertical_accuracy: Double?
+        public var altitude: Double?
+        public var course: Double?
+        public var speed: Double?
+        public var timestamp: Timestamp?
         
         // Object used in timestamp field of Loc
-        public class Timestamp {
-            public static let seconds = "seconds"
-            public static let nanos = "nanos"
+        public struct Timestamp: Codable {
+            public var seconds: Int64?
+            public var nanos: Int32?
         }
     }
 }
