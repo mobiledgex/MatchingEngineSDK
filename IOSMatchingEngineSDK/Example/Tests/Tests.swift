@@ -289,7 +289,7 @@ class Tests: XCTestCase {
         let QosPositionKpiReply = MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply.self
         let status = promiseValue.status
         
-        XCTAssert(status != MobiledgeXiOSLibrary.MatchingEngine.ReplyStatus.RS_SUCCESS, "QoSPosition failed: \(status)")
+        XCTAssert(status == MobiledgeXiOSLibrary.MatchingEngine.ReplyStatus.RS_SUCCESS, "QoSPosition failed: \(status)")
         
         XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
     }

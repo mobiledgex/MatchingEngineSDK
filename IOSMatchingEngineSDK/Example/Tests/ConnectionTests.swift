@@ -177,8 +177,8 @@ class ConnectionTests: XCTestCase {
         var socket: SocketIOClient!
         var manager: SocketManager!
         
-        let host = "frankfurt-main.tdg.mobiledgex.net"
-        let port = UInt16(3001)
+        let host = "ponggame-tcp.frankfurt-main.tdg.mobiledgex.net"
+        let port = UInt16(3000)
         var connected = false
         
         let replyPromise = matchingEngine.getWebsocketConnection(host: host, port: port)
