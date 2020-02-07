@@ -53,6 +53,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var rat_4g: [String]
         public var rat_5g: [String]
     }
+    
+    // Stream reply struct
+    struct QosPositionKpiReplyStream: Decodable {
+        public var result: QosPositionKpiReply
+    }
 
     // QosPositionKpiReply struct
     public struct QosPositionKpiReply: Decodable {
@@ -64,7 +69,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Object returned in position_results field of QosPositionKpiReply
     public struct QosPositionKpiResult: Decodable {
-        public var positionid: Int64
+        //public var positionid: Int64
+        public var positionid: String // Can only decode as a String for some reason
         public var gps_location: Loc
         public var dluserthroughput_min: Float
         public var dluserthroughput_avg: Float
@@ -101,6 +107,70 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         if request.positions.count == 0 {
             throw MatchingEngineError.missingQosPositionList
         }
+    }
+    
+    private class QosPositionDelegate: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
+        
+        var qosPositionReply = Promise<QosPositionKpiReply>.pending()
+        var data = Data()
+        
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+            self.data += data
+        }
+        
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError: Error?) {
+            
+            if (didCompleteWithError != nil) {
+                qosPositionReply.reject(didCompleteWithError!)
+            } else {
+                do {
+                    // Decode data into type specified in parameter list
+                    let reply = try JSONDecoder().decode(QosPositionKpiReplyStream.self, from: data)
+                    os_log("reply json\n %@ \n", log: OSLog.default, type: .debug, String(describing: reply))
+                    qosPositionReply.fulfill(reply.result)
+                } catch {
+                    os_log("json test = %@. Decoding error is %@", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!, error.localizedDescription)
+                    qosPositionReply.reject(error)
+                }
+            }
+            session.finishTasksAndInvalidate()
+        }
+    }
+    
+    
+    // Use Delegate instead of completion handler to handle stream
+    public func postQosPositionRequest(uri: String, request: QosPositionRequest) -> Promise<QosPositionKpiReply> {
+            
+        let qosPositionPromise = Promise<QosPositionKpiReply>.pending()
+                
+        //create URLRequest object
+        let url = URL(string: uri)
+        var urlRequest = URLRequest(url: url!)
+        urlRequest.httpMethod = "POST"
+        urlRequest.allHTTPHeaderFields = self.headers
+        urlRequest.allowsCellularAccess = true
+                
+        //fill in body/configure URLRequest
+        do {
+            let jsonData = try JSONEncoder().encode(request)
+            urlRequest.httpBody = jsonData
+        } catch {
+            os_log("Request JSON encoding error %@", log: OSLog.default, type: .debug, error.localizedDescription)
+            qosPositionPromise.reject(error)
+            return qosPositionPromise
+        }
+                
+        os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
+
+        let delegate = QosPositionDelegate()
+            
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: OperationQueue.main)
+                
+        // Send request via URLSession API
+        let task = session.dataTask(with: urlRequest as URLRequest)
+        task.resume()
+        
+        return delegate.qosPositionReply
     }
     
     /// API getQosKPIPosition
@@ -150,7 +220,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(error) // catch and reject
             return promiseInputs
         }
-        
-        return self.postRequest(uri: urlStr, request: request, type: QosPositionKpiReply.self)
+
+        return self.postQosPositionRequest(uri: urlStr, request: request)
     }
 }
