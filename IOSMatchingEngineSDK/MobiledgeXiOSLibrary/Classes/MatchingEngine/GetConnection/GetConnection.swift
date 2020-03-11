@@ -38,6 +38,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case outdatedIOS
         case unableToBind
         case incorrectURLSyntax
+        case notTLSConfigured
+        case isTLSConfigured
     }
     
     // timeout: milliseconds
@@ -50,6 +52,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
+        }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
         }
 
         do {
@@ -72,6 +79,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        }
+        
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
@@ -92,6 +105,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
+        }
+        
+        // Check if is TLS configured
+        if let tls = appPort.tls {
+            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
         }
 
         do {
@@ -116,6 +134,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        }
 
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
@@ -137,6 +160,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
+        }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
         }
 
         do {
@@ -161,6 +189,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
+        
+        // Check if is TLS configured
+        if let tls = appPort.tls {
+            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        }
 
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
@@ -183,6 +216,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
+        }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
         }
 
         do {
@@ -211,6 +249,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
+        
+        // Check if is TLS configured
+        if let tls = appPort.tls {
+            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        }
 
         do {
             var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
@@ -238,6 +281,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
         }
+        
+        // Check if not TLS configured
+        if let tls = appPort.tls {
+            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        }
 
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
@@ -259,6 +307,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
             promiseInputs.reject(GetConnectionError.invalidTimeout)
             return promiseInputs
+        }
+        
+        // Check if is TLS configured
+        if let tls = appPort.tls {
+            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
         }
 
         do {
