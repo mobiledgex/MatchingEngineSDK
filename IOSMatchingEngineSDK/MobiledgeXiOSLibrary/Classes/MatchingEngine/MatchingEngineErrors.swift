@@ -23,22 +23,26 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public enum MatchingEngineError: Error {
         case networkFailure
-        case missingAppName
-        case missingAppVersion
-        case missingDevName
+        
         case missingCarrierName
         case missingSessionCookie
         
         case missingGPSLocation
         case invalidGPSLongitude
         case invalidGPSLatitude
+        case missingGPSLocationStatus
+        case missingQosPositionList
         
         case missingTokenServerURI
         case missingTokenServerToken
-        case missingGPSLocationStatus
+        
         case registerFailed
         case findCloudletFailed
         case verifyLocationFailed
+        case getLocationFailed
+        case getQosPositionFailed
+        case getAppInstListFailed
+        case addUserToGroupFailed
     }
     
     public enum InvalidTokenServerTokenError: Error  {
@@ -46,5 +50,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case cannotContactServer
         case invalidToken
         case invalidTokenServerResponse
+    }
+    
+    public enum UrlSessionError: Error {
+        case invalidHttpUrlResponse
+        case badStatusCode(status: Int)
+        
+        public var errorDescription: String? {
+            switch self {
+            case .invalidHttpUrlResponse: return "Unable to convert URLResponse to HTTPURLResponse"
+            case .badStatusCode(let status): return "Bad HTTP Status Code: \(status)"
+            }
+        }
     }
 }

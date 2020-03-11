@@ -22,53 +22,65 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // QosPositionKpiRequest fields
-    public class QosPositionRequest {
-        public static let ver = "ver"
-        public static let session_cookie = "session_cookie"
-        public static let positions = "positions"
-        public static let lte_category = "lte_category"
-        public static let band_selection = "band_selection"
-        public static let cell_id = "cell_id"
-        public static let tags = "tags"
+    // QosPositionKpiRequest struct
+    public struct QosPositionRequest: Encodable {
+        public var ver: uint
+        public var session_cookie: String
+        public var positions: [QosPosition]
+        public var lte_category: Int32?
+        public var band_selection: BandSelection?
+        public var cell_id: uint?
+        public var tags: [Tag]?
+    }
+    
+    // Object in positions field in QosPositionRequest
+    public struct QosPosition: Encodable {
         
-        // Object in positions field in QosPositionRequest
-        public class QosPosition {
-            public static let positionid = "positionid"
-            public static let gps_location = "gps_location"
+        public init(positionId: Int64, gpsLocation: Loc) {
+            self.positionid = positionId
+            self.gps_location = gpsLocation
         }
         
-        // Object in QosPositionRequest band_selection field
-        // Each field's value is an array of Strings
-        public class BandSelection {
-            public static let rat_2g = "rat_2g"
-            public static let rat_3g = "rat_3g"
-            public static let rat_4g = "rat_4g"
-            public static let rat_5g = "rat_5g"
-        }
+        public var positionid: Int64
+        public var gps_location: Loc
+    }
+    
+    // Object in QosPositionRequest band_selection field
+    // Each field's value is an array of Strings
+    public struct BandSelection: Encodable {
+        public var rat_2g: [String]
+        public var rat_3g: [String]
+        public var rat_4g: [String]
+        public var rat_5g: [String]
+    }
+    
+    // Stream reply struct
+    struct QosPositionKpiReplyStream: Decodable {
+        public var result: QosPositionKpiReply
     }
 
-    // QosPositionKpiReply fields
-    public class QosPositionKpiReply {
-        public static let ver = "ver"
-        public static let status = "status"
-        public static let position_results = "position_results"
-        public static let tags = "tags"
-        
-        // Object returned in position_results field of QosPositionKpiReply
-        public class QosPositionKpiResult {
-            public static let positionid = "positionid"
-            public static let gps_location = "gps_location"
-            public static let dluserthroughput_min = "dluserthroughput_min"
-            public static let dluserthroughput_avg = "dluserthroughput_avg"
-            public static let dluserthroughput_max = "dluserthroughput_max"
-            public static let uluserthroughput_min = "uluserthroughput_min"
-            public static let uluserthroughput_avg = "uluserthroughput_avg"
-            public static let uluserthroughput_max = "uluserthroughput_max"
-            public static let latency_min = "latency_min"
-            public static let latency_avg = "latency_avg"
-            public static let latency_max = "latency_max"
-        }
+    // QosPositionKpiReply struct
+    public struct QosPositionKpiReply: Decodable {
+        public var ver: uint
+        public var status: ReplyStatus
+        public var position_results: [QosPositionKpiResult]
+        public var tags: [Tag]?
+    }
+    
+    // Object returned in position_results field of QosPositionKpiReply
+    public struct QosPositionKpiResult: Decodable {
+        //public var positionid: Int64
+        public var positionid: String // Can only decode as a String for some reason
+        public var gps_location: Loc
+        public var dluserthroughput_min: Float
+        public var dluserthroughput_avg: Float
+        public var dluserthroughput_max: Float
+        public var uluserthroughput_min: Float
+        public var uluserthroughput_avg: Float
+        public var uluserthroughput_max: Float
+        public var latency_min: Float
+        public var latency_avg: Float
+        public var latency_max: Float
     }
     
     /// createQosKPIRequest
@@ -76,26 +88,89 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [[String: Any]], lte_category: Int32?, band_selection: [String: Any]?, cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
-    {
-        var qosKPIRequest = [String: Any]() // Dictionary/json qosKPIRequest
+    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32?, bandSelection: BandSelection?, cellID: uint?, tags: [Tag]?) -> QosPositionRequest {
         
-        qosKPIRequest[QosPositionRequest.ver] = 1
-        qosKPIRequest[QosPositionRequest.session_cookie] = self.state.getSessionCookie()
-        qosKPIRequest[QosPositionRequest.positions] = requests
-        qosKPIRequest[QosPositionRequest.lte_category] = lte_category
-        qosKPIRequest[QosPositionRequest.band_selection] = band_selection
-        qosKPIRequest[QosPositionRequest.cell_id] = cellID
-        qosKPIRequest[QosPositionRequest.tags] = tags
-        
-        return qosKPIRequest
+        return QosPositionRequest(
+            ver: 1,
+            session_cookie: state.getSessionCookie() ?? "",
+            positions: requests,
+            lte_category: lteCategory,
+            band_selection: bandSelection,
+            cell_id: cellID,
+            tags: tags)
     }
     
-    func validateQosKPIRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[QosPositionRequest.session_cookie] as? String else {
+    func validateQosKPIRequest(request: QosPositionRequest) throws {
+        if request.session_cookie == "" {
             throw MatchingEngineError.missingSessionCookie
         }
+        if request.positions.count == 0 {
+            throw MatchingEngineError.missingQosPositionList
+        }
+    }
+    
+    private class QosPositionDelegate: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
+        
+        var qosPositionReply = Promise<QosPositionKpiReply>.pending()
+        var data = Data()
+        
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+            self.data += data
+        }
+        
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError: Error?) {
+            
+            if (didCompleteWithError != nil) {
+                qosPositionReply.reject(didCompleteWithError!)
+            } else {
+                do {
+                    // Decode data into type specified in parameter list
+                    let reply = try JSONDecoder().decode(QosPositionKpiReplyStream.self, from: data)
+                    os_log("reply json\n %@ \n", log: OSLog.default, type: .debug, String(describing: reply))
+                    qosPositionReply.fulfill(reply.result)
+                } catch {
+                    os_log("json test = %@. Decoding error is %@", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!, error.localizedDescription)
+                    qosPositionReply.reject(error)
+                }
+            }
+            session.finishTasksAndInvalidate()
+        }
+    }
+    
+    
+    // Use Delegate instead of completion handler to handle stream
+    public func postQosPositionRequest(uri: String, request: QosPositionRequest) -> Promise<QosPositionKpiReply> {
+            
+        let qosPositionPromise = Promise<QosPositionKpiReply>.pending()
+                
+        //create URLRequest object
+        let url = URL(string: uri)
+        var urlRequest = URLRequest(url: url!)
+        urlRequest.httpMethod = "POST"
+        urlRequest.allHTTPHeaderFields = self.headers
+        urlRequest.allowsCellularAccess = true
+                
+        //fill in body/configure URLRequest
+        do {
+            let jsonData = try JSONEncoder().encode(request)
+            urlRequest.httpBody = jsonData
+        } catch {
+            os_log("Request JSON encoding error %@", log: OSLog.default, type: .debug, error.localizedDescription)
+            qosPositionPromise.reject(error)
+            return qosPositionPromise
+        }
+                
+        os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
+
+        let delegate = QosPositionDelegate()
+            
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: OperationQueue.main)
+                
+        // Send request via URLSession API
+        let task = session.dataTask(with: urlRequest as URLRequest)
+        task.resume()
+        
+        return delegate.qosPositionReply
     }
     
     /// API getQosKPIPosition
@@ -104,10 +179,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
     /// - Returns: API Dictionary/json
-    public func getQosKPIPosition(request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func getQosKPIPosition(request: QosPositionRequest) -> Promise<QosPositionKpiReply>
     {
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<QosPositionKpiReply> = Promise<QosPositionKpiReply>.pending()
         
         let carrierName = state.carrierName
         
@@ -130,9 +205,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
     /// - Returns: API Dictionary/json
-    public func getQosKPIPosition(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func getQosKPIPosition(host: String, port: UInt16, request: QosPositionRequest) -> Promise<QosPositionKpiReply>
     {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<QosPositionKpiReply> = Promise<QosPositionKpiReply>.pending()
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
         
         let baseuri = generateBaseUri(host: host, port: port)
@@ -145,7 +220,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             promiseInputs.reject(error) // catch and reject
             return promiseInputs
         }
-        
-        return self.postRequest(uri: urlStr, request: request)
+
+        return self.postQosPositionRequest(uri: urlStr, request: request)
     }
 }
