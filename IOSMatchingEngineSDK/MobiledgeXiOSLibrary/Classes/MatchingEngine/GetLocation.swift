@@ -24,29 +24,29 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // GetLocationRequest fields
-    public class GetLocationRequest {
-        public static let ver = "ver"
-        public static let session_cookie = "session_cookie"
-        public static let carrier_name = "carrier_name"
-        public static let cell_id = "cell_id"
-        public static let tags = "tags"
+    // GetLocationRequest struct
+    public struct GetLocationRequest: Encodable {
+        public var ver: uint
+        public var session_cookie: String
+        public var carrier_name: String
+        public var cell_id: uint?
+        public var tags: [Tag]?
     }
 
-    // GetLocationReply fields
-    public class GetLocationReply {
-        public static let ver = "ver"
-        public static let status = "status"
-        public static let carrier_name = "carrier_name"
-        public static let tower = "tower"
-        public static let network_location = "network_location"
-        public static let tags = "tags"
+    // GetLocationReply struct
+    public struct GetLocationReply: Decodable {
+        public var ver: uint
+        public var status: LocStatus
+        public var carrier_name: String
+        public var tower: String
+        public var network_location: Loc
+        public var tags: [Tag]?
         
         // Values for GetLocationReply status field
-        public enum LocStatus {
-            public static let LOC_UNKNOWN = "LOC_UNKNOWN"
-            public static let LOC_FOUND = "LOC_FOUND"
-            public static let LOC_DENIED = "LOC_DENIED"
+        public enum LocStatus: String, Decodable {
+            case LOC_UNKNOWN = "LOC_UNKNOWN"
+            case LOC_FOUND = "LOC_FOUND"
+            case LOC_DENIED = "LOC_DENIED"
         }
     }
     
@@ -55,26 +55,19 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - carrierName: carrierName description
     /// - Returns: API  Dictionary/json
-    public func createGetLocationRequest(carrierName: String?, cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
-    {
-        var getLocationRequest = [String: Any]() // Dictionary/json qosKPIRequest
+    public func createGetLocationRequest(carrierName: String?, cellID: uint?, tags: [Tag]?) -> GetLocationRequest {
         
-        getLocationRequest[GetLocationRequest.ver] = 1
-        getLocationRequest[GetLocationRequest.session_cookie] = self.state.getSessionCookie()
-        getLocationRequest[GetLocationRequest.carrier_name] = carrierName ?? getCarrierName()
-        getLocationRequest[GetLocationRequest.cell_id] = cellID
-        getLocationRequest[GetLocationRequest.tags] = tags
-        
-        return getLocationRequest
+        return GetLocationRequest(
+            ver: 1,
+            session_cookie: state.getSessionCookie() ?? "",
+            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            cell_id: cellID,
+            tags: tags)
     }
     
-    func validateGetLocationRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[GetLocationRequest.session_cookie] as? String else {
+    func validateGetLocationRequest(request: GetLocationRequest) throws {
+        if request.session_cookie == "" {
             throw MatchingEngineError.missingSessionCookie
-        }
-        guard let _ = request[GetLocationRequest.carrier_name] as? String else {
-            throw MatchingEngineError.missingCarrierName
         }
     }
     
@@ -84,10 +77,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - request: GetLocationRequest dictionary, from createGetLocationRequest.
     /// - Returns: API Dictionary/json
-    public func getLocation(request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
+    public func getLocation(request: GetLocationRequest) -> Promise<GetLocationReply> {
+        
         os_log("getLocation", log: OSLog.default, type: .debug)
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<GetLocationReply> = Promise<GetLocationReply>.pending()
         
         let carrierName = state.carrierName
         var host: String
@@ -109,9 +102,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: GetLocationRequest dictionary, from createGetLocationRequest.
     /// - Returns: API Dictionary/json
-    public func getLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+    public func getLocation(host: String, port: UInt16, request: GetLocationRequest) -> Promise<GetLocationReply> {
+        
+        let promiseInputs: Promise<GetLocationReply> = Promise<GetLocationReply>.pending()
         os_log("getLocation", log: OSLog.default, type: .debug)
         
         let baseuri = generateBaseUri(host: host, port: port)
@@ -125,6 +118,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             return promiseInputs
         }
         
-        return self.postRequest(uri: urlStr, request: request)
+        return self.postRequest(uri: urlStr, request: request, type: GetLocationReply.self)
     }
 }

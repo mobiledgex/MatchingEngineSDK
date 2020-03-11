@@ -22,48 +22,47 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // VerifyLocationRequest fields
-    public class VerifyLocationRequest {
-        public static let ver = "ver"
-        public static let session_cookie = "session_cookie"
-        public static let carrier_name = "carrier_name"
-        public static let gps_location = "gps_location"
-        public static let verify_loc_token = "verify_loc_token"
-        public static let cell_id = "cell_id"
-        public static let tags = "tags"
+    // VerifyLocationRequest struct
+    public struct VerifyLocationRequest: Encodable {
+        public var ver: uint
+        public var session_cookie: String
+        public var carrier_name: String
+        public var gps_location: Loc
+        public var verify_loc_token: String
+        public var cell_id: uint?
+        public var tags: [Tag]?
     }
 
-    // VerifyLocationReply fields
-    public class VerifyLocationReply {
-        public static let ver = "ver"
-        public static let tower_status = "tower_status"
-        public static let gps_location_status = "gps_location_status"
-        public static let gps_location_accuracy_km = "gps_location_accuracy_km"
-        public static let tags = "tags"
+    // VerifyLocationReply struct
+    public struct VerifyLocationReply: Decodable {
+        public var ver: uint
+        public var tower_status: TowerStatus
+        public var gps_location_status: GPSLocationStatus
+        public var gps_location_accuracy_km: Double
+        public var tags: [Tag]?
         
         // Values for VerifyLocationReply tower_status field
-        public enum TowerStatus {
-            public static let TOWER_UNKNOWN = "TOWER_UNKNOWN"
-            public static let CONNECTED_TO_SPECIFIED_TOWER = "CONNECTED_TO_SPECIFIED_TOWER"
-            public static let NOT_CONNECTED_TO_SPECIFIED_TOWER = "NOT_CONNECTED_TO_SPECIFIED_TOWER"
+        public enum TowerStatus: String, Decodable {
+            case TOWER_UNKNOWN = "TOWER_UNKNOWN"
+            case CONNECTED_TO_SPECIFIED_TOWER = "CONNECTED_TO_SPECIFIED_TOWER"
+            case NOT_CONNECTED_TO_SPECIFIED_TOWER = "NOT_CONNECTED_TO_SPECIFIED_TOWER"
         }
         
         // Values for VerifyLocationReply gps_location_status field
-        public enum GPSLocationStatus {
-            public static let LOC_UNKNOWN = "LOC_UNKNOWN"
-            public static let LOC_VERIFIED = "LOC_VERIFIED"
-            public static let LOC_MISMATCH_SAME_COUNTRY = "LOC_MISMATCH_SAME_COUNTRY"
-            public static let LOC_MISMATCH_OTHER_COUNTRY = "LOC_MISMATCH_OTHER_COUNTRY"
-            public static let LOC_ROAMING_COUNTRY_MATCH = "LOC_ROAMING_COUNTRY_MATCH"
-            public static let LOC_ROAMING_COUNTRY_MISMATCH = "LOC_ROAMING_COUNTRY_MISMATCH"
-            public static let LOC_ERROR_UNAUTHORIZED = "LOC_ERROR_UNAUTHORIZED"
-            public static let LOC_ERROR_OTHER = "LOC_ERROR_OTHER"
+        public enum GPSLocationStatus: String, Decodable {
+            case LOC_UNKNOWN = "LOC_UNKNOWN"
+            case LOC_VERIFIED = "LOC_VERIFIED"
+            case LOC_MISMATCH_SAME_COUNTRY = "LOC_MISMATCH_SAME_COUNTRY"
+            case LOC_MISMATCH_OTHER_COUNTRY = "LOC_MISMATCH_OTHER_COUNTRY"
+            case LOC_ROAMING_COUNTRY_MATCH = "LOC_ROAMING_COUNTRY_MATCH"
+            case LOC_ROAMING_COUNTRY_MISMATCH = "LOC_ROAMING_COUNTRY_MISMATCH"
+            case LOC_ERROR_UNAUTHORIZED = "LOC_ERROR_UNAUTHORIZED"
+            case LOC_ERROR_OTHER = "LOC_ERROR_OTHER"
         }
     }
     
-    public func doVerifyLocation(gpsLocation: [String: AnyObject], cellID: UInt32?, tags: [[String: String]]?)
-        throws -> Promise<[String: AnyObject]>?
-    {
+    public func doVerifyLocation(gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+        throws -> Promise<VerifyLocationReply>? {
         Swift.print("Verify Location of this Mex client.")
         Swift.print("===================================\n\n")
         
@@ -91,42 +90,33 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///
     /// - Returns: API json/Dictionary
     public func createVerifyLocationRequest(carrierName: String?,
-                                            gpsLocation: [String: Any], cellID: UInt32?, tags: [[String: String]]?)
-        -> [String: Any] // json/Dictionary
-    {
-        var verifyLocationRequest = [String: Any]() // Dictionary/json
-        
-        verifyLocationRequest[VerifyLocationRequest.ver] = 1
-        verifyLocationRequest[VerifyLocationRequest.session_cookie] = self.state.getSessionCookie()
-        verifyLocationRequest[VerifyLocationRequest.carrier_name] = carrierName ?? state.carrierName
-        verifyLocationRequest[VerifyLocationRequest.gps_location] = gpsLocation
-        verifyLocationRequest[VerifyLocationRequest.cell_id] = cellID
-        verifyLocationRequest[VerifyLocationRequest.tags] = tags
-
-        return verifyLocationRequest
+                                            gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+        -> VerifyLocationRequest {
+            
+        return VerifyLocationRequest(
+            ver: 1,
+            session_cookie: self.state.getSessionCookie() ?? "",
+            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            gps_location: gpsLocation,
+            verify_loc_token: "",
+            cell_id: cellID,
+            tags: tags)
     }
     
-    func validateVerifyLocationRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[VerifyLocationRequest.session_cookie] as? String else {
+    func validateVerifyLocationRequest(request: VerifyLocationRequest) throws {
+        if request.session_cookie == "" {
             throw MatchingEngineError.missingSessionCookie
         }
-        guard let _ = request[VerifyLocationRequest.carrier_name] as? String else {
-            throw MatchingEngineError.missingCarrierName
-        }
-        guard let gpsLocation = request[VerifyLocationRequest.gps_location] as? [String: Any] else {
-            throw MatchingEngineError.missingGPSLocation
-        }
-        let _ = try validateGpsLocation(gpsLocation: gpsLocation)
+        let _ = try validateGpsLocation(gpsLocation: request.gps_location)
         
-        guard let _ = request[VerifyLocationRequest.verify_loc_token] as? String else {
+        if request.verify_loc_token == "" {
             throw MatchingEngineError.missingTokenServerToken
         }
     }
     
     private func getTokenPost(uri: String) // Dictionary/json
-        -> Promise<[String: AnyObject]>
-    {
+        -> Promise<[String: AnyObject]> {
+            
         os_log("uri: %@ request\n", log: OSLog.default, type: .debug, uri)
         
         return Promise<[String: AnyObject]>(on: self.state.executionQueue) { fulfill, reject in
@@ -182,8 +172,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    private func getToken(uri: String) -> Promise<String> // async
-    {
+    private func getToken(uri: String) -> Promise<String> { // async
         os_log("In Get Token, with uri: %@", log: OSLog.default, type: .debug, uri)
         
         return Promise<String>() { fulfill, reject in
@@ -202,24 +191,21 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: [String: AnyObject], cellID: UInt32?, tags: [[String: String]]?)
-        throws -> [String: Any]
-    {
+    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+        throws -> VerifyLocationRequest {
             
         if (verifyLocationToken.count == 0) {
             throw InvalidTokenServerTokenError.invalidToken
         }
         
-        let verifyLocationRequest = self.createVerifyLocationRequest(carrierName: carrierName, gpsLocation: gpsLocation, cellID: cellID, tags: tags)
-        var tokenizedRequest = [String: Any]() // Dictionary/json
-        tokenizedRequest += verifyLocationRequest
-        tokenizedRequest[VerifyLocationRequest.verify_loc_token] = verifyLocationToken
+        var verifyLocationRequest = self.createVerifyLocationRequest(carrierName: carrierName, gpsLocation: gpsLocation, cellID: cellID, tags: tags)
+        verifyLocationRequest.verify_loc_token = verifyLocationToken
             
-        return tokenizedRequest
+        return verifyLocationRequest
     }
     
-    public func verifyLocation(request: [String: Any]) -> Promise<[String: AnyObject]> {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+    public func verifyLocation(request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
+        let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()
         
         guard let carrierName = state.carrierName else {
             os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
@@ -238,21 +224,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return verifyLocation(host: host, port: port, request: request)
     }
     
-    // TODO: This should be paramaterized:
-    public func verifyLocation(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
+    public func verifyLocation(host: String, port: UInt16, request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
         
-        // Dummy promise to check inputs:
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
-
-        guard let _ = request[VerifyLocationRequest.carrier_name] ?? self.state.carrierName else {
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
-        guard let _ = request[VerifyLocationRequest.gps_location] ?? self.state.deviceGpsLocation else {
-            promiseInputs.reject(MatchingEngineError.missingGPSLocation)
-            return promiseInputs
-        }
+        let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()
         
         // mini-check server uri to get token:
         guard let tokenServerUri = self.state.getTokenServerUri() else {
@@ -272,12 +246,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
             
             // Append Token
-            var tokenizedRequest = request // Dictionary/json
-            tokenizedRequest[VerifyLocationRequest.verify_loc_token] = verifyLocationToken
+            var tokenizedRequest = request
+            tokenizedRequest.verify_loc_token = verifyLocationToken
+            print("verifylocation token is \(verifyLocationToken)")
             try self.validateVerifyLocationRequest(request: tokenizedRequest)
             
-            return self.postRequest(uri: uri,
-                                    request: tokenizedRequest)
-        } // End return.
+            return self.postRequest(uri: uri, request: tokenizedRequest, type: VerifyLocationReply.self)
+        }
     }
 }

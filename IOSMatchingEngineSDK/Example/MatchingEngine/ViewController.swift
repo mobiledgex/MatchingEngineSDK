@@ -48,9 +48,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var appVers = ""
     var authToken: String? = nil
     var uniqueID: String?
-    var uniqueIDType: String?
+    var uniqueIDType: MobiledgeXiOSLibrary.MatchingEngine.IDTypes?
     var cellID: UInt32?
-    var tags: [[String: String]]?
+    var tags: [MobiledgeXiOSLibrary.MatchingEngine.Tag]?
     
     // For the overriding me.getCarrierName() for contacting the DME host
     var overrideDmeCarrierName: String? = "sdkdemo"
@@ -60,9 +60,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     let rightBarDropDown = DropDown()   // menu
     
     // Menu triggered network states will be tracked here, since the user controls usage of the futures:
-    var registerPromise: Promise<[String: AnyObject]>? // AnyObject --> RegisterClientReply
-    var findCloudletPromise: Promise<[String: AnyObject]>? // AnyObject --> FindCloudletReply
-    var verifyLocationPromise: Promise<[String: AnyObject]>?
+    var registerPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>?
+    var findCloudletPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>?
+    var verifyLocationPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>?
 
     private var locationVerified: Bool = false //  todo where to set this true?
     private var locationVerificationAttempted: Bool = false
@@ -159,14 +159,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if let cname = overrideDmeCarrierName {
             carrierName = cname
         } else {
-            if let cname = matchingEngine.getCarrierName()
-            {
-                carrierName = cname
-            }
-            else
-            {
-                carrierName = "gddt"
-            }
+            carrierName = matchingEngine.getCarrierName()
         }
         guard let _ = carrierName else {
             os_log("Register Client needs a valid carrierName!", log: OSLog.default, type: .debug)
@@ -187,7 +180,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                           request: registerClientRequest)
         .then { registerReply in
             // Update UI. The MatchingEngine SDK keeps track of details for next calls.
-            os_log("RegisterReply: %@", log: OSLog.default, type: .debug, registerReply)
+            os_log("RegisterReply: %@", log: OSLog.default, type: .debug, String(describing: registerReply))
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Client Registered"), object: nil)
         }.catch { error in
             os_log("RegisterReply Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
@@ -219,7 +212,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
+            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: nil)
             self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: request)
                 .then { appInstList in
                     // Ick. Refactor, to just "Toast" the SDK usage status in UI at each promises chain stage:
@@ -488,7 +481,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
                     .then { registerClientReply in
-                        os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, registerClientReply)
+                        os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, String(describing: registerClientReply))
                         SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                     }
                     .catch { error in
@@ -500,7 +493,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         self!.registerPromise = try self!.matchingEngine.registerClient(
                             request: registerClientRequest)
                         .then { registerClientReply in
-                            os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, registerClientReply)
+                            os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, String(describing: registerClientReply))
                             SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
                         }
                         .catch { error in
@@ -519,7 +512,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 if (self!.demo) {
                     self!.matchingEngine.getAppInstList(host: self!.demoHost, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
-                        os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, appInstListReply)
+                        os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, String(describing: appInstListReply))
                         SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
                         // TODO: observers
                     }
@@ -531,7 +524,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     do {
                         try self!.matchingEngine.getAppInstList(request: appInstListRequest)
                         .then { appInstListReply in
-                            os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, appInstListReply)
+                            os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, String(describing: appInstListReply))
                             SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
                             // TODO: observers
                         }
@@ -561,7 +554,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     if (self!.demo) {
                         self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
                         .then { verifyLocationReply in
-                            os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, verifyLocationReply)
+                            os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, String(describing: verifyLocationReply))
                             SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
                                 // TODO: observers
                         }
@@ -573,7 +566,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         do {
                             self!.verifyLocationPromise = try self!.matchingEngine.verifyLocation(request: verifyLocRequest)
                             .then { verifyLocationReply in
-                                os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, verifyLocationReply)
+                                os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, String(describing: verifyLocationReply))
                                 SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
                                     // TODO: observers
                             }
@@ -604,7 +597,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 if (self!.demo) {
                     self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
                     .then { findCloudletReply in
-                        os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, findCloudletReply)
+                        os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
                         SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                     }
                     .catch { error in
@@ -615,7 +608,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     do {
                         try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
                         .then { findCloudletReply in
-                            os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, findCloudletReply)
+                            os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
                             SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                         }
                         .catch { error in
@@ -635,11 +628,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       totalDistanceKm: 200,
                                                       increment: 1)
                 
-                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lte_category: nil, band_selection: nil, cellID: self!.cellID, tags: self!.tags)
+                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lteCategory: nil, bandSelection: nil, cellID: self!.cellID, tags: self!.tags)
                 if (self!.demo) {
                     self!.matchingEngine.getQosKPIPosition(host: self!.demoHost, port: self!.port, request: getQoSPositionRequest)
                     .then { getQoSPositionReply in
-                        os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, getQoSPositionReply)
+                        os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, String(describing: getQoSPositionReply))
                         SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
                     }
                     .catch { error in
@@ -650,7 +643,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     do {
                         try self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
                         .then { getQoSPositionReply in
-                            os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, getQoSPositionReply)
+                            os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, String(describing: getQoSPositionReply))
                             SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
                         }
                         .catch { error in
@@ -690,25 +683,28 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
     }
   
-    func createQoSPositionList(loc: [String: Any], directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [[String: Any]]
+    func createQoSPositionList(loc: MobiledgeXiOSLibrary.MatchingEngine.Loc, directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]
     {
-        var qosPositionList = [[String: Any]]()
+        var qosPositionList = [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
         let addLongitude = (cos(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLong
         let addLatitude = (sin(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLat
-        var i = 0.0;
-        var longitude = loc["longitude"] ?? 0
-        var latitude = loc["latitude"] ?? 0
+        var i = 0.0
+        var idx: Int64 = 0
+        var longitude = loc.longitude ?? 0
+        var latitude = loc.latitude ?? 0
         
         while i < totalDistanceKm {
-            let loc = [ "longitude": longitude, "latitude": latitude]
+            let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: latitude, longitude: longitude)
+            let qosPosition = MobiledgeXiOSLibrary.MatchingEngine.QosPosition(positionId: idx, gpsLocation: loc)
             
-            qosPositionList.append(loc)
+            qosPositionList.append(qosPosition)
             
-            longitude = (longitude as! Double + addLongitude) as Any
-            latitude = (latitude as! Double + addLatitude) as Any
+            longitude = longitude + addLongitude
+            latitude = latitude + addLatitude
             i += increment
+            idx += 1
         }
         
         return qosPositionList

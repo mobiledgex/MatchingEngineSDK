@@ -177,8 +177,8 @@ class ConnectionTests: XCTestCase {
         var socket: SocketIOClient!
         var manager: SocketManager!
         
-        let host = "iostestcluster.fairview-main.gddt.mobiledgex.net"
-        let port = UInt16(6668)
+        let host = "ponggame-tcp.fairview-main.gddt.mobiledgex.net"
+        let port = UInt16(3000)
         var connected = false
         
         let replyPromise = matchingEngine.getWebsocketConnection(host: host, port: port)
@@ -272,7 +272,7 @@ class ConnectionTests: XCTestCase {
     
     // Test the developer workflow: RegisterAndFindCloudlet() -> Pick App Port -> GetConnection()
     func testGetConnectionWorkflow() {
-        let loc = ["longitude": -122.149349, "latitude": 37.459609]
+        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
         let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: nil, authToken: nil, gpsLocation: loc, uniqueIDType: nil, uniqueID: nil, cellID: nil, tags: nil)
             
@@ -303,7 +303,7 @@ class ConnectionTests: XCTestCase {
             }
             
         }.catch { error in
-            XCTAssert(false, "Error is \(error.localizedDescription)")
+            XCTAssert(false, "Error is \(error)")
         }
         
         XCTAssert(waitForPromises(timeout: 5))
@@ -367,7 +367,7 @@ class ConnectionTests: XCTestCase {
     
     @available(iOS 13.0, *)
     func testTimeout() {
-        let loc = ["longitude": -122.149349, "latitude": 37.459609]
+        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
         let replyPromise = matchingEngine.registerAndFindCloudlet(devName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", authToken: nil, gpsLocation: loc, uniqueIDType: nil, uniqueID: nil, cellID: nil, tags: nil)
             

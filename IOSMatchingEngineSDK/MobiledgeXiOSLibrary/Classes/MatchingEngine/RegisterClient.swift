@@ -25,47 +25,43 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
-    // RegisterClientRequest fields
-    public class RegisterClientRequest {
-       public static let ver = "ver"
-       public static let dev_name = "dev_name"
-       public static let app_name = "app_name"
-       public static let app_vers = "app_vers"
-       public static let carrier_name = "carrier_name"
-       public static let auth_token = "auth_token"
-       public static let cell_id = "cell_id"
-       public static let unique_id = "unique_id"
-       public static let unique_id_type = "unique_id_type"
-       public static let tags = "tags"
+    // RegisterClientRequest struct
+    public struct RegisterClientRequest: Encodable {
+        // Required fields
+        public var ver: uint
+        public var dev_name: String
+        public var app_name: String
+        public var app_vers: String
+        public var carrier_name: String
+        // Optional fields
+        public var auth_token: String?
+        public var cell_id: uint?
+        public var unique_id_type: IDTypes?
+        public var unique_id: String?
+        public var tags: [Tag]?
     }
 
-    // RegisterClientReply fields
-    public class RegisterClientReply {
-       public static let ver = "ver"
-       public static let status = "status"
-       public static let session_cookie = "session_cookie"
-       public static let token_server_uri = "token_server_uri"
-       public static let unique_id_type = "unique_id_type"
-       public static let unique_id = "unique_id"
-       public static let tags = "tags"
+    // RegisterClientReply struct
+    public struct RegisterClientReply: Decodable {
+        // Required fields
+        public var ver: uint
+        public var status: ReplyStatus
+        public var session_cookie: String
+        public var token_server_uri: String
+        // Optional fields
+        public var unique_id_type: String?
+        public var unique_id: String?
+        public var tags: [Tag]?
     }
     
-    func registerClientResult(_ registerClientReply: [String: Any])
-    {
-        if registerClientReply.count == 0
-        {
-            Swift.print("REST RegisterClient Error: NO RESPONSE.")
-        }
-        else
-        {
-            let line1 = "\nREST RegisterClient Status: \n"
-            let line2 = "Version: " + (registerClientReply[RegisterClientReply.ver] as? String ?? "0")
-            let line3 = ",\n Client Status:" + (registerClientReply[RegisterClientReply.status] as? String ?? "")
-            let line4 = ",\n SessionCookie:" + (registerClientReply[RegisterClientReply.session_cookie] as? String ?? "")
-            
-            Swift.print(line1 + line2 + line3 + line4 + "\n\n")
-            Swift.print("Token Server URI: " + (registerClientReply[RegisterClientReply.token_server_uri] as? String ?? "") + "\n")
-        }
+    func registerClientResult(_ registerClientReply: RegisterClientReply) {
+        let line1 = "\nREST RegisterClient Status: \n"
+        let line2 = "Version: \(registerClientReply.ver)"
+        let line3 = ",\n Client Status: \(registerClientReply.status)"
+        let line4 = ",\n SessionCookie: \(registerClientReply.session_cookie)"
+        
+        Swift.print(line1 + line2 + line3 + line4 + "\n\n")
+        Swift.print("Token Server URI: \(registerClientReply.token_server_uri)\n")
     }
     
     /// API createRegisterClientRequest
@@ -77,39 +73,20 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - carrierName: Name of the mobile carrier.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, uniqueIDType: String?, uniqueID: String?, cellID: UInt32?, tags: [[String: String]]?) // need [[String: String]?]?
-        -> [String: Any] // Dictionary/json
-    {
-        var regClientRequest = [String: Any]() // Dictionary/json regClientRequest
-        
-        regClientRequest[RegisterClientRequest.ver] = 1
-        regClientRequest[RegisterClientRequest.dev_name] = devName
-        regClientRequest[RegisterClientRequest.app_name] = appName ?? getAppName()
-        regClientRequest[RegisterClientRequest.app_vers] = appVers ?? getAppVersion()
-        regClientRequest[RegisterClientRequest.carrier_name] = carrierName ?? getCarrierName()
-        regClientRequest[RegisterClientRequest.auth_token] = authToken
-        regClientRequest[RegisterClientRequest.unique_id_type] = uniqueIDType
-        regClientRequest[RegisterClientRequest.unique_id] = uniqueID
-        regClientRequest[RegisterClientRequest.cell_id] = cellID
-        regClientRequest[RegisterClientRequest.tags] = tags
-        
-        return regClientRequest
-    }
-    
-    public func validateRegisterClientRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[RegisterClientRequest.app_name] else {
-            throw MatchingEngineError.missingAppName
-        }
-        guard let _ = request[RegisterClientRequest.app_vers] else {
-            throw MatchingEngineError.missingAppVersion
-        }
-        guard let _ = request[RegisterClientRequest.dev_name] else {
-            throw MatchingEngineError.missingDevName
-        }
-        guard let _ = request[RegisterClientRequest.carrier_name] else {
-            throw MatchingEngineError.missingCarrierName
-        }
+    public func createRegisterClientRequest(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, uniqueIDType: IDTypes?, uniqueID: String?, cellID: UInt32?, tags: [Tag]?)
+        -> RegisterClientRequest { // Dictionary/json
+            
+        return RegisterClientRequest(
+            ver: 1,
+            dev_name: devName,
+            app_name: appName ?? getAppName(),
+            app_vers: appVers ?? getAppVersion(),
+            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            auth_token: authToken,
+            cell_id: cellID,
+            unique_id_type: uniqueIDType,
+            unique_id: uniqueID,
+            tags: tags)
     }
     
     /// API registerClient
@@ -119,10 +96,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     /// - Parameters:
     ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
-    public func registerClient(request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
+    public func registerClient(request: RegisterClientRequest) -> Promise<RegisterClientReply> {
         os_log("registerClient", log: OSLog.default, type: .debug)
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        
+        let promiseInputs: Promise<RegisterClientReply> = Promise<RegisterClientReply>.pending()
         
         let carrierName = state.carrierName
         var host: String
@@ -146,41 +123,31 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - port: port override of the dme server port
     ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
     /// - Returns: API Dictionary/json
-    public func registerClient(host: String, port: UInt16, request: [String: Any]) -> Promise<[String: AnyObject]>
-    {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+    public func registerClient(host: String, port: UInt16, request: RegisterClientRequest) -> Promise<RegisterClientReply> {
+        
+        let promiseInputs: Promise<RegisterClientReply> = Promise<RegisterClientReply>.pending()
         os_log("registerClient", log: OSLog.default, type: .debug)
         
         let baseuri = generateBaseUri(host: host, port: port)
         os_log("BaseURI: %@", log: OSLog.default, type: .debug, baseuri)
         let urlStr = baseuri + APIPaths.registerAPI
         
-        do {
-            try validateRegisterClientRequest(request: request)
-        }
-        catch {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
-        
         // Return a promise chain:
-        return self.postRequest(uri: urlStr, request: request).then { replyDict in
-            guard let sessionCookie = replyDict[RegisterClientReply.session_cookie] as? String else {
-                self.state.setSessionCookie(sessionCookie: nil);
-                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingSessionCookie)
+        return self.postRequest(uri: urlStr, request: request, type: RegisterClientReply.self).then { reply in
+            
+            guard let registerClientReply = reply as? RegisterClientReply else {
+                promiseInputs.reject(MatchingEngineError.registerFailed)
+                return
             }
-            self.state.setSessionCookie(sessionCookie: sessionCookie)
+
+            self.state.setSessionCookie(sessionCookie: registerClientReply.session_cookie)
             os_log("saved sessioncookie", log: OSLog.default, type: .debug)
             
-            guard let tokenServerUri = replyDict[RegisterClientReply.token_server_uri] as? String else {
-                self.state.setTokenServerUri(tokenServerUri: nil);
-                return Promise<[String: AnyObject]>.pending().reject(MatchingEngineError.missingTokenServerURI)
-            }
-            self.state.setTokenServerUri(tokenServerUri: tokenServerUri)
+            self.state.setTokenServerUri(tokenServerUri: registerClientReply.token_server_uri)
             os_log("saved tokenserveruri\n", log: OSLog.default, type: .debug)
             
-            // Implicit return replyDict.
+            promiseInputs.fulfill(registerClientReply)
+            return
         }
     }
-       
 } // end RegisterClient

@@ -22,31 +22,31 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // DynamicLocGroupRequest fields
-    public class DynamicLocGroupRequest {
-        public static let ver = "ver"
-        public static let session_cookie = "session_cookie"
-        public static let lg_id = "lg_id"  //Dynamic Location Group ID
-        public static let comm_type = "comm_type"
-        public static let user_data = "user_data"
-        public static let cell_id = "cell_id"
-        public static let tags = "tags"
+    // DynamicLocGroupRequest struct
+    public struct DynamicLocGroupRequest: Encodable {
+        public var ver: uint
+        public var session_cookie: String
+        public var lg_id: UInt64
+        public var comm_type: DlgCommType
+        public var user_data: String?
+        public var cell_id: uint?
+        public var tags: [Tag]?
         
         // Values for DynamicLocGroupRequest comm_type field
-        public enum DlgCommType {
-            public static let DLG_UNDEFINED = "DLG_UNDEFINED"
-            public static let DLG_SECURE = "DLG_UNDEFINED"
-            public static let DLG_OPEN = "DLG_UNDEFINED"
+        public enum DlgCommType: String, Encodable {
+            case DLG_UNDEFINED = "DLG_UNDEFINED"
+            case DLG_SECURE = "DLG_SECURE"
+            case DLG_OPEN = "DLG_OPEN"
         }
     }
     
-    // DynamicLocGroupReply fields
-    public class DynamicLocGroupReply {
-        public static let ver = "ver"
-        public static let status = "status"
-        public static let error_code = "error_code"
-        public static let group_cookie = "group_cookie"
-        public static let tags = "tags"
+    // DynamicLocGroupReply struct
+    public class DynamicLocGroupReply: Decodable {
+        public var ver: uint
+        public var status: ReplyStatus
+        public var error_code: uint
+        public var group_cookie: String
+        public var tags: [Tag]?
     }
     
     /// createDynamicLocGroupRequest
@@ -56,28 +56,20 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    public func createDynamicLocGroupRequest(lg_id: UInt64?, commType: String?, userData: String?, cellID: UInt32?, tags: [[String: String]]?) -> [String: Any]
-    {
-        var dynamicLocGroupRequest = [String: Any]() // Dictionary/json
+    public func createDynamicLocGroupRequest(lg_id: UInt64?, commType: DynamicLocGroupRequest.DlgCommType?, userData: String?, cellID: uint?, tags: [Tag]?) -> DynamicLocGroupRequest {
         
-        dynamicLocGroupRequest[DynamicLocGroupRequest.ver] = 1
-        dynamicLocGroupRequest[DynamicLocGroupRequest.session_cookie] = state.getSessionCookie()
-        dynamicLocGroupRequest[DynamicLocGroupRequest.lg_id] = lg_id ?? 1001 //NOT IMPLEMENTED
-        dynamicLocGroupRequest[DynamicLocGroupRequest.user_data] = userData
-        dynamicLocGroupRequest[DynamicLocGroupRequest.cell_id] = cellID
-        dynamicLocGroupRequest[DynamicLocGroupRequest.tags] = tags
-        
-        guard let commType = commType, commType != DynamicLocGroupRequest.DlgCommType.DLG_UNDEFINED else {
-            dynamicLocGroupRequest[DynamicLocGroupRequest.comm_type] = DynamicLocGroupRequest.DlgCommType.DLG_SECURE
-            return dynamicLocGroupRequest
-        }
-        dynamicLocGroupRequest[DynamicLocGroupRequest.comm_type] = commType
-        return dynamicLocGroupRequest
+        return DynamicLocGroupRequest(
+            ver: 1,
+            session_cookie: state.getSessionCookie() ?? "",
+            lg_id: lg_id ?? 0, // Not implemented (1001)
+            comm_type: commType ?? DynamicLocGroupRequest.DlgCommType.DLG_SECURE,
+            user_data: userData,
+            cell_id: cellID,
+            tags: tags)
     }
     
-    func validateDynamicLocGroupRequest(request: [String: Any]) throws
-    {
-        guard let _ = request[DynamicLocGroupRequest.session_cookie] as? String else {
+    func validateDynamicLocGroupRequest(request: DynamicLocGroupRequest) throws {
+        if request.session_cookie == "" {
             throw MatchingEngineError.missingSessionCookie
         }
     }
@@ -88,9 +80,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
-    public func addUserToGroup (request: [String: Any]) -> Promise<[String: AnyObject]>
+    public func addUserToGroup (request: DynamicLocGroupRequest) -> Promise<DynamicLocGroupReply>
     {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<DynamicLocGroupReply> = Promise<DynamicLocGroupReply>.pending()
         
         let carrierName = state.carrierName
         
@@ -113,23 +105,23 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
-    public func addUserToGroup (host: String, port: UInt16, request: [String: Any])
-        -> Promise<[String: AnyObject]>
+    public func addUserToGroup (host: String, port: UInt16, request: DynamicLocGroupRequest)
+        -> Promise<DynamicLocGroupReply>
     {
-        let promiseInputs: Promise<[String: AnyObject]> = Promise<[String: AnyObject]>.pending()
+        let promiseInputs: Promise<DynamicLocGroupReply> = Promise<DynamicLocGroupReply>.pending()
         os_log("addUserToGroup", log: OSLog.default, type: .debug)
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.addusertogroupAPI
         
         do {
-            try validateQosKPIRequest(request: request)
+            try validateDynamicLocGroupRequest(request: request)
         }
         catch {
             promiseInputs.reject(error) // catch and reject
             return promiseInputs
         }
         
-        return self.postRequest(uri: urlStr, request: request)
+        return self.postRequest(uri: urlStr, request: request, type: DynamicLocGroupReply.self)
     }
 }

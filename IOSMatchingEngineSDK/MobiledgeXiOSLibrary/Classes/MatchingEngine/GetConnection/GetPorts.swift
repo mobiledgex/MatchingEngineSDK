@@ -35,9 +35,9 @@ class Ports {
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
-    public func getAppFqdn(findCloudletReply: [String: AnyObject], port: UInt16) -> String?
+    public func getAppFqdn(findCloudletReply: FindCloudletReply, port: UInt16) -> String?
     {
-        guard let appFqdn = findCloudletReply[FindCloudletReply.fqdn] as? String else {
+        guard let appFqdn = findCloudletReply.fqdn as? String else {
             return nil
         }
         let baseFqdn = appFqdn
@@ -49,18 +49,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns dictionary: key -> internal port, value -> "AppPort" dictionary
-    public func getAppPortsByProtocol(findCloudletReply: [String: AnyObject], proto: String) -> [UInt16: [String: Any]]?
+    public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: String) -> [uint: AppPort]?
     {
-        var appPortsByProtocol = [UInt16: [String: Any]]()
+        var appPortsByProtocol = [uint: AppPort]()
         // array of "AppPort" dictionaries returned in findCloudlet
-        guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
+        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
             return nil
         }
         // iterate through all "AppPorts"
         for portDict in portDicts {
             // check for protocol
-            if portDict[Ports.proto] as! String == proto {
-                if let internalPort = portDict[Ports.internal_port] as? UInt16 {
+            if portDict.proto as! String == proto {
+                if let internalPort = portDict.internal_port as? uint {
                     appPortsByProtocol[internalPort] = portDict
                 }
             }
@@ -69,18 +69,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of TCP AppPorts given in findCloudletReply
-    public func getTCPAppPorts(findCloudletReply: [String: AnyObject]) -> [UInt16: [String: Any]]?
+    public func getTCPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
     {
-        var tcpAppPorts = [UInt16: [String: Any]]()
+        var tcpAppPorts = [uint: AppPort]()
         // array of dictionaries
-        guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
+        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
             return nil
         }
         // iterate through all dictionaries
         for portDict in portDicts {
             // check for protocol
-            if portDict[Ports.proto] as! String == Protocol.tcp {
-                if let internalPort = portDict[Ports.internal_port] as? UInt16 {
+            if portDict.proto as! String == Protocol.tcp {
+                if let internalPort = portDict.internal_port as? uint {
                     tcpAppPorts[internalPort] = portDict
                 }
             }
@@ -89,18 +89,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of UDP AppPorts given in findCloudletReply
-    public func getUDPAppPorts(findCloudletReply: [String: AnyObject]) -> [UInt16: [String: Any]]?
+    public func getUDPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
     {
-        var udpAppPorts = [UInt16: [String: Any]]()
+        var udpAppPorts = [uint: AppPort]()
         // array of dictionaries
-        guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
+        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
             return nil
         }
         // iterate through all dictionaries
         for portDict in portDicts {
             // check for protocol
-            if portDict[Ports.proto] as! String == Protocol.udp {
-                if let internalPort = portDict[Ports.internal_port] as? UInt16 {
+            if portDict.proto as! String == Protocol.udp {
+                if let internalPort = portDict.internal_port as? uint {
                     udpAppPorts[internalPort] = portDict
                 }
             }
@@ -109,18 +109,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of HTTP AppPorts given in findCloudletReply
-    public func getHTTPAppPorts(findCloudletReply: [String: AnyObject]) -> [UInt16: [String: Any]]?
+    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
     {
-        var httpAppPorts = [UInt16: [String: Any]]()
+        var httpAppPorts = [uint: AppPort]()
         // array of dictionaries
-        guard let portDicts = findCloudletReply[FindCloudletReply.ports] as? [[String: Any]] else {
+        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
             return nil
         }
         // iterate through all dictionaries
         for portDict in portDicts {
             // check for protocol
-            if portDict[Ports.proto] as! String == Protocol.http {
-                if let internalPort = portDict[Ports.internal_port] as? UInt16 {
+            if portDict.proto as! String == Protocol.http {
+                if let internalPort = portDict.internal_port as? uint {
                     httpAppPorts[internalPort] = portDict
                 }
             }
