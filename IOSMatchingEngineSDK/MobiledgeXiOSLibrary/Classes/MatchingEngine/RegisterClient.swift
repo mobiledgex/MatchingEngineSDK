@@ -29,7 +29,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     public struct RegisterClientRequest: Encodable {
         // Required fields
         public var ver: uint
-        public var dev_name: String
+        public var org_name: String
         public var app_name: String
         public var app_vers: String
         public var carrier_name: String
@@ -67,18 +67,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     /// API createRegisterClientRequest
     ///
     /// - Parameters:
-    ///   - devName: Name of the developer
+    ///   - orgName: Name of the developer
     ///   - appName: Name of the application
     ///   - appVers: Version of the application.
     ///   - carrierName: Name of the mobile carrier.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(devName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, uniqueIDType: IDTypes?, uniqueID: String?, cellID: UInt32?, tags: [Tag]?)
+    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String?, uniqueIDType: IDTypes?, uniqueID: String?, cellID: UInt32?, tags: [Tag]?)
         -> RegisterClientRequest { // Dictionary/json
             
         return RegisterClientRequest(
             ver: 1,
-            dev_name: devName,
+            org_name: orgName,
             app_name: appName ?? getAppName(),
             app_vers: appVers ?? getAppVersion(),
             carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
