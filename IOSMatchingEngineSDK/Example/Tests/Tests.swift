@@ -28,7 +28,7 @@ class Tests: XCTestCase {
     var port: UInt16 = 38001
     var appName: String!
     var appVers: String!
-    var devName: String!
+    var orgName: String!
     var carrierName: String!
     var authToken: String?
     var uniqueIDType: MobiledgeXiOSLibrary.MatchingEngine.IDTypes?
@@ -58,7 +58,7 @@ class Tests: XCTestCase {
             port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
-            devName =  "MobiledgeX"
+            orgName =  "MobiledgeX"
             carrierName = "GDDT"
             authToken = nil
             uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
@@ -71,7 +71,7 @@ class Tests: XCTestCase {
             // Unlikely path for testing...
             appName =  matchingEngine.getAppName()
             appVers =  matchingEngine.getAppVersion()
-            devName =  "MobiledgeX"             //   replace this with your devName
+            orgName =  "MobiledgeX"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
@@ -92,7 +92,7 @@ class Tests: XCTestCase {
     }
     
     func testRegisterClient() {
-        let request = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
 
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>!
@@ -118,7 +118,7 @@ class Tests: XCTestCase {
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
@@ -127,7 +127,7 @@ class Tests: XCTestCase {
                     self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
                                                         carrierName: nil,
                                                         gpsLocation: loc,
-                                                        devName: self.devName,
+                                                        orgName: self.orgName,
                                                         appName: self.appName,
                                                         appVers: self.appVers,
                                                         cellID: self.cellID,
@@ -152,7 +152,7 @@ class Tests: XCTestCase {
     func testVerifyLocation() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
 
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
 
@@ -187,7 +187,7 @@ class Tests: XCTestCase {
     func testAppInstList() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply>!
@@ -263,7 +263,7 @@ class Tests: XCTestCase {
                                               totalDistanceKm: 200,
                                               increment: 1)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply>!
         
@@ -295,7 +295,7 @@ class Tests: XCTestCase {
     }
     
     func testGetLocation() {
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply>!
         
@@ -321,7 +321,7 @@ class Tests: XCTestCase {
     }
     
     func testAddUsertoGroup() {
-        let regRequest = matchingEngine.createRegisterClientRequest(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply>!
 
@@ -347,7 +347,7 @@ class Tests: XCTestCase {
     
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
-        let replyPromise = matchingEngine.registerAndFindCloudlet(devName: devName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, gpsLocation: loc, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, gpsLocation: loc, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
         }
