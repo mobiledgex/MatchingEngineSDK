@@ -55,8 +55,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -81,8 +82,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
         
         do {
@@ -108,10 +110,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if is TLS configured
-        if let tls = appPort.tls {
-            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        if appPort.tls == nil || !appPort.tls! {
+            promiseInputs.reject(GetConnectionError.notTLSConfigured)
+            return promiseInputs
         }
-
+        
         do {
             let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
@@ -136,8 +139,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -163,8 +167,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -191,8 +196,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if is TLS configured
-        if let tls = appPort.tls {
-            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        if appPort.tls == nil || !appPort.tls! {
+            promiseInputs.reject(GetConnectionError.notTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -219,8 +225,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -251,8 +258,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if is TLS configured
-        if let tls = appPort.tls {
-            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        if appPort.tls == nil || !appPort.tls! {
+            promiseInputs.reject(GetConnectionError.notTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -283,8 +291,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if not TLS configured
-        if let tls = appPort.tls {
-            if tls { promiseInputs.reject(GetConnectionError.isTLSConfigured)}
+        if appPort.tls != nil && appPort.tls! {
+            promiseInputs.reject(GetConnectionError.isTLSConfigured)
+            return promiseInputs
         }
 
         do {
@@ -310,8 +319,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         // Check if is TLS configured
-        if let tls = appPort.tls {
-            if !tls { promiseInputs.reject(GetConnectionError.notTLSConfigured)}
+        if appPort.tls == nil || !appPort.tls! {
+            promiseInputs.reject(GetConnectionError.notTLSConfigured)
+            return promiseInputs
         }
 
         do {
