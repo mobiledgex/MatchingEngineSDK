@@ -62,9 +62,9 @@ class Tests: XCTestCase {
             orgName =  "MobiledgeX"
             carrierName = "GDDT"
             authToken = nil
-            uniqueIDType = nil
-            uniqueID = nil
-            cellID = nil
+            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
+            uniqueID = matchingEngine.getUniqueID()
+            cellID = 0
             tags = nil
         }
         else
@@ -119,7 +119,7 @@ class Tests: XCTestCase {
     
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
-        
+                
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
