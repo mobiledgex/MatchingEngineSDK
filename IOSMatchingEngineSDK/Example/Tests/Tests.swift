@@ -24,8 +24,10 @@ class Tests: XCTestCase {
     
     let TEST = true
     
-    var host = ""
-    var port: UInt16 = 38001
+    // Use hardcoded dme host and port if TEST is true
+    let dmeStageHost = "eu-stage.dme.mobiledgex.net"
+    let dmePort: UInt16 = 38001
+    
     var appName: String!
     var appVers: String!
     var orgName: String!
@@ -55,15 +57,14 @@ class Tests: XCTestCase {
         matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
         if TEST
         {
-            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
-            appVers = "1.0"
+            appVers = "2.0"
             orgName =  "MobiledgeX"
             carrierName = "GDDT"
             authToken = nil
-            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
-            uniqueID = matchingEngine.getUniqueID()
-            cellID = 0
+            uniqueIDType = nil
+            uniqueID = nil
+            cellID = nil
             tags = nil
         }
         else
@@ -96,7 +97,8 @@ class Tests: XCTestCase {
 
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>!
-        replyPromise = matchingEngine.registerClient(request: request)
+        
+        replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: request)
         .catch { error in
             XCTAssert(false, "Did not succeed registerClient. Error: \(error)")
         }
@@ -120,16 +122,15 @@ class Tests: XCTestCase {
         
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
-        // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
-            replyPromise = matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.findCloudlet(request: self.matchingEngine.createFindCloudletRequest(
-                                                        carrierName: nil,
+                    self.matchingEngine.findCloudlet(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
+                                                        carrierName: self.carrierName,
                                                         gpsLocation: loc,
-                                                        orgName: self.orgName,
-                                                        appName: self.appName,
-                                                        appVers: self.appVers,
+                                                        orgName: nil,
+                                                        appName: nil,
+                                                        appVers: nil,
                                                         cellID: self.cellID,
                                                         tags: self.tags))
                 }.catch { error in
@@ -156,9 +157,9 @@ class Tests: XCTestCase {
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
 
-        replyPromise = matchingEngine.registerClient(request: regRequest)
+        replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.verifyLocation(request: self.matchingEngine.createVerifyLocationRequest(
+                    self.matchingEngine.verifyLocation(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createVerifyLocationRequest(
                                                         carrierName: nil,
                                                         gpsLocation: loc,
                                                         cellID: self.cellID,
@@ -192,10 +193,10 @@ class Tests: XCTestCase {
         // Host goes to mexdemo, not gddt. gddt is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply>!
 
-            replyPromise = matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getAppInstList(request: self.matchingEngine.createGetAppInstListRequest(
-                                                        carrierName: nil,
+                    self.matchingEngine.getAppInstList(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createGetAppInstListRequest(
+                                                        carrierName: self.carrierName,
                                                         gpsLocation: loc,
                                                         cellID: self.cellID,
                                                         tags: self.tags))
@@ -267,9 +268,9 @@ class Tests: XCTestCase {
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply>!
         
-            replyPromise = matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getQosKPIPosition(request: self.matchingEngine.createQosKPIRequest(
+                    self.matchingEngine.getQosKPIPosition(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createQosKPIRequest(
                                                             requests: positions,
                                                             lteCategory: nil,
                                                             bandSelection: nil,
@@ -299,9 +300,9 @@ class Tests: XCTestCase {
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply>!
         
-            replyPromise = matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getLocation(request: self.matchingEngine.createGetLocationRequest(
+                    self.matchingEngine.getLocation(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createGetLocationRequest(
                         carrierName: nil, cellID: self.cellID, tags: self.tags))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
@@ -325,9 +326,9 @@ class Tests: XCTestCase {
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply>!
 
-            replyPromise = matchingEngine.registerClient(request: regRequest)
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.addUserToGroup(request: self.matchingEngine.createDynamicLocGroupRequest(lg_id: nil, commType: nil, userData: nil, cellID: self.cellID, tags: self.tags))
+                    self.matchingEngine.addUserToGroup(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createDynamicLocGroupRequest(lg_id: nil, commType: nil, userData: nil, cellID: self.cellID, tags: self.tags))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
