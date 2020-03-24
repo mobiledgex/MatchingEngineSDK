@@ -44,7 +44,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var carrierName = ""
     var appName = ""
-    var devName = ""
+    var orgName = ""
     var appVers = ""
     var authToken: String? = nil
     var uniqueID: String?
@@ -78,7 +78,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
             appName =  "MobiledgeX SDK Demo"
             appVers = "1.0"
-            devName =  "MobiledgeX"
+            orgName =  "MobiledgeX"
             carrierName = "gddt"
             authToken = nil
             uniqueID = matchingEngine.getUniqueID()
@@ -91,7 +91,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             appName =  matchingEngine.getAppName()
             //appName = "MobiledgeX SDK Demo"   //Use when testing and app is not registered previously
             appVers =  matchingEngine.getAppVersion()
-            devName =  "MobiledgeX"             //   replace this with your devName
+            orgName =  "MobiledgeX"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueID = matchingEngine.getUniqueID()
@@ -166,7 +166,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             return;
         }
         
-        let registerClientRequest = matchingEngine.createRegisterClientRequest(devName: devName,
+        let registerClientRequest = matchingEngine.createRegisterClientRequest(orgName: orgName,
                                                                    appName: appName,
                                                                    appVers: appVers,
                                                                    carrierName: carrierName,
@@ -468,7 +468,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             {
             case 0:
                 //  "Register Client", should use dynamic values if not Demo:
-                let registerClientRequest = self!.matchingEngine.createRegisterClientRequest(devName: self!.devName,
+                let registerClientRequest = self!.matchingEngine.createRegisterClientRequest(orgName: self!.orgName,
                                                                                  appName: self!.appName,
                                                                                  appVers: self!.appVers,
                                                                                  carrierName: self!.carrierName,
@@ -592,7 +592,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 // FIXME: register client is a promise.
 
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
-                                                                             gpsLocation: loc, devName: self!.devName,
+                                                                             gpsLocation: loc, orgName: self!.orgName,
                                                                              appName: self!.appName, appVers: self!.appVers, cellID: self!.cellID, tags: self!.tags)
                 if (self!.demo) {
                     self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)

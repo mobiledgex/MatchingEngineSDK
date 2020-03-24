@@ -50,6 +50,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var path_prefix: String?
         public var fqdn_prefix: String?
         public var end_port: Int32?
+        public var tls: Bool?
     }
     
     // Values for AppPort proto field
