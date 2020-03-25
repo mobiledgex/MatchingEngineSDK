@@ -16,30 +16,12 @@
 //  GetPorts.swift
 //
 
-public class Protocol {
-    public static let tcp = "L_PROTO_TCP"
-    public static let udp = "L_PROTO_UDP"
-    public static let http = "L_PROTO_HTTP"
-    public static let unknown = "L_PROTO_UNKNOWN"
-}
-
-class Ports {
-    public static let proto = "proto"
-    public static let internal_port = "internal_port"
-    public static let public_port = "public_port"
-    public static let path_prefix = "path_prefix"
-    public static let fqdn_prefix = "fqdn_prefix"
-    public static let end_port = "end_port"
-}
-
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
     public func getAppFqdn(findCloudletReply: FindCloudletReply, port: UInt16) -> String?
     {
-        guard let appFqdn = findCloudletReply.fqdn as? String else {
-            return nil
-        }
+        let appFqdn = findCloudletReply.fqdn
         let baseFqdn = appFqdn
         // get fqdn prefix from port dictionary
         guard let fqdnPrefix = state.portToPathPrefixDict[port] else {
@@ -48,81 +30,69 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return fqdnPrefix + baseFqdn
     }
     
-    // Returns dictionary: key -> internal port, value -> "AppPort" dictionary
-    public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: String) -> [uint: AppPort]?
+    // Returns dictionary: key -> internal port, value -> AppPort
+    public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: LProto) -> [UInt16: AppPort]?
     {
-        var appPortsByProtocol = [uint: AppPort]()
-        // array of "AppPort" dictionaries returned in findCloudlet
-        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
-            return nil
-        }
+        var appPortsByProtocol = [UInt16: AppPort]()
+        // array of AppPorts returned in findCloudlet
+        let appPorts = findCloudletReply.ports
         // iterate through all "AppPorts"
-        for portDict in portDicts {
+        for appPort in appPorts {
             // check for protocol
-            if portDict.proto as! String == proto {
-                if let internalPort = portDict.internal_port as? uint {
-                    appPortsByProtocol[internalPort] = portDict
-                }
+            if appPort.proto == proto {
+                let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
+                appPortsByProtocol[internalPort] = appPort
             }
         }
         return appPortsByProtocol
     }
     
     // Return dictionary of TCP AppPorts given in findCloudletReply
-    public func getTCPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
+    public func getTCPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
     {
-        var tcpAppPorts = [uint: AppPort]()
-        // array of dictionaries
-        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
-            return nil
-        }
-        // iterate through all dictionaries
-        for portDict in portDicts {
+        var tcpAppPorts = [UInt16: AppPort]()
+        // array of AppPorts
+        let appPorts = findCloudletReply.ports
+        // iterate through all AppPorts
+        for appPort in appPorts {
             // check for protocol
-            if portDict.proto as! String == Protocol.tcp {
-                if let internalPort = portDict.internal_port as? uint {
-                    tcpAppPorts[internalPort] = portDict
-                }
+            if appPort.proto == LProto.L_PROTO_TCP {
+                let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
+                tcpAppPorts[internalPort] = appPort
             }
         }
         return tcpAppPorts
     }
     
     // Return dictionary of UDP AppPorts given in findCloudletReply
-    public func getUDPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
+    public func getUDPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
     {
-        var udpAppPorts = [uint: AppPort]()
-        // array of dictionaries
-        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
-            return nil
-        }
-        // iterate through all dictionaries
-        for portDict in portDicts {
+        var udpAppPorts = [UInt16: AppPort]()
+        // array of AppPorts
+        let appPorts = findCloudletReply.ports
+        // iterate through all AppPorts
+        for appPort in appPorts {
             // check for protocol
-            if portDict.proto as! String == Protocol.udp {
-                if let internalPort = portDict.internal_port as? uint {
-                    udpAppPorts[internalPort] = portDict
-                }
+            if appPort.proto == LProto.L_PROTO_UDP {
+                let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
+                udpAppPorts[internalPort] = appPort
             }
         }
         return udpAppPorts
     }
     
     // Return dictionary of HTTP AppPorts given in findCloudletReply
-    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) -> [uint: AppPort]?
+    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
     {
-        var httpAppPorts = [uint: AppPort]()
-        // array of dictionaries
-        guard let portDicts = findCloudletReply.ports as? [AppPort] else {
-            return nil
-        }
-        // iterate through all dictionaries
-        for portDict in portDicts {
+        var httpAppPorts = [UInt16: AppPort]()
+        // array of AppPorts
+        let appPorts = findCloudletReply.ports
+        // iterate through all AppPorts
+        for appPort in appPorts {
             // check for protocol
-            if portDict.proto as! String == Protocol.http {
-                if let internalPort = portDict.internal_port as? uint {
-                    httpAppPorts[internalPort] = portDict
-                }
+            if appPort.proto == LProto.L_PROTO_HTTP {
+                let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
+                httpAppPorts[internalPort] = appPort
             }
         }
         return httpAppPorts
