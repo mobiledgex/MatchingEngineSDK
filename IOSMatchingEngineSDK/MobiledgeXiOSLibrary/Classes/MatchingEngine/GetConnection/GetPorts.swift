@@ -31,7 +31,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns dictionary: key -> internal port, value -> AppPort
-    public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: LProto) -> [UInt16: AppPort]?
+    public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: LProto) throws -> [UInt16: AppPort]?
     {
         var appPortsByProtocol = [UInt16: AppPort]()
         // array of AppPorts returned in findCloudlet
@@ -40,6 +40,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         for appPort in appPorts {
             // check for protocol
             if appPort.proto == proto {
+                // Make sure internal port is a valid port
+                if !isValidPort(port: appPort.internal_port) {
+                    throw MatchingEngineError.invalidInternalPort
+                }
+                // truncate Int32 to UInt16
                 let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
                 appPortsByProtocol[internalPort] = appPort
             }
@@ -48,7 +53,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of TCP AppPorts given in findCloudletReply
-    public func getTCPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
+    public func getTCPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
     {
         var tcpAppPorts = [UInt16: AppPort]()
         // array of AppPorts
@@ -57,6 +62,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         for appPort in appPorts {
             // check for protocol
             if appPort.proto == LProto.L_PROTO_TCP {
+                // Make sure internal port is a valid port
+                if !isValidPort(port: appPort.internal_port) {
+                    throw MatchingEngineError.invalidInternalPort
+                }
+                // truncate Int32 to UInt16
                 let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
                 tcpAppPorts[internalPort] = appPort
             }
@@ -65,7 +75,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of UDP AppPorts given in findCloudletReply
-    public func getUDPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
+    public func getUDPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
     {
         var udpAppPorts = [UInt16: AppPort]()
         // array of AppPorts
@@ -74,6 +84,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         for appPort in appPorts {
             // check for protocol
             if appPort.proto == LProto.L_PROTO_UDP {
+                // Make sure internal port is a valid port
+                if !isValidPort(port: appPort.internal_port) {
+                    throw MatchingEngineError.invalidInternalPort
+                }
+                // truncate Int32 to UInt16
                 let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
                 udpAppPorts[internalPort] = appPort
             }
@@ -82,7 +97,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Return dictionary of HTTP AppPorts given in findCloudletReply
-    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) -> [UInt16: AppPort]?
+    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
     {
         var httpAppPorts = [UInt16: AppPort]()
         // array of AppPorts
@@ -91,10 +106,19 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         for appPort in appPorts {
             // check for protocol
             if appPort.proto == LProto.L_PROTO_HTTP {
+                // Make sure internal port is a valid port
+                if !isValidPort(port: appPort.internal_port) {
+                    throw MatchingEngineError.invalidInternalPort
+                }
+                // truncate Int32 to UInt16
                 let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
                 httpAppPorts[internalPort] = appPort
             }
         }
         return httpAppPorts
+    }
+    
+    private func isValidPort(port: Int32) -> Bool {
+        return (port <= 65535) && (port > 0)
     }
 }
