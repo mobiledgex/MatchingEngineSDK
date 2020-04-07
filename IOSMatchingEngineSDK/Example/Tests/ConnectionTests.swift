@@ -278,7 +278,7 @@ class ConnectionTests: XCTestCase {
             
         .then { findCloudletReply -> Promise<MobiledgeXiOSLibrary.Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
-            guard let appPortsDict = self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
+            guard let appPortsDict = try self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
                 XCTAssert(false, "GetTCPPorts returned nil")
                 throw TestError.runtimeError("GetTCPPorts returned nil")
             }
@@ -374,7 +374,7 @@ class ConnectionTests: XCTestCase {
         .then { findCloudletReply -> Promise<NWConnection> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
             print("findCloudletReply is \(findCloudletReply)")
-            guard let appPortsDict = self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
+            guard let appPortsDict = try self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
                 XCTAssert(false, "GetTCPPorts returned nil")
                 throw TestError.runtimeError("GetTCPPorts returned nil")
             }
