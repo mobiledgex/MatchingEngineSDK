@@ -26,6 +26,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         case missingCarrierName
         case missingSessionCookie
+        case invalidInternalPort
         
         case missingGPSLocation
         case invalidGPSLongitude
