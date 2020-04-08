@@ -55,7 +55,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - carrierName: carrierName description
     /// - Returns: API  Dictionary/json
-    public func createGetLocationRequest(carrierName: String?, cellID: uint?, tags: [Tag]?) -> GetLocationRequest {
+    public func createGetLocationRequest(carrierName: String?, cellID: uint? = nil, tags: [Tag]? = nil) -> GetLocationRequest {
         
         return GetLocationRequest(
             ver: 1,

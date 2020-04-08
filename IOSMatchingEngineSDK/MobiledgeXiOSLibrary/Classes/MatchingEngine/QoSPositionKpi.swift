@@ -88,7 +88,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32?, bandSelection: BandSelection?, cellID: uint?, tags: [Tag]?) -> QosPositionRequest {
+    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [Tag]? = nil) -> QosPositionRequest {
         
         return QosPositionRequest(
             ver: 1,
