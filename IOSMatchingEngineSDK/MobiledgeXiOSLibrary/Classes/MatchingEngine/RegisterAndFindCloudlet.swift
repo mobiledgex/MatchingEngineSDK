@@ -36,7 +36,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
                 return promiseInputs
             }
             
-            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, orgName: orgName, appName: appName, appVers: appVers, cellID: cellID, tags: tags)
+            let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, orgName: nil, appName: nil, appVers: nil, cellID: cellID, tags: tags)
             
             return self.findCloudlet(request: findCloudletRequest)
         }
@@ -56,7 +56,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
                     return promiseInputs
                 }
                 
-                let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, orgName: orgName, appName: appName, appVers: appVers, cellID: cellID, tags: tags)
+                let findCloudletRequest = self.createFindCloudletRequest(carrierName: carrierName, gpsLocation: gpsLocation, orgName: nil, appName: nil, appVers: nil, cellID: cellID, tags: tags)
                 
                 return self.findCloudlet(host: host, port: port, request: findCloudletRequest)
         }

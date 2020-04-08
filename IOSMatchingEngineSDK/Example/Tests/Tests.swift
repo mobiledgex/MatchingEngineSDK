@@ -58,7 +58,7 @@ class Tests: XCTestCase {
         if TEST
         {
             appName =  "MobiledgeX SDK Demo"
-            appVers = "2.0"
+            appVers = "k8s"
             orgName =  "MobiledgeX"
             carrierName = "TDG"
             authToken = nil
@@ -348,7 +348,7 @@ class Tests: XCTestCase {
     
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, gpsLocation: loc, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, gpsLocation: loc, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
         }
