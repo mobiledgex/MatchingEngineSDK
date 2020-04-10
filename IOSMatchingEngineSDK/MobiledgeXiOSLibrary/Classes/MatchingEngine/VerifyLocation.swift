@@ -77,7 +77,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             return nil
         }
 
-        let verifyLocRequest = createVerifyLocationRequest(carrierName: getCarrierName(), gpsLocation: gpsLocation, cellID: cellID, tags: tags)
+            let verifyLocRequest = createVerifyLocationRequest(gpsLocation: gpsLocation, carrierName: getCarrierName(), cellID: cellID, tags: tags)
         return self.verifyLocation(request: verifyLocRequest)
     }
     
@@ -89,8 +89,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - verifyloctoken: <#verifyloctoken description#>
     ///
     /// - Returns: API json/Dictionary
-    public func createVerifyLocationRequest(carrierName: String?,
-                                            gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+    public func createVerifyLocationRequest(gpsLocation: Loc, carrierName: String?,
+                                            cellID: uint? = nil, tags: [Tag]? = nil)
         -> VerifyLocationRequest {
             
         return VerifyLocationRequest(
@@ -191,14 +191,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint? = nil, tags: [Tag]? = nil)
         throws -> VerifyLocationRequest {
             
         if (verifyLocationToken.count == 0) {
             throw InvalidTokenServerTokenError.invalidToken
         }
         
-        var verifyLocationRequest = self.createVerifyLocationRequest(carrierName: carrierName, gpsLocation: gpsLocation, cellID: cellID, tags: tags)
+            var verifyLocationRequest = self.createVerifyLocationRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
         verifyLocationRequest.verify_loc_token = verifyLocationToken
             
         return verifyLocationRequest

@@ -71,7 +71,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - gpslocation: A dictionary with at least longitude and latitude key values.
     ///
     /// - Returns: API Dictionary/json
-    public func createGetAppInstListRequest(carrierName: String?, gpsLocation: Loc, cellID: uint?, tags: [Tag]?) -> AppInstListRequest {
+    public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [Tag]? = nil) -> AppInstListRequest {
         
         return AppInstListRequest(
             ver: 1,

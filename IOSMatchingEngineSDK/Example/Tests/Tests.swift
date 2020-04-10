@@ -93,7 +93,7 @@ class Tests: XCTestCase {
     }
     
     func testRegisterClient() {
-        let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
 
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>!
@@ -120,19 +120,13 @@ class Tests: XCTestCase {
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
                     self.matchingEngine.findCloudlet(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
-                                                        carrierName: self.carrierName,
-                                                        gpsLocation: loc,
-                                                        orgName: nil,
-                                                        appName: nil,
-                                                        appVers: nil,
-                                                        cellID: self.cellID,
-                                                        tags: self.tags))
+                        gpsLocation: loc, carrierName: self.carrierName))
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
@@ -153,17 +147,15 @@ class Tests: XCTestCase {
     func testVerifyLocation() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
 
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
 
         replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
                     self.matchingEngine.verifyLocation(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createVerifyLocationRequest(
-                                                        carrierName: nil,
                                                         gpsLocation: loc,
-                                                        cellID: self.cellID,
-                                                        tags: self.tags))
+                                                        carrierName: self.carrierName))
                 }.catch { error in
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
             }
@@ -188,7 +180,7 @@ class Tests: XCTestCase {
     func testAppInstList() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply>!
@@ -196,10 +188,7 @@ class Tests: XCTestCase {
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
                     self.matchingEngine.getAppInstList(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createGetAppInstListRequest(
-                                                        carrierName: self.carrierName,
-                                                        gpsLocation: loc,
-                                                        cellID: self.cellID,
-                                                        tags: self.tags))
+                        gpsLocation: loc, carrierName: self.carrierName))
                     }.catch { error in
                         XCTAssert(false, "AppInstList hit an error: \(error).")
                     }
@@ -264,18 +253,14 @@ class Tests: XCTestCase {
                                               totalDistanceKm: 200,
                                               increment: 1)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply>!
         
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
                     self.matchingEngine.getQosKPIPosition(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createQosKPIRequest(
-                                                            requests: positions,
-                                                            lteCategory: nil,
-                                                            bandSelection: nil,
-                                                            cellID: self.cellID,
-                                                            tags: self.tags))
+                                                            requests: positions))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
             }
@@ -296,14 +281,14 @@ class Tests: XCTestCase {
     }
     
     func testGetLocation() {
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply>!
         
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
                     self.matchingEngine.getLocation(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createGetLocationRequest(
-                        carrierName: nil, cellID: self.cellID, tags: self.tags))
+                        carrierName: self.carrierName))
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
@@ -322,13 +307,13 @@ class Tests: XCTestCase {
     }
     
     func testAddUsertoGroup() {
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply>!
 
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.addUserToGroup(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createDynamicLocGroupRequest(lg_id: nil, commType: nil, userData: nil, cellID: self.cellID, tags: self.tags))
+                    self.matchingEngine.addUserToGroup(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createDynamicLocGroupRequest())
                 } .catch { error in
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
@@ -348,7 +333,7 @@ class Tests: XCTestCase {
     
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
-        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, gpsLocation: loc, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, gpsLocation: loc)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
         }
