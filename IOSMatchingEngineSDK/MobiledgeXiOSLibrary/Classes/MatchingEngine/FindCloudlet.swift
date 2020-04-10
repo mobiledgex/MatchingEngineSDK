@@ -145,4 +145,95 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         // postRequest is dispatched to background by default:
         return self.postRequest(uri: urlStr, request: request, type: FindCloudletReply.self)
     }
+    
+    @available(iOS 13.0, *)
+    public func findCloudletNew(host: String, port: UInt16, request: FindCloudletRequest) -> Promise<FindCloudletReply> {
+        
+        let promise: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
+        
+        var fcReply: FindCloudletReply? = nil
+        
+        return findCloudlet(host: host, port: port, request: request)
+            
+            
+        .then { findCloudletReply -> Promise<AppInstListReply> in
+            if findCloudletReply.status != FindCloudletReply.FindStatus.FIND_FOUND {
+                let appInstPromise = Promise<AppInstListReply>.init(MatchingEngineError.findCloudletFailed)
+                return appInstPromise
+            }
+            fcReply = findCloudletReply
+            let appInstRequest = self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name)
+        
+            return self.getAppInstList(host: host, port: port, request: appInstRequest)
+            }
+            
+            
+        .then { appInstListReply -> Promise<[MobiledgeXiOSLibrary.PerformanceMetrics.Site]> in
+            // Check for successful getAppInstList
+            if appInstListReply.status != AppInstListReply.AIStatus.AI_SUCCESS || appInstListReply.cloudlets.count == 0 {
+                let sitesPromise = Promise<[MobiledgeXiOSLibrary.PerformanceMetrics.Site]>.init(MatchingEngineError.getAppInstListFailed)
+                return sitesPromise
+            }
+            
+            print("appInstList in new findCloudlet is \(appInstListReply)")
+            let sites = self.createSitesFromAppInstReply(reply: appInstListReply)
+            
+            let netTest = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest(sites: sites, qos: .background)
+            
+            return netTest.runTest(numSamples: 10)
+            }
+            
+            
+        .then { orderedSites -> Promise<FindCloudletReply> in
+            for site in orderedSites {
+                print("site name is \(site.host), avg is \(site.avg), stddev is \(site.stdDev)")
+            }
+            let findCloudletReply = self.createFindCloudletReplyFromBestSite(findCloudletReply: fcReply!, site: orderedSites[0])
+            promise.fulfill(findCloudletReply)
+            return promise
+            }
+            
+            
+        .catch { error in
+            promise.reject(error)
+            return
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func createFindCloudletReplyFromBestSite(findCloudletReply: FindCloudletReply, site: MobiledgeXiOSLibrary.PerformanceMetrics.Site) -> FindCloudletReply {
+        
+        let appInst = site.appInst
+        
+        return FindCloudletReply(
+            ver: findCloudletReply.ver,
+            status: FindCloudletReply.FindStatus.FIND_FOUND,
+            fqdn: findCloudletReply.fqdn,
+            ports: appInst!.ports,
+            cloudlet_location: findCloudletReply.cloudlet_location,
+            tags: findCloudletReply.tags
+        )
+    }
+    
+    @available(iOS 13.0, *)
+    func createSitesFromAppInstReply(reply: AppInstListReply) -> [MobiledgeXiOSLibrary.PerformanceMetrics.Site] {
+        
+        var sites: [MobiledgeXiOSLibrary.PerformanceMetrics.Site] = []
+        
+        for cloudlet in reply.cloudlets {
+            for appInstance in cloudlet.appinstances {
+                let appPort = appInstance.ports[0]
+                let host = "\(appPort.fqdn_prefix!)\(appInstance.fqdn)"
+                let port = appPort.public_port
+                let testType = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT
+                
+                // CHECK PROTOCOLS AND L7PATH
+                let site = MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: "", host: host, port: UInt16(port), testType: testType, numSamples: 10)
+                site.appInst = appInstance
+                sites.append(site)
+        
+            }
+        }
+        return sites
+    }
 }
