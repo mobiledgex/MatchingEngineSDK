@@ -191,7 +191,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
+    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint? = nil, tags: [Tag]? = nil)
         throws -> VerifyLocationRequest {
             
         if (verifyLocationToken.count == 0) {
