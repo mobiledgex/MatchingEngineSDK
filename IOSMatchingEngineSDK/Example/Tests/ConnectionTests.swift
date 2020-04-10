@@ -274,7 +274,7 @@ class ConnectionTests: XCTestCase {
     func testGetConnectionWorkflow() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: nil, authToken: nil, gpsLocation: loc, uniqueIDType: nil, uniqueID: nil, cellID: nil, tags: nil)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", gpsLocation: loc)
             
         .then { findCloudletReply -> Promise<MobiledgeXiOSLibrary.Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
@@ -369,7 +369,7 @@ class ConnectionTests: XCTestCase {
     func testTimeout() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", authToken: nil, gpsLocation: loc, uniqueIDType: nil, uniqueID: nil, cellID: nil, tags: nil)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", carrierName: "GDDT", gpsLocation: loc)
             
         .then { findCloudletReply -> Promise<NWConnection> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary

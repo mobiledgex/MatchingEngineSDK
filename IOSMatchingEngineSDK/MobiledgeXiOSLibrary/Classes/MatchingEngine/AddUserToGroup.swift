@@ -56,7 +56,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    public func createDynamicLocGroupRequest(lg_id: UInt64?, commType: DynamicLocGroupRequest.DlgCommType?, userData: String?, cellID: uint?, tags: [Tag]?) -> DynamicLocGroupRequest {
+    public func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) -> DynamicLocGroupRequest {
         
         return DynamicLocGroupRequest(
             ver: 1,

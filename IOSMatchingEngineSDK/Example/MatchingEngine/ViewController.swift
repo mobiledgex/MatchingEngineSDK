@@ -26,7 +26,6 @@ import os.log
 
 import DropDown
 import MobiledgeXiOSLibrary
-
 // quick and dirty global scope
 
 var theMap: GMSMapView?     //   used by sample.client
@@ -169,12 +168,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         let registerClientRequest = matchingEngine.createRegisterClientRequest(orgName: orgName,
                                                                    appName: appName,
                                                                    appVers: appVers,
-                                                                   carrierName: carrierName,
-                                                                   authToken: authToken,
-                                                                   uniqueIDType: uniqueIDType,
-                                                                   uniqueID: uniqueID,
-                                                                   cellID: cellID,
-                                                                   tags: tags)
+                                                                   carrierName: carrierName)
         matchingEngine.registerClient(host: host,
                           port: port,
                           request: registerClientRequest)
@@ -212,7 +206,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             SKToast.show(withMessage: "Client registered")
             
             let loc = retrieveLocation()
-            let request = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: nil)
+            let request = self!.matchingEngine.createGetAppInstListRequest(gpsLocation: loc, carrierName: self!.carrierName)
             self!.matchingEngine.getAppInstList(host: self!.host, port: self!.port, request: request)
                 .then { appInstList in
                     // Ick. Refactor, to just "Toast" the SDK usage status in UI at each promises chain stage:
@@ -471,12 +465,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let registerClientRequest = self!.matchingEngine.createRegisterClientRequest(orgName: self!.orgName,
                                                                                  appName: self!.appName,
                                                                                  appVers: self!.appVers,
-                                                                                 carrierName: self!.carrierName,
-                                                                                 authToken: self!.authToken,
-                                                                                 uniqueIDType: self!.uniqueIDType,
-                                                                                 uniqueID: self!.uniqueID,
-                                                                                 cellID: self!.cellID,
-                                                                                 tags: self!.tags)
+                                                                                 carrierName: self!.carrierName)
                 if (self!.demo) {  //used for demo purposes
                     self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
@@ -508,7 +497,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             case 1:
                 let loc = retrieveLocation()
                 
-                let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
+                let appInstListRequest = self!.matchingEngine.createGetAppInstListRequest(gpsLocation: loc, carrierName: self!.carrierName)
                 if (self!.demo) {
                     self!.matchingEngine.getAppInstList(host: self!.demoHost, port: self!.port, request: appInstListRequest)
                     .then { appInstListReply in
@@ -550,7 +539,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                     let loc = retrieveLocation()
                     
                     let verifyLocRequest = self!.matchingEngine.createVerifyLocationRequest(
-                        carrierName: self!.carrierName, gpsLocation: loc, cellID: self!.cellID, tags: self!.tags)
+                        gpsLocation: loc, carrierName: self!.carrierName)
                     if (self!.demo) {
                         self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
                         .then { verifyLocationReply in
@@ -591,9 +580,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 let loc = retrieveLocation()
                 // FIXME: register client is a promise.
 
-                let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(carrierName: self!.carrierName,
-                                                                             gpsLocation: loc, orgName: self!.orgName,
-                                                                             appName: self!.appName, appVers: self!.appVers, cellID: self!.cellID, tags: self!.tags)
+                let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self!.carrierName)
                 if (self!.demo) {
                     self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
                     .then { findCloudletReply in
@@ -628,7 +615,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                                                       totalDistanceKm: 200,
                                                       increment: 1)
                 
-                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions, lteCategory: nil, bandSelection: nil, cellID: self!.cellID, tags: self!.tags)
+                let getQoSPositionRequest = self!.matchingEngine.createQosKPIRequest(requests: positions)
                 if (self!.demo) {
                     self!.matchingEngine.getQosKPIPosition(host: self!.demoHost, port: self!.port, request: getQoSPositionRequest)
                     .then { getQoSPositionReply in
