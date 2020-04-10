@@ -117,6 +117,7 @@ class Tests: XCTestCase {
         matchingEngine.registerClientResult(promiseValue)
     }
     
+    @available(iOS 13.0, *)
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
@@ -331,6 +332,7 @@ class Tests: XCTestCase {
         XCTAssertNil(replyPromise.error)
     }
     
+    @available(iOS 13.0, *)
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
         let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, gpsLocation: loc)
@@ -365,7 +367,7 @@ class Tests: XCTestCase {
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.findCloudletNew(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
+                    self.matchingEngine.findCloudlet(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
                         gpsLocation: loc, carrierName: self.carrierName))
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")

@@ -48,7 +48,9 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
 
         // Run tests at interval (milliseconds) indefinitely until call to cancelTest
         public func runTest(interval: Int) {
-            cancelTest()
+            cancelTest() // clear our previous data
+            loadNetwork()
+            
             self.interval = interval
             for site in sites {
                 let test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
@@ -59,11 +61,12 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             }
         }
         
-        // SHOULD DISPATCHQUEUE.ASYNC BE OUTSIDE OR INSIDE FUNCTION?
-        // Run test for numSamples per site
+        // Run NetTest for numSamples per site
         public func runTest(numSamples: Int) -> Promise<[Site]> {
             cancelTest() // clear our previous data
             let promise: Promise<[Site]> = Promise<[Site]>.pending()
+            
+            loadNetwork() // this needs to be async
             
             let group = DispatchGroup()
             for _ in 1...numSamples {
@@ -75,7 +78,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
                     }
                 }
             }
-            
+            // Once each testSite call completes and each "task" leaves the group, the following will be called
             group.notify(queue: DispatchQueue.main) {
                 promise.fulfill(self.returnSortedSites())
             }
@@ -83,7 +86,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             return promise
         }
         
-        // Based on test type and protocol, call correct test
+        // Based on test type and protocol, call the correct test
         private func testSite(site: Site) {
             switch site.testType {
             case .CONNECT:
@@ -107,7 +110,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             
         }
         
-        // Sorted from best to worst
+        // Sorted list of Sites from best to worst
         public func returnSortedSites() -> [Site] {
             sites.sort { site1 , site2 in
                 if site1.avg != site2.avg {

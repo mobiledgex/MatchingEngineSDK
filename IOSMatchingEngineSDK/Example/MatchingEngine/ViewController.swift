@@ -582,25 +582,33 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 
                 let findCloudletRequest = self!.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self!.carrierName)
                 if (self!.demo) {
-                    self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
-                    .then { findCloudletReply in
-                        os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
-                        SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                    }
-                    .catch { error in
-                        os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                        SKToast.show(withMessage: "findCloudlet error: \(error)")
-                    }
-                } else {
-                    do {
-                        try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
-                        .then { findCloudletReply in
-                            os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
-                            SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                    if #available(iOS 13.0, *) {
+                        self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
+                            .then { findCloudletReply in
+                                os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
+                                SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                         }
                         .catch { error in
                             os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                             SKToast.show(withMessage: "findCloudlet error: \(error)")
+                        }
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                } else {
+                    do {
+                        if #available(iOS 13.0, *) {
+                            try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
+                                .then { findCloudletReply in
+                                    os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
+                                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                            }
+                            .catch { error in
+                                os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                SKToast.show(withMessage: "findCloudlet error: \(error)")
+                            }
+                        } else {
+                            // Fallback on earlier versions
                         }
                     } catch {
                         Swift.print("Error: \(error.localizedDescription)")

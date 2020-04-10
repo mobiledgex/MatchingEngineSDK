@@ -271,6 +271,7 @@ class ConnectionTests: XCTestCase {
     }
     
     // Test the developer workflow: RegisterAndFindCloudlet() -> Pick App Port -> GetConnection()
+    @available(iOS 13.0, *)
     func testGetConnectionWorkflow() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
