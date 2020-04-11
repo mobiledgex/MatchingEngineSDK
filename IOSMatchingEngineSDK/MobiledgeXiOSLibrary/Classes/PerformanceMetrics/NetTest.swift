@@ -49,8 +49,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         // Run tests at interval (milliseconds) indefinitely until call to cancelTest
         public func runTest(interval: Int) {
             cancelTest() // clear our previous data
-            loadNetwork()
-            
+                        
             self.interval = interval
             for site in sites {
                 let test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
@@ -65,9 +64,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         public func runTest(numSamples: Int) -> Promise<[Site]> {
             cancelTest() // clear our previous data
             let promise: Promise<[Site]> = Promise<[Site]>.pending()
-            
-            loadNetwork() // this needs to be async
-            
+                        
             let group = DispatchGroup()
             for _ in 1...numSamples {
                 for site in sites {
@@ -103,11 +100,6 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
                     self.connectAndDisconnectSocket(site: site)
                 }
             }
-        }
-        
-        // Start up Mobile network to make sure network path is setup before getting rtt times
-        private func loadNetwork() {
-            
         }
         
         // Sorted list of Sites from best to worst

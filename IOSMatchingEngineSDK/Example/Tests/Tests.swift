@@ -117,6 +117,36 @@ class Tests: XCTestCase {
         matchingEngine.registerClientResult(promiseValue)
     }
     
+    // Test the FindCloudlet DME API
+    @available(iOS 13.0, *)
+    func testFindCloudletAPI() {
+        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
+                
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        
+        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
+            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
+                .then { reply in
+                    self.matchingEngine.findCloudletAPI(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
+                        gpsLocation: loc, carrierName: self.carrierName))
+                }.catch { error in
+                    XCTAssert(false, "FindCloudlet encountered error: \(error)")
+            }
+        
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let val = replyPromise.value else {
+            XCTAssert(false, "FindCloudlet missing a return value.")
+            return
+        }
+        print("FindCloudletReply is \(val)")
+
+        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
+        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
+        
+        XCTAssertNil(replyPromise.error)
+    }
+    
+    // Test FindCloudlet that call AppInstList and NetTest to find cloudlet with lowest latency
     @available(iOS 13.0, *)
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
@@ -356,33 +386,5 @@ class Tests: XCTestCase {
         let uuid = matchingEngine.getUniqueID()
         XCTAssert(uuid != nil, "No uuid returned")
         print("uuid is \(uuid)")
-    }
-    
-    @available(iOS 13.0, *)
-    func testNewFindCloudlet() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
-                
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
-        
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
-            replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
-                .then { reply in
-                    self.matchingEngine.findCloudlet(host: self.dmeStageHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
-                        gpsLocation: loc, carrierName: self.carrierName))
-                }.catch { error in
-                    XCTAssert(false, "FindCloudlet encountered error: \(error)")
-            }
-        
-        XCTAssert(waitForPromises(timeout: 10))
-        guard let val = replyPromise.value else {
-            XCTAssert(false, "FindCloudlet missing a return value.")
-            return
-        }
-        print("FindCloudletReply is \(val)")
-
-        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
-        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
-        
-        XCTAssertNil(replyPromise.error)
     }
 }

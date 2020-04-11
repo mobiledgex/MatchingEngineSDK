@@ -144,7 +144,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
             // initialize fcReply (to be used later)
             fcReply = findCloudletReply
-            let appInstRequest = self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name)
+            
+            // Dummy bytes to send to "load" mobile network
+            let bytes = Array(repeating: UInt8(1), count: 2048)
+            let tag = Tag(
+                type: "buffer",
+                data: String(bytes: bytes, encoding: .utf8) ?? ""
+            )
+            let appInstRequest = self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: [tag])
             return self.getAppInstList(host: host, port: port, request: appInstRequest)
             }
             
@@ -167,9 +174,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
             
         .then { orderedSites -> Promise<FindCloudletReply> in
-            for site in orderedSites {
-                print("site name is \(site.host), avg is \(site.avg), stddev is \(site.stdDev)")
-            }
+            // Create FindCloudletReply from actual FindCloudletReply and the best site from NetTest
             let findCloudletReply = self.createFindCloudletReplyFromBestSite(findCloudletReply: fcReply!, site: orderedSites[0])
             promise.fulfill(findCloudletReply)
             return promise
@@ -190,7 +195,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: FindCloudletRequest from createFindCloudletRequest.
     /// - Returns: FindCloudletReply
-    private func findCloudletAPI(host: String, port: UInt16, request: FindCloudletRequest)
+    func findCloudletAPI(host: String, port: UInt16, request: FindCloudletRequest)
         -> Promise<FindCloudletReply>
     {
         os_log("Finding nearest Cloudlet appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)
