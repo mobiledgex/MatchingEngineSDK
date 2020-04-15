@@ -22,6 +22,7 @@ import Promises
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
+    @available(iOS 13.0, *)
     public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, carrierName: String?, gpsLocation: Loc, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil) -> Promise<FindCloudletReply> {
                 
         let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
@@ -42,6 +43,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         }
     }
     
+    @available(iOS 13.0, *)
     public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, carrierName: String?, gpsLocation: Loc, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil) -> Promise<FindCloudletReply> {
         
         let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
