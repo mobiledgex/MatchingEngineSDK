@@ -23,6 +23,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public enum MatchingEngineError: Error {
         case networkFailure
+        case unknownAppInsts
         
         case missingCarrierName
         case missingSessionCookie

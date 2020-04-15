@@ -20,6 +20,7 @@
 import Foundation
 import os.log
 import Combine
+import Promises
 
 extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
@@ -31,7 +32,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         public var tests: [AnyCancellable]
         public var timeout = 5.0
         var interval: Int?
-        
+                
         let NANO_TO_MILLI = 1.0 / 1000000.0
         
         public enum TestType {
@@ -39,36 +40,82 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             case CONNECT
         }
         
-        public init(sites: [Site]) {
+        public init(sites: [Site], qos: DispatchQoS) {
             self.sites = sites
-            netTestDispatchQueue = DispatchQueue(label: "nettest.queue", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
+            netTestDispatchQueue = DispatchQueue(label: "mobiledgexioslibrary.performancemetrics.nettest", qos: qos, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
             tests = [AnyCancellable]()
         }
 
-        // interval in milliseconds
+        // Run tests at interval (milliseconds) indefinitely until call to cancelTest
         public func runTest(interval: Int) {
+            cancelTest() // clear our previous data
+                        
             self.interval = interval
             for site in sites {
                 let test = netTestDispatchQueue!.schedule(after: .init(.now()), interval: .milliseconds(interval), tolerance: .milliseconds(1), options: .init(),
                 {
-                    switch site.testType {
-                    case .CONNECT:
-                        if site.l7Path != nil {
-                            self.connectAndDisconnect(site: site)
-                        } else {
-                            self.connectAndDisconnectSocket(site: site)
-                        }
-                    case .PING:
-                        os_log("No ping implemented. Using CONNECT", log: OSLog.default, type: .debug)
-                        if site.l7Path != nil {
-                            self.connectAndDisconnect(site: site)
-                        } else {
-                            self.connectAndDisconnectSocket(site: site)
-                        }
-                    }
+                    self.testSite(site: site)
                 })
                 test.store(in: &tests)
             }
+        }
+        
+        // Run NetTest for numSamples per site
+        public func runTest(numSamples: Int) -> Promise<[Site]> {
+            cancelTest() // clear our previous data
+            let promise: Promise<[Site]> = Promise<[Site]>.pending()
+                        
+            let group = DispatchGroup()
+            for _ in 1...numSamples {
+                for site in sites {
+                    group.enter()
+                    netTestDispatchQueue!.async {
+                        self.testSite(site: site)
+                        group.leave()
+                    }
+                }
+            }
+            // Once each testSite call completes and each "task" leaves the group, the following will be called
+            group.notify(queue: DispatchQueue.main) {
+                promise.fulfill(self.returnSortedSites())
+            }
+            
+            return promise
+        }
+        
+        // Based on test type and protocol, call the correct test
+        private func testSite(site: Site) {
+            switch site.testType {
+            case .CONNECT:
+                if site.l7Path != nil {
+                    self.connectAndDisconnect(site: site)
+                } else {
+                    self.connectAndDisconnectSocket(site: site)
+                }
+            case .PING:
+                os_log("No ping implemented. Using CONNECT", log: OSLog.default, type: .debug)
+                if site.l7Path != nil {
+                    self.connectAndDisconnect(site: site)
+                } else {
+                    self.connectAndDisconnectSocket(site: site)
+                }
+            }
+        }
+        
+        // Sorted list of Sites from best to worst
+        public func returnSortedSites() -> [Site] {
+            sites.sort { site1 , site2 in
+                if site1.avg != site2.avg {
+                    return site1.avg < site2.avg
+                }
+                
+                if site1.stdDev == nil || site2.stdDev == nil {
+                    return site2.stdDev == nil ? true : false
+                }
+                
+                return site1.stdDev! < site2.stdDev!
+            }
+            return sites
         }
         
         public func cancelTest() {
@@ -195,7 +242,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
 
             // Connect to server
             var serverRes: UnsafeMutablePointer<addrinfo>!
-            let serverError = getaddrinfo(site.host, site.port, addrInfo, &serverRes)
+            let serverError = getaddrinfo(site.host, String(site.port!), addrInfo, &serverRes)
             if serverError != 0 {
                 let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(serverError, errno)
                 os_log("Server get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)

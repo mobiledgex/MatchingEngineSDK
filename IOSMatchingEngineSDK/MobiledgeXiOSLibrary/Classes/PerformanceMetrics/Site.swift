@@ -25,7 +25,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
     public class Site {
    
         public var host: String?
-        public var port: String?
+        public var port: UInt16?
         public var l7Path: String? // http path
         public var network: String
         public var testType: NetTest.TestType
@@ -36,6 +36,8 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
 
         public var samples: [Double]
         public var capacity: Int
+        
+        public var appInst: MobiledgeXiOSLibrary.MatchingEngine.Appinstance?
 
         var unbiasedAvg: Double // take average to prevent imprecision
         var unbiasedSquareAvg: Double
@@ -43,7 +45,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         let DEFAULT_CAPACITY = 5
 
         // initialize size with host and port
-        public init(network: String, host: String, port: String, testType: NetTest.TestType?, numSamples: Int?) {
+        public init(network: String, host: String, port: UInt16, testType: NetTest.TestType?, numSamples: Int?) {
             self.network = network
             self.host = host
             self.port = port
