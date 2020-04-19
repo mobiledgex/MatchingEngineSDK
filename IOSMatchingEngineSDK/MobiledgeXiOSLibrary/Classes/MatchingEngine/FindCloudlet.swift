@@ -27,12 +27,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         // Required fields
         public var ver: uint
         public var session_cookie: String
-        public var carrier_name: String? = ""
+        public var carrier_name: String?
         public var gps_location: Loc
         // Optional fields
         public var cell_id: uint?
         public var tags: [Tag]?
-       
     }
 
     // FindCloudletReply struct
