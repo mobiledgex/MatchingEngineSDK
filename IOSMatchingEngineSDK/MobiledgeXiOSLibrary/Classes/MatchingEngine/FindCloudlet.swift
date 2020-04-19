@@ -64,7 +64,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil))
+    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil)
         -> FindCloudletRequest {
             
         return FindCloudletRequest(
