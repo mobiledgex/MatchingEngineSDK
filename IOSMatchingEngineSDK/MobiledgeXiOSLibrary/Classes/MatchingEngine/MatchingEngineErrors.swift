@@ -25,6 +25,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case networkFailure
         case unknownAppInsts
         
+        case missingAppName
+        case missingAppVers
+        
         case missingCarrierName
         case missingSessionCookie
         case invalidInternalPort
