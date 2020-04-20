@@ -27,12 +27,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         // Required fields
         public var ver: uint
         public var session_cookie: String
-        public var carrier_name: String
+        public var carrier_name: String?
         public var gps_location: Loc
         // Optional fields
-        public var org_name: String?
-        public var app_name: String?
-        public var app_vers: String?
         public var cell_id: uint?
         public var tags: [Tag]?
     }
@@ -67,8 +64,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String?,
-                                          orgName: String? = nil, appName: String? = nil, appVers: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil)
+    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil)
         -> FindCloudletRequest {
             
         return FindCloudletRequest(
@@ -76,9 +72,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             session_cookie: state.getSessionCookie() ?? "",
             carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
-            org_name: orgName,
-            app_name: appName,
-            app_vers: appVers,
             cell_id: cellID,
             tags: tags)
     }

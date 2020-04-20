@@ -32,7 +32,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         public var org_name: String
         public var app_name: String
         public var app_vers: String
-        public var carrier_name: String
         // Optional fields
         public var auth_token: String?
         public var cell_id: uint?
@@ -70,22 +69,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - orgName: Name of the developer
     ///   - appName: Name of the application
     ///   - appVers: Version of the application.
-    ///   - carrierName: Name of the mobile carrier.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, carrierName: String?, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
+    public func createRegisterClientRequest(orgName: String, appName: String? = nil, appVers: String? = nil, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
         -> RegisterClientRequest { // Dictionary/json
             
-        if carrierName != nil {
-            state.carrierName = carrierName
-        }
             
         return RegisterClientRequest(
             ver: 1,
             org_name: orgName,
             app_name: appName ?? getAppName(),
             app_vers: appVers ?? getAppVersion(),
-            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
             auth_token: authToken,
             cell_id: cellID,
             unique_id_type: uniqueIDType,
