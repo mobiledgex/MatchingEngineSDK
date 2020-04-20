@@ -24,7 +24,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
 
     public func getAppName() -> String
     {
-        if state.appName != nil || state.appName != "" else {
+        if state.appName == nil || state.appName == ""
+        {
             throw MatchingEngineError.missingAppName
         }
         return state.appName
@@ -32,7 +33,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func getAppVersion() -> String
     {
-        if state.appVersion == nil || state.appVersion == "" else {
+        if state.appVersion == nil || state.appVersion == ""
+        {
             throw MatchingEngineError.missingAppVersion
         }
         return state.appVersion

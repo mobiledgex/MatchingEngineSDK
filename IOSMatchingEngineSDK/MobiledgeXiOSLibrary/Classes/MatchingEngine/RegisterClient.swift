@@ -71,7 +71,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
+    public func createRegisterClientRequest(orgName: String, appName: String? = nil, appVers: String? = nil, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
         -> RegisterClientRequest { // Dictionary/json
             
             
