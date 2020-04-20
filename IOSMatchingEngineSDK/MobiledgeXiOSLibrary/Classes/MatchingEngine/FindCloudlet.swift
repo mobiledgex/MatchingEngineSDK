@@ -167,6 +167,13 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
             
         .then { orderedSites -> Promise<FindCloudletReply> in
+            
+            // Log list of sites in order
+            var idx = 0
+            for site in orderedSites {
+                os_log("Site %d is %@. Avg is %f. StdDev is %f", log: OSLog.default, type: .debug, idx, site.host ?? site.l7Path ?? "No url for site", site.avg, site.stdDev ?? 0)
+                idx += 1
+            }
             // Create FindCloudletReply from actual FindCloudletReply and the best site from NetTest
             let findCloudletReply = self.createFindCloudletReplyFromBestSite(findCloudletReply: fcReply!, site: orderedSites[0])
             promise.fulfill(findCloudletReply)
