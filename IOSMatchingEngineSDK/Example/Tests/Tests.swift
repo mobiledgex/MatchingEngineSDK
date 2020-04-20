@@ -32,11 +32,6 @@ class Tests: XCTestCase {
     var appVers: String!
     var orgName: String!
     var carrierName: String!
-    var authToken: String?
-    var uniqueIDType: MobiledgeXiOSLibrary.MatchingEngine.IDTypes?
-    var uniqueID: String?
-    var cellID: UInt32?
-    var tags: [MobiledgeXiOSLibrary.MatchingEngine.Tag]?
     
     var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
     
@@ -55,30 +50,18 @@ class Tests: XCTestCase {
         
         matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
         matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
-        if TEST
-        {
+        
+        if TEST {
             appName =  "MobiledgeX SDK Demo"
-            appVers = "k8s"
+            appVers = "2.0"
             orgName =  "MobiledgeX"
             carrierName = "TDG"
-            authToken = nil
-            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
-            uniqueID = matchingEngine.getUniqueID()
-            cellID = 0
-            tags = nil
-        }
-        else
-        {
+        } else {
             // Unlikely path for testing...
             appName =  matchingEngine.getAppName()
             appVers =  matchingEngine.getAppVersion()
             orgName =  "MobiledgeX"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
-            authToken = nil // opaque developer specific String? value.
-            uniqueIDType = MobiledgeXiOSLibrary.MatchingEngine.IDTypes.ID_UNDEFINED
-            uniqueID = matchingEngine.getUniqueID()
-            cellID = 0
-            tags = nil
         }
     }
     
@@ -93,7 +76,7 @@ class Tests: XCTestCase {
     }
     
     func testRegisterClient() {
-        let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
 
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>!
@@ -122,7 +105,7 @@ class Tests: XCTestCase {
     func testFindCloudletAPI() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
@@ -151,7 +134,7 @@ class Tests: XCTestCase {
     func testFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeStageHost, port: dmePort, request: regRequest)
@@ -178,7 +161,7 @@ class Tests: XCTestCase {
     func testVerifyLocation() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
 
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
 
@@ -211,7 +194,7 @@ class Tests: XCTestCase {
     func testAppInstList() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply>!
@@ -235,8 +218,41 @@ class Tests: XCTestCase {
         XCTAssert(val.status == AppInstListReply.AIStatus.AI_SUCCESS, "AppInstList failed, status: \(String(describing: val.status))")
         
         // This one depends on the server for the number of cloudlets:
-        if val.cloudlets.count == 0 {
+        let cloudlets = val.cloudlets
+        if cloudlets.count == 0 {
             XCTAssert(false, "AppInstList: No cloudlets!")
+            return
+        }
+        
+        let appinstances = cloudlets[0].appinstances
+        if appinstances.count == 0 {
+            XCTAssert(false, "AppInstList: No app instances")
+            return
+        }
+        
+        let appinstance = appinstances[0]
+        if appinstance.app_name == "" {
+            XCTAssert(false, "Missing app_name in appinstance")
+            return
+        }
+        
+        if appinstance.app_vers == "" {
+            XCTAssert(false, "Missing app_vers in appinstance")
+            return
+        }
+        
+        if appinstance.fqdn == "" {
+            XCTAssert(false, "Missing fqdn in appinstance")
+            return
+        }
+        
+        if appinstance.org_name == "" {
+            XCTAssert(false, "Missing org_name in appinstance")
+            return
+        }
+        
+        if appinstance.ports.count == 0 {
+            XCTAssert(false, "Missing ports in appinstance")
             return
         }
         
@@ -284,7 +300,7 @@ class Tests: XCTestCase {
                                               totalDistanceKm: 200,
                                               increment: 1)
         
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply>!
         
@@ -312,7 +328,7 @@ class Tests: XCTestCase {
     }
     
     func testGetLocation() {
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply>!
         
@@ -338,7 +354,7 @@ class Tests: XCTestCase {
     }
     
     func testAddUsertoGroup() {
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName)
+        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply>!
 
@@ -365,7 +381,7 @@ class Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
-        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, gpsLocation: loc)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeStageHost, port: dmePort, orgName: orgName, gpsLocation: loc, appName: appName, appVers: appVers, carrierName: carrierName)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
         }
