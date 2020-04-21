@@ -48,33 +48,26 @@ extension MobiledgeXiOSLibrary {
         
         private var useWifiOnly: Bool = false
         
-        init()
-        {
+        init() {
             print(Bundle.main.object)
             networkInfo = CTTelephonyNetworkInfo()
             device = UIDevice.init()
         }
         
-        public var appName: String
-        {
-            get
-            {
+        public var appName: String {
+            get {
                 return Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
             }
         }
         
-        public var appVersion: String
-        {
-            get
-            {
+        public var appVersion: String {
+            get {
                 return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
             }
         }
         
-        var uuid: String?
-        {
-            get
-            {
+        var uuid: String? {
+            get {
                 guard let uuid = device.identifierForVendor else {
                     return nil
                 }
@@ -99,39 +92,32 @@ extension MobiledgeXiOSLibrary {
             return useWifiOnly
         }
         
-        func setSessionCookie(sessionCookie: String?)
-        {
+        func setSessionCookie(sessionCookie: String?) {
             self.sessionCookie = sessionCookie
         }
         
-        func getSessionCookie() -> String?
-        {
+        func getSessionCookie() -> String? {
             return self.sessionCookie
         }
         
-        func setTokenServerUri(tokenServerUri: String?)
-        {
+        func setTokenServerUri(tokenServerUri: String?) {
             self.tokenServerUri = tokenServerUri
         }
         
-        func getTokenServerUri() -> String?
-        {
+        func getTokenServerUri() -> String? {
             return self.tokenServerUri
         }
         
-        func setTokenServerToken(tokenServerToken: String?)
-        {
+        func setTokenServerToken(tokenServerToken: String?) {
             self.tokenServerToken = tokenServerToken
         }
         
-        func getTokenServerToken() -> String?
-        {
+        func getTokenServerToken() -> String? {
             return self.tokenServerToken
         }
         
         // Returns Array with MCC in zeroth index and MNC in first index
-        func getMCCMNC() throws -> [String]
-        {
+        func getMCCMNC() throws -> [String] {
             if #available(iOS 12.0, *) {
                 ctCarriers = networkInfo.serviceSubscriberCellularProviders
             } else {

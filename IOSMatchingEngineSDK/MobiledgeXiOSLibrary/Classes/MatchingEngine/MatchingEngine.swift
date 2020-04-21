@@ -83,6 +83,19 @@ extension MobiledgeXiOSLibrary {
                 // Send request via URLSession API
                 URLSession.shared.configuration.allowsCellularAccess = true
                 let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                    
+                    var responseBody: String? = nil
+                    if let data = data {
+                        responseBody = String(bytes: data, encoding: .utf8)
+                    }
+                    
+                    if let error = error {
+                        // Error is not nil
+                        os_log("Error is: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        reject(UrlSessionError.transportError(errorMessage: "\(error.localizedDescription). Data returned is: \(responseBody ?? "no response body")"))
+                        return
+                    }
+                    
                     guard let httpResponse = response as? HTTPURLResponse else
                     {
                         os_log("Response not HTTPURLResponse", log: OSLog.default, type: .debug)
@@ -94,28 +107,22 @@ extension MobiledgeXiOSLibrary {
                     let statusCode = httpResponse.statusCode
                     if (statusCode != 200) {
                         os_log("HTTP Status Code: %@", log: OSLog.default, type: .debug, String(describing: statusCode))
-                        reject(UrlSessionError.badStatusCode(status: statusCode))
+                        reject(UrlSessionError.badStatusCode(status: statusCode, errorMessage: (responseBody ?? "no response body")))
                         return
                     }
-                    
-                    guard let error = error as NSError? else {
-                        // No errors
-                        if let data = data {
-                            do {
-                                // Decode data into type specified in parameter list
-                                let reply = try JSONDecoder().decode(type, from: data)
-                                os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: reply))
-                                fulfill(reply)
-                            } catch {
-                                os_log("json = %@. Decoding error is %@", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!, error.localizedDescription)
+
+                    if let data = data {
+                        do {
+                            // Decode data into type specified in parameter list
+                            let reply = try JSONDecoder().decode(type, from: data)
+                            os_log("uri: %@ reply json\n %@ \n", log: OSLog.default, type: .debug, uri, String(describing: reply))
+                            fulfill(reply)
+                        } catch {
+                            os_log("json = %@. Decoding error is %@", log: OSLog.default, type: .debug, String(data: data, encoding: .utf8)!, error.localizedDescription)
                                 reject(error)
-                            }
                         }
-                        return
                     }
-                    // Error is not nil
-                    os_log("Error is: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    reject(error)
+                    return
                 })
                 task.resume()
             }
