@@ -167,8 +167,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         
         let registerClientRequest = matchingEngine.createRegisterClientRequest(orgName: orgName,
                                                                    appName: appName,
-                                                                   appVers: appVers,
-                                                                   carrierName: carrierName)
+                                                                   appVers: appVers)
         matchingEngine.registerClient(host: host,
                           port: port,
                           request: registerClientRequest)
@@ -464,8 +463,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 //  "Register Client", should use dynamic values if not Demo:
                 let registerClientRequest = self!.matchingEngine.createRegisterClientRequest(orgName: self!.orgName,
                                                                                  appName: self!.appName,
-                                                                                 appVers: self!.appVers,
-                                                                                 carrierName: self!.carrierName)
+                                                                                 appVers: self!.appVers)
                 if (self!.demo) {  //used for demo purposes
                     self!.registerPromise = self!.matchingEngine.registerClient(
                         host: self!.demoHost, port: self!.port, request: registerClientRequest)
@@ -478,19 +476,15 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         SKToast.show(withMessage: "RegisterClient Error: \(error)")
                     }
                 } else {
-                    do {
-                        self!.registerPromise = try self!.matchingEngine.registerClient(
-                            request: registerClientRequest)
-                        .then { registerClientReply in
-                            os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, String(describing: registerClientReply))
-                            SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
-                        }
-                        .catch { error in
-                            os_log("RegisterClient Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            SKToast.show(withMessage: "RegisterClient Error: \(error)")
-                        }
-                    } catch {
-                        Swift.print("Error: \(error.localizedDescription)")
+                    self!.registerPromise = self!.matchingEngine.registerClient(
+                        request: registerClientRequest)
+                    .then { registerClientReply in
+                        os_log("RegisterClientReply: %@", log: OSLog.default, type: .debug, String(describing: registerClientReply))
+                        SKToast.show(withMessage: "RegisterClientReply: \(registerClientReply)")
+                    }
+                    .catch { error in
+                        os_log("RegisterClient Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        SKToast.show(withMessage: "RegisterClient Error: \(error)")
                     }
                 }
                 
@@ -510,22 +504,16 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         SKToast.show(withMessage: "appInstList error: \(error)")
                     }
                 } else {
-                    do {
-                        try self!.matchingEngine.getAppInstList(request: appInstListRequest)
-                        .then { appInstListReply in
-                            os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, String(describing: appInstListReply))
-                            SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
-                            // TODO: observers
-                        }
-                        .catch { error in
-                            os_log("appInstList Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            SKToast.show(withMessage: "appInstList error: \(error)")
-                        }
-                    } catch {
-                        Swift.print("Error: \(error.localizedDescription)")
+                    self!.matchingEngine.getAppInstList(request: appInstListRequest)
+                    .then { appInstListReply in
+                        os_log("appInstList Reply: %@", log: OSLog.default, type: .debug, String(describing: appInstListReply))
+                        SKToast.show(withMessage: "appInstList Reply: \(appInstListReply)")
+                    }
+                    .catch { error in
+                        os_log("appInstList Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        SKToast.show(withMessage: "appInstList error: \(error)")
                     }
                 }
-                // ZORK MexGetAppInst.shared.getAppInstNow(gpslocation:loc)    // "Get App Instances"
 
             case 2:
                 Swift.print("Verify Location")
@@ -552,22 +540,16 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                         }
                     } else {
-                        do {
-                            self!.verifyLocationPromise = try self!.matchingEngine.verifyLocation(request: verifyLocRequest)
-                            .then { verifyLocationReply in
-                                os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, String(describing: verifyLocationReply))
-                                SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
-                                    // TODO: observers
-                            }
-                            .catch { error in
-                                os_log("verifyLocation Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                SKToast.show(withMessage: "VerfiyLocation error: \(error)")
-                            }
-                        } catch {
-                            Swift.print("Error: \(error.localizedDescription)")
+                        self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(request: verifyLocRequest)
+                        .then { verifyLocationReply in
+                            os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, String(describing: verifyLocationReply))
+                            SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
+                        }
+                        .catch { error in
+                            os_log("verifyLocation Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            SKToast.show(withMessage: "VerfiyLocation error: \(error)")
                         }
                     }
-                    
                 }
                 else
                 {
@@ -596,22 +578,18 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         // Fallback on earlier versions
                     }
                 } else {
-                    do {
-                        if #available(iOS 13.0, *) {
-                            try self!.matchingEngine.findCloudlet(request: findCloudletRequest)
-                                .then { findCloudletReply in
-                                    os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
-                                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                            }
-                            .catch { error in
-                                os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                SKToast.show(withMessage: "findCloudlet error: \(error)")
-                            }
-                        } else {
-                            // Fallback on earlier versions
+                    if #available(iOS 13.0, *) {
+                        self!.matchingEngine.findCloudlet(request: findCloudletRequest)
+                            .then { findCloudletReply in
+                                os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
+                                SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
                         }
-                    } catch {
-                        Swift.print("Error: \(error.localizedDescription)")
+                        .catch { error in
+                            os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            SKToast.show(withMessage: "findCloudlet error: \(error)")
+                        }
+                    } else {
+                            // Fallback on earlier versions
                     }
                 }
                 
@@ -635,18 +613,14 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         SKToast.show(withMessage: "getQoSPosition error: \(error)")
                     }
                 } else {
-                    do {
-                        try self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
-                        .then { getQoSPositionReply in
-                            os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, String(describing: getQoSPositionReply))
-                            SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
-                        }
-                        .catch { error in
-                            os_log("getQoSPosition Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            SKToast.show(withMessage: "getQoSPosition error: \(error)")
-                        }
-                    } catch {
-                        Swift.print("Error: \(error.localizedDescription)")
+                    self!.matchingEngine.getQosKPIPosition(request: getQoSPositionRequest)
+                    .then { getQoSPositionReply in
+                        os_log("getQoSPosition Reply: %@", log: OSLog.default, type: .debug, String(describing: getQoSPositionReply))
+                        SKToast.show(withMessage: "getQoSPosition Reply: \(getQoSPositionReply)")
+                    }
+                    .catch { error in
+                        os_log("getQoSPosition Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        SKToast.show(withMessage: "getQoSPosition error: \(error)")
                     }
                 }
                 

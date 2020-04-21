@@ -61,6 +61,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case L_PROTO_HTTP = "L_PROTO_HTTP"
     }
     
+    // Object used in timestamp field of Loc
+    public struct Timestamp: Codable {
+        public var seconds: Int64?
+        public var nanos: Int32?
+    }
+    
     // Object used and returned in gps_location field of serveral API requests and replies
     public struct Loc: Codable {
         
@@ -76,12 +82,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var altitude: Double?
         public var course: Double?
         public var speed: Double?
-        public var timestamp: Timestamp?
-        
-        // Object used in timestamp field of Loc
-        public struct Timestamp: Codable {
-            public var seconds: Int64?
-            public var nanos: Int32?
-        }
+        public var Timestamp: Timestamp?
     }
 }
