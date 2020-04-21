@@ -62,6 +62,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var app_vers: String
         public var fqdn: String
         public var ports: [AppPort]
+        public var org_name: String
     }
     
     /// createGetAppInstListRequest

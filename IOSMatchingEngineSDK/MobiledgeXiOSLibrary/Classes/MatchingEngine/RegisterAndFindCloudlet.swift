@@ -46,7 +46,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, gpsLocation: Loc, appName: String? = nil, appVers: String? = nil, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil) -> Promise<FindCloudletReply> {
         
-        let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
+        let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
         return self.registerClient(host: host, port: port, request: registerRequest)
             .then { registerClientReply -> Promise<FindCloudletReply> in

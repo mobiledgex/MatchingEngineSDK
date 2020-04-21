@@ -58,13 +58,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     public enum UrlSessionError: Error {
+        case transportError(errorMessage: String)
         case invalidHttpUrlResponse
-        case badStatusCode(status: Int)
+        case badStatusCode(status: Int, errorMessage: String)
         
         public var errorDescription: String? {
             switch self {
+            case .transportError(let errorMessage): return "Transport error: \(errorMessage)"
             case .invalidHttpUrlResponse: return "Unable to convert URLResponse to HTTPURLResponse"
-            case .badStatusCode(let status): return "Bad HTTP Status Code: \(status)"
+            case .badStatusCode(let status, let errorMessage): return "Bad HTTP Status Code: \(status). Error message is: \(errorMessage)"
             }
         }
     }
