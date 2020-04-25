@@ -23,29 +23,16 @@ import Network
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    public enum GetConnectionError: Error {
-        case invalidNetworkInterface
-        case missingServerFqdn
-        case missingServerPort
-        case unableToCreateSocket
-        case unableToCreateStream
-        case variableConversionError(message: String)
-        case unableToSetSSLProperty
-        case unableToConnectToServer
-        case connectionTimeout
-        case invalidTimeout
-        case unableToCreateSocketSignature
-        case outdatedIOS
-        case unableToBind
-        case incorrectURLSyntax
-        case notTLSConfigured
-        case isTLSConfigured
-    }
-    
     // timeout: milliseconds
     public func getTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -74,6 +61,13 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getBSDTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
+        
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -102,6 +96,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getTCPTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
 
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -131,6 +131,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
+        
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -158,6 +164,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getBSDUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -188,6 +200,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
+        
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -216,6 +234,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getHTTPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.http) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -250,6 +274,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.http) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
+        
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -283,6 +313,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.websocket) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
+        
         // Check if valid timeout
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -310,6 +346,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getSecureWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
+        
+        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
+        if let err = isEdgeEnabled(proto: GetConnectionProtocol.websocket) {
+            promiseInputs.reject(err)
+            return promiseInputs
+        }
         
         // Check if valid timeout
         if timeout <= 0 {
