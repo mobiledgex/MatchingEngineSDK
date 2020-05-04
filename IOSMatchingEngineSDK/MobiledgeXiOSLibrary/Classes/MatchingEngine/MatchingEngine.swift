@@ -53,9 +53,15 @@ extension MobiledgeXiOSLibrary {
         ]
         
         var state: MatchingEngineState
+        var urlConfiguration: URLSessionConfiguration?
+        var urlSession: URLSession?
 
         public init() {
             state = MatchingEngineState()
+            
+            urlConfiguration = URLSessionConfiguration.default
+            urlConfiguration?.allowsCellularAccess = true
+            urlSession = URLSession(configuration: urlConfiguration!, delegate: URLSessionDelegate(), delegateQueue: OperationQueue.main)
         }
         
         // API Rest calls use this function to post "requests" (ie. RegisterClient() posts RegisterClientRequest)
@@ -63,7 +69,6 @@ extension MobiledgeXiOSLibrary {
             
             return Promise<Reply>(on: self.state.executionQueue) {
                 fulfill, reject in
-                
                 //create URLRequest object
                 let url = URL(string: uri)
                 var urlRequest = URLRequest(url: url!)
@@ -80,9 +85,7 @@ extension MobiledgeXiOSLibrary {
                 }
                 
                 os_log("URL Request is %@", log: OSLog.default, type: .debug, urlRequest.debugDescription)
-                // Send request via URLSession API
-                URLSession.shared.configuration.allowsCellularAccess = true
-                let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
+                let task = self.urlSession!.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
                     
                     var responseBody: String? = nil
                     if let data = data {
@@ -125,6 +128,15 @@ extension MobiledgeXiOSLibrary {
                     return
                 })
                 task.resume()
+            }
+        }
+    }
+    
+    private class URLSessionDelegate : NSObject, URLSessionDataDelegate {
+        
+        func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+            for metric in metrics.transactionMetrics {
+                print("urlsession metrics: \(metric)")
             }
         }
     }
