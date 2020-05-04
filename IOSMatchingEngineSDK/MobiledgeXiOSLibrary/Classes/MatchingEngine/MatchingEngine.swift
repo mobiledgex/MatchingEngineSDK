@@ -69,7 +69,6 @@ extension MobiledgeXiOSLibrary {
             
             return Promise<Reply>(on: self.state.executionQueue) {
                 fulfill, reject in
-                                
                 //create URLRequest object
                 let url = URL(string: uri)
                 var urlRequest = URLRequest(url: url!)
