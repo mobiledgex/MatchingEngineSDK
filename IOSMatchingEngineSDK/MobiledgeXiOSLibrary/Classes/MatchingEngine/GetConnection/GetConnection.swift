@@ -379,29 +379,24 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     private func constructHost(findCloudletReply: FindCloudletReply, appPort: AppPort) throws -> String {
         // Convert fqdn_prefix and fqdn to string
-        guard let fqdnPrefix = appPort.fqdn_prefix as? String else {
-            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
-        }
-        guard let fqdn = findCloudletReply.fqdn as? String else {
-            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
+        var fqdnPrefix = appPort.fqdn_prefix
+        if fqdnPrefix == nil {
+            fqdnPrefix = ""
         }
         
-        let host = fqdnPrefix + fqdn
+        let fqdn = findCloudletReply.fqdn
+        
+        let host = fqdnPrefix! + fqdn
         return host
     }
     
     private func getPort(appPort: AppPort, desiredPort: Int) throws -> UInt16 {
         var port: UInt16
         
-        guard let publicPort = appPort.public_port as? UInt16 else {
-            os_log("Unable to cast public port as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to cast public port as String")
-        }
+        let publicPort = appPort.public_port
         // If desired port is -1, then default to public port
         if desiredPort == -1 {
-            port = publicPort
+            port = UInt16(truncatingIfNeeded: publicPort)
         } else {
             port = UInt16(desiredPort)
         }
@@ -418,34 +413,34 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     private func constructHTTPUri(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int) throws -> String {
         // Convert fqdn_prefix and fqdn to string
-        guard let fqdnPrefix = appPort.fqdn_prefix as? String else {
-            os_log("Unable to cast fqdn prefix as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn prefix as String")
-        }
-        guard let fqdn = findCloudletReply.fqdn as? String else {
-            os_log("Unable to cast fqdn as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to cast fqdn as String")
-        }
-        guard let pathPrefix = appPort.path_prefix as? String else {
-            os_log("Unable to cast path prefix as String", log: OSLog.default, type: .debug)
-            throw GetConnectionError.variableConversionError(message: "Unable to case path prefix as String")
+        var fqdnPrefix = appPort.fqdn_prefix
+        if fqdnPrefix == nil {
+            fqdnPrefix = ""
         }
         
-        let host = fqdnPrefix + fqdn
+        let fqdn = findCloudletReply.fqdn
+        
+        var pathPrefix = appPort.path_prefix
+        if pathPrefix == nil {
+            pathPrefix = ""
+        }
+        
+        let host = fqdnPrefix! + fqdn
         let port = try getPort(appPort: appPort, desiredPort: desiredPort)
-        let uri = host + ":" + String(describing: port) + pathPrefix
+        let uri = host + ":" + String(describing: port) + pathPrefix!
         return uri
     }
     
     
     private func isInPortRange(appPort: AppPort, port: UInt16) throws -> Bool
     {
-        guard let publicPort = appPort.public_port as? UInt16 else {
-            throw GetConnectionError.variableConversionError(message: "Unable to cast public_port to Int")
+        let publicPort = UInt16(truncatingIfNeeded: appPort.public_port)
+        
+        var u16EndPort = appPort.end_port
+        if u16EndPort == nil {
+            u16EndPort = 0
         }
-        guard let endPort = appPort.end_port as? UInt16 else {
-            throw GetConnectionError.variableConversionError(message: "Unable to cast end_port to Int")
-        }
+        let endPort = UInt16(truncatingIfNeeded: u16EndPort!)
         // Checks if a range exists -> if not, check if specified port equals public_port
         if (endPort == 0 || endPort < publicPort) {
             return port == publicPort

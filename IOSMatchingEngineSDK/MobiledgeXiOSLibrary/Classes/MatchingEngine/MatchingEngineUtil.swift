@@ -34,7 +34,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // TODO: Other types are valid.
     public func validateGpsLocation(gpsLocation: Loc) throws -> Bool {
-        if let longitude = gpsLocation.longitude as? CLLocationDegrees {
+        if let longitude = gpsLocation.longitude {
             if longitude < -180 as CLLocationDegrees || longitude > 180 as CLLocationDegrees
             {
                 throw MatchingEngineError.invalidGPSLongitude
@@ -43,7 +43,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             throw MatchingEngineError.invalidGPSLongitude
         }
         
-        if let latitude = gpsLocation.latitude as? CLLocationDegrees {
+        if let latitude = gpsLocation.latitude {
             if latitude < -90 as CLLocationDegrees || latitude > 90 as CLLocationDegrees
             {
                 throw MatchingEngineError.invalidGPSLatitude

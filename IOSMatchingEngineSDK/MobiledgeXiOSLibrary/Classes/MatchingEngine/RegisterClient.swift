@@ -133,10 +133,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         // Return a promise chain:
         return self.postRequest(uri: urlStr, request: request, type: RegisterClientReply.self).then { reply in
             
-            guard let registerClientReply = reply as? RegisterClientReply else {
-                promiseInputs.reject(MatchingEngineError.registerFailed)
-                return
-            }
+            let registerClientReply = reply
 
             self.state.setSessionCookie(sessionCookie: registerClientReply.session_cookie)
             os_log("saved sessioncookie", log: OSLog.default, type: .debug)
