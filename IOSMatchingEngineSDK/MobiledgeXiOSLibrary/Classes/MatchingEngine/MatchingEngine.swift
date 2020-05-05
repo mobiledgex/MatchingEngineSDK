@@ -52,7 +52,8 @@ extension MobiledgeXiOSLibrary {
             "Charsets": "utf-8",
         ]
         
-        var state: MatchingEngineState
+        public var state: MatchingEngineState
+        
         var urlConfiguration: URLSessionConfiguration?
         var urlSession: URLSession?
 

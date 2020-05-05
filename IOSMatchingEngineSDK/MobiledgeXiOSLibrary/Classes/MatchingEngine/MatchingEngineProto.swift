@@ -82,6 +82,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var altitude: Double?
         public var course: Double?
         public var speed: Double?
-        public var Timestamp: Timestamp?
+        public var timestamp: Timestamp?
     }
 }
