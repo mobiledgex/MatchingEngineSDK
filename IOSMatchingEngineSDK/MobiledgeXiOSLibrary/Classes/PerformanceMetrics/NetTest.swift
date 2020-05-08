@@ -105,15 +105,23 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         // Sorted list of Sites from best to worst
         public func returnSortedSites() -> [Site] {
             sites.sort { site1 , site2 in
+                if site1.samples.count == 0 || site2.samples.count == 0 {
+                    return site1.samples.count > site2.samples.count
+                }
+                
+                if site1.avg == 0 || site2.avg == 0 {
+                    return site1.avg > site2.avg
+                }
+                
                 if site1.avg != site2.avg {
                     return site1.avg < site2.avg
                 }
                 
-                if site1.stdDev == nil || site2.stdDev == nil {
-                    return site2.stdDev == nil ? true : false
+                if site1.stdDev == 0 || site2.stdDev == 0 {
+                    return site1.stdDev > site2.stdDev
                 }
                 
-                return site1.stdDev! < site2.stdDev!
+                return site1.stdDev < site2.stdDev
             }
             return sites
         }
