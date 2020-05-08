@@ -395,7 +395,7 @@ class Tests: XCTestCase {
     
     func testGetCarrierName() {
         let carrierName = matchingEngine.getCarrierName()
-        XCTAssert(carrierName == "wifi", "Incorrect carrier name \(carrierName)")
+        XCTAssert(carrierName == "26201", "Incorrect carrier name \(carrierName)") // depends on device
     }
     
     func testUniqueID() {

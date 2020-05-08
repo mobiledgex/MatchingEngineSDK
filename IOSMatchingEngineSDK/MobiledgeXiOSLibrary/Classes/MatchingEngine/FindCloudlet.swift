@@ -163,7 +163,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
             // Initialize and run NetTest 10 times per site
             let netTest = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest(sites: sites, qos: .background)
-            return netTest.runTest(numSamples: 10)
+            return netTest.runTest()
             }
             
         .then { orderedSites -> Promise<FindCloudletReply> in

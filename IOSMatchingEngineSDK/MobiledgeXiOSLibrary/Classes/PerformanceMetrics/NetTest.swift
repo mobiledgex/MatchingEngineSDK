@@ -34,6 +34,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         var interval: Int?
                 
         let NANO_TO_MILLI = 1.0 / 1000000.0
+        let DEFAULT_NUM_SAMPLES = 3
         
         public enum TestType {
             case PING
@@ -61,12 +62,13 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         }
         
         // Run NetTest for numSamples per site
-        public func runTest(numSamples: Int) -> Promise<[Site]> {
+        public func runTest(numSamples: Int? = nil) -> Promise<[Site]> {
+            let num = numSamples == nil ? DEFAULT_NUM_SAMPLES : numSamples!
             cancelTest() // clear our previous data
             let promise: Promise<[Site]> = Promise<[Site]>.pending()
                         
             let group = DispatchGroup()
-            for _ in 1...numSamples {
+            for _ in 1...num {
                 for site in sites {
                     group.enter()
                     netTestDispatchQueue!.async {
