@@ -34,6 +34,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         var interval: Int?
                 
         let NANO_TO_MILLI = 1.0 / 1000000.0
+        let DEFAULT_NUM_SAMPLES = 3
         
         public enum TestType {
             case PING
@@ -61,12 +62,13 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         }
         
         // Run NetTest for numSamples per site
-        public func runTest(numSamples: Int) -> Promise<[Site]> {
+        public func runTest(numSamples: Int? = nil) -> Promise<[Site]> {
+            let num = numSamples == nil ? DEFAULT_NUM_SAMPLES : numSamples!
             cancelTest() // clear our previous data
             let promise: Promise<[Site]> = Promise<[Site]>.pending()
                         
             let group = DispatchGroup()
-            for _ in 1...numSamples {
+            for _ in 1...num {
                 for site in sites {
                     group.enter()
                     netTestDispatchQueue!.async {
@@ -105,15 +107,23 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         // Sorted list of Sites from best to worst
         public func returnSortedSites() -> [Site] {
             sites.sort { site1 , site2 in
+                if site1.samples.count == 0 || site2.samples.count == 0 {
+                    return site1.samples.count > site2.samples.count
+                }
+                
+                if site1.avg == 0 || site2.avg == 0 {
+                    return site1.avg > site2.avg
+                }
+                
                 if site1.avg != site2.avg {
                     return site1.avg < site2.avg
                 }
                 
-                if site1.stdDev == nil || site2.stdDev == nil {
-                    return site2.stdDev == nil ? true : false
+                if site1.stdDev == 0 || site2.stdDev == 0 {
+                    return site1.stdDev > site2.stdDev
                 }
                 
-                return site1.stdDev! < site2.stdDev!
+                return site1.stdDev < site2.stdDev
             }
             return sites
         }

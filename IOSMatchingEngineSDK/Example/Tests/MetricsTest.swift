@@ -55,31 +55,31 @@ class MetricsTest: XCTestCase {
         sleep(5)
         
         // Make sure avg and stdDev are populated
-        if (site1.avg > 0 && site1.stdDev != nil) {
+        if (site1.avg > 0 && site1.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site1.avg - avg(arr: site1.samples) < 0.001, "Incorrect avg for site1")
             // Make sure stdDev is correct
-            XCTAssert(site1.stdDev! - stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
+            XCTAssert(site1.stdDev - stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
         } else {
             XCTAssert(false, "No data from site1")
         }
         
         // Make sure avg and stdDev are populated
-        if (site2.avg > 0 && site2.stdDev != nil) {
+        if (site2.avg > 0 && site2.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site2.avg - avg(arr: site2.samples) < 0.001, "Incorrect avg for site2")
             // Make sure stdDev is correct
-            XCTAssert(site2.stdDev! - stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
+            XCTAssert(site2.stdDev - stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
         } else {
             XCTAssert(false, "No data from site2")
         }
         
         // Make sure avg and stdDev are populated
-        if (site3.avg > 0 && site3.stdDev != nil) {
+        if (site3.avg > 0 && site3.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site3.avg - avg(arr: site3.samples) < 0.001, "Incorrect avg for site3")
             // Make sure stdDev is correct
-            XCTAssert(site3.stdDev! - stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
+            XCTAssert(site3.stdDev - stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
         } else {
             XCTAssert(false, "No data from site3")
         }
@@ -108,41 +108,41 @@ class MetricsTest: XCTestCase {
         }
         
         // Make sure avg and stdDev are populated
-        if (site1.avg > 0 && site1.stdDev != nil) {
+        if (site1.avg > 0 && site1.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site1.avg - avg(arr: site1.samples) < 0.001, "Incorrect avg for site1")
             // Make sure stdDev is correct
-            XCTAssert(site1.stdDev! - stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
+            XCTAssert(site1.stdDev - stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
         } else {
             XCTAssert(false, "No data from site1")
         }
         
         // Make sure avg and stdDev are populated
-        if (site2.avg > 0 && site2.stdDev != nil) {
+        if (site2.avg > 0 && site2.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site2.avg - avg(arr: site2.samples) < 0.001, "Incorrect avg for site2")
             // Make sure stdDev is correct
-            XCTAssert(site2.stdDev! - stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
+            XCTAssert(site2.stdDev - stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
         } else {
             XCTAssert(false, "No data from site2")
         }
         
         // Make sure avg and stdDev are populated
-        if (site3.avg > 0 && site3.stdDev != nil) {
+        if (site3.avg > 0 && site3.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site3.avg - avg(arr: site3.samples) < 0.001, "Incorrect avg for site3")
             // Make sure stdDev is correct
-            XCTAssert(site3.stdDev! - stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
+            XCTAssert(site3.stdDev - stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
         } else {
             XCTAssert(false, "No data from site3")
         }
         
         // Make sure avg and stdDev are populated
-        if (site4.avg > 0 && site4.stdDev != nil) {
+        if (site4.avg > 0 && site4.stdDev > 0) {
             // Make sure avg is correct
             XCTAssert(site4.avg - avg(arr: site4.samples) < 0.001, "Incorrect avg for site4")
             // Make sure stdDev is correct
-            XCTAssert(site4.stdDev! - stdDev(arr: site4.samples) < 0.001, "Incorrect stdDev for site4")
+            XCTAssert(site4.stdDev - stdDev(arr: site4.samples) < 0.001, "Incorrect stdDev for site4")
         } else {
             XCTAssert(false, "No data from site4")
         }
