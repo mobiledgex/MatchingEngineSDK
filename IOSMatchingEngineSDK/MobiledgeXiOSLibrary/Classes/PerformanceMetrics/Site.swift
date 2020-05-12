@@ -32,7 +32,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
 
         public var lastPingMs: Double?
         public var avg: Double
-        public var stdDev: Double?
+        public var stdDev: Double
 
         public var samples: [Double]
         public var capacity: Int
@@ -51,6 +51,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             self.port = port
             samples = [Double]()
             avg = 0.0
+            stdDev = 0.0
             unbiasedAvg = 0.0
             unbiasedSquareAvg = 0.0
 
@@ -64,6 +65,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             self.l7Path = l7Path
             samples = [Double]()
             avg = 0.0
+            stdDev = 0.0
             unbiasedAvg = 0.0
             unbiasedSquareAvg = 0.0
 
