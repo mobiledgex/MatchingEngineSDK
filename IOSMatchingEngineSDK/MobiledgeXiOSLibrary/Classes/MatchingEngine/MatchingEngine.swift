@@ -42,7 +42,7 @@ extension MobiledgeXiOSLibrary {
         public enum DMEConstants {
             public static let baseDmeHost: String = "dme.mobiledgex.net"
             public static let dmeRestPort: UInt16 = 38001
-            public static let fallbackCarrierName: String = "wifi"
+            public static let fallbackCarrierName: String = ""
             public static let wifiAlias: String = "wifi"
         }
         
