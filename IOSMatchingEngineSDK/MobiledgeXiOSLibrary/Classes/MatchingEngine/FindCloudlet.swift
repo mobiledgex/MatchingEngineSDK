@@ -53,6 +53,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    public enum FindCloudletMode {
+        case PROXIMITY
+        case PERFORMANCE
+        case UNDEFINED
+    }
+    
     // Carrier name can change depending on cell tower.
     //
     
@@ -90,7 +96,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - request: FindCloudletRequest from createFindCloudletRequest.
     /// - Returns: FindCloudletReply
     @available(iOS 13.0, *)
-    public func findCloudlet(request: FindCloudletRequest) -> Promise<FindCloudletReply> {
+    public func findCloudlet(request: FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
 
         let carrierName = state.carrierName
@@ -103,7 +109,29 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             return promiseInputs
         }
         let port = DMEConstants.dmeRestPort
-        return findCloudlet(host: host, port: port, request: request)
+        
+        switch mode {
+        case FindCloudletMode.PROXIMITY:
+            return findCloudletProximity(host: host, port: port, request: request)
+        case FindCloudletMode.PERFORMANCE:
+            return findCloudletPerformance(host: host, port: port, request: request)
+        default:
+            return findCloudletProximity(host: host, port: port, request: request)
+        }
+    }
+    
+    // Host and Port overload for findCloudlet
+    @available(iOS 13.0, *)
+    public func findCloudlet(host: String, port: UInt16, request: FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
+        
+        switch mode {
+        case FindCloudletMode.PROXIMITY:
+            return findCloudletProximity(host: host, port: port, request: request)
+        case FindCloudletMode.PERFORMANCE:
+            return findCloudletPerformance(host: host, port: port, request: request)
+        default:
+            return findCloudletProximity(host: host, port: port, request: request)
+        }
     }
     
     /// FindCloudlet
@@ -118,7 +146,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - request: FindCloudletRequest from createFindCloudletRequest.
     /// - Returns: FindCloudletReply
     @available(iOS 13.0, *)
-    public func findCloudlet(host: String, port: UInt16, request: FindCloudletRequest) -> Promise<FindCloudletReply> {
+    private func findCloudletPerformance(host: String, port: UInt16, request: FindCloudletRequest) -> Promise<FindCloudletReply> {
         let promise: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
         var fcReply: FindCloudletReply? = nil
         
@@ -127,7 +155,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         // 2. GetAppInstList
         // 3. NetTest
         // 4. Return Modified FindCloudletReply with closest cloudlet according to NetTest
-        return findCloudletAPI(host: host, port: port, request: request)
+        return findCloudletProximity(host: host, port: port, request: request)
             
         .then { findCloudletReply -> Promise<AppInstListReply> in
             // Make sure we found a cloudlet from FindCloudletReply
@@ -195,7 +223,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: FindCloudletRequest from createFindCloudletRequest.
     /// - Returns: FindCloudletReply
-    func findCloudletAPI(host: String, port: UInt16, request: FindCloudletRequest)
+    private func findCloudletProximity(host: String, port: UInt16, request: FindCloudletRequest)
         -> Promise<FindCloudletReply>
     {
         os_log("Finding nearest Cloudlet appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)

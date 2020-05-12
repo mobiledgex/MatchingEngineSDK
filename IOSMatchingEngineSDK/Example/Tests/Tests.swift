@@ -102,7 +102,7 @@ class Tests: XCTestCase {
     
     // Test the FindCloudlet DME API
     @available(iOS 13.0, *)
-    func testFindCloudletAPI() {
+    func testFindCloudletProximity() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
@@ -131,7 +131,7 @@ class Tests: XCTestCase {
     
     // Test FindCloudlet that call AppInstList and NetTest to find cloudlet with lowest latency
     @available(iOS 13.0, *)
-    func testFindCloudlet() {
+    func testFindCloudletPerformance() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
                 
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
