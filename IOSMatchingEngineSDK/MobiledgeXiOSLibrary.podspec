@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name 	     = 'MobiledgeXiOSLibrary' 
-  s.version          = '2.0'
+  s.version          = '2.0.3'
   s.summary          = 'The MobiledgeX SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure'
 
 # This description is used to generate tags and improve search results.
