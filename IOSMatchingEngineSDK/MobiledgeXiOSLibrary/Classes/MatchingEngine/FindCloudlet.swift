@@ -76,7 +76,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return FindCloudletRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
-            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            carrier_name: carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
             cell_id: cellID,
             tags: tags)
@@ -98,12 +98,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     @available(iOS 13.0, *)
     public func findCloudlet(request: FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
-
-        let carrierName = state.carrierName
         
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

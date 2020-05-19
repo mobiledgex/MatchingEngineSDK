@@ -49,7 +49,7 @@ class Tests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
-        matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
+        // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
         
         if TEST {
             appName =  "MobiledgeX SDK Demo"
@@ -110,7 +110,7 @@ class Tests: XCTestCase {
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.findCloudletAPI(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
+                    self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
                         gpsLocation: loc, carrierName: self.carrierName))
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")

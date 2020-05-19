@@ -60,7 +60,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return GetLocationRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
-            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            carrier_name: carrierName ?? getCarrierName(),
             cell_id: cellID,
             tags: tags)
     }
@@ -82,10 +82,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         os_log("getLocation", log: OSLog.default, type: .debug)
         let promiseInputs: Promise<GetLocationReply> = Promise<GetLocationReply>.pending()
         
-        let carrierName = state.carrierName
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

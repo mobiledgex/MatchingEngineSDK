@@ -32,6 +32,7 @@ public enum MobiledgeXiOSLibrary {
         case missingMNC
         case missingCellularProviderInfo
         case outdatedIOS
+        case invalidMCCMNC(mcc: String, mnc: String)
         
         public var errorDescription: String? {
             switch self {
@@ -40,6 +41,7 @@ public enum MobiledgeXiOSLibrary {
             case .missingMNC: return "Unable to get Mobile Network Code"
             case .missingCellularProviderInfo: return "Unable to find Subscriber Cellular Provider Info"
             case .outdatedIOS: return "iOS is outdated. Requires 12.0+"
+            case .invalidMCCMNC(let mcc, let mnc): return "Mcc \(mcc) and mnc \(mnc) combination are not valid"
             }
         }
     }

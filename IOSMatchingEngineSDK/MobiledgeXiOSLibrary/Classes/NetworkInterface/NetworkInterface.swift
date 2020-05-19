@@ -68,6 +68,18 @@ extension MobiledgeXiOSLibrary {
             return false
         }
         
+        // Returns true if an ip address is assigned to the wifi interface
+        public static func hasWifi() -> Bool {
+            let ipaddr = getIPAddress(netInterfaceType: WIFI)
+            return ipaddr != nil && ipaddr!.count > 0
+        }
+        
+        // Returns true if an ip address is assigned to the cellular interface
+        public static func hasCellular() -> Bool {
+            let ipaddr = getIPAddress(netInterfaceType: CELLULAR)
+            return ipaddr != nil && ipaddr!.count > 0
+        }
+        
         // Gets the client IP Address on the interface specified
         // TODO: check for multiple cellular ip addresses (multiple SIM subscriptions possible)
         public static func getIPAddress(netInterfaceType: String?) -> String?
