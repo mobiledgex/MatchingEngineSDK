@@ -96,7 +96,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return VerifyLocationRequest(
             ver: 1,
             session_cookie: self.state.getSessionCookie() ?? "",
-            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            carrier_name: carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
             verify_loc_token: "",
             cell_id: cellID,
@@ -207,15 +207,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func verifyLocation(request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
         let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()
         
-        guard let carrierName = state.carrierName else {
-            os_log("MatchingEngine is unable to retrieve a carrierName to create a network request.", log: OSLog.default, type: .debug)
-            promiseInputs.reject(MatchingEngineError.missingCarrierName)
-            return promiseInputs
-        }
-        
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

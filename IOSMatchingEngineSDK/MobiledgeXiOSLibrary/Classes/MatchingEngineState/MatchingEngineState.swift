@@ -31,9 +31,8 @@ extension MobiledgeXiOSLibrary {
         
         // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
         public var networkInfo: CTTelephonyNetworkInfo
-        public var carrierName: String?
         public var ctCarriers: [String: CTCarrier]?
-        public var lastCarrier: CTCarrier?
+        public var firstCarrier: CTCarrier?
         
         // Information about state of device
         public var device: UIDevice
@@ -121,6 +120,7 @@ extension MobiledgeXiOSLibrary {
             if #available(iOS 12.0, *) {
                 ctCarriers = networkInfo.serviceSubscriberCellularProviders
             } else {
+                os_log("IOS is outdated. Need 12.0+", log: OSLog.default, type: .debug)
                 throw MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS
                 // Fallback on earlier versions
             }
@@ -128,21 +128,22 @@ extension MobiledgeXiOSLibrary {
                 networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = { (carrier) in
                     self.ctCarriers = self.networkInfo.serviceSubscriberCellularProviders
                     if self.ctCarriers !=  nil {
-                        self.lastCarrier = self.ctCarriers![carrier]
+                        self.firstCarrier = self.ctCarriers![carrier]
                     }
                 };
             }
               
-            lastCarrier = networkInfo.subscriberCellularProvider
-            if lastCarrier == nil {
+            firstCarrier = ctCarriers?.first?.value
+            
+            if firstCarrier == nil {
                 os_log("Cannot find Subscriber Cellular Provider Info", log: OSLog.default, type: .debug)
                 throw MobiledgeXiOSLibrary.DmeDnsError.missingCellularProviderInfo
             }
-            guard let mcc = lastCarrier!.mobileCountryCode else {
+            guard let mcc = firstCarrier!.mobileCountryCode else {
                 os_log("Cannot get Mobile Country Code", log: OSLog.default, type: .debug)
                 throw MobiledgeXiOSLibrary.DmeDnsError.missingMCC
             }
-            guard let mnc = lastCarrier!.mobileNetworkCode else {
+            guard let mnc = firstCarrier!.mobileNetworkCode else {
                 os_log("Cannot get Mobile Network Code", log: OSLog.default, type: .debug)
                 throw MobiledgeXiOSLibrary.DmeDnsError.missingMNC
             }

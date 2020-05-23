@@ -83,12 +83,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func addUserToGroup (request: DynamicLocGroupRequest) -> Promise<DynamicLocGroupReply>
     {
         let promiseInputs: Promise<DynamicLocGroupReply> = Promise<DynamicLocGroupReply>.pending()
-        
-        let carrierName = state.carrierName
-        
+                
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

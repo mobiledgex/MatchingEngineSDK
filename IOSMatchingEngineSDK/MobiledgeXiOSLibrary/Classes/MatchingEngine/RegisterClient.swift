@@ -99,10 +99,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         
         let promiseInputs: Promise<RegisterClientReply> = Promise<RegisterClientReply>.pending()
         
-        let carrierName = state.carrierName
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
