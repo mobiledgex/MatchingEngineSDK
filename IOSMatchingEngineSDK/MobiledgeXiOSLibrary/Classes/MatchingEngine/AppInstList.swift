@@ -77,7 +77,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return AppInstListRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
-            carrier_name: carrierName ?? state.carrierName ?? getCarrierName(),
+            carrier_name: carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
             cell_id: cellID,
             tags: tags)
@@ -92,12 +92,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func getAppInstList(request: AppInstListRequest) -> Promise<AppInstListReply> {
         let promiseInputs: Promise<AppInstListReply> = Promise<AppInstListReply>.pending()
-        
-        let carrierName = state.carrierName
-        
+                
         var host: String
         do {
-            host = try generateDmeHost(carrierName: carrierName)
+            host = try generateDmeHost()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs

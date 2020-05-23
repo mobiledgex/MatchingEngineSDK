@@ -58,38 +58,48 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     // Retrieve the carrier name of the cellular network interface (MCC and MNC)
     public func getCarrierName() -> String
     {
-        if state.carrierName != nil {
-            return state.carrierName!
-        }
-        
         var mccMnc = [String]()
         
-        if state.isUseWifiOnly() && MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
-            state.carrierName = DMEConstants.wifiAlias
-            return DMEConstants.wifiAlias
+        if state.isUseWifiOnly() {
+            return DMEConstants.fallbackCarrierName
         }
         
         do {
             mccMnc = try state.getMCCMNC()
         } catch {
-            state.carrierName = DMEConstants.fallbackCarrierName
             return DMEConstants.fallbackCarrierName
         }
         
         let mcc = mccMnc[0]
         let mnc = mccMnc[1]
         let concat = mcc + mnc
-        state.carrierName = concat
         return concat
     }
     
-    public func generateDmeHost(carrierName: String?) throws -> String
+    public func generateDmeHost() throws -> String
     {
-        if state.isUseWifiOnly() && MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface() {
-            return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+        var mccMnc = [String]()
+        
+        if state.isUseWifiOnly() {
+            if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
+                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+            } else {
+                throw MatchingEngineError.wifiIsNotConnected
+            }
         }
         
-        let mccMnc = try state.getMCCMNC()
+        do {
+            mccMnc = try state.getMCCMNC()
+        } catch MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS {
+            throw MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS
+        } catch {
+            // Mnc and Mcc are invalid (cellular is probably not up)
+            if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
+                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+            } else {
+                throw MatchingEngineError.wifiIsNotConnected
+            }
+        }
            
         let mcc = mccMnc[0]
         let mnc = mccMnc[1]
@@ -123,7 +133,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func generateBaseUri(carrierName: String, port: UInt16) throws -> String
     {
-        let host = try generateDmeHost(carrierName: carrierName)
+        let host = try generateDmeHost()
         return "https://\(host):\(port)"
     }
     

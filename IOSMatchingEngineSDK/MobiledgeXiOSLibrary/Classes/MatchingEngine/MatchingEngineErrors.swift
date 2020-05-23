@@ -48,6 +48,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case getQosPositionFailed
         case getAppInstListFailed
         case addUserToGroupFailed
+        
+        case wifiIsNotConnected
+        case cellularIsNotConnected
     }
     
     public enum InvalidTokenServerTokenError: Error  {
