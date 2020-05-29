@@ -48,7 +48,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
             return getTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
@@ -82,7 +82,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
             return getBSDTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
@@ -116,7 +116,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
@@ -151,7 +151,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
             return getUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
@@ -185,7 +185,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
             return getBSDUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
@@ -220,7 +220,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
+            let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
@@ -255,8 +255,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
-            uri = "http://" + uri
+            var uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "http")
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
@@ -294,8 +293,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            var uri = try constructHTTPUri(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort)
-            uri = "https://" + uri
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "https")
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
@@ -333,10 +331,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
-            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "ws")
+            guard let url = URL(string: uri) else {
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
+                promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
+                return promiseInputs
+            }
             // call helper function and timeout
-            return getWebsocketConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getWebsocketConnection(url: url).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -367,84 +369,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let host = try constructHost(findCloudletReply: findCloudletReply, appPort: appPort)
-            let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "wss")
+            guard let url = URL(string: uri) else {
+                os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
+                promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
+                return promiseInputs
+            }
             // call helper function and timeout
-            return getSecureWebsocketConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getWebsocketConnection(url: url).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
         }
-    }
-    
-    private func constructHost(findCloudletReply: FindCloudletReply, appPort: AppPort) throws -> String {
-        // Convert fqdn_prefix and fqdn to string
-        var fqdnPrefix = appPort.fqdn_prefix
-        if fqdnPrefix == nil {
-            fqdnPrefix = ""
-        }
-        
-        let fqdn = findCloudletReply.fqdn
-        
-        let host = fqdnPrefix! + fqdn
-        return host
-    }
-    
-    private func getPort(appPort: AppPort, desiredPort: Int) throws -> UInt16 {
-        var port: UInt16
-        
-        let publicPort = appPort.public_port
-        // If desired port is -1, then default to public port
-        if desiredPort == -1 {
-            port = UInt16(truncatingIfNeeded: publicPort)
-        } else {
-            port = UInt16(desiredPort)
-        }
-        
-        // Check if port is in AppPort range
-        do {
-            let _ = try self.isInPortRange(appPort: appPort, port: port)
-        } catch {
-            os_log("Port range check error", log: OSLog.default, type: .debug)
-            throw error
-        }
-        return port
-    }
-    
-    private func constructHTTPUri(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int) throws -> String {
-        // Convert fqdn_prefix and fqdn to string
-        var fqdnPrefix = appPort.fqdn_prefix
-        if fqdnPrefix == nil {
-            fqdnPrefix = ""
-        }
-        
-        let fqdn = findCloudletReply.fqdn
-        
-        var pathPrefix = appPort.path_prefix
-        if pathPrefix == nil {
-            pathPrefix = ""
-        }
-        
-        let host = fqdnPrefix! + fqdn
-        let port = try getPort(appPort: appPort, desiredPort: desiredPort)
-        let uri = host + ":" + String(describing: port) + pathPrefix!
-        return uri
-    }
-    
-    
-    private func isInPortRange(appPort: AppPort, port: UInt16) throws -> Bool
-    {
-        let publicPort = UInt16(truncatingIfNeeded: appPort.public_port)
-        
-        var u16EndPort = appPort.end_port
-        if u16EndPort == nil {
-            u16EndPort = 0
-        }
-        let endPort = UInt16(truncatingIfNeeded: u16EndPort!)
-        // Checks if a range exists -> if not, check if specified port equals public_port
-        if (endPort == 0 || endPort < publicPort) {
-            return port == publicPort
-        }
-        return (port >= publicPort && port <= endPort)
     }
 }

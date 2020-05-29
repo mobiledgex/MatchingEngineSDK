@@ -49,4 +49,75 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         return nil
     }
+    
+    public func getHost(findCloudletReply: FindCloudletReply, appPort: AppPort) throws -> String {
+        // Convert fqdn_prefix and fqdn to string
+        var fqdnPrefix = appPort.fqdn_prefix
+        if fqdnPrefix == nil {
+            fqdnPrefix = ""
+        }
+        
+        let fqdn = findCloudletReply.fqdn
+        
+        let host = fqdnPrefix! + fqdn
+        return host
+    }
+    
+    public func getPort(appPort: AppPort, desiredPort: Int) throws -> UInt16 {
+        var port: UInt16
+        
+        let publicPort = appPort.public_port
+        // If desired port is -1, then default to public port
+        if desiredPort == -1 {
+            port = UInt16(truncatingIfNeeded: publicPort)
+        } else {
+            port = UInt16(desiredPort)
+        }
+        
+        // Check if port is in AppPort range
+        do {
+            let _ = try self.isInPortRange(appPort: appPort, port: port)
+        } catch {
+            os_log("Port range check error", log: OSLog.default, type: .debug)
+            throw error
+        }
+        return port
+    }
+    
+    public func createUrl(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, proto: String, path: String = "") throws -> String {
+        // Convert fqdn_prefix and fqdn to string
+        var fqdnPrefix = appPort.fqdn_prefix
+        if fqdnPrefix == nil {
+            fqdnPrefix = ""
+        }
+        
+        let fqdn = findCloudletReply.fqdn
+        
+        var pathPrefix = appPort.path_prefix
+        if pathPrefix == nil {
+            pathPrefix = ""
+        }
+        
+        let host = fqdnPrefix! + fqdn
+        let port = try getPort(appPort: appPort, desiredPort: desiredPort)
+        let url = proto + "://" + host + ":" + String(describing: port) + pathPrefix! + path
+        return url
+    }
+    
+    
+    private func isInPortRange(appPort: AppPort, port: UInt16) throws -> Bool
+    {
+        let publicPort = UInt16(truncatingIfNeeded: appPort.public_port)
+        
+        var u16EndPort = appPort.end_port
+        if u16EndPort == nil {
+            u16EndPort = 0
+        }
+        let endPort = UInt16(truncatingIfNeeded: u16EndPort!)
+        // Checks if a range exists -> if not, check if specified port equals public_port
+        if (endPort == 0 || endPort < publicPort) {
+            return port == publicPort
+        }
+        return (port >= publicPort && port <= endPort)
+    }
 }

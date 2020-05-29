@@ -18,18 +18,6 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // Returns the server side fqdn from findCloudletReply with specified port (fqdn prefix based on port)
-    public func getAppFqdn(findCloudletReply: FindCloudletReply, port: UInt16) -> String?
-    {
-        let appFqdn = findCloudletReply.fqdn
-        let baseFqdn = appFqdn
-        // get fqdn prefix from port dictionary
-        guard let fqdnPrefix = state.portToPathPrefixDict[port] else {
-            return baseFqdn
-        }
-        return fqdnPrefix + baseFqdn
-    }
-    
     // Returns dictionary: key -> internal port, value -> AppPort
     public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: LProto) throws -> [UInt16: AppPort]?
     {
