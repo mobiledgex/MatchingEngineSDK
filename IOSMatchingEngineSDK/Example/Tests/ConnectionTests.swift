@@ -177,11 +177,16 @@ class ConnectionTests: XCTestCase {
         var socket: SocketIOClient!
         var manager: SocketManager!
         
-        let host = "ponggame-tcp.fairview-main.gddt.mobiledgex.net"
-        let port = UInt16(3000)
+        // SocketIO server
+        let uri = "ws://arshooter-cluster.beacon-main.gddt.mobiledgex.net:3838"
+        guard let url = URL(string: uri) else {
+            XCTAssert(false, "Unable to create url")
+            return
+        }
+        
         var connected = false
         
-        let replyPromise = matchingEngine.getWebsocketConnection(host: host, port: port)
+        let replyPromise = matchingEngine.getWebsocketConnection(url: url)
             
         .then { m in
             manager = m
@@ -196,8 +201,8 @@ class ConnectionTests: XCTestCase {
             print("Did not succeed WebsocketConnection. Error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 5))
-        guard let promiseValue = replyPromise.value else {
+        XCTAssert(waitForPromises(timeout: 10))
+        guard let _ = replyPromise.value else {
             XCTAssert(false, "GetWebsocketConnection did not return a value.")
             return
         }
@@ -389,7 +394,9 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: 3001, timeout: 100)
+            var appPortTls = appPort
+            appPortTls.tls = true
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPortTls, desiredPort: 3001, timeout: 100)
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in

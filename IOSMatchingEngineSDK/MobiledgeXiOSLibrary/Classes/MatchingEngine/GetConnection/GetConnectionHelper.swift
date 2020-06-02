@@ -107,17 +107,20 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Returns SocketIOClient promise
-    func getWebsocketConnection(host: String, port: UInt16) -> Promise<SocketManager>
+    func getWebsocketConnection(url: URL) -> Promise<SocketManager>
     {
         let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
+            guard let host = url.host else {
+                reject(GetConnectionError.incorrectURLSyntax)
+                return
+            }
             // DNS Lookup
             do {
                 try self.verifyDmeHost(host: host)
             } catch {
                 reject(error)
             }
-            let url = "ws://\(host):\(port)/"
-            let manager = SocketManager(socketURL: URL(string: url)!)
+            let manager = SocketManager(socketURL: url)
             fulfill(manager)
         }
         return promise
