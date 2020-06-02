@@ -94,24 +94,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return promise
     }
     
-    // Returns SocketIOClient promise
-    func getSecureWebsocketConnection(host: String, port: UInt16) -> Promise<SocketManager>
-    {
-        let promise = Promise<SocketManager>(on: .global(qos: .background)) { fulfill, reject in
-            
-            // DNS Lookup
-            do {
-                try self.verifyDmeHost(host: host)
-            } catch {
-                reject(error)
-            }
-            let url = "wss://\(host):\(port)/"
-            let manager = SocketManager(socketURL: URL(string: url)!)
-            fulfill(manager)
-        }
-        return promise
-    }
-    
     @available(iOS 13.0, *)
     private func setUpStateHandler(connection: NWConnection, semaphore: DispatchSemaphore) {
         connection.stateUpdateHandler = { state in
