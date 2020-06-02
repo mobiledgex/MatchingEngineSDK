@@ -719,7 +719,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             
             var hostName: String!
             do {
-                hostName = try self.matchingEngine.generateDmeHost().replacingOccurrences(of: "dme", with: "locsim")
+                hostName = try self.matchingEngine.generateDmeHostAddress()
             } catch {
                 Swift.print("Error: \(error.localizedDescription)")
             }

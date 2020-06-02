@@ -76,7 +76,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return concat
     }
     
-    public func generateDmeHost() throws -> String
+    public func generateDmeHostAddress() throws -> String
     {
         var mccMnc = [String]()
         
@@ -133,7 +133,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     
     public func generateBaseUri(carrierName: String, port: UInt16) throws -> String
     {
-        let host = try generateDmeHost()
+        let host = try generateDmeHostAddress()
         return "https://\(host):\(port)"
     }
     
