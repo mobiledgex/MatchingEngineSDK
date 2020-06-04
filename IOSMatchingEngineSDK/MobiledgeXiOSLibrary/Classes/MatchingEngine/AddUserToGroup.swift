@@ -86,7 +86,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 
         var host: String
         do {
-            host = try generateDmeHost()
+            host = try generateDmeHostAddress()
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
