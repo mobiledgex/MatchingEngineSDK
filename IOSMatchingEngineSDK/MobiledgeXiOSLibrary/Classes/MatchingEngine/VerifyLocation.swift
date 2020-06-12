@@ -61,26 +61,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func doVerifyLocation(gpsLocation: Loc, cellID: uint?, tags: [Tag]?)
-        throws -> Promise<VerifyLocationReply>? {
-        Swift.print("Verify Location of this Mex client.")
-        Swift.print("===================================\n\n")
-        
-        guard let tokenServerUri = state.getTokenServerUri() else {
-            return nil
-        }
-        
-        let count = tokenServerUri.count
-        if count == 0
-        {
-            os_log("ERROR: TokenURI is empty!", log: OSLog.default, type: .debug)
-            return nil
-        }
-
-            let verifyLocRequest = createVerifyLocationRequest(gpsLocation: gpsLocation, carrierName: getCarrierName(), cellID: cellID, tags: tags)
-        return self.verifyLocation(request: verifyLocRequest)
-    }
-    
     /// <#Description#>
     ///
     /// - Parameters:
@@ -90,10 +70,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///
     /// - Returns: API json/Dictionary
     public func createVerifyLocationRequest(gpsLocation: Loc, carrierName: String?,
-                                            cellID: uint? = nil, tags: [Tag]? = nil)
-        -> VerifyLocationRequest {
+                                            cellID: uint? = nil, tags: [Tag]? = nil) throws -> VerifyLocationRequest {
             
-        return VerifyLocationRequest(
+        let req = VerifyLocationRequest(
             ver: 1,
             session_cookie: self.state.getSessionCookie() ?? "",
             carrier_name: carrierName ?? getCarrierName(),
@@ -101,6 +80,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             verify_loc_token: "",
             cell_id: cellID,
             tags: tags)
+        
+        try validateVerifyLocationRequest(request: req)
+        return req
     }
     
     func validateVerifyLocationRequest(request: VerifyLocationRequest) throws {
@@ -191,19 +173,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    private func tokenizeRequest(carrierName: String, verifyLocationToken: String, gpsLocation: Loc, cellID: uint? = nil, tags: [Tag]? = nil)
-        throws -> VerifyLocationRequest {
-            
-        if (verifyLocationToken.count == 0) {
-            throw InvalidTokenServerTokenError.invalidToken
-        }
-        
-            var verifyLocationRequest = self.createVerifyLocationRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
-        verifyLocationRequest.verify_loc_token = verifyLocationToken
-            
-        return verifyLocationRequest
-    }
-    
     public func verifyLocation(request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
         let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()
         
@@ -243,7 +212,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             var tokenizedRequest = request
             tokenizedRequest.verify_loc_token = verifyLocationToken
             print("verifylocation token is \(verifyLocationToken)")
-            try self.validateVerifyLocationRequest(request: tokenizedRequest)
             
             return self.postRequest(uri: uri, request: tokenizedRequest, type: VerifyLocationReply.self)
         }

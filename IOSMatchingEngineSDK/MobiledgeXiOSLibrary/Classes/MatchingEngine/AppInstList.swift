@@ -72,15 +72,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - gpslocation: A dictionary with at least longitude and latitude key values.
     ///
     /// - Returns: API Dictionary/json
-    public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [Tag]? = nil) -> AppInstListRequest {
+    public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [Tag]? = nil) throws -> AppInstListRequest {
         
-        return AppInstListRequest(
+        let req = AppInstListRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
             carrier_name: carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
             cell_id: cellID,
             tags: tags)
+        
+        try validateAppInstListRequest(request: req)
+        return req
     }
     
     func validateAppInstListRequest(request: AppInstListRequest) throws {
@@ -113,15 +116,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.appinstlistAPI
-        
-        do {
-            try validateAppInstListRequest(request: request)
-        }
-        catch
-        {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
         
         // postRequest is dispatched to background by default:
         return self.postRequest(uri: urlStr, request: request, type: AppInstListReply.self)
