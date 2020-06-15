@@ -17,10 +17,11 @@
 //
 
 import Foundation
+import Promises
 
 extension MobiledgeXiOSLibrary {
 
-    public enum NetworkInterface {
+    public class NetworkInterface {
         
         public static let CELLULAR = "pdp_ip0"
         public static let WIFI = "en0"
@@ -78,6 +79,28 @@ extension MobiledgeXiOSLibrary {
         public static func hasCellular() -> Bool {
             let ipaddr = getIPAddress(netInterfaceType: CELLULAR)
             return ipaddr != nil && ipaddr!.count > 0
+        }
+        
+        // Compares the ISO Country code of the user's location with the
+        // ISO Country of the user's carrier. Roaming if not equal
+        public static func isRoaming() -> Promise<Bool> {
+            let roamingPromise: Promise<Bool> = Promise<Bool>.pending()
+            
+            MobiledgeXLocation.startLocationServices()
+            MobiledgeXLocation.getLastISOCountryCode()
+            .then { locationCountryCode in
+                print("locationCountryCode is \(locationCountryCode)")
+                let carrierCountryCode = try CarrierInfo.getISOCountryCode()
+                print("carrierCountryCode is \(carrierCountryCode)")
+                if locationCountryCode != carrierCountryCode {
+                    roamingPromise.fulfill(true)
+                } else {
+                    roamingPromise.fulfill(false)
+                }
+            }.catch { error in
+                roamingPromise.reject(error)
+            }
+            return roamingPromise
         }
         
         // Gets the client IP Address on the interface specified
