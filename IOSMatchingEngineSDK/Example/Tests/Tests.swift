@@ -110,8 +110,9 @@ class Tests: XCTestCase {
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
-                        gpsLocation: loc, carrierName: self.carrierName))
+                    let req = try self.matchingEngine.createFindCloudletRequest(
+                    gpsLocation: loc, carrierName: self.carrierName)
+                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
@@ -139,8 +140,9 @@ class Tests: XCTestCase {
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createFindCloudletRequest(
-                        gpsLocation: loc, carrierName: self.carrierName))
+                    let req = try self.matchingEngine.createFindCloudletRequest(
+                    gpsLocation: loc, carrierName: self.carrierName)
+                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
@@ -167,9 +169,10 @@ class Tests: XCTestCase {
 
         replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.verifyLocation(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createVerifyLocationRequest(
-                                                        gpsLocation: loc,
-                                                        carrierName: self.carrierName))
+                    let req = try self.matchingEngine.createVerifyLocationRequest(
+                    gpsLocation: loc,
+                    carrierName: self.carrierName)
+                    return self.matchingEngine.verifyLocation(host: self.dmeHost, port: self.dmePort, request: req)
                 }.catch { error in
                     XCTAssert(false, "VerifyLocationReply hit an error: \(error).")
             }
@@ -201,8 +204,9 @@ class Tests: XCTestCase {
 
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getAppInstList(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createGetAppInstListRequest(
-                        gpsLocation: loc, carrierName: self.carrierName))
+                    let req = try self.matchingEngine.createGetAppInstListRequest(
+                    gpsLocation: loc, carrierName: self.carrierName)
+                    return self.matchingEngine.getAppInstList(host: self.dmeHost, port: self.dmePort, request: req)
                     }.catch { error in
                         XCTAssert(false, "AppInstList hit an error: \(error).")
                     }
@@ -306,8 +310,9 @@ class Tests: XCTestCase {
         
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getQosKPIPosition(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createQosKPIRequest(
-                                                            requests: positions))
+                    let req = try self.matchingEngine.createQosKPIRequest(
+                    requests: positions)
+                    return self.matchingEngine.getQosKPIPosition(host: self.dmeHost, port: self.dmePort, request: req)
                 } .catch { error in
                     XCTAssert(false, "Did not succeed get QOS Position KPI. Error: \(error)")
             }
@@ -334,8 +339,9 @@ class Tests: XCTestCase {
         
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.getLocation(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createGetLocationRequest(
-                        carrierName: self.carrierName))
+                    let req = try self.matchingEngine.createGetLocationRequest(
+                    carrierName: self.carrierName)
+                    return self.matchingEngine.getLocation(host: self.dmeHost, port: self.dmePort, request: req)
                 } .catch { error in
                     XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
             }
@@ -360,7 +366,8 @@ class Tests: XCTestCase {
 
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
-                    self.matchingEngine.addUserToGroup(host: self.dmeHost, port: self.dmePort, request: self.matchingEngine.createDynamicLocGroupRequest())
+                    let req = try self.matchingEngine.createDynamicLocGroupRequest()
+                    return self.matchingEngine.addUserToGroup(host: self.dmeHost, port: self.dmePort, request: req)
                 } .catch { error in
                     XCTAssert(false, "Did not succeed addUserToGroup. Error: \(error)")
             }
@@ -387,10 +394,16 @@ class Tests: XCTestCase {
         }
         
         XCTAssert(waitForPromises(timeout: 5))
-        guard let promiseValue = replyPromise.value else {
+        guard let val = replyPromise.value else {
             XCTAssert(false, "TestRegisterAndFindCloudlet did not return a value.")
             return
         }
+        print("FindCloudletReply is \(val)")
+
+        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
+        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
+        
+        XCTAssertNil(replyPromise.error)
     }
     
     func testGetCarrierName() {
