@@ -28,7 +28,6 @@ extension MobiledgeXiOSLibrary {
             case missingMNC
             case missingISOCountryCode
             case missingCellularProviderInfo
-            case outdatedIOS
         }
         
         // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
@@ -65,7 +64,7 @@ extension MobiledgeXiOSLibrary {
                 ctCarriers = networkInfo.serviceSubscriberCellularProviders
             } else {
                 os_log("IOS is outdated. Need 12.0+", log: OSLog.default, type: .debug)
-                throw CarrierInfoError.outdatedIOS
+                throw MobiledgeXError.outdatedIOS(requiredIOS: 12, action: "getCarrier")
                 // Fallback on earlier versions
             }
             if #available(iOS 12.1, *) {

@@ -88,14 +88,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         do {
             mccMnc = try MobiledgeXiOSLibrary.CarrierInfo.getMCCMNC()
-        } catch MobiledgeXiOSLibrary.CarrierInfo.CarrierInfoError.outdatedIOS {
-            throw MobiledgeXiOSLibrary.CarrierInfo.CarrierInfoError.outdatedIOS
         } catch {
-            // Mnc and Mcc are invalid (cellular is probably not up)
-            if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
-                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
-            } else {
-                throw MatchingEngineError.wifiIsNotConnected
+            switch error {
+            case MobiledgeXiOSLibrary.MobiledgeXError.outdatedIOS:
+                throw error
+            default:
+                // Mnc and Mcc are invalid (cellular is probably not up)
+                if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
+                    return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+                } else {
+                    throw MatchingEngineError.wifiIsNotConnected
+                }
             }
         }
            

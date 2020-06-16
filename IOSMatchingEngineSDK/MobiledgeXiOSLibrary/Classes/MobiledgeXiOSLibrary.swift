@@ -28,7 +28,6 @@ public enum MobiledgeXiOSLibrary {
     
     public enum DmeDnsError: Error {
         case verifyDmeHostFailure(host: String, systemError: SystemError)
-        
         case invalidMCCMNC(mcc: String, mnc: String)
         
         public var errorDescription: String? {
@@ -44,6 +43,17 @@ public enum MobiledgeXiOSLibrary {
         case socket(Int32, Int32?)
         case bind(Int32, Int32?)
         case connect(Int32, Int32?)
+    }
+    
+    public enum MobiledgeXError: Error {
+        case outdatedIOS(requiredIOS: Int, action: String)
+        
+        public var errorDescription: String? {
+            switch self {
+            case .outdatedIOS(let requiredIOS, let action): return "IOS version \(requiredIOS)+ required to perform \(action)"
+            }
+        }
+
     }
     
     public struct Socket {
