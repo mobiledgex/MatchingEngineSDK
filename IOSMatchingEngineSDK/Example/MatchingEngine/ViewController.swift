@@ -540,7 +540,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                             self!.verifyLocationPromise = self!.matchingEngine.verifyLocation(host: self!.demoHost, port: self!.port, request: verifyLocRequest)
                             .then { verifyLocationReply in
                                 os_log("verifyLocationReply: %@", log: OSLog.default, type: .debug, String(describing: verifyLocationReply))
-                                SKToast.show(withMessage: "VerfiyLocation reply: \(verifyLocationReply)")
+                                SKToast.show(withMessage: "VerifyLocation reply: \(verifyLocationReply)")
                                     // TODO: observers
                             }
                             .catch { error in
