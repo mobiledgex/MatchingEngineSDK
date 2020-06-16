@@ -48,7 +48,7 @@ extension MobiledgeXiOSLibrary {
             // Set specified location service type
             mobiledgeXLocationManager.setServiceType(serviceType: currServiceType)
             // Check permissions before calling
-            if !checkPermissions() {
+            if !checkLocationPermissions() {
                 os_log("Request location permissions before staring location services", log: OSLog.default, type: .debug)
                 return
             }
@@ -62,7 +62,7 @@ extension MobiledgeXiOSLibrary {
         }
         
         // Checks for Location Permissions (called before Location Services is started)
-        public static func checkPermissions() -> Bool {
+        public static func checkLocationPermissions() -> Bool {
             if CLLocationManager.locationServicesEnabled() {
                 let authStatus = CLLocationManager.authorizationStatus()
                 switch authStatus {
