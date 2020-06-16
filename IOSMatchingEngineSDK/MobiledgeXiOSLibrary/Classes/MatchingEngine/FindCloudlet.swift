@@ -70,16 +70,19 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil)
+    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil) throws
         -> FindCloudletRequest {
             
-        return FindCloudletRequest(
+        let req = FindCloudletRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
             carrier_name: carrierName ?? getCarrierName(),
             gps_location: gpsLocation,
             cell_id: cellID,
             tags: tags)
+            
+        try validateFindCloudletRequest(request: req)
+        return req
     }
     
     func validateFindCloudletRequest(request: FindCloudletRequest) throws {
@@ -170,7 +173,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 type: "buffer",
                 data: String(bytes: bytes, encoding: .utf8) ?? ""
             )
-            let appInstRequest = self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: [tag])
+            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: [tag])
             return self.getAppInstList(host: host, port: port, request: appInstRequest)
             }
             
@@ -230,16 +233,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.findcloudletAPI
-        
-        do
-        {
-            try validateFindCloudletRequest(request: request)
-        }
-        catch
-        {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
         
         // postRequest is dispatched to background by default:
         return self.postRequest(uri: urlStr, request: request, type: FindCloudletReply.self)

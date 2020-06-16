@@ -56,9 +56,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    public func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) -> DynamicLocGroupRequest {
+    public func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> DynamicLocGroupRequest {
         
-        return DynamicLocGroupRequest(
+        let req = DynamicLocGroupRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
             lg_id: lg_id ?? 0, // Not implemented (1001)
@@ -66,6 +66,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             user_data: userData,
             cell_id: cellID,
             tags: tags)
+        
+        try validateDynamicLocGroupRequest(request: req)
+        return req
     }
     
     func validateDynamicLocGroupRequest(request: DynamicLocGroupRequest) throws {
@@ -111,14 +114,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.addusertogroupAPI
-        
-        do {
-            try validateDynamicLocGroupRequest(request: request)
-        }
-        catch {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
         
         return self.postRequest(uri: urlStr, request: request, type: DynamicLocGroupReply.self)
     }

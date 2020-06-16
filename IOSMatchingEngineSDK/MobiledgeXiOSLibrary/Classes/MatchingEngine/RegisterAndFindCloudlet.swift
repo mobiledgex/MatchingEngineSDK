@@ -24,43 +24,45 @@ extension MobiledgeXiOSLibrary.MatchingEngine
 
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(orgName: String, gpsLocation: Loc, appName: String? = nil, appVers: String? = nil, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
-                
-        let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
-        return self.registerClient(request: registerRequest)
-        .then { registerClientReply -> Promise<FindCloudletReply> in
-            
-            let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
-            
-            if registerClientReply.status != ReplyStatus.RS_SUCCESS {
-                promiseInputs.reject(MatchingEngineError.registerFailed)
-                return promiseInputs
-            }
-            
-            let findCloudletRequest = self.createFindCloudletRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
-            
-            return self.findCloudlet(request: findCloudletRequest, mode: mode)
+        let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
+        
+        var host: String
+        do {
+            host = try generateDmeHostAddress()
+        } catch {
+            promiseInputs.reject(error)
+            return promiseInputs
         }
+        let port = DMEConstants.dmeRestPort
+        
+        return registerAndFindCloudlet(host: host, port: port, orgName: orgName, gpsLocation: gpsLocation, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags, mode: mode)
     }
     
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, gpsLocation: Loc, appName: String? = nil, appVers: String? = nil, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
+        var promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
+        
         let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags)
         
-        return self.registerClient(host: host, port: port, request: registerRequest)
-            .then { registerClientReply -> Promise<FindCloudletReply> in
+        promiseInputs = self.registerClient(host: host, port: port, request: registerRequest)
+        .then { registerClientReply -> Promise<FindCloudletReply> in
                 
-                let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
+            let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
                 
-                if registerClientReply.status != ReplyStatus.RS_SUCCESS {
+            if registerClientReply.status != ReplyStatus.RS_SUCCESS {
                     promiseInputs.reject(MatchingEngineError.registerFailed)
                     return promiseInputs
-                }
+            }
                 
-                let findCloudletRequest = self.createFindCloudletRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
+            let findCloudletRequest = try self.createFindCloudletRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
                 
-                return self.findCloudlet(host: host, port: port, request: findCloudletRequest, mode: mode)
+            return self.findCloudlet(host: host, port: port, request: findCloudletRequest, mode: mode)
+        }.catch { error in
+            promiseInputs.reject(error)
         }
+        
+        return promiseInputs
     }
 }

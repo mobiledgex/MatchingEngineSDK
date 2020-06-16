@@ -88,9 +88,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [Tag]? = nil) -> QosPositionRequest {
+    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> QosPositionRequest {
         
-        return QosPositionRequest(
+        let req = QosPositionRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
             positions: requests,
@@ -98,6 +98,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             band_selection: bandSelection,
             cell_id: cellID,
             tags: tags)
+        
+        try validateQosKPIRequest(request: req)
+        return req
     }
     
     func validateQosKPIRequest(request: QosPositionRequest) throws {
@@ -210,14 +213,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.qospositionkpiAPI
-        
-        do {
-            try validateQosKPIRequest(request: request)
-        }
-        catch {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
 
         return self.postQosPositionRequest(uri: urlStr, request: request)
     }

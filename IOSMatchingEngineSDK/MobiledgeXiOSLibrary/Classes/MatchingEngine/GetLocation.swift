@@ -55,14 +55,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - carrierName: carrierName description
     /// - Returns: API  Dictionary/json
-    public func createGetLocationRequest(carrierName: String?, cellID: uint? = nil, tags: [Tag]? = nil) -> GetLocationRequest {
+    public func createGetLocationRequest(carrierName: String?, cellID: uint? = nil, tags: [Tag]? = nil) throws -> GetLocationRequest {
         
-        return GetLocationRequest(
+        let req = GetLocationRequest(
             ver: 1,
             session_cookie: state.getSessionCookie() ?? "",
             carrier_name: carrierName ?? getCarrierName(),
             cell_id: cellID,
             tags: tags)
+        
+        try validateGetLocationRequest(request: req)
+        return req
     }
     
     func validateGetLocationRequest(request: GetLocationRequest) throws {
@@ -108,14 +111,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.getlocationAPI
-        
-        do {
-            try validateGetLocationRequest(request: request)
-        }
-        catch {
-            promiseInputs.reject(error) // catch and reject
-            return promiseInputs
-        }
         
         return self.postRequest(uri: urlStr, request: request, type: GetLocationReply.self)
     }
