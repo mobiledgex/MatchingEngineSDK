@@ -18,6 +18,7 @@
 
 import Foundation
 import Promises
+import os.log
 
 extension MobiledgeXiOSLibrary {
 
@@ -86,12 +87,15 @@ extension MobiledgeXiOSLibrary {
         public static func isRoaming() -> Promise<Bool> {
             let roamingPromise: Promise<Bool> = Promise<Bool>.pending()
             
-            MobiledgeXLocation.startLocationServices()
+            if !MobiledgeXLocation.locationServicesRunning {
+                os_log("Start location services before checking if device is roaming", log: OSLog.default, type: .debug)
+                roamingPromise.reject(MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning)
+                return roamingPromise
+            }
+            
             MobiledgeXLocation.getLastISOCountryCode()
             .then { locationCountryCode in
-                print("locationCountryCode is \(locationCountryCode)")
                 let carrierCountryCode = try CarrierInfo.getISOCountryCode()
-                print("carrierCountryCode is \(carrierCountryCode)")
                 if locationCountryCode != carrierCountryCode {
                     roamingPromise.fulfill(true)
                 } else {

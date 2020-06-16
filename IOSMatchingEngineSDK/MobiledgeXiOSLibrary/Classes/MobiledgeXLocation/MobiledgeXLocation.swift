@@ -34,10 +34,12 @@ extension MobiledgeXiOSLibrary {
         public enum MobiledgeXLocationError: Error {
             case unableToFindPlacemark
             case unableToFindCountry
+            case locationServicesNotRunning
         }
 
         static var mobiledgeXLocationManager = MobiledgeXLocationManager()
         static var currServiceType = ServiceType.Visits
+        static var locationServicesRunning = false
         
         public static func startLocationServices(serviceType: ServiceType = ServiceType.Visits) {
             currServiceType = serviceType
@@ -51,7 +53,12 @@ extension MobiledgeXiOSLibrary {
                 return
             }
             // Start monitoring for location
-            mobiledgeXLocationManager.startMonitoring()
+            locationServicesRunning = mobiledgeXLocationManager.startMonitoring() ? true : false
+        }
+        
+        public static func stopLocationServices() {
+            mobiledgeXLocationManager.stopMonitoring()
+            locationServicesRunning = false
         }
         
         // Checks for Location Permissions (called before Location Services is started)
@@ -76,8 +83,12 @@ extension MobiledgeXiOSLibrary {
         }
         
         // Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
-        public static func getLastLocation() -> MobiledgeXiOSLibrary.MatchingEngine.Loc {
-            return convertCLLocationToMobiledgeXLocation(location: mobiledgeXLocationManager.lastLocation!)
+        public static func getLastLocation() -> MobiledgeXiOSLibrary.MatchingEngine.Loc? {
+            guard let lastLoc = mobiledgeXLocationManager.lastLocation else {
+                os_log("Last location not available", log: OSLog.default, type: .debug)
+                return nil
+            }
+            return convertCLLocationToMobiledgeXLocation(location: lastLoc)
         }
         
         // Returns the ISO country code of the last location
@@ -87,9 +98,16 @@ extension MobiledgeXiOSLibrary {
         
         // Helper function that converts CLLocation object to object that can be used in MatchingEngine calls
         private static func convertCLLocationToMobiledgeXLocation(location: CLLocation) -> MobiledgeXiOSLibrary.MatchingEngine.Loc {
-            let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            // loc.altitude = location.altitude.advanced(by: 0)
-            // location.timestamp.
+            
+            var loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude)
+            
+            loc.horizontal_accuracy = location.horizontalAccuracy.magnitude
+            loc.vertical_accuracy = location.verticalAccuracy.magnitude
+            loc.altitude = location.altitude.magnitude
+            loc.course = location.course.magnitude
+            loc.speed = location.speed.magnitude
             return loc
         }
     }

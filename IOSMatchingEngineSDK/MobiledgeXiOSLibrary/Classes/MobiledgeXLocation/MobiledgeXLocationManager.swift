@@ -43,15 +43,14 @@ extension MobiledgeXiOSLibrary {
         }
         
         // throw an error if not available
-        func startMonitoring() {
+        func startMonitoring() -> Bool {
             switch serviceType {
             case MobiledgeXLocation.ServiceType.Visits:
                 locationManager.startMonitoringVisits()
             case MobiledgeXLocation.ServiceType.SignificantChange:
                 if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
-                    // The device does not support this service.
-                    // throw Error("")
-                    return
+                    os_log("The device does not support Significant location change monitoring service.", log: OSLog.default, type: .error)
+                    return false
                 }
                 locationManager.startMonitoringSignificantLocationChanges()
             case MobiledgeXLocation.ServiceType.Standard:
@@ -59,6 +58,7 @@ extension MobiledgeXiOSLibrary {
             }
             
             lastLocation = locationManager.location
+            return true
         }
         
         func stopMonitoring() {
@@ -86,13 +86,8 @@ extension MobiledgeXiOSLibrary {
         
         // Error delegate
         func locationManager(_ manager: CLLocationManager,  didFailWithError error: Error) {
-           /*if error.code == .denied {
-              // Location updates are not authorized.
-              locationManager.stopMonitoringVisits()
-              return
-           }*/
+            os_log("LocationServices failed with %@", log: OSLog.default, type: .error, error.localizedDescription)
             stopMonitoring()
-           // Notify the user of any errors.
         }
         
         // Helper function to get Country from GPS Coordinates
