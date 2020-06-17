@@ -211,7 +211,7 @@ class ConnectionTests: XCTestCase {
         }
     }
     
-    func testHTTPConnection() {
+    func testHTTPClient() {
         var urlRequest: URLRequest!
         
         let host = "mextest-app-cluster.fairview-main.gddt.mobiledgex.net"

@@ -231,7 +231,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
@@ -269,7 +269,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPSClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
