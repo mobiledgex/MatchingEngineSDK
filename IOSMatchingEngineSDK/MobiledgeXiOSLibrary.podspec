@@ -28,7 +28,7 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.source           = { :git => 'https://github.com/mobiledgex/MatchingEngineSDK.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/mobiledgex'
 
-  s.ios.deployment_target = '11.4'
+  s.ios.deployment_target = '12.0'
 
   s.source_files = 'MobiledgeXiOSLibrary/Classes/**/*'  
  
