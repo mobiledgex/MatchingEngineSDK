@@ -28,19 +28,11 @@ public enum MobiledgeXiOSLibrary {
     
     public enum DmeDnsError: Error {
         case verifyDmeHostFailure(host: String, systemError: SystemError)
-        case missingMCC
-        case missingMNC
-        case missingCellularProviderInfo
-        case outdatedIOS
         case invalidMCCMNC(mcc: String, mnc: String)
         
         public var errorDescription: String? {
             switch self {
             case .verifyDmeHostFailure(let host, let systemError): return "Could not verify host: \(host). Error: \(systemError.localizedDescription)"
-            case .missingMCC: return "Unable to get Mobile Country Code"
-            case .missingMNC: return "Unable to get Mobile Network Code"
-            case .missingCellularProviderInfo: return "Unable to find Subscriber Cellular Provider Info"
-            case .outdatedIOS: return "iOS is outdated. Requires 12.0+"
             case .invalidMCCMNC(let mcc, let mnc): return "Mcc \(mcc) and mnc \(mnc) combination are not valid"
             }
         }
@@ -51,6 +43,17 @@ public enum MobiledgeXiOSLibrary {
         case socket(Int32, Int32?)
         case bind(Int32, Int32?)
         case connect(Int32, Int32?)
+    }
+    
+    public enum MobiledgeXError: Error {
+        case outdatedIOS(requiredIOS: Int, action: String)
+        
+        public var errorDescription: String? {
+            switch self {
+            case .outdatedIOS(let requiredIOS, let action): return "IOS version \(requiredIOS)+ required to perform \(action)"
+            }
+        }
+
     }
     
     public struct Socket {

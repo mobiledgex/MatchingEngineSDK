@@ -20,20 +20,12 @@
 
 import UIKit
 import Foundation
-import CoreTelephony
 import os.log
 
 extension MobiledgeXiOSLibrary {
     
     public class MatchingEngineState {
-        
-        var DEBUG: Bool = true
-        
-        // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
-        public var networkInfo: CTTelephonyNetworkInfo
-        public var ctCarriers: [String: CTCarrier]?
-        public var firstCarrier: CTCarrier?
-        
+                
         // Information about state of device
         public var device: UIDevice
         
@@ -49,7 +41,6 @@ extension MobiledgeXiOSLibrary {
         
         init() {
             print(Bundle.main.object)
-            networkInfo = CTTelephonyNetworkInfo()
             device = UIDevice.init()
         }
         
@@ -113,42 +104,6 @@ extension MobiledgeXiOSLibrary {
         
         func getTokenServerToken() -> String? {
             return self.tokenServerToken
-        }
-        
-        // Returns Array with MCC in zeroth index and MNC in first index
-        func getMCCMNC() throws -> [String] {
-            if #available(iOS 12.0, *) {
-                ctCarriers = networkInfo.serviceSubscriberCellularProviders
-            } else {
-                os_log("IOS is outdated. Need 12.0+", log: OSLog.default, type: .debug)
-                throw MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS
-                // Fallback on earlier versions
-            }
-            if #available(iOS 12.1, *) {
-                networkInfo.serviceSubscriberCellularProvidersDidUpdateNotifier = { (carrier) in
-                    self.ctCarriers = self.networkInfo.serviceSubscriberCellularProviders
-                    if self.ctCarriers !=  nil {
-                        self.firstCarrier = self.ctCarriers![carrier]
-                    }
-                };
-            }
-              
-            firstCarrier = ctCarriers?.first?.value
-            
-            if firstCarrier == nil {
-                os_log("Cannot find Subscriber Cellular Provider Info", log: OSLog.default, type: .debug)
-                throw MobiledgeXiOSLibrary.DmeDnsError.missingCellularProviderInfo
-            }
-            guard let mcc = firstCarrier!.mobileCountryCode else {
-                os_log("Cannot get Mobile Country Code", log: OSLog.default, type: .debug)
-                throw MobiledgeXiOSLibrary.DmeDnsError.missingMCC
-            }
-            guard let mnc = firstCarrier!.mobileNetworkCode else {
-                os_log("Cannot get Mobile Network Code", log: OSLog.default, type: .debug)
-                throw MobiledgeXiOSLibrary.DmeDnsError.missingMNC
-            }
-            
-            return [mcc, mnc]
         }
     }
 }

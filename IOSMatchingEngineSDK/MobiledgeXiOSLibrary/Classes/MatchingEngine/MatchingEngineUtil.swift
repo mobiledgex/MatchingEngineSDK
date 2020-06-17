@@ -22,13 +22,11 @@ import CoreLocation
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
-    public func getAppName() -> String
-    {
+    public func getAppName() -> String {
         return state.appName
     }
     
-    public func getAppVersion() -> String
-    {
+    public func getAppVersion() -> String {
         return state.appVersion
     }
     
@@ -65,7 +63,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         do {
-            mccMnc = try state.getMCCMNC()
+            mccMnc = try MobiledgeXiOSLibrary.CarrierInfo.getMCCMNC()
         } catch {
             return DMEConstants.fallbackCarrierName
         }
@@ -89,15 +87,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         do {
-            mccMnc = try state.getMCCMNC()
-        } catch MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS {
-            throw MobiledgeXiOSLibrary.DmeDnsError.outdatedIOS
+            mccMnc = try MobiledgeXiOSLibrary.CarrierInfo.getMCCMNC()
         } catch {
-            // Mnc and Mcc are invalid (cellular is probably not up)
-            if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
-                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
-            } else {
-                throw MatchingEngineError.wifiIsNotConnected
+            switch error {
+            case MobiledgeXiOSLibrary.MobiledgeXError.outdatedIOS:
+                throw error
+            default:
+                // Mnc and Mcc are invalid (cellular is probably not up)
+                if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
+                    return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+                } else {
+                    throw MatchingEngineError.wifiIsNotConnected
+                }
             }
         }
            

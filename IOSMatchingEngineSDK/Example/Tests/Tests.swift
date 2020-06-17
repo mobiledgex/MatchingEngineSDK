@@ -416,4 +416,38 @@ class Tests: XCTestCase {
         XCTAssert(uuid != nil, "No uuid returned")
         print("uuid is \(uuid)")
     }
+    
+    func testLocationServices() {
+        MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        
+        let countryPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.getLastISOCountryCode()
+        .catch { error in
+                XCTAssert(false, "Error in isRoaming test \(error)")
+        }
+        XCTAssert(waitForPromises(timeout: 5))
+        guard let country = countryPromise.value else {
+            XCTAssert(false, "GetLastLocationCountry did not return a value.")
+            return
+        }
+        print("country code is \(country)")
+        print("lastLocation is \(MobiledgeXiOSLibrary.MobiledgeXLocation.getLastLocation())")
+        MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
+    }
+    
+    func testIsRoaming() {
+        MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+
+        let roamingPromise = MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
+            .catch { error in
+                XCTAssert(false, "Error in isRoaming test \(error)")
+        }
+        XCTAssert(waitForPromises(timeout: 5))
+        guard let isRoaming = roamingPromise.value else {
+            XCTAssert(false, "isRoaming did not return a value.")
+            return
+        }
+        print("isRoaming is \(isRoaming)")
+        XCTAssert(isRoaming)
+        MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
+    }
 }
