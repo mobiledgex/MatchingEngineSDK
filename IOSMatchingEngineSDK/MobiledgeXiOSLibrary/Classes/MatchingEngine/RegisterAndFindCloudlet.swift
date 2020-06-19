@@ -23,7 +23,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(orgName: String, gpsLocation: Loc, appName: String? = nil, appVers: String? = nil, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
+    public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: Loc, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
         let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
         
@@ -36,11 +36,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         }
         let port = DMEConstants.dmeRestPort
         
-        return registerAndFindCloudlet(host: host, port: port, orgName: orgName, gpsLocation: gpsLocation, appName: appName, appVers: appVers, carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags, mode: mode)
+        return registerAndFindCloudlet(host: host, port: port, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: gpsLocation,  carrierName: carrierName, authToken: authToken, uniqueIDType: uniqueIDType, uniqueID: uniqueID, cellID: cellID, tags: tags, mode: mode)
     }
     
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, gpsLocation: Loc, appName: String? = nil, appVers: String? = nil, carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
+    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: Loc,  carrierName: String? = "", authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
         var promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
         
