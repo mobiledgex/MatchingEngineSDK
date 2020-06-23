@@ -56,7 +56,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    public func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> DynamicLocGroupRequest {
+    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> DynamicLocGroupRequest {
         
         let req = DynamicLocGroupRequest(
             ver: 1,
@@ -83,7 +83,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
-    public func addUserToGroup (request: DynamicLocGroupRequest) -> Promise<DynamicLocGroupReply>
+    func addUserToGroup (request: DynamicLocGroupRequest) -> Promise<DynamicLocGroupReply>
     {
         let promiseInputs: Promise<DynamicLocGroupReply> = Promise<DynamicLocGroupReply>.pending()
                 
@@ -106,7 +106,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - port: port override of the dme server port
     ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
     /// - Returns: API Dictionary/json
-    public func addUserToGroup (host: String, port: UInt16, request: DynamicLocGroupRequest)
+    func addUserToGroup (host: String, port: UInt16, request: DynamicLocGroupRequest)
         -> Promise<DynamicLocGroupReply>
     {
         let promiseInputs: Promise<DynamicLocGroupReply> = Promise<DynamicLocGroupReply>.pending()

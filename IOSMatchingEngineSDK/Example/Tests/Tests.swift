@@ -332,33 +332,6 @@ class Tests: XCTestCase {
         XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
     }
     
-    func testGetLocation() {
-        let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
-        
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply>!
-        
-            replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
-                .then { reply in
-                    let req = try self.matchingEngine.createGetLocationRequest(
-                    carrierName: self.carrierName)
-                    return self.matchingEngine.getLocation(host: self.dmeHost, port: self.dmePort, request: req)
-                } .catch { error in
-                    XCTAssert(false, "Did not succeed getLocation. Error: \(error)")
-            }
-        
-        XCTAssert(waitForPromises(timeout: 10))
-        guard let promiseValue = replyPromise.value else {
-            XCTAssert(false, "GetLocation did not return a value.")
-            return
-        }
-        print("GetLocationReply is \(promiseValue)")
-        
-        let GetLocationReply = MobiledgeXiOSLibrary.MatchingEngine.GetLocationReply.self
-        XCTAssert(promiseValue.status == GetLocationReply.LocStatus.LOC_FOUND, "GetLocation Failed.")
-        
-        XCTAssertNil(replyPromise.error)
-    }
-    
     func testAddUsertoGroup() {
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
@@ -388,7 +361,7 @@ class Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testRegisterAndFindCloudlet() {
         let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
-        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeHost, port: dmePort, orgName: orgName, gpsLocation: loc, appName: appName, appVers: appVers, carrierName: carrierName)
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: carrierName)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
         }

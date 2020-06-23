@@ -35,7 +35,6 @@ extension MobiledgeXiOSLibrary {
             public static let verifylocationAPI: String = "/v1/verifylocation"
             public static let findcloudletAPI: String = "/v1/findcloudlet"
             public static let qospositionkpiAPI: String = "/v1/getqospositionkpi"
-            public static let getlocationAPI: String = "/v1/getlocation"
             public static let addusertogroupAPI: String = "/v1/addusertogroup"
         }
         
