@@ -22,11 +22,11 @@ import CoreLocation
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
-    public func getAppName() -> String {
+    func getAppName() -> String {
         return state.appName
     }
     
-    public func getAppVersion() -> String {
+    func getAppVersion() -> String {
         return state.appVersion
     }
     
@@ -143,7 +143,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return "https://\(host):\(port)"
     }
     
-    public func getUniqueID() -> String? {
+    func getUniqueID() -> String? {
         return state.uuid
     }
 }
