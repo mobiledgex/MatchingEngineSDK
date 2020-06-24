@@ -27,13 +27,14 @@ extension MobiledgeXiOSLibrary {
         
         var locationManager: CLLocationManager
         var serviceType: MobiledgeXLocation.ServiceType = MobiledgeXLocation.ServiceType.Visits
-        var geocoder = CLGeocoder()
+        var geocoder: CLGeocoder
 
-        
         var lastLocation: CLLocation? = nil
+        var isoCountryCode: String? = nil
         
         override init() {
             locationManager = CLLocationManager()
+            geocoder = CLGeocoder()
             super.init()
             locationManager.delegate = self
         }
@@ -42,23 +43,27 @@ extension MobiledgeXiOSLibrary {
             self.serviceType = serviceType
         }
         
-        // throw an error if not available
-        func startMonitoring() -> Bool {
+        func startMonitoring() -> Promise<Bool> {
+            let startPromise: Promise<Bool> = Promise<Bool>.pending()
+            // Start Monitoring Location based on Service Type
             switch serviceType {
             case MobiledgeXLocation.ServiceType.Visits:
                 locationManager.startMonitoringVisits()
             case MobiledgeXLocation.ServiceType.SignificantChange:
                 if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
                     os_log("The device does not support Significant location change monitoring service.", log: OSLog.default, type: .error)
-                    return false
+                    startPromise.fulfill(false)
+                    return startPromise
                 }
                 locationManager.startMonitoringSignificantLocationChanges()
             case MobiledgeXLocation.ServiceType.Standard:
                 locationManager.startUpdatingLocation()
             }
-            
+            // Initialize first lastLocation
             lastLocation = locationManager.location
-            return true
+            // Initialize first ISOCountryCode
+            getISOCountryCodeFromLocation(location: lastLocation!, startPromise: startPromise)
+            return startPromise
         }
         
         func stopMonitoring() {
@@ -75,12 +80,14 @@ extension MobiledgeXiOSLibrary {
         // ServiceType.Visit delegate
         func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
             lastLocation = manager.location
+            getISOCountryCodeFromLocation(location: lastLocation!)
             os_log("Visited location was at Longitude: %@ and Latitude: %@. Time was %@", log: OSLog.default, type: .debug, visit.coordinate.longitude.description, visit.coordinate.latitude.description, visit.arrivalDate.description)
         }
         
         // ServiceType.SignificantChange and ServiceType.Standard delegate
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             lastLocation = locations.last!
+            getISOCountryCodeFromLocation(location: lastLocation!)
             os_log("Last location was at Longitude: %@ and Latitude: %@. Time was %@", log: OSLog.default, type: .debug, lastLocation!.coordinate.latitude.description, lastLocation!.coordinate.latitude.description, lastLocation!.timestamp.description)
         }
         
@@ -91,29 +98,41 @@ extension MobiledgeXiOSLibrary {
         }
         
         // Helper function to get Country from GPS Coordinates
-        func getISOCountryCodeFromLocation(location: CLLocation) -> Promise<String> {
-            let countryPromise: Promise<String> = Promise<String>.pending()
+        // Optional StartPromise parameters. This is so that ISOCountryCode is filled in before StartLocation returns
+        func getISOCountryCodeFromLocation(location: CLLocation, startPromise: Promise<Bool>? = nil) {
             // Look up the location and pass it to the completion handler
-            CLGeocoder().reverseGeocodeLocation(location,
+            geocoder.reverseGeocodeLocation(lastLocation!,
                         completionHandler: { (placemarks, error) in
                 if error == nil {
                     let firstLocation = placemarks?[0]
                     guard let _ = firstLocation else {
-                        countryPromise.reject(MobiledgeXLocation.MobiledgeXLocationError.unableToFindPlacemark)
+                        if let _ = startPromise {
+                            startPromise!.reject(MobiledgeXLocation.MobiledgeXLocationError.unableToFindPlacemark)
+                        }
+                        os_log("Unable to reverse geocode location. %@", log: OSLog.default, type: .error, MobiledgeXLocation.MobiledgeXLocationError.unableToFindPlacemark.localizedDescription)
                         return
                     }
                     guard let _ = firstLocation!.isoCountryCode else {
-                    countryPromise.reject(MobiledgeXLocation.MobiledgeXLocationError.unableToFindCountry)
+                        if let _ = startPromise {
+                            startPromise!.reject(MobiledgeXLocation.MobiledgeXLocationError.unableToFindCountry)
+                        }
+                        os_log("Unable to reverse geocode location. %@", log: OSLog.default, type: .error, MobiledgeXLocation.MobiledgeXLocationError.unableToFindCountry.localizedDescription)
                         return
                     }
-                    countryPromise.fulfill(firstLocation!.isoCountryCode!)
+                    self.isoCountryCode = firstLocation!.isoCountryCode
+                    if let _ = startPromise {
+                        startPromise!.fulfill(true)
+                    }
+                    return
                 }
                 else {
                     // An error occurred during geocoding.
-                    countryPromise.reject(error!)
+                    if let _ = startPromise {
+                        startPromise!.reject(error!)
+                    }
+                    os_log("Unable to reverse geocode location. %@", log: OSLog.default, type: .error, error!.localizedDescription)
                 }
             })
-            return countryPromise
         }
     }
 }
