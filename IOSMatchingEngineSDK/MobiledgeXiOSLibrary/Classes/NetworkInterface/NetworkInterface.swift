@@ -84,27 +84,21 @@ extension MobiledgeXiOSLibrary {
         
         // Compares the ISO Country code of the user's location with the
         // ISO Country of the user's carrier. Roaming if not equal
-        public static func isRoaming() -> Promise<Bool> {
-            let roamingPromise: Promise<Bool> = Promise<Bool>.pending()
-            
+        public static func isRoaming() throws -> Bool {
+            // Make sure LocationServices is running before Roaming check
             if !MobiledgeXLocation.locationServicesRunning {
                 os_log("Start location services before checking if device is roaming", log: OSLog.default, type: .debug)
-                roamingPromise.reject(MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning)
-                return roamingPromise
+                throw MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning
             }
-            
-            MobiledgeXLocation.getLastISOCountryCode()
-            .then { locationCountryCode in
-                let carrierCountryCode = try CarrierInfo.getISOCountryCode()
-                if locationCountryCode != carrierCountryCode {
-                    roamingPromise.fulfill(true)
-                } else {
-                    roamingPromise.fulfill(false)
-                }
-            }.catch { error in
-                roamingPromise.reject(error)
+            // Get ISO Country Code of current location
+            let isoCC = MobiledgeXLocation.getLastISOCountryCode()?.uppercased()
+            guard let locationCountryCode = isoCC else {
+                os_log("No ISO Country code for location. Try starting location services again", log: OSLog.default, type: .debug)
+                throw MobiledgeXLocation.MobiledgeXLocationError.noISOCountryCodeAvailable
             }
-            return roamingPromise
+            // Get ISO Country Code of carrier network
+            let carrierCountryCode = try CarrierInfo.getISOCountryCode().uppercased()
+            return locationCountryCode != carrierCountryCode
         }
         
         // Gets the client IP Address on the interface specified

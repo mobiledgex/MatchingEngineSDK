@@ -35,13 +35,16 @@ extension MobiledgeXiOSLibrary {
             case unableToFindPlacemark
             case unableToFindCountry
             case locationServicesNotRunning
+            case noISOCountryCodeAvailable
         }
 
         static var mobiledgeXLocationManager = MobiledgeXLocationManager()
         static var currServiceType = ServiceType.Visits
         static var locationServicesRunning = false
         
-        public static func startLocationServices(serviceType: ServiceType = ServiceType.Visits) {
+        public static func startLocationServices(serviceType: ServiceType = ServiceType.Visits) -> Promise<Bool> {
+            let startPromise: Promise<Bool> = Promise<Bool>.pending()
+            
             currServiceType = serviceType
             // Stop previous Location Manager
             mobiledgeXLocationManager.stopMonitoring()
@@ -50,10 +53,16 @@ extension MobiledgeXiOSLibrary {
             // Check permissions before calling
             if !checkLocationPermissions() {
                 os_log("Request location permissions before staring location services", log: OSLog.default, type: .debug)
-                return
+                startPromise.fulfill(false)
             }
             // Start monitoring for location
-            locationServicesRunning = mobiledgeXLocationManager.startMonitoring() ? true : false
+            mobiledgeXLocationManager.startMonitoring()
+            .then { success in
+                // Check if start was successful
+                locationServicesRunning = success
+                startPromise.fulfill(success)
+            }
+            return startPromise
         }
         
         public static func stopLocationServices() {
@@ -92,8 +101,9 @@ extension MobiledgeXiOSLibrary {
         }
         
         // Returns the ISO country code of the last location
-        public static func getLastISOCountryCode() -> Promise<String> {
-            return mobiledgeXLocationManager.getISOCountryCodeFromLocation(location: mobiledgeXLocationManager.lastLocation!)
+        public static func getLastISOCountryCode() -> String? {
+            // return mobiledgeXLocationManager.getISOCountryCodeFromLocation(location: mobiledgeXLocationManager.lastLocation!)
+            return mobiledgeXLocationManager.isoCountryCode
         }
         
         // Helper function that converts CLLocation object to object that can be used in MatchingEngine calls

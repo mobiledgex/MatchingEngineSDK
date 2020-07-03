@@ -391,35 +391,39 @@ class Tests: XCTestCase {
     }
     
     func testLocationServices() {
-        MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
-        
-        let countryPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.getLastISOCountryCode()
-        .catch { error in
-                XCTAssert(false, "Error in isRoaming test \(error)")
+        let startLocationPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        .then { success in
+            let country = MobiledgeXiOSLibrary.MobiledgeXLocation.getLastISOCountryCode()
+            print("country code is \(country)")
+            print("lastLocation is \(MobiledgeXiOSLibrary.MobiledgeXLocation.getLastLocation())")
+        }.catch { error in
+            XCTAssert(false, "Error in location services test \(error)")
         }
+        
         XCTAssert(waitForPromises(timeout: 5))
-        guard let country = countryPromise.value else {
-            XCTAssert(false, "GetLastLocationCountry did not return a value.")
+        guard let successStartLocation = startLocationPromise.value else {
+            XCTAssert(false, "TestLocationServices did not return a value.")
             return
         }
-        print("country code is \(country)")
-        print("lastLocation is \(MobiledgeXiOSLibrary.MobiledgeXLocation.getLastLocation())")
+        
+        XCTAssert(successStartLocation)
         MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
     }
     
     func testIsRoaming() {
-        MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
-
-        let roamingPromise = MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
-            .catch { error in
-                XCTAssert(false, "Error in isRoaming test \(error)")
+        let roamingPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        .then { success -> Bool in
+            let roaming = try MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
+            return roaming
+        }.catch { error in
+            XCTAssert(false, "Error in isRoaming test \(error)")
         }
+            
         XCTAssert(waitForPromises(timeout: 5))
         guard let isRoaming = roamingPromise.value else {
             XCTAssert(false, "isRoaming did not return a value.")
             return
         }
-        print("isRoaming is \(isRoaming)")
         XCTAssert(isRoaming)
         MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
     }

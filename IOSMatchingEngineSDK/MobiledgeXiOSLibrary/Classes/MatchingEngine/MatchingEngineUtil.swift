@@ -63,6 +63,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
         
         do {
+            let roaming = try MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
+            if roaming {
+                return DMEConstants.fallbackCarrierName
+            }
+        } catch {
+            os_log("Unable to determine if device is roaming. Will continue finding current carrier's information.", log: OSLog.default, type: .debug)
+        }
+        
+        do {
             mccMnc = try MobiledgeXiOSLibrary.CarrierInfo.getMCCMNC()
         } catch {
             return DMEConstants.fallbackCarrierName
@@ -84,6 +93,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             } else {
                 throw MatchingEngineError.wifiIsNotConnected
             }
+        }
+        
+        do {
+            let roaming = try MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
+            if roaming {
+                return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
+            }
+        } catch {
+            os_log("Unable to determine if device is roaming. Will continue to find DME host based on current carrier's information.", log: OSLog.default, type: .debug)
         }
         
         do {
