@@ -142,7 +142,7 @@ class Tests: XCTestCase {
                 .then { reply in
                     let req = try self.matchingEngine.createFindCloudletRequest(
                     gpsLocation: loc, carrierName: self.carrierName)
-                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
+                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req, mode: MobiledgeXiOSLibrary.MatchingEngine.FindCloudletMode.PERFORMANCE)
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
@@ -152,6 +152,9 @@ class Tests: XCTestCase {
             XCTAssert(false, "FindCloudlet missing a return value.")
             return
         }
+        let cloudletLoc = val.cloudlet_location;
+        XCTAssert(cloudletLoc.longitude != 0 && cloudletLoc.latitude != 0, "Received a bad gps cloudlet_location for findCloudlet performance mode")
+
         print("FindCloudletReply is \(val)")
 
         let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self

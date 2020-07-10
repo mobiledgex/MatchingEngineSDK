@@ -249,7 +249,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             status: FindCloudletReply.FindStatus.FIND_FOUND,
             fqdn: appInst!.fqdn,
             ports: appInst!.ports,
-            cloudlet_location: findCloudletReply.cloudlet_location,
+            cloudlet_location: site.cloudletLocation ?? Loc(latitude: 0, longitude: 0),
             tags: findCloudletReply.tags
         )
     }
@@ -268,6 +268,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 case LProto.L_PROTO_HTTP:
                     let site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
                     site.appInst = appInstance
+                    site.cloudletLocation = cloudlet.gps_location
                     sites.append(site)
                     break
                     
@@ -279,12 +280,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                         site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
                     }
                     site!.appInst = appInstance
+                    site!.cloudletLocation = cloudlet.gps_location
                     sites.append(site!)
                     break
                     
                 case LProto.L_PROTO_UDP:
                     let site = initUdpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
                     site.appInst = appInstance
+                    site.cloudletLocation = cloudlet.gps_location
                     sites.append(site)
                     break
                     

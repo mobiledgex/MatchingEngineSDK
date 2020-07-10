@@ -38,6 +38,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         public var capacity: Int
         
         public var appInst: MobiledgeXiOSLibrary.MatchingEngine.Appinstance?
+        public var cloudletLocation: MobiledgeXiOSLibrary.MatchingEngine.Loc?
 
         var unbiasedAvg: Double // take average to prevent imprecision
         var unbiasedSquareAvg: Double
