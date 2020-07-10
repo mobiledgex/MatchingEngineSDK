@@ -99,7 +99,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     private func getTokenPost(uri: String) // Dictionary/json
         -> Promise<[String: AnyObject]> {
             
-        os_log("uri: %@ request\n", log: OSLog.default, type: .debug, uri)
+        os_log("getToken Post request. uri: %@ request\n", log: OSLog.default, type: .debug, uri)
         
         return Promise<[String: AnyObject]>(on: self.state.executionQueue) { fulfill, reject in
             //Create URLRequest object
