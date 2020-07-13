@@ -67,6 +67,7 @@ extension MobiledgeXiOSLibrary {
         // API Rest calls use this function to post "requests" (ie. RegisterClient() posts RegisterClientRequest)
         public func postRequest<Request: Encodable, Reply: Decodable>(uri: String, request: Request, type: Reply.Type) -> Promise<Reply> {
             
+            os_log("Posting http request. URI is: %@", log: OSLog.default, type: .debug, uri)
             return Promise<Reply>(on: self.state.executionQueue) {
                 fulfill, reject in
                 //create URLRequest object

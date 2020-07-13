@@ -126,7 +126,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         os_log("registerClient", log: OSLog.default, type: .debug)
         
         let baseuri = generateBaseUri(host: host, port: port)
-        os_log("BaseURI: %@", log: OSLog.default, type: .debug, baseuri)
         let urlStr = baseuri + APIPaths.registerAPI
         
         // Return a promise chain:
