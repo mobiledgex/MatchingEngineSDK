@@ -18,7 +18,7 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GTMSessionFetcher/Core (1.2.2)
-  - MobiledgeXiOSLibrary (2.1.0):
+  - MobiledgeXiOSLibrary (2.1.2):
     - PromisesSwift (~> 1.2.8)
     - Socket.IO-Client-Swift (~> 15.2.0)
     - SwiftyJSON (~> 5.0.0)
@@ -70,7 +70,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  MobiledgeXiOSLibrary: 6d6b46db4441a013598360b9f79eb0bc75dbcfbf
+  MobiledgeXiOSLibrary: dc7e0fa9e56b0e27a2a4b3159618ae18e4efd16f
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   PromisesSwift: 37bad6f4daddb02f7c9c531efe91e8b21c13ee2f
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
