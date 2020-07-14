@@ -111,12 +111,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             case MobiledgeXiOSLibrary.MobiledgeXError.outdatedIOS:
                 throw error
             default:
-                // Mnc and Mcc are invalid (cellular is probably not up)
-                if MobiledgeXiOSLibrary.NetworkInterface.hasWifi() {
-                    return generateFallbackDmeHost(carrierName: DMEConstants.wifiAlias)
-                } else {
-                    throw MatchingEngineError.wifiIsNotConnected
-                }
+                throw MobiledgeXiOSLibrary.DmeDnsError.unabledToFindMCCOrMNC(internalErr: error)
             }
         }
            
