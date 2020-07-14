@@ -29,11 +29,13 @@ public enum MobiledgeXiOSLibrary {
     public enum DmeDnsError: Error {
         case verifyDmeHostFailure(host: String, systemError: SystemError)
         case invalidMCCMNC(mcc: String, mnc: String)
+        case unabledToFindMCCOrMNC(internalErr: Error)
         
         public var errorDescription: String? {
             switch self {
             case .verifyDmeHostFailure(let host, let systemError): return "Could not verify host: \(host). Error: \(systemError.localizedDescription)"
             case .invalidMCCMNC(let mcc, let mnc): return "Mcc \(mcc) and mnc \(mnc) combination are not valid"
+            case .unabledToFindMCCOrMNC(let internalErr): return "\(internalErr)"
             }
         }
     }
