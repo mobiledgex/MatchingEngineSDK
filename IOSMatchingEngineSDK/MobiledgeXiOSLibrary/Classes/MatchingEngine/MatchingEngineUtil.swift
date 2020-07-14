@@ -111,6 +111,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             case MobiledgeXiOSLibrary.MobiledgeXError.outdatedIOS:
                 throw error
             default:
+                // Mnc and Mcc are invalid (cellular is probably not up)
                 throw MobiledgeXiOSLibrary.DmeDnsError.unabledToFindMCCOrMNC(internalErr: error)
             }
         }
