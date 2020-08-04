@@ -71,7 +71,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, uniqueIDType: String? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
+    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
         -> RegisterClientRequest { // Dictionary/json
             
             
@@ -82,8 +82,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine
             app_vers: appVers ?? getAppVersion(),
             auth_token: authToken,
             cell_id: cellID,
-            unique_id_type: uniqueIDType ?? getUniqueIDType(),
-            unique_id: uniqueID ?? getUniqueID(),
+            unique_id_type: nil,
+            unique_id: nil,
             tags: tags)
     }
     
@@ -125,11 +125,21 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         let promiseInputs: Promise<RegisterClientReply> = Promise<RegisterClientReply>.pending()
         os_log("registerClient", log: OSLog.default, type: .debug)
         
+        // Set UniqueID and UniqueIDType
+        var requestWithUniqueID = request
+        let uniqueID = getUniqueID()
+        var uniqueIDType: String? = nil
+        if uniqueID != nil {
+            uniqueIDType = getUniqueIDType()
+        }
+        requestWithUniqueID.unique_id = uniqueID
+        requestWithUniqueID.unique_id_type = uniqueIDType
+        
         let baseuri = generateBaseUri(host: host, port: port)
         let urlStr = baseuri + APIPaths.registerAPI
         
         // Return a promise chain:
-        return self.postRequest(uri: urlStr, request: request, type: RegisterClientReply.self).then { reply in
+        return self.postRequest(uri: urlStr, request: requestWithUniqueID, type: RegisterClientReply.self).then { reply in
             
             let registerClientReply = reply
 
