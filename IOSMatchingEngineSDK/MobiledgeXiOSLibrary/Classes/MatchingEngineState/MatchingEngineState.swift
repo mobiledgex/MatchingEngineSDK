@@ -63,7 +63,7 @@ extension MobiledgeXiOSLibrary {
         var uuid: String {
             get {
                 let uuid = ASIdentifierManager.shared().advertisingIdentifier
-                return uuid.uuidString
+                return uuid.uuidString.utf8.description
             }
         }
         
