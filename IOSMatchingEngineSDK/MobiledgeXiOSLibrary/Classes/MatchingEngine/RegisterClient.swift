@@ -35,7 +35,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         // Optional fields
         public var auth_token: String?
         public var cell_id: uint?
-        public var unique_id_type: IDTypes?
+        public var unique_id_type: String?
         public var unique_id: String?
         public var tags: [Tag]?
     }
@@ -71,7 +71,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: API Dictionary/json
-    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, uniqueIDType: IDTypes? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
+    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, uniqueIDType: String? = nil, uniqueID: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil)
         -> RegisterClientRequest { // Dictionary/json
             
             
@@ -82,8 +82,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine
             app_vers: appVers ?? getAppVersion(),
             auth_token: authToken,
             cell_id: cellID,
-            unique_id_type: uniqueIDType,
-            unique_id: uniqueID,
+            unique_id_type: uniqueIDType ?? getUniqueIDType(),
+            unique_id: uniqueID ?? getUniqueID(),
             tags: tags)
     }
     
