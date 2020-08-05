@@ -21,6 +21,7 @@
 import UIKit
 import Foundation
 import os.log
+import AdSupport
 
 extension MobiledgeXiOSLibrary {
     
@@ -39,6 +40,8 @@ extension MobiledgeXiOSLibrary {
         
         private var useWifiOnly: Bool = false
         
+        private var deviceManufacturer = "Apple"
+        
         init() {
             print(Bundle.main.object)
             device = UIDevice.init()
@@ -56,12 +59,17 @@ extension MobiledgeXiOSLibrary {
             }
         }
         
-        var uuid: String? {
+        // App specific UUID
+        var uuid: String {
             get {
-                guard let uuid = device.identifierForVendor else {
-                    return nil
-                }
-                return uuid.uuidString
+                let uuid = ASIdentifierManager.shared().advertisingIdentifier
+                return uuid.uuidString.utf8.description
+            }
+        }
+        
+        var uniqueIDType: String {
+            get {
+                return "\(deviceManufacturer):\(device.model):HASHED_ID"
             }
         }
         

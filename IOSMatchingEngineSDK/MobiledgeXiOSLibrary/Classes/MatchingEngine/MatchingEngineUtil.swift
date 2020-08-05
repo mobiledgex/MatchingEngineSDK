@@ -19,6 +19,7 @@
 
 import os.log
 import CoreLocation
+import CryptoKit
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
@@ -158,6 +159,25 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     func getUniqueID() -> String? {
-        return state.uuid
+        let uuid = state.uuid
+        return hashSHA512(string: uuid)
+    }
+    
+    func getUniqueIDType() -> String {
+        return state.uniqueIDType
+    }
+
+    func hashSHA512(string: String) ->  String? {
+        if #available(iOS 13.0, *) {
+            guard let data = string.data(using: .utf8) else {
+                os_log("Unable to convert string: %@ to data. Returning nil", log: OSLog.default, type: .debug, string)
+                return nil
+            }
+            let digest = SHA512.hash(data: data)
+            return digest.description
+        } else {
+            os_log("SHA512 has required ios 13+. Returning nil", log: OSLog.default, type: .debug)
+            return nil
+        }
     }
 }
