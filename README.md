@@ -5,96 +5,61 @@
 [![License](https://img.shields.io/cocoapods/l/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
 [![Platform](https://img.shields.io/cocoapods/p/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
 
-## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+The MobiledgeX Client Library enables an application to register and then locate the nearest edge cloudlet backend server for use. The client library also allows verification of a device's location for all location-specific tasks. Because these APIs involve networking, most functions will run asynchronously, and in a background thread, utilizing the Google Promises framework and iOS DispatchQueue.
 
-## What this API does
- Allows access to network of edge cloudlets Azure/TDG
-+ Register client
-+ Get list of cloudlets
-+ Find closest cloudlet
-+ Verify location of client
- 
-## Requirements
-
-### Build
-
-Xcode 10, iOS 12 SDK
-Swift 4.2 + 
+The Matching Engine iOS SDK provides everything required to create applications for iOS devices.
 
 
-### Runtime
+## Prerequisites  
 
-iOS 11.4
+* MacOS Mojave installation
+* Xcode 10 (From the Apple store, search for **Xcode**)
+* An Apple ID. Create an ID from the developer site on [Apple](https://developer.apple.com)
+* An iOS device to test with
+* [Cocoapods](https://cocoapods.org) installation
 
-## CocoaPods 
+## Download the iOS SDK and libraries  
 
-MatchingEngineSDK is available through [CocoaPods](https://cocoapods.org). 
-To install it, simply add the following line to your Podfile:
+Step 1: Create a login and an Organization on the [Console](https://console.mobiledgex.net). The creation of a login will automatically generate a user account and allows for access to [Artifactory](https://artifactory.mobiledgex.net).  
 
-```ruby
-pod 'MatchingEngineSDK'
+**Note**: With a login, you can download the iOS SDK library as well as upload a server image to install on the edge network.  
+
+Step 2: In terminal, run these commands to install Cocoapods: ```gem install cocoapods``` and ```gem install cocoapods-art```.  
+
+Step 3: Go to your root directory ```cd ~```.
+
+Step 4: Create a .netrc file and enter the following credentials: ```echo machine artifactory.mobiledgex.net login <username> password
+<password> .netrc```. Use the same credentials created on the Console in Step 1.
+
+Step 5: Navigate to your project directory and add the following lines to your podfile:  
+
+* ```plugin 'cocoapods-art', :sources =>; ['cocoapods-releases']```
+* ```pod 'MobiledgeXiOSLibrary', '= 2.1.0'```  
+
+Example podfile:
 ```
+use_frameworks!
+platform :ios, '12.0'
+# Default Specs.git:
+source 'https://github.com/CocoaPods/Specs.git'
+plugin 'cocoapods-art', :sources => ['cocoapods-releases']
+target 'ARShooter' do  
+pod 'MobiledgeXiOSLibrary','= '2.1.0'
+end
+```
+Step 6: Save your podfile, and then run the following command to install the MobiledgeXLibarary dependency to your workspace: ```pod install```.
 
-This will add both the Example and SDK in your pods folder
-Run `pod install` from the Example directory
- 
+Step 7: Open your xcworkspace.
 
-## Quickstart
+Step 8: Copy and paste ```import MobiledgeXiOSLibrary``` in any file(s) where you will utilize the MobiledgeX libary/SDK.  
 
-To get started with the MatchingEngineSDK follow these steps. 
-Steps 1-4 install the SDK and it's dependencies.
- The remaining steps 5-6 show how to use the SDK to RegisterClient
+### Where to Go from Here  
+* Click [here](https://swagger.mobiledgex.net/client-test/#section/Edge-SDK-iOS) to view and familiarize yourself with the iOS SDK APIs and start your MobiledgeX integration.
 
+* Need a sample app? Click [here](https://github.com/mobiledgex/edge-cloud-sampleapps/tree/master/iOS/ARShooterExample) to see an example application that uses the MobiledgeXiOSLibrary, and [here](https://developers.mobiledgex.com/guides-and-tutorials/how-to-add-edge-support-to-an-ios-argame) to access instructions to get started.
 
-Steps:
-
-1) Add the following to your project pod file (or add them  to your project directly)
-
-	pod 'MatchingEngineSDK'
-
-	pod 'Alamofire'
-    
-	pod 'NSLogger/Swift'
-
-2) `pod install`
-
-
-3) Add the following Sources to your project
-	https://github.com/kean/FutureX
-
-4) add your certificates in .der format to your xcode project
-
-
-5) Your first API command RegisterClient
-
-	MexRegisterClient.registerClientNow(appName: “your app name”, devName:  “your dev name”,  appVers: “1.0”)
-	//completion: NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Client registered"), object: nil, queue: nil)
-
-
-6) run
-
-## API
-
-MexRegisterClient.createRegisterClientRequest(appName: "your app name", devNameL "your dev name", appVers: "1.0")
-
-listen for  NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Client registered"), object: nil, queue: nil)
-// sets api variables used by the below functions: sessioncookie and tokenserveruri
-
-MexGetAppInst.createGetAppInstListRequest()
-
-listen for:  NotificationCenter.default.post(name: NSNotification.Name(rawValue: "processAppInstList"), object: result)   // Where 
-
-MexVerifyLocation.createVerifyLocationRequest(location) // Where location is [String;Any]
-
-listen for:   NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Verifylocation success"), object: result)   
-
-MexFindNearestCloudlet.createFindCloudletRequest(location)    // closest
-
-listen for: NotificationCenter.default.post(name: NSNotification.Name(rawValue: "processFindCloudletResult"), object: result)  
-
-
+* To learn how to use Docker to upload your application, see this [tutorial](https://developers.mobiledgex.com/guides-and-tutorials/hello-world).
 
 ## Author
 
@@ -104,6 +69,6 @@ mobiledgex, MatchingEngineSDK@mobiledgex.com
 
 MatchingEngineSDK is available under the Apache.LICENSE-2.0. See the LICENSE file for more info.
 
-Copyright (C) 2019 MobiledgeX, Inc.
+Copyright (C) 2019-2020 MobiledgeX, Inc.
 
 Multiple licenses (MIT, BSD, Apache, etc.) for third-party components.
