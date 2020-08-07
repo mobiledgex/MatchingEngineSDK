@@ -1,4 +1,4 @@
-# MatchingEngine
+# MatchingEngineSDK
 
 [![CI Status](https://img.shields.io/travis/lgarner/MatchingEngine.svg?style=flat)](https://travis-ci.org/lgarner/MatchingEngine)
 [![Version](https://img.shields.io/cocoapods/v/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
