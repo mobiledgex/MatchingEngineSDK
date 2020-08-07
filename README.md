@@ -69,6 +69,6 @@ mobiledgex, MatchingEngineSDK@mobiledgex.com
 
 MatchingEngineSDK is available under the Apache.LICENSE-2.0. See the LICENSE file for more info.
 
-Copyright (C) 2019-2020 MobiledgeX, Inc.
+Copyright (C) 2018-2020 MobiledgeX, Inc.
 
 Multiple licenses (MIT, BSD, Apache, etc.) for third-party components.
