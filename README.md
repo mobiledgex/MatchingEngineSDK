@@ -8,13 +8,13 @@
 
 The MobiledgeX Client Library enables an application to register and then locate the nearest edge cloudlet backend server for use. The client library also allows verification of a device's location for all location-specific tasks. Because these APIs involve networking, most functions will run asynchronously, and in a background thread, utilizing the Google Promises framework and iOS DispatchQueue.
 
-The Matching Engine iOS SDK provides everything required to create applications for iOS devices.
+The Matching Engine iOS SDK provides everything required to create edge-enabled applications for iOS devices.
 
 
 ## Prerequisites  
 
 * MacOS Mojave installation
-* Xcode 10 (From the Apple store, search for **Xcode**)
+* Xcode 10 (From the Apple store, search for [Xcode](https://developer.apple.com/xcode/))
 * An Apple ID. Create an ID from the developer site on [Apple](https://developer.apple.com)
 * An iOS device to test with
 * [Cocoapods](https://cocoapods.org) installation
@@ -55,9 +55,9 @@ Step 7: Open your xcworkspace.
 Step 8: Copy and paste ```import MobiledgeXiOSLibrary``` in any file(s) where you will utilize the MobiledgeX libary/SDK.  
 
 ### Where to Go from Here  
-* Click [here](https://swagger.mobiledgex.net/client-test/#section/Edge-SDK-iOS) to view and familiarize yourself with the iOS SDK APIs and start your MobiledgeX integration.
+* Click [here](https://api.mobiledgex.net/#section/Edge-SDK-iOS) to view and familiarize yourself with the iOS SDK APIs and start your MobiledgeX integration.
 
-* Need a sample app? Click [here](https://github.com/mobiledgex/edge-cloud-sampleapps/tree/master/iOS/ARShooterExample) to see an example application that uses the MobiledgeXiOSLibrary, and [here](https://developers.mobiledgex.com/guides-and-tutorials/how-to-add-edge-support-to-an-ios-argame) to access instructions to get started.
+* Need a sample app? Click [here](https://github.com/mobiledgex/edge-cloud-sampleapps/tree/master/iOS/ARShooterExample) to see an example application that uses the MobiledgeXiOSLibrary, and [here](https://developers.mobiledgex.com/guides-and-tutorials/sample-app-guides/how-to-add-edge-support-to-an-ios-argame) to access instructions to get started.
 
 * To learn how to use Docker to upload your application, see this [tutorial](https://developers.mobiledgex.com/guides-and-tutorials/hello-world).
 
