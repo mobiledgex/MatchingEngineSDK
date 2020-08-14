@@ -489,7 +489,7 @@ class ConnectionTests: XCTestCase {
         // Test CreateUrl
         do {
             let url = try matchingEngine.createUrl(findCloudletReply: fce, appPort: appPort, proto: "http", desiredPort: 8008)
-            print("Correct url is " + url)
+            print("Created url is " + url)
             XCTAssert(url == "http://mobiledgexmobiledgexsdkdemo20.sdkdemo-app-cluster.us-los-angeles.gcp.mobiledgex.net:3000", "Url created is incorrect. " + url)
         } catch {
             XCTAssert(false, "Wrong error. \(error)")
