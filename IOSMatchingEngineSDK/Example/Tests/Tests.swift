@@ -77,7 +77,6 @@ class Tests: XCTestCase {
     
     func testRegisterClient() {
         let request = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
-
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
         var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply>!
         

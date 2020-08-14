@@ -24,7 +24,7 @@ import Network
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
     // timeout: milliseconds
-    public func getTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<CFSocket> {
+    public func getTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -58,7 +58,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
+    public func getBSDTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         
@@ -93,7 +93,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
         
     @available(iOS 13.0, *)
-    public func getTCPTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<NWConnection> {
+    public func getTCPTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         
@@ -127,7 +127,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<CFSocket> {
+    public func getUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -161,7 +161,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getBSDUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<MobiledgeXiOSLibrary.Socket> {
+    public func getBSDUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
         
@@ -196,7 +196,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     @available(iOS 13.0, *)
-    public func getUDPDTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<NWConnection> {
+    public func getUDPDTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
         
@@ -231,7 +231,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
@@ -255,7 +255,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            var uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "http")
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, proto: "http", desiredPort: desiredPort)
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
@@ -269,7 +269,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getHTTPSClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<URLRequest> {
+    public func getHTTPSClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
         
@@ -293,7 +293,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "https")
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, proto: "https", desiredPort: desiredPort)
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
@@ -307,7 +307,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<SocketManager> {
+    public func getWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
@@ -331,7 +331,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "ws")
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, proto: "ws", desiredPort: desiredPort)
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
@@ -345,7 +345,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    public func getSecureWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int, timeout: Double) -> Promise<SocketManager> {
+    public func getSecureWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
         
@@ -369,7 +369,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
 
         do {
-            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: desiredPort, proto: "wss")
+            let uri = try createUrl(findCloudletReply: findCloudletReply, appPort: appPort, proto: "wss", desiredPort: desiredPort)
             guard let url = URL(string: uri) else {
                 os_log("Unable to create URL struct", log: OSLog.default, type: .debug)
                 promiseInputs.reject(GetConnectionError.variableConversionError(message: "Unable to create URL struct"))
