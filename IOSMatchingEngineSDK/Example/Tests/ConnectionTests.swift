@@ -410,5 +410,90 @@ class ConnectionTests: XCTestCase {
         
         XCTAssert(waitForPromises(timeout: 15))
     }
+    
+    func testAppPortMappings() {
+        let appPort = MobiledgeXiOSLibrary.MatchingEngine.AppPort(
+            proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
+            internal_port: 8008,
+            public_port: 3000,
+            path_prefix: nil,
+            fqdn_prefix: nil,
+            end_port: 8010)
+        
+        let appPort2 = MobiledgeXiOSLibrary.MatchingEngine.AppPort(
+            proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
+            internal_port: 8008,
+            public_port: 3000,
+            path_prefix: nil,
+            fqdn_prefix: nil,
+            end_port: 0)
+            
+        let appPorts = [appPort]
+        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 33.45, longitude: -121.34)
+        let fce = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply(
+            ver: 1,
+            status: MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.FindStatus.FIND_FOUND,
+            fqdn: "mobiledgexmobiledgexsdkdemo20.sdkdemo-app-cluster.us-los-angeles.gcp.mobiledgex.net",
+            ports: appPorts,
+            cloudlet_location: loc)
+
+        // Default -> Use Public Port
+        do {
+            let port = try matchingEngine.getPort(appPort: appPort)
+            print("port is \(port)")
+            XCTAssert(port == appPort.public_port, "Default port did not return public port. Returned \(port)")
+        } catch {
+            XCTAssert(false, "Default desired port should have returned public port. Error is \(error)")
+        }
+
+        // Desired == Internal -> Use Public Port
+        do {
+            let port2 = try matchingEngine.getPort(appPort: appPort, desiredPort: 8008)
+            print("port2 is \(port2)")
+            XCTAssert(port2 == appPort.public_port, "Internal port did not return public port. Returned \(port2)")
+        } catch {
+           XCTAssert(false, "Desired port == Internal should have returned public port. Error is \(error)")
+        }
+
+        // Desired != Internal && Desired in range -> Use Desired Port
+        do {
+            let port3 = try matchingEngine.getPort(appPort: appPort, desiredPort: 3001)
+            print("port3 is \(port3)")
+            XCTAssert(port3 == 3001, "Desired port in port range did not return desired port. Returned \(port3)")
+        } catch {
+            XCTAssert(false, "Desired port != Internal but in range should have returned desired port. Error is \(error)")
+        }
+
+        // Desired != Internal && Desired not in range -> Error
+        do {
+            let port4 = try matchingEngine.getPort(appPort: appPort, desiredPort: 2999)
+            XCTAssert(false, "Desired port not in port range should have thrown GetConnectionError");
+        } catch MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
+            print("Port not in AppPort range is \(port)")
+            XCTAssert(port == 2999, "Error gave wrong port: \(port)")
+        } catch {
+            XCTAssert(false, "Wrong error. \(error)")
+        }
+        
+        // Desired != Internal && Desired not in range -> Error
+        do {
+            let port5 = try matchingEngine.getPort(appPort: appPort2, desiredPort: 3001);
+            XCTAssert(false, "Desired port not in port range should have thrown GetConnectionError");
+        } catch MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
+            print("Port not in AppPort range is \(port)")
+            XCTAssert(port == 3001, "Error gave wrong port: \(port)")
+        } catch {
+            XCTAssert(false, "Wrong error. \(error)")
+        }
+
+        // Test CreateUrl
+        do {
+            let url = try matchingEngine.createUrl(findCloudletReply: fce, appPort: appPort, proto: "http", desiredPort: 8008)
+            print("Created url is " + url)
+            XCTAssert(url == "http://mobiledgexmobiledgexsdkdemo20.sdkdemo-app-cluster.us-los-angeles.gcp.mobiledgex.net:3000", "Url created is incorrect. " + url)
+        } catch {
+            XCTAssert(false, "Wrong error. \(error)")
+        }
+    }
 }
 

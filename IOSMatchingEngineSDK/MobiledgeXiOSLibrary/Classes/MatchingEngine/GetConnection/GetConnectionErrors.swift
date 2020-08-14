@@ -37,6 +37,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case incorrectURLSyntax
         case notTLSConfigured
         case isTLSConfigured
+        case notValidPort(port: UInt16)
+        case portNotInAppPortRange(port: UInt16)
+        case unableToValidatePort
+        
+        public var errorDescription: String? {
+            switch self {
+            case .variableConversionError(let message): return message
+            case .notValidPort(let port): return "\(port) specified is not a valid port number"
+            case .portNotInAppPortRange(let port): return "\(port) specified is not in AppPort range"
+            default: return self.localizedDescription
+            }
+        }
     }
     
     public enum EdgeError: Error {

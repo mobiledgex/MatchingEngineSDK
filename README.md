@@ -35,7 +35,7 @@ Step 4: Create a .netrc file and enter the following credentials: ```echo machin
 Step 5: Navigate to your project directory and add the following lines to your podfile:  
 
 * ```plugin 'cocoapods-art', :sources =>; ['cocoapods-releases']```
-* ```pod 'MobiledgeXiOSLibrary', '= 2.1.0'```  
+* ```pod 'MobiledgeXiOSLibrary', '= 2.1.3'```  
 
 Example podfile:
 ```
@@ -45,7 +45,7 @@ platform :ios, '12.0'
 source 'https://github.com/CocoaPods/Specs.git'
 plugin 'cocoapods-art', :sources => ['cocoapods-releases']
 target 'ARShooter' do  
-pod 'MobiledgeXiOSLibrary','= '2.1.0'
+pod 'MobiledgeXiOSLibrary','= '2.1.3'
 end
 ```
 Step 6: Save your podfile, and then run the following command to install the MobiledgeXLibarary dependency to your workspace: ```pod install```.
