@@ -51,6 +51,31 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var fqdn_prefix: String?
         public var end_port: Int32?
         public var tls: Bool?
+        
+        static func == (ap1: AppPort, ap2: AppPort) -> Bool {
+            if (ap1.proto != ap2.proto) {
+                return false
+            }
+            if (ap1.internal_port != ap2.internal_port) {
+                return false
+            }
+            if (ap1.public_port != ap2.public_port) {
+                return false
+            }
+            if (ap1.path_prefix != ap2.path_prefix) {
+                return false
+            }
+            if (ap1.fqdn_prefix != ap2.fqdn_prefix) {
+                return false
+            }
+            if (ap1.end_port != ap2.end_port) {
+                return false
+            }
+            if (ap1.tls != ap2.tls) {
+                return false
+            }
+            return true
+        }
     }
     
     // Values for AppPort proto field

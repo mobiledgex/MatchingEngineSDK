@@ -74,6 +74,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     public func createUrl(findCloudletReply: FindCloudletReply, appPort: AppPort, proto: String, desiredPort: Int = 0, path: String = "") throws -> String {
+        
+        if (!validateAppPort(findCloudletReply: findCloudletReply, appPort: appPort)) {
+            throw GetConnectionError.unableToValidateAppPort(message: "AppPort provided does not match any AppPorts in FindCloudletReply")
+        }
         // Convert fqdn_prefix and fqdn to string
         var fqdnPrefix = appPort.fqdn_prefix
         if fqdnPrefix == nil {
@@ -91,6 +95,19 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         let port = try getPort(appPort: appPort, desiredPort: desiredPort)
         let url = proto + "://" + host + ":" + String(describing: port) + pathPrefix! + path
         return url
+    }
+    
+    private func validateAppPort(findCloudletReply: FindCloudletReply, appPort: AppPort) -> Bool {
+        var found = false
+        for ap in findCloudletReply.ports {
+            if (ap.proto != appPort.proto) {
+                continue
+            }
+            if (ap == appPort) {
+                found = true
+            }
+        }
+        return found
     }
     
     private func validateDesiredPort(appPort: AppPort, desiredPort: UInt16) throws -> UInt16 {
