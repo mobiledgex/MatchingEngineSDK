@@ -40,12 +40,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case notValidPort(port: UInt16)
         case portNotInAppPortRange(port: UInt16)
         case unableToValidatePort
+        case unableToValidateAppPort(message: String)
         
         public var errorDescription: String? {
             switch self {
             case .variableConversionError(let message): return message
             case .notValidPort(let port): return "\(port) specified is not a valid port number"
             case .portNotInAppPortRange(let port): return "\(port) specified is not in AppPort range"
+            case .unableToValidateAppPort(let message): return message
             default: return self.localizedDescription
             }
         }
