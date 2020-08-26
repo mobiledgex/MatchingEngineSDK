@@ -265,20 +265,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 let appPort = appInstance.ports[0]
                 
                 switch(appPort.proto) {
-                case LProto.L_PROTO_HTTP:
-                    let site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    site.appInst = appInstance
-                    site.cloudletLocation = cloudlet.gps_location
-                    sites.append(site)
-                    break
-                    
                 case LProto.L_PROTO_TCP:
                     var site: MobiledgeXiOSLibrary.PerformanceMetrics.Site?
-                    if (appPort.path_prefix == nil || appPort.path_prefix == "") {
-                        site = initTcpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    } else {
-                        site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    }
+                    site = initTcpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
                     site!.appInst = appInstance
                     site!.cloudletLocation = cloudlet.gps_location
                     sites.append(site!)
@@ -299,18 +288,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
         }
         return sites
-    }
-    
-    @available(iOS 13.0, *)
-    private func initHttpSite(appPort: AppPort, appInstance: Appinstance, numSamples: Int) -> MobiledgeXiOSLibrary.PerformanceMetrics.Site {
-        // initialize variables to create l7Path and Site
-        let port = appPort.public_port
-        let fqdn = (appPort.fqdn_prefix ?? "") + appInstance.fqdn
-        let pathPrefix = appPort.path_prefix ?? ""
-        let l7Path = fqdn + ":" + String(port) + pathPrefix
-        let testType = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT
-        
-        return MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: "", l7Path: l7Path, testType: testType, numSamples: numSamples)
     }
     
     @available(iOS 13.0, *)
