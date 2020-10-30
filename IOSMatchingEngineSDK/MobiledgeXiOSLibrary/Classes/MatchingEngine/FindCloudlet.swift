@@ -31,7 +31,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var gps_location: Loc
         // Optional fields
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
 
     // FindCloudletReply struct
@@ -43,7 +43,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var ports: [AppPort]
         public var cloudlet_location: Loc
         // Optional fields
-        public var tags: [Tag]?
+        public var tags: [String: String]?
         
         // Values for FindCloudletReply status enum
         public enum FindStatus: String, Decodable {
@@ -70,7 +70,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil) throws
+    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [String: String]? = nil) throws
         -> FindCloudletRequest {
             
         let req = FindCloudletRequest(
@@ -169,11 +169,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             
             // Dummy bytes to send to "load" mobile network
             let bytes = Array(repeating: UInt8(1), count: 2048)
-            let tag = Tag(
-                type: "buffer",
-                data: String(bytes: bytes, encoding: .utf8) ?? ""
-            )
-            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: [tag])
+            var tags = ["buffer": String(bytes: bytes, encoding: .utf8) ?? ""]
+            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: tags)
             return self.getAppInstList(host: host, port: port, request: appInstRequest)
             }
             

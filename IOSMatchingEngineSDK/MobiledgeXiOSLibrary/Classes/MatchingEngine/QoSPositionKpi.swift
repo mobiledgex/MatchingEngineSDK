@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var lte_category: Int32?
         public var band_selection: BandSelection?
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
     
     // Object in positions field in QosPositionRequest
@@ -64,7 +64,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var ver: uint
         public var status: ReplyStatus
         public var position_results: [QosPositionKpiResult]
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
     
     // Object returned in position_results field of QosPositionKpiReply
@@ -88,7 +88,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Parameters:
     ///   -requests: QosPositions (Dict: id -> gps location)
     /// - Returns: API  Dictionary/json
-    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> QosPositionRequest {
+    public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> QosPositionRequest {
         
         let req = QosPositionRequest(
             ver: 1,

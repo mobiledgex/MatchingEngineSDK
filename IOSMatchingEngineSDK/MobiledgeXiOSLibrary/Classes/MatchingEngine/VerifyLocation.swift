@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var gps_location: Loc
         public var verify_loc_token: String
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
 
     // VerifyLocationReply struct
@@ -39,7 +39,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tower_status: TowerStatus
         public var gps_location_status: GPSLocationStatus
         public var gps_location_accuracy_km: Double
-        public var tags: [Tag]?
+        public var tags: [String: String]?
         
         // Values for VerifyLocationReply tower_status field
         public enum TowerStatus: String, Decodable {
@@ -70,7 +70,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///
     /// - Returns: API json/Dictionary
     public func createVerifyLocationRequest(gpsLocation: Loc, carrierName: String?,
-                                            cellID: uint? = nil, tags: [Tag]? = nil) throws -> VerifyLocationRequest {
+                                            cellID: uint? = nil, tags: [String: String]? = nil) throws -> VerifyLocationRequest {
             
         let req = VerifyLocationRequest(
             ver: 1,

@@ -21,12 +21,6 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // Object in the tags parameter of API requests and replies (tags is an array of Tag objects)
-    public struct Tag: Codable {
-        public var type: String
-        public var data: String
-    }
-    
     // IDTypes used for unique_id_type in RegisterClientRequest??
     public enum IDTypes: String, Codable {
         case ID_UNDEFINED = "ID_UNDEFINED"
