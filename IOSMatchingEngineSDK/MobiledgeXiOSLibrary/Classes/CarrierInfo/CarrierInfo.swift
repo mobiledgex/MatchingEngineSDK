@@ -28,6 +28,7 @@ extension MobiledgeXiOSLibrary {
             case missingMNC
             case missingISOCountryCode
             case missingCellularProviderInfo
+            case missingCarrierName
         }
         
         // Used to look at subscriber and cellular data info (Developer should implement callbacks in case SIM card changes)
@@ -42,6 +43,15 @@ extension MobiledgeXiOSLibrary {
                 throw CarrierInfoError.missingISOCountryCode
             }
             return isoCountryCode
+        }
+        
+        static func getCarrierName() throws -> String {
+            let carrier = try getCarrier()
+            guard let carrierName = carrier.carrierName else {
+                os_log("Cannot get iso Country code", log: OSLog.default, type: .debug)
+                throw CarrierInfoError.missingCarrierName
+            }
+            return carrierName
         }
 
         // Returns Array with MCC in zeroth index and MNC in first index
