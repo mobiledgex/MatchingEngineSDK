@@ -162,7 +162,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     public func getDeviceInfo() -> [String: String] {
         var deviceInfo = [String: String]()
         
-        deviceInfo["DeviceManufacturer"] = state.deviceManufacturer // Apple
+        deviceInfo["ManufacturerCode"] = state.deviceManufacturer // Apple
         
         // Get Device System information
         let vers = state.device.systemVersion
@@ -170,12 +170,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         let model = state.device.model
         deviceInfo["DeviceModel"] = model
         let systemName = state.device.systemName
-        deviceInfo["SystemName"] = systemName
-        
+        deviceInfo["OperatingSystem"] = systemName
+
         // Get CarrierName
         do {
             let carrierName = try MobiledgeXiOSLibrary.CarrierInfo.getCarrierName()
-            deviceInfo["SimOperator"] = carrierName
+            deviceInfo["SimOperatorName"] = carrierName
         } catch {
             os_log("Unable to get carriername for SIM. Will not send SimOperator", log: OSLog.default, type: .debug)
         }
