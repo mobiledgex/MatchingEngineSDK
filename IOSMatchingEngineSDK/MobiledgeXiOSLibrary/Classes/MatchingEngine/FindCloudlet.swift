@@ -31,7 +31,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var gps_location: Loc
         // Optional fields
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
 
     // FindCloudletReply struct
@@ -43,7 +43,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var ports: [AppPort]
         public var cloudlet_location: Loc
         // Optional fields
-        public var tags: [Tag]?
+        public var tags: [String: String]?
         
         // Values for FindCloudletReply status enum
         public enum FindStatus: String, Decodable {
@@ -70,7 +70,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     /// - Returns: API  Dictionary/json
     
     // Carrier name can change depending on cell tower.
-    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [Tag]? = nil) throws
+    public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [String: String]? = nil) throws
         -> FindCloudletRequest {
             
         let req = FindCloudletRequest(
@@ -169,11 +169,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             
             // Dummy bytes to send to "load" mobile network
             let bytes = Array(repeating: UInt8(1), count: 2048)
-            let tag = Tag(
-                type: "buffer",
-                data: String(bytes: bytes, encoding: .utf8) ?? ""
-            )
-            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: [tag])
+            var tags = ["buffer": String(bytes: bytes, encoding: .utf8) ?? ""]
+            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gps_location, carrierName: request.carrier_name, tags: tags)
             return self.getAppInstList(host: host, port: port, request: appInstRequest)
             }
             
@@ -265,20 +262,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
                 let appPort = appInstance.ports[0]
                 
                 switch(appPort.proto) {
-                case LProto.L_PROTO_HTTP:
-                    let site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    site.appInst = appInstance
-                    site.cloudletLocation = cloudlet.gps_location
-                    sites.append(site)
-                    break
-                    
                 case LProto.L_PROTO_TCP:
                     var site: MobiledgeXiOSLibrary.PerformanceMetrics.Site?
-                    if (appPort.path_prefix == nil || appPort.path_prefix == "") {
-                        site = initTcpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    } else {
-                        site = initHttpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    }
+                    site = initTcpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
                     site!.appInst = appInstance
                     site!.cloudletLocation = cloudlet.gps_location
                     sites.append(site!)
@@ -299,18 +285,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             }
         }
         return sites
-    }
-    
-    @available(iOS 13.0, *)
-    private func initHttpSite(appPort: AppPort, appInstance: Appinstance, numSamples: Int) -> MobiledgeXiOSLibrary.PerformanceMetrics.Site {
-        // initialize variables to create l7Path and Site
-        let port = appPort.public_port
-        let fqdn = (appPort.fqdn_prefix ?? "") + appInstance.fqdn
-        let pathPrefix = appPort.path_prefix ?? ""
-        let l7Path = fqdn + ":" + String(port) + pathPrefix
-        let testType = MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType.CONNECT
-        
-        return MobiledgeXiOSLibrary.PerformanceMetrics.Site(network: "", l7Path: l7Path, testType: testType, numSamples: numSamples)
     }
     
     @available(iOS 13.0, *)

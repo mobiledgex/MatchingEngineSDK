@@ -29,7 +29,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var carrier_name: String
         public var gps_location: Loc
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
 
     // AppInstListReply struct
@@ -37,7 +37,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var ver: uint
         public var status: AIStatus
         public var cloudlets: [CloudletLocation]
-        public var tags: [Tag]?
+        public var tags: [String: String]?
         
         // Values for AppInstList status field
         public enum AIStatus: String, Decodable {
@@ -72,7 +72,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - gpslocation: A dictionary with at least longitude and latitude key values.
     ///
     /// - Returns: API Dictionary/json
-    public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [Tag]? = nil) throws -> AppInstListRequest {
+    public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [String: String]? = nil) throws -> AppInstListRequest {
         
         let req = AppInstListRequest(
             ver: 1,

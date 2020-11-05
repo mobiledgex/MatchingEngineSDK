@@ -416,7 +416,6 @@ class ConnectionTests: XCTestCase {
             proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
             internal_port: 8008,
             public_port: 3000,
-            path_prefix: nil,
             fqdn_prefix: nil,
             end_port: 8010)
         
@@ -424,7 +423,6 @@ class ConnectionTests: XCTestCase {
             proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
             internal_port: 8008,
             public_port: 3000,
-            path_prefix: nil,
             fqdn_prefix: nil,
             end_port: 0)
             

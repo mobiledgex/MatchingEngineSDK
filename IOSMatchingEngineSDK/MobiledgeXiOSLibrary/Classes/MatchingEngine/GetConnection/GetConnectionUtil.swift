@@ -86,14 +86,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         
         let fqdn = findCloudletReply.fqdn
         
-        var pathPrefix = appPort.path_prefix
-        if pathPrefix == nil {
-            pathPrefix = ""
-        }
-        
         let host = fqdnPrefix! + fqdn
         let port = try getPort(appPort: appPort, desiredPort: desiredPort)
-        let url = proto + "://" + host + ":" + String(describing: port) + pathPrefix! + path
+        let url = proto + "://" + host + ":" + String(describing: port) + path
         return url
     }
     
