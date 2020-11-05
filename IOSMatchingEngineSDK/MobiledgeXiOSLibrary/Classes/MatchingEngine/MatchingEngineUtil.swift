@@ -158,6 +158,71 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return "https://\(host):\(port)"
     }
     
+    // Device info will be sent as tags parameter in RegisterClient
+    public func getDeviceInfo() -> [String: String] {
+        var deviceInfo = [String: String]()
+        
+        deviceInfo["ManufacturerCode"] = state.deviceManufacturer // Apple
+        
+        // Get Device System information
+        let vers = state.device.systemVersion
+        deviceInfo["DeviceSoftwareVersion"] = vers
+        let model = state.device.model
+        deviceInfo["DeviceModel"] = model
+        let systemName = state.device.systemName
+        deviceInfo["OperatingSystem"] = systemName
+
+        // Get CarrierName
+        do {
+            let carrierName = try MobiledgeXiOSLibrary.CarrierInfo.getCarrierName()
+            deviceInfo["SimOperatorName"] = carrierName
+        } catch {
+            os_log("Unable to get carriername for SIM. Will not send SimOperator", log: OSLog.default, type: .debug)
+        }
+        
+        // Make sure LocationServices is running before Checking ISO codes
+        if !MobiledgeXiOSLibrary.MobiledgeXLocation.locationServicesRunning {
+            os_log("Start location services before looking up ISO country codes", log: OSLog.default, type: .debug)
+            return deviceInfo
+        }
+        
+        // Get ISO Country Code of current location
+        let isoCC = MobiledgeXiOSLibrary.MobiledgeXLocation.getLastISOCountryCode()?.uppercased()
+        if let locationCountryCode = isoCC {
+            deviceInfo["NetworkCountryIso"] = locationCountryCode
+        } else {
+            os_log("No ISO Country code for location. Will not send NetworkCountryIso", log: OSLog.default, type: .debug)
+        }
+        
+        // Get ISO Country Code of carrier network
+        do {
+            let carrierCountryCode = try MobiledgeXiOSLibrary.CarrierInfo.getISOCountryCode().uppercased()
+            deviceInfo["SimCountryCodeIso"] = carrierCountryCode
+        } catch {
+            os_log("Unable to get ISO Country code for SIM. Will not send SimCountryCodeIso", log: OSLog.default, type: .debug)
+        }
+        return deviceInfo
+    }
+    
+    // NetworkDataType is sent along with latency information when sending samples to DME
+    public func getNetworkDataType() -> String? {
+        guard let radioTech = MobiledgeXiOSLibrary.CarrierInfo.networkInfo.serviceCurrentRadioAccessTechnology else {
+            os_log("Unable to get radio access technology", log: OSLog.default, type: .debug)
+            return nil
+        }
+        
+        if #available(iOS 13.0, *) {
+            guard let service = MobiledgeXiOSLibrary.CarrierInfo.networkInfo.dataServiceIdentifier else {
+                os_log("Unable to find data service identifier", log: OSLog.default, type: .debug)
+                return nil
+            }
+            return radioTech[service]
+        } else {
+            os_log("Data service identifier requires iOS 13.0+", log: OSLog.default, type: .debug)
+            return nil
+        }
+    }
+    
     func getUniqueID() -> String? {
         let uuid = state.uuid
         return hashSHA512(string: uuid)

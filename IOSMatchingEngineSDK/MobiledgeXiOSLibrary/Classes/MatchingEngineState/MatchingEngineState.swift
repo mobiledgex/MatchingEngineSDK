@@ -40,7 +40,7 @@ extension MobiledgeXiOSLibrary {
         
         private var useWifiOnly: Bool = false
         
-        private var deviceManufacturer = "Apple"
+        public var deviceManufacturer = "Apple"
         
         init() {
             print(Bundle.main.object)
