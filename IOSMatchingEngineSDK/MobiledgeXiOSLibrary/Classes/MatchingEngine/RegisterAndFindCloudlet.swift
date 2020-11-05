@@ -23,7 +23,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: Loc, carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
+    public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: Loc, carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
         let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
         
@@ -40,7 +40,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     }
     
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: Loc,  carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [Tag]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
+    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: Loc,  carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
         var promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
         

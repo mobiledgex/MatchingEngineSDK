@@ -84,28 +84,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return udpAppPorts
     }
     
-    // Return dictionary of HTTP AppPorts given in findCloudletReply
-    public func getHTTPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
-    {
-        var httpAppPorts = [UInt16: AppPort]()
-        // array of AppPorts
-        let appPorts = findCloudletReply.ports
-        // iterate through all AppPorts
-        for appPort in appPorts {
-            // check for protocol
-            if appPort.proto == LProto.L_PROTO_HTTP {
-                // Make sure internal port is a valid port
-                if !isValidPort(port: appPort.internal_port) {
-                    throw MatchingEngineError.invalidInternalPort
-                }
-                // truncate Int32 to UInt16
-                let internalPort = UInt16(truncatingIfNeeded: appPort.internal_port)
-                httpAppPorts[internalPort] = appPort
-            }
-        }
-        return httpAppPorts
-    }
-    
     private func isValidPort(port: Int32) -> Bool {
         return (port <= 65535) && (port > 0)
     }

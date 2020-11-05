@@ -49,7 +49,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var uniqueID: String?
     var uniqueIDType: MobiledgeXiOSLibrary.MatchingEngine.IDTypes?
     var cellID: UInt32?
-    var tags: [MobiledgeXiOSLibrary.MatchingEngine.Tag]?
+    var tags: [String: String]?
     
     // For the overriding me.getCarrierName() for contacting the DME host
     var overrideDmeCarrierName: String? = "sdkdemo"

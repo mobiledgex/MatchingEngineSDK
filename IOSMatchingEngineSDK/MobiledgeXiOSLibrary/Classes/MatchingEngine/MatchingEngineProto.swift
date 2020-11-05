@@ -21,12 +21,6 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // Object in the tags parameter of API requests and replies (tags is an array of Tag objects)
-    public struct Tag: Codable {
-        public var type: String
-        public var data: String
-    }
-    
     // IDTypes used for unique_id_type in RegisterClientRequest??
     public enum IDTypes: String, Codable {
         case ID_UNDEFINED = "ID_UNDEFINED"
@@ -47,7 +41,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var proto: LProto
         public var internal_port: Int32
         public var public_port: Int32
-        public var path_prefix: String?
         public var fqdn_prefix: String?
         public var end_port: Int32?
         public var tls: Bool?
@@ -83,7 +76,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case L_PROTO_UNKNOWN = "L_PROTO_UNKNOWN"
         case L_PROTO_TCP = "L_PROTO_TCP"
         case L_PROTO_UDP = "L_PROTO_UDP"
-        case L_PROTO_HTTP = "L_PROTO_HTTP"
     }
     
     // Object used in timestamp field of Loc

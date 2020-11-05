@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var comm_type: DlgCommType
         public var user_data: String?
         public var cell_id: uint?
-        public var tags: [Tag]?
+        public var tags: [String: String]?
         
         // Values for DynamicLocGroupRequest comm_type field
         public enum DlgCommType: String, Encodable {
@@ -46,7 +46,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var status: ReplyStatus
         public var error_code: uint
         public var group_cookie: String
-        public var tags: [Tag]?
+        public var tags: [String: String]?
     }
     
     /// createDynamicLocGroupRequest
@@ -56,7 +56,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: API Dictionary/json
-    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [Tag]? = nil) throws -> DynamicLocGroupRequest {
+    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DynamicLocGroupRequest {
         
         let req = DynamicLocGroupRequest(
             ver: 1,
