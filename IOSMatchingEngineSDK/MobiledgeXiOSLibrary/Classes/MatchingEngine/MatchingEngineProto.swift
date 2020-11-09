@@ -55,9 +55,6 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             if (ap1.public_port != ap2.public_port) {
                 return false
             }
-            if (ap1.path_prefix != ap2.path_prefix) {
-                return false
-            }
             if (ap1.fqdn_prefix != ap2.fqdn_prefix) {
                 return false
             }
