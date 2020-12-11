@@ -22,6 +22,8 @@ import Foundation
 
 import UIKit
 
+import Eureka
+
 class SettingsViewController: FormViewController
 {
     override func viewDidLoad()
