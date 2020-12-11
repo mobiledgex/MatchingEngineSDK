@@ -10,7 +10,6 @@ source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
 target 'MatchingEngine_Example' do
   pod 'MobiledgeXiOSLibrary', :path => '../'
 
-  #pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'xcode12'
   pod 'Eureka', '= 5.3.0'
  
   pod 'DropDown', '= 2.3.13'
