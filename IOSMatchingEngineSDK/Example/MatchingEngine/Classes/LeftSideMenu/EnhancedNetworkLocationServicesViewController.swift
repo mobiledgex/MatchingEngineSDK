@@ -23,6 +23,8 @@ import Foundation
 
 import UIKit
 
+import Eureka
+
 class EnhancedNetworkLocationServicesViewController: FormViewController
 {
     override func viewDidLoad()
@@ -50,7 +52,7 @@ class EnhancedNetworkLocationServicesViewController: FormViewController
 
         }.cellSetup
         { _, row in
-            row.subTitle = " Enhanced Network Location Services."
+            // row.subTitle = " Enhanced Network Location Services."
         }
 
         #if false

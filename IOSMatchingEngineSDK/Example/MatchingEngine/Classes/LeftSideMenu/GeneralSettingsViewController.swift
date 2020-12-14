@@ -23,6 +23,8 @@ import Foundation
 
 import UIKit
 
+import Eureka
+
 class GeneralSettingsViewController: FormViewController
 {
     override func viewDidLoad()

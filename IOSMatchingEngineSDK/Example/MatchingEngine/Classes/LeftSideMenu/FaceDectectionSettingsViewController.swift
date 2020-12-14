@@ -23,6 +23,8 @@ import Foundation
 
 import UIKit
 
+import Eureka
+
 class FaceDectectionSettingsViewController: FormViewController
 {
     override func viewDidLoad()
@@ -50,7 +52,7 @@ class FaceDectectionSettingsViewController: FormViewController
         }
         .cellSetup
         { _, row in
-            row.subTitle = " Track multiple faces"
+            // row.subTitle = " Track multiple faces"
         }
             <<< SwitchRow
         {
@@ -64,7 +66,7 @@ class FaceDectectionSettingsViewController: FormViewController
         }
         .cellSetup
         { _, row in
-            row.subTitle = " Include tracking via local processing "
+            // row.subTitle = " Include tracking via local processing "
         }
             <<< SwitchRow
         {
@@ -78,7 +80,7 @@ class FaceDectectionSettingsViewController: FormViewController
         }
         .cellSetup
         { _, row in
-            row.subTitle = " Measure all"
+            // row.subTitle = " Measure all"
         }
             <<< SwitchRow
         {
@@ -92,7 +94,7 @@ class FaceDectectionSettingsViewController: FormViewController
         }
         .cellSetup
         { _, row in
-            row.subTitle = " Measures only network latency" //
+            // row.subTitle = " Measures only network latency" //
         }
 
             <<< SwitchRow
@@ -108,7 +110,7 @@ class FaceDectectionSettingsViewController: FormViewController
         }
         .cellSetup
         { _, row in
-            row.subTitle = " Standard deviation" // 
+            // row.subTitle = " Standard deviation" //
         }
 
             <<< SwitchRow
@@ -123,7 +125,7 @@ class FaceDectectionSettingsViewController: FormViewController
 
         }.cellSetup
         { _, row in
-            row.subTitle = " Show measurements and rolling average."
+            // row.subTitle = " Show measurements and rolling average."
         }
     }
 }
