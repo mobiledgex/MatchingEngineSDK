@@ -23,6 +23,8 @@ import Foundation
 
 import UIKit
 
+import Eureka
+
 class SpeedTestSettingsViewController: FormViewController
 {
     override func viewDidLoad()
