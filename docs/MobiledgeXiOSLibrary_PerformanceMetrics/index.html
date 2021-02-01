@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift SDK - MobiledgeXiOSLibrary.PerformanceMetrics</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Enumeration</small>
+    <code class="name">Mobiledge​XiOSLibrary.​Performance​Metrics</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">enum</span> <span class="type">PerformanceMetrics</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Namespace for collecting network performance. Contains NetTest and Site classes</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary">MobiledgeXiOSLibrary</a></code></dt>
+<dd><p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+</dd>
+</dl>
+<h3>Nested Types</h3>
+<dl>
+    <dt class="class"><code><a href="./MobiledgeXiOSLibrary_PerformanceMetrics_NetTest">MobiledgeXiOSLibrary.PerformanceMetrics.NetTest</a></code></dt>
+<dd><p>Class that allows developers to easily test latency of their various backend servers.
+This is used in the implementation of FindCloudlet Performance Mode.</p>
+</dd>
+<dt class="class"><code><a href="./MobiledgeXiOSLibrary_PerformanceMetrics_Site">MobiledgeXiOSLibrary.PerformanceMetrics.Site</a></code></dt>
+<dd><p>Object used by NetTest to test latency of server.
+Each site object contains the server path or host + port, avg latency, standard deviation, list of latency times, and the TestType.
+TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+</dd>
+</dl>
+</section>
+
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-02-01T16:02:10-0600">February 1, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>

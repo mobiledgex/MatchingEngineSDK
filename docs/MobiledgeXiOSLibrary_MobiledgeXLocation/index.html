@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift SDK - MobiledgeXiOSLibrary.MobiledgeXLocation</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#mobiledgexioslibrary.mobiledgexlocation.startlocationservices(servicetype:)">start​Location​Services(service​Type:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.mobiledgexlocation.stoplocationservices()">stop​Location​Services()</a></li><li class="function"><a href="#mobiledgexioslibrary.mobiledgexlocation.checklocationpermissions()">check​Location​Permissions()</a></li><li class="function"><a href="#mobiledgexioslibrary.mobiledgexlocation.getlastlocation()">get​Last​Location()</a></li><li class="function"><a href="#mobiledgexioslibrary.mobiledgexlocation.getlastisocountrycode()">get​Last​ISOCountry​Code()</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Mobiledge​XiOSLibrary.​Mobiledge​XLocation</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">MobiledgeXLocation</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>MobiledgeX Location Services for easy location service integration with application</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary">MobiledgeXiOSLibrary</a></code></dt>
+<dd><p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+</dd>
+</dl>
+<h3>Nested Types</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary_MobiledgeXLocation_ServiceType">MobiledgeXiOSLibrary.MobiledgeXLocation.ServiceType</a></code></dt>
+<dd><p>Types of Location ServiceTypes, reflects built-in methods that iOS uses to get location
+Visits: Only updates location when user spends time at location and then moves (the most power-efficient)
+SignificantChange : Updates location when user's location significantly changes
+Standard: For real time location updates (requires most power)</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary_MobiledgeXLocation_MobiledgeXLocationError">MobiledgeXiOSLibrary.MobiledgeXLocation.MobiledgeXLocationError</a></code></dt>
+<dd></dd>
+</dl>
+</section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="mobiledgexioslibrary.mobiledgexlocation.startlocationservices(servicetype:)">
+    <h3>
+        <code>start​Location​Services(service​Type:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">startLocationServices</span>(<span class="variable">serviceType</span>: <span class="type">ServiceType</span> = <span class="variable">ServiceType</span>.<span class="type">SignificantChange</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Bool</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Begin monitoring location services. Default serviceType is SignificantChange</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.mobiledgexlocation.stoplocationservices()">
+    <h3>
+        <code>stop​Location​Services()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">stopLocationServices</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.mobiledgexlocation.checklocationpermissions()">
+    <h3>
+        <code>check​Location​Permissions()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">checkLocationPermissions</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Checks to see what Location Permissions user has accepted (called before Location Services is started)
+Will only return true (ie. that location services can start) if user has authorized location services always or when in app use
+Otherwise the user has not accepted valid location permissions and we cannot start location services</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.mobiledgexlocation.getlastlocation()">
+    <h3>
+        <code>get​Last​Location()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastLocation</span>() -&gt; <a href="./MobiledgeXiOSLibrary"><span class="type">MobiledgeXiOSLibrary</span></a>.<span class="type">MatchingEngine</span>.<span class="type">Loc</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.mobiledgexlocation.getlastisocountrycode()">
+    <h3>
+        <code>get​Last​ISOCountry​Code()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastISOCountryCode</span>() -&gt; <span class="type">String</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the ISO country code of the last location</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-02-01T16:02:10-0600">February 1, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>

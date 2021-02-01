@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift SDK - MobiledgeXiOSLibrary.PerformanceMetrics.NetTest</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li><li><a href="#initializers">Initializers</a><ul><li class="initializer"><a href="#mobiledgexioslibrary.performancemetrics.nettest.init(sites:qos:)">init(sites:​qos:​)</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrary.performancemetrics.nettest.sites">sites</a></li><li class="variable"><a href="#mobiledgexioslibrary.performancemetrics.nettest.tests">tests</a></li><li class="variable"><a href="#mobiledgexioslibrary.performancemetrics.nettest.timeout">timeout</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.runtest(interval:)">run​Test(interval:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.runtest(numsamples:)">run​Test(num​Samples:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.returnsortedsites()">return​Sorted​Sites()</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.canceltest()">cancel​Test()</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.addsite(site:)">add​Site(site:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.removesite(site:)">remove​Site(site:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.connectanddisconnect(site:)">connect​And​Disconnect(site:​)</a></li><li class="function"><a href="#mobiledgexioslibrary.performancemetrics.nettest.connectanddisconnectsocket(site:)">connect​And​Disconnect​Socket(site:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Mobiledge​XiOSLibrary.​Performance​Metrics.​Net​Test</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">class</span> <span class="type">NetTest</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Class that allows developers to easily test latency of their various backend servers.
+This is used in the implementation of FindCloudlet Performance Mode.</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary_PerformanceMetrics">MobiledgeXiOSLibrary.PerformanceMetrics</a></code></dt>
+<dd><p>Namespace for collecting network performance. Contains NetTest and Site classes</p>
+</dd>
+</dl>
+<h3>Nested Types</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary_PerformanceMetrics_NetTest_TestType">MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType</a></code></dt>
+<dd><p>TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+</dd>
+</dl>
+</section>
+    <section id="initializers">
+        <h2>Initializers</h2>
+
+        <div role="article" class="initializer" id="mobiledgexioslibrary.performancemetrics.nettest.init(sites:qos:)">
+    <h3>
+        <code>init(sites:​qos:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">sites</span>: [<span class="type">Site</span>], <span class="variable">qos</span>: <span class="type">DispatchQoS</span>)</code></pre></body></html>
+</div>
+    </section>
+    <section id="properties">
+        <h2>Properties</h2>
+
+        <div role="article" class="variable" id="mobiledgexioslibrary.performancemetrics.nettest.sites">
+    <h3>
+        <code>sites</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">sites</span>: [<span class="type">Site</span>]</code></pre></body></html>
+</div>
+<div role="article" class="variable" id="mobiledgexioslibrary.performancemetrics.nettest.tests">
+    <h3>
+        <code>tests</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">tests</span>: [<span class="type">AnyCancellable</span>]</code></pre></body></html>
+</div>
+<div role="article" class="variable" id="mobiledgexioslibrary.performancemetrics.nettest.timeout">
+    <h3>
+        <code>timeout</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">timeout</span> = <span class="number literal">5.0</span></code></pre></body></html>
+</div>
+    </section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.runtest(interval:)">
+    <h3>
+        <code>run​Test(interval:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">interval</span>: <span class="type">Int</span>)</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Run tests at interval (milliseconds) indefinitely until call to cancelTest</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.runtest(numsamples:)">
+    <h3>
+        <code>run​Test(num​Samples:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">numSamples</span>: <span class="type">Int</span>? = <span class="keyword">nil</span>) -&gt; <span class="type">Promise</span>&lt;[<span class="type">Site</span>]&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Run NetTest for numSamples per site</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.returnsortedsites()">
+    <h3>
+        <code>return​Sorted​Sites()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">returnSortedSites</span>() -&gt; [<span class="type">Site</span>]</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Sorted list of Sites from best to worst</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.canceltest()">
+    <h3>
+        <code>cancel​Test()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">cancelTest</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.addsite(site:)">
+    <h3>
+        <code>add​Site(site:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">addSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.removesite(site:)">
+    <h3>
+        <code>remove​Site(site:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">removeSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.connectanddisconnect(site:)">
+    <h3>
+        <code>connect​And​Disconnect(site:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnect</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.performancemetrics.nettest.connectanddisconnectsocket(site:)">
+    <h3>
+        <code>connect​And​Disconnect​Socket(site:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnectSocket</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Allows bind to cellular interface</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-02-01T16:02:10-0600">February 1, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>
