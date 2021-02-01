@@ -19,6 +19,9 @@ SOURCE := $(REPOROOT)/IOSMatchingEngineSDK/MobiledgeXiOSLibrary/Classes
 all: gen-docs
 
 gen-docs:
+ifeq (, $(shell which swift doc))
+	$(error "swift doc is not installed. Go to https://github.com/SwiftDocOrg/swift-doc for directions on how to install.")	
+endif
 	@echo Generating documentation...
 	$(shell rm -rf $(REPOROOT)/docs)
 	$(shell swift doc generate $(SOURCE) --module-name "Swift SDK" --output $(REPOROOT)/docs --format html --base-url .)
