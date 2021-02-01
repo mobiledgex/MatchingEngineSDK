@@ -24,6 +24,8 @@ import Promises
 
 extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
+    /// Class that allows developers to easily test latency of their various backend servers.
+    /// This is used in the implementation of FindCloudlet Performance Mode.
     @available(iOS 13.0, *)
     public class NetTest {
         
@@ -36,6 +38,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
         let NANO_TO_MILLI = 1.0 / 1000000.0
         let DEFAULT_NUM_SAMPLES = 3
         
+        /// TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.
         public enum TestType {
             case PING
             case CONNECT
@@ -47,7 +50,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             tests = [AnyCancellable]()
         }
 
-        // Run tests at interval (milliseconds) indefinitely until call to cancelTest
+        /// Run tests at interval (milliseconds) indefinitely until call to cancelTest
         public func runTest(interval: Int) {
             cancelTest() // clear our previous data
                         
@@ -61,7 +64,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             }
         }
         
-        // Run NetTest for numSamples per site
+        /// Run NetTest for numSamples per site
         public func runTest(numSamples: Int? = nil) -> Promise<[Site]> {
             let num = numSamples == nil ? DEFAULT_NUM_SAMPLES : numSamples!
             cancelTest() // clear our previous data
@@ -104,7 +107,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             }
         }
         
-        // Sorted list of Sites from best to worst
+        /// Sorted list of Sites from best to worst
         public func returnSortedSites() -> [Site] {
             sites.sort { site1 , site2 in
                 if site1.samples.count == 0 || site2.samples.count == 0 {
@@ -193,7 +196,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             task.resume()
         }
         
-        // Allows bind to cellular interface
+        /// Allows bind to cellular interface
         public func connectAndDisconnectSocket(site: Site) {
             
             if site.l7Path != nil {

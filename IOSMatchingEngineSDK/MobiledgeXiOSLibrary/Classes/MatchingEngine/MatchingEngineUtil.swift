@@ -54,7 +54,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return true
     }
     
-    // Retrieve the carrier name of the cellular network interface (MCC and MNC)
+    /// Retrieve the carrier name of the cellular network interface (MCC and MNC)
+    /// Returns the carrier's mcc+mnc which is mapped to a carrier in the backend (ie. 26201 -> TDG).
+    /// MCC stands for Mobile Country Code and MNC stands for Mobile Network Code.
+    /// If useWifiOnly or cellular is off + wifi is up, this will return "".
+    /// Empty string carrierName is the alias for any, which will search all carriers for application instances.
     public func getCarrierName() -> String
     {
         var mccMnc = [String]()
@@ -84,6 +88,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return concat
     }
     
+    /// This will generate the dme host name based on GetMccMnc() -> "mcc-mnc.dme.mobiledgex.net".
+    /// If getMccMnc fails or returns null, this will return a fallback dme host: "wifi.dme.mobiledgex.net"(this is the EU + TDG DME).
+    /// This function is used by any DME APIs calls where no host and port overloads are provided.
     public func generateDmeHostAddress() throws -> String
     {
         var mccMnc = [String]()
@@ -133,7 +140,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return carrier + "." + DMEConstants.baseDmeHost
     }
     
-    // DNS Lookup
+    /// Makes sure host generated in generateDmeHostAddress is valid
+    /// DNS Lookup
     public func verifyDmeHost(host: String) throws {
         var addrInfo = addrinfo.init()
         var result: UnsafeMutablePointer<addrinfo>!
@@ -158,7 +166,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return "https://\(host):\(port)"
     }
     
-    // Device info will be sent as tags parameter in RegisterClient
+    /// Device info will be sent as tags parameter in RegisterClient
     public func getDeviceInfo() -> [String: String] {
         var deviceInfo = [String: String]()
         
@@ -204,7 +212,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return deviceInfo
     }
     
-    // NetworkDataType is sent along with latency information when sending samples to DME
+    /// NetworkDataType is sent along with latency information when sending samples to DME
     public func getNetworkDataType() -> String? {
         guard let radioTech = MobiledgeXiOSLibrary.CarrierInfo.networkInfo.serviceCurrentRadioAccessTechnology else {
             os_log("Unable to get radio access technology", log: OSLog.default, type: .debug)

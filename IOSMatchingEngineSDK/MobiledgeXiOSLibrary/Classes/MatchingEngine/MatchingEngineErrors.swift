@@ -21,6 +21,7 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
+    /// MatchingEngine API errors
     public enum MatchingEngineError: Error {
         case networkFailure
         case unknownAppInsts
@@ -53,6 +54,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case cellularIsNotConnected
     }
     
+    /// Occurs when VerifyLocation API is unable to communicate with token server
     public enum InvalidTokenServerTokenError: Error  {
         case invalidTokenServerUri
         case cannotContactServer
@@ -60,6 +62,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case invalidTokenServerResponse
     }
     
+    /// Occurs on bad HTTP requests
     public enum UrlSessionError: Error {
         case transportError(errorMessage: String)
         case invalidHttpUrlResponse

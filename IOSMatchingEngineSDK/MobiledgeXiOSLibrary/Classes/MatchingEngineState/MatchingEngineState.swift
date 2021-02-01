@@ -25,9 +25,11 @@ import AdSupport
 
 extension MobiledgeXiOSLibrary {
     
+    /// Each instance of MatchingEngine class contains MatchingEngineState
+    /// Holds information about app instance, information required for MatchingEngine API calls, and any necessary device info
     public class MatchingEngineState {
                 
-        // Information about state of device
+        /// Information about state of device
         public var device: UIDevice
         
         public var closestCloudlet = ""

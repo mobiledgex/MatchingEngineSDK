@@ -18,7 +18,7 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // Returns dictionary: key -> internal port, value -> AppPort
+    /// Returns dictionary: key -> internal port, value -> AppPort
     public func getAppPortsByProtocol(findCloudletReply: FindCloudletReply, proto: LProto) throws -> [UInt16: AppPort]?
     {
         var appPortsByProtocol = [UInt16: AppPort]()
@@ -40,7 +40,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return appPortsByProtocol
     }
     
-    // Return dictionary of TCP AppPorts given in findCloudletReply
+    /// Return dictionary of TCP AppPorts given in findCloudletReply
     public func getTCPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
     {
         var tcpAppPorts = [UInt16: AppPort]()
@@ -62,7 +62,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return tcpAppPorts
     }
     
-    // Return dictionary of UDP AppPorts given in findCloudletReply
+    /// Return dictionary of UDP AppPorts given in findCloudletReply
     public func getUDPAppPorts(findCloudletReply: FindCloudletReply) throws -> [UInt16: AppPort]?
     {
         var udpAppPorts = [UInt16: AppPort]()

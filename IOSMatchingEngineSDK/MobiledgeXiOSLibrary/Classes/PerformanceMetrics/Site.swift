@@ -21,6 +21,9 @@ import Foundation
 
 extension MobiledgeXiOSLibrary.PerformanceMetrics {
     
+    /// Object used by NetTest to test latency of server.
+    /// Each site object contains the server path or host + port, avg latency, standard deviation, list of latency times, and the TestType.
+    /// TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.
     @available(iOS 13.0, *)
     public class Site {
    
@@ -45,7 +48,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
 
         let DEFAULT_CAPACITY = 5
 
-        // initialize size with host and port
+        /// initialize size with host and port
         public init(network: String, host: String, port: UInt16, testType: NetTest.TestType?, numSamples: Int?) {
             self.network = network
             self.host = host
@@ -60,7 +63,7 @@ extension MobiledgeXiOSLibrary.PerformanceMetrics {
             self.capacity = numSamples != nil ? numSamples! : DEFAULT_CAPACITY
         }
 
-        // initialize http site
+        /// initialize http site
         public init(network: String, l7Path: String, testType: NetTest.TestType?, numSamples: Int?) {
             self.network = network
             self.l7Path = l7Path

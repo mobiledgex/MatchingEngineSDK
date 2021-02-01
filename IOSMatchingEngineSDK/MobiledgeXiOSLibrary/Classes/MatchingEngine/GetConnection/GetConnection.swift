@@ -23,7 +23,16 @@ import Network
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // timeout: milliseconds
+    /// getTCPConnection
+    /// Get a TCP socket bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<CFSocket>
     public func getTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
@@ -58,6 +67,16 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getBSDTCPConnection
+    /// Gets a BSD TCP socket bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<MobiledgeXiOSLibrary.Socket>
     public func getBSDTCPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
@@ -91,7 +110,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
             return promiseInputs
         }
     }
-        
+    
+    /// getTCPTLSConnection
+    /// Gets a TCP socket that is tls configured bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<NWConnection>
     @available(iOS 13.0, *)
     public func getTCPTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
         
@@ -127,6 +156,16 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getUDPConnection
+    /// Get a UDP socket bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<CFSocket>
     public func getUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
@@ -161,6 +200,16 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getBSDUDPConnection
+    /// Get a BSD UDP socket bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<MobiledgeXiOSLibrary.Socket>
     public func getBSDUDPConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibrary.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibrary.Socket> = Promise<MobiledgeXiOSLibrary.Socket>.pending()
@@ -195,6 +244,16 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getUDPDTLSConnection
+    /// Get a UDP socket with DTLS configured bound to the local cellular interface and connected to the application's backend server.
+    /// If no exceptions thrown and object is not null, the socket is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<CFSocket>
     @available(iOS 13.0, *)
     public func getUDPDTLSConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
         
@@ -231,6 +290,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getHTTPClient
+    /// Gets an HTTPClient (URLRequest) object that is edgeEnabled.
+    /// If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+    /// If no exceptions thrown and object is not null, the Client is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<URLRequest>
     public func getHTTPClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
@@ -269,6 +339,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getHTTPSClient
+    /// Gets an HTTPSClient (URLRequest) object that is tls configured that is edgeEnabled.
+    /// If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+    /// If no exceptions thrown and object is not null, the Client is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<URLRequest>
     public func getHTTPSClient(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
@@ -307,6 +388,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getWebsocketConnection
+    /// Gets a websocket client that is edgeEnabled.
+    /// If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+    /// If no exceptions thrown and object is not null, the Client is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<SocketManager>
     public func getWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
@@ -345,6 +437,18 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// getSecureWebsocketConnection
+    /// Gets a websocket client that is tls configured that is edgeEnabled.
+    /// If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+    /// If no exceptions thrown and object is not null, the Client is ready to send application data to backend.
+    ///
+    /// - Parameters
+    ///   - findCloudletReply: FindCloudletReply from findCloudlet
+    ///   - appPort: Specific AppPort wanted from FindCloudletReply
+    ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - timeout: Optional timeout. Default is 10 seconds
+    /// - Returns: Promse<SocketManager>
+
     public func getSecureWebsocketConnection(findCloudletReply: FindCloudletReply, appPort: AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()

@@ -21,7 +21,7 @@
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // IDTypes used for unique_id_type in RegisterClientRequest??
+    /// IDTypes used for unique_id_type in RegisterClientRequest??
     public enum IDTypes: String, Codable {
         case ID_UNDEFINED = "ID_UNDEFINED"
         case IMEI = "IMEI"
@@ -29,14 +29,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         case IPADDR = "IPADDR"
     }
     
-    // Values for RegisterClientReply, DynamicLocGroupReply, and QosPositionKpiReply status field
+    /// Values for RegisterClientReply, DynamicLocGroupReply, and QosPositionKpiReply status field
     public enum ReplyStatus: String, Decodable {
         case RS_UNDEFINED = "RS_UNDEFINED"
         case RS_SUCCESS = "RS_SUCCESS"
         case RS_FAIL = "RS_FAIL"
     }
     
-    // Object returned in ports of several API replies
+    /// Object returned in ports of several API replies
     public struct AppPort: Decodable {
         public var proto: LProto
         public var internal_port: Int32
@@ -68,20 +68,20 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    // Values for AppPort proto field
+    /// Values for AppPort proto field
     public enum LProto: String, Decodable {
         case L_PROTO_UNKNOWN = "L_PROTO_UNKNOWN"
         case L_PROTO_TCP = "L_PROTO_TCP"
         case L_PROTO_UDP = "L_PROTO_UDP"
     }
     
-    // Object used in timestamp field of Loc
+    /// Object used in timestamp field of Loc
     public struct Timestamp: Codable {
         public var seconds: Int64?
         public var nanos: Int32?
     }
     
-    // Object used and returned in gps_location field of serveral API requests and replies
+    /// Object used and returned in gps_location field of serveral API requests and replies
     public struct Loc: Codable {
         
         public init(latitude: Double, longitude: Double) {
