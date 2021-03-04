@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift SDK - MobiledgeXiOSLibrary.NetworkInterface</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrary.networkinterface.cellular">CELLULAR</a></li><li class="variable"><a href="#mobiledgexioslibrary.networkinterface.wifi">WIFI</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#mobiledgexioslibrary.networkinterface.haswifiinterface()">has​Wifi​Interface()</a></li><li class="function"><a href="#mobiledgexioslibrary.networkinterface.hascellularinterface()">has​Cellular​Interface()</a></li><li class="function"><a href="#mobiledgexioslibrary.networkinterface.haswifi()">has​Wifi()</a></li><li class="function"><a href="#mobiledgexioslibrary.networkinterface.hascellular()">has​Cellular()</a></li><li class="function"><a href="#mobiledgexioslibrary.networkinterface.isroaming()">is​Roaming()</a></li><li class="function"><a href="#mobiledgexioslibrary.networkinterface.getipaddress(netinterfacetype:)">get​IPAddress(net​Interface​Type:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Mobiledge​XiOSLibrary.​Network​Interface</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">NetworkInterface</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Contains functions related to network interfaces (cellular, wifi)</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibrary">MobiledgeXiOSLibrary</a></code></dt>
+<dd><p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+</dd>
+</dl>
+</section>
+    <section id="properties">
+        <h2>Properties</h2>
+
+        <div role="article" class="variable" id="mobiledgexioslibrary.networkinterface.cellular">
+    <h3>
+        <code>CELLULAR</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">let</span> <span class="variable">CELLULAR</span> = <span class="string literal">"</span><span class="string literal">pdp_ip0</span><span class="string literal">"</span></code></pre></body></html>
+</div>
+<div role="article" class="variable" id="mobiledgexioslibrary.networkinterface.wifi">
+    <h3>
+        <code>WIFI</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">let</span> <span class="variable">WIFI</span> = <span class="string literal">"</span><span class="string literal">en0</span><span class="string literal">"</span></code></pre></body></html>
+</div>
+    </section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="mobiledgexioslibrary.networkinterface.haswifiinterface()">
+    <h3>
+        <code>has​Wifi​Interface()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">hasWifiInterface</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns true if device has wifi interface (ie. on wifi network)</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.networkinterface.hascellularinterface()">
+    <h3>
+        <code>has​Cellular​Interface()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">hasCellularInterface</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns true if device has cellular interface</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.networkinterface.haswifi()">
+    <h3>
+        <code>has​Wifi()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">hasWifi</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns true if an ip address is assigned to the wifi interface</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.networkinterface.hascellular()">
+    <h3>
+        <code>has​Cellular()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">hasCellular</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns true if an ip address is assigned to the cellular interface</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.networkinterface.isroaming()">
+    <h3>
+        <code>is​Roaming()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">isRoaming</span>() <span class="keyword">throws</span> -&gt; <span class="type">Bool</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Compares the ISO Country code of the user's location with the
+ISO Country of the user's carrier. Roaming if not equal</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrary.networkinterface.getipaddress(netinterfacetype:)">
+    <h3>
+        <code>get​IPAddress(net​Interface​Type:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getIPAddress</span>(<span class="variable">netInterfaceType</span>: <span class="type">String</span>?) -&gt; <span class="type">String</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Gets the client IP Address on the interface specified</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-02-01T16:21:08-0600">February 1, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>

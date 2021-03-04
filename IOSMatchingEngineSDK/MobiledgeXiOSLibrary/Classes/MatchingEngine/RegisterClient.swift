@@ -25,7 +25,9 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
-    // RegisterClientRequest struct
+    /// RegisterClientRequest struct
+    /// Request object sent via RegisterClient from client side to DME
+    /// Request requires org_name, app_name, and app_vers
     public struct RegisterClientRequest: Encodable {
         // Required fields
         public var ver: uint
@@ -40,7 +42,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         public var tags: [String: String]?
     }
 
-    // RegisterClientReply struct
+    /// RegisterClientReply struct
+    /// Reply object received via RegisterClient
+    /// If application exists, this will return RS_SUCCESS and contain a session cookie to be used in other DME APIs
+       
     public struct RegisterClientReply: Decodable {
         // Required fields
         public var ver: uint
@@ -64,13 +69,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     }
     
     /// API createRegisterClientRequest
+    /// Creates the RegisterClientRequest object that will be used in the RegisterClient function.The RegisterClientRequest object wraps the parameters that have been provided to this function.
     ///
     /// - Parameters:
     ///   - orgName: Name of the developer
     ///   - appName: Name of the application
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
-    /// - Returns: API Dictionary/json
+    /// - Returns: RegisterClientRequest
     public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil)
         -> RegisterClientRequest { // Dictionary/json
             
@@ -88,12 +94,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     }
     
     /// API registerClient
+    /// First DME API called. This will register the client with the MobiledgeX backend and
+    /// check to make sure that the app that the user is running exists. (ie. This confirms
+    /// that CreateApp in Console/Mcctl has been run successfully). RegisterClientReply
+    /// contains a session cookie that will be used (automatically) in later API calls.
+    /// It also contains a uri that will be used to get the verifyLocToken used in VerifyLocation.
     ///
     /// Takes a RegisterClient request, and contacts the Distributed MatchingEngine host for the current
     /// carrier, if any.
     /// - Parameters:
-    ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
-    /// - Returns: API Dictionary/json
+    ///   - request: RegisterClientRequest struct, from createRegisterClientReqwuest.
+    /// - Returns: Promise<RegisterClientReply>
     public func registerClient(request: RegisterClientRequest) -> Promise<RegisterClientReply> {
         os_log("registerClient", log: OSLog.default, type: .debug)
         
@@ -112,14 +123,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine
     }
     
     /// API registerClient
+    /// RegisterClient overload with hardcoded DME host and port. Only use for testing.
     ///
     /// Takes a RegisterClient request, and contacts the specified Distributed MatchingEngine host and port
     /// for the current carrier, if any.
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
-    ///   - request: RegisterClient dictionary, from createRegisterClientReqwuest.
-    /// - Returns: API Dictionary/json
+    ///   - request: RegisterClientRequest struct, from createRegisterClientReqwuest.
+    /// - Returns: Promise<RegisterClientReply>
     public func registerClient(host: String, port: UInt16, request: RegisterClientRequest) -> Promise<RegisterClientReply> {
         
         let promiseInputs: Promise<RegisterClientReply> = Promise<RegisterClientReply>.pending()

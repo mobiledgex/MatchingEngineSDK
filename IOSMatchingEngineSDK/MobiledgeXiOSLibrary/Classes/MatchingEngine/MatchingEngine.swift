@@ -25,6 +25,7 @@ import CoreTelephony
 
 extension MobiledgeXiOSLibrary {
     
+    /// MatchingEngine class
     /// MobiledgeX MatchingEngine APIs
     public class MatchingEngine {
         
@@ -56,6 +57,8 @@ extension MobiledgeXiOSLibrary {
         var urlConfiguration: URLSessionConfiguration?
         var urlSession: URLSession?
 
+
+        /// MatchingEngine constructor
         public init() {
             state = MatchingEngineState()
             

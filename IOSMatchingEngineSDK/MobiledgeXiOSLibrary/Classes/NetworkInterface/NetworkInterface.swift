@@ -22,12 +22,13 @@ import os.log
 
 extension MobiledgeXiOSLibrary {
 
+    /// Contains functions related to network interfaces (cellular, wifi)
     public class NetworkInterface {
         
         public static let CELLULAR = "pdp_ip0"
         public static let WIFI = "en0"
         
-        // Returns true if device has wifi interface (ie. on wifi network)
+        /// Returns true if device has wifi interface (ie. on wifi network)
         public static func hasWifiInterface() -> Bool {
             // Get list of all interfaces on the local machine:
             var ifaddr : UnsafeMutablePointer<ifaddrs>?
@@ -50,7 +51,7 @@ extension MobiledgeXiOSLibrary {
             return false
         }
         
-        // Returns true if device has cellular interface
+        /// Returns true if device has cellular interface
         public static func hasCellularInterface() -> Bool {
             // Get list of all interfaces on the local machine:
             var ifaddr : UnsafeMutablePointer<ifaddrs>?
@@ -70,20 +71,20 @@ extension MobiledgeXiOSLibrary {
             return false
         }
         
-        // Returns true if an ip address is assigned to the wifi interface
+        /// Returns true if an ip address is assigned to the wifi interface
         public static func hasWifi() -> Bool {
             let ipaddr = getIPAddress(netInterfaceType: WIFI)
             return ipaddr != nil && ipaddr!.count > 0
         }
         
-        // Returns true if an ip address is assigned to the cellular interface
+        /// Returns true if an ip address is assigned to the cellular interface
         public static func hasCellular() -> Bool {
             let ipaddr = getIPAddress(netInterfaceType: CELLULAR)
             return ipaddr != nil && ipaddr!.count > 0
         }
         
-        // Compares the ISO Country code of the user's location with the
-        // ISO Country of the user's carrier. Roaming if not equal
+        /// Compares the ISO Country code of the user's location with the
+        /// ISO Country of the user's carrier. Roaming if not equal
         public static func isRoaming() throws -> Bool {
             // Make sure LocationServices is running before Roaming check
             if !MobiledgeXLocation.locationServicesRunning {
@@ -101,7 +102,7 @@ extension MobiledgeXiOSLibrary {
             return locationCountryCode != carrierCountryCode
         }
         
-        // Gets the client IP Address on the interface specified
+        /// Gets the client IP Address on the interface specified
         // TODO: check for multiple cellular ip addresses (multiple SIM subscriptions possible)
         public static func getIPAddress(netInterfaceType: String?) -> String?
         {

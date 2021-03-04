@@ -22,7 +22,9 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // QosPositionKpiRequest struct
+    /// QosPositionKpiRequest struct
+    /// Request object sent via GetQosPositionKpi from client side to DME
+    /// Request requires session_cookie from RegisterClientReply and an array of QosPositions
     public struct QosPositionRequest: Encodable {
         public var ver: uint
         public var session_cookie: String
@@ -33,7 +35,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tags: [String: String]?
     }
     
-    // Object in positions field in QosPositionRequest
+    /// Object in positions field in QosPositionRequest
+    /// Object that contains gps location and id for that gps location
     public struct QosPosition: Encodable {
         
         public init(positionId: Int64, gpsLocation: Loc) {
@@ -45,8 +48,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var gps_location: Loc
     }
     
-    // Object in QosPositionRequest band_selection field
-    // Each field's value is an array of Strings
+    /// Object in QosPositionRequest band_selection field
+    /// Each field's value is an array of Strings
+    /// Supported band values
     public struct BandSelection: Encodable {
         public var rat_2g: [String]
         public var rat_3g: [String]
@@ -54,12 +58,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var rat_5g: [String]
     }
     
-    // Stream reply struct
+    /// Stream reply struct
     struct QosPositionKpiReplyStream: Decodable {
         public var result: QosPositionKpiReply
     }
 
-    // QosPositionKpiReply struct
+    /// QosPositionKpiReply struct
+    /// Reply object received via GetQosPositionKpi
+    /// If an application instance exists, this will return RS_SUCCESS.
+    /// Will provide quality of service information for gps locations specified
     public struct QosPositionKpiReply: Decodable {
         public var ver: uint
         public var status: ReplyStatus
@@ -67,7 +74,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tags: [String: String]?
     }
     
-    // Object returned in position_results field of QosPositionKpiReply
+    /// Object returned in position_results field of QosPositionKpiReply
+    /// Qos results for specific location
     public struct QosPositionKpiResult: Decodable {
         //public var positionid: Int64
         public var positionid: String // Can only decode as a String for some reason
@@ -84,10 +92,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     /// createQosKPIRequest
+    /// Creates the QosPositionRequest object that will be used in CreateQosPositionRequest
     ///
     /// - Parameters:
-    ///   -requests: QosPositions (Dict: id -> gps location)
-    /// - Returns: API  Dictionary/json
+    ///   - requests: QosPositions (Dict: id -> gps location)
+    ///   - lteCategory: Optional lteCategory
+    ///   - bandSelection: Optional BandSelection
+    ///   - cellID: Optional cellID
+    ///   - tags: Optional dict
+    /// - Returns: QosPositionRequest
     public func createQosKPIRequest(requests: [QosPosition], lteCategory: Int32? = nil, bandSelection: BandSelection? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> QosPositionRequest {
         
         let req = QosPositionRequest(
@@ -177,11 +190,12 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     /// API getQosKPIPosition
+    /// Returns quality of service metrics for each location provided in qos position request
     ///
     /// Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations
     /// - Parameters:
-    ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
-    /// - Returns: API Dictionary/json
+    ///   - request: QosKPIRequest struct from createQosKPIRequest.
+    /// - Returns: Promise<QosPositionKpiReply>
     public func getQosKPIPosition(request: QosPositionRequest) -> Promise<QosPositionKpiReply>
     {
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
@@ -199,13 +213,13 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     /// API getQosKPIPosition
+    /// GetQosPositionKpi overload with hardcoded DME host and port. Only use for testing.
     ///
-    /// Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
     ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
-    /// - Returns: API Dictionary/json
+    /// - Returns: Promise<QosPositionKpiReply>
     public func getQosKPIPosition(host: String, port: UInt16, request: QosPositionRequest) -> Promise<QosPositionKpiReply>
     {
         let promiseInputs: Promise<QosPositionKpiReply> = Promise<QosPositionKpiReply>.pending()

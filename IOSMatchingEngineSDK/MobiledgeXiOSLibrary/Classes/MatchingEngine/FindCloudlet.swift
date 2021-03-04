@@ -22,7 +22,9 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // FindCloudletRequest struct
+    /// FindCloudletRequest struct
+    /// Request object sent via FindCloudlet from client side to DME
+    /// Request requires session_cookie from RegisterClientReply, gps_location, and carrier_name
     public struct FindCloudletRequest: Encodable {
         // Required fields
         public var ver: uint
@@ -34,7 +36,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tags: [String: String]?
     }
 
-    // FindCloudletReply struct
+    /// FindCloudletReply struct
+    /// Reply object received via FindCloudlet
+    /// If application instance exists, this will return FIND_FOUND and contain information about the application instance.
     public struct FindCloudletReply: Decodable {
         // Required fields
         public var ver: uint
@@ -45,7 +49,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         // Optional fields
         public var tags: [String: String]?
         
-        // Values for FindCloudletReply status enum
+        /// Values for FindCloudletReply status enum
         public enum FindStatus: String, Decodable {
             case FIND_UNKNOWN = "FIND_UNKNOWN"
             case FIND_FOUND = "FIND_FOUND"
@@ -53,6 +57,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// Two modes to call FindCloudlet. First is Proximity (default) which finds the nearest cloudlet based on gps location with application instance
+    /// Second is Performance. This mode will test all cloudlets with application instance deployed to find cloudlet with lowest latency. This mode takes longer to finish because of latency test.
     public enum FindCloudletMode {
         case PROXIMITY
         case PERFORMANCE
@@ -60,16 +66,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     // Carrier name can change depending on cell tower.
-    //
     
     /// createFindCloudletRequest
+    /// Creates the FindCloudletRequest object that will be used in the FindCloudlet function.
+    /// The FindCloudletRequest object wraps the parameters that have been provided to this function.
     ///
     /// - Parameters:
-    ///   - carrierName: carrierName description
-    ///   - gpslocation: gpslocation description
-    /// - Returns: API  Dictionary/json
-    
-    // Carrier name can change depending on cell tower.
+    ///   - carrierName: carrierName
+    ///   - gpslocation: gpslocation
+    /// - Returns: FindCloudletRequest
     public func createFindCloudletRequest(gpsLocation: Loc, carrierName: String? = "", cellID: uint? = nil, tags: [String: String]? = nil) throws
         -> FindCloudletRequest {
             
@@ -92,12 +97,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     /// API findCloudlet
+    /// FindCloudlet returns information needed for the client app to connect to an application backend deployed through MobiledgeX.
+    /// If there is an application backend instance found, FindCloudetReply will contain the fqdn of the application backend and an array of AppPorts (with information specific to each application
+    /// backend endpoint)
     ///
     /// Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
     /// for the current carrier, if any.
     /// - Parameters:
     ///   - request: FindCloudletRequest from createFindCloudletRequest.
-    /// - Returns: FindCloudletReply
+    /// - Returns: Promise<FindCloudletReply>
     @available(iOS 13.0, *)
     public func findCloudlet(request: FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         let promiseInputs: Promise<FindCloudletReply> = Promise<FindCloudletReply>.pending()
@@ -121,7 +129,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    // Host and Port overload for findCloudlet
+    /// FindCloudlet overload with hardcoded DME host and port. Only use for testing.
     @available(iOS 13.0, *)
     public func findCloudlet(host: String, port: UInt16, request: FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
@@ -236,7 +244,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     
-    // Modify FindCloudletReply to hold the AppPorts and fqdn from nearest Site
+    /// Modify FindCloudletReply to hold the AppPorts and fqdn from nearest Site
     @available(iOS 13.0, *)
     private func createFindCloudletReplyFromBestSite(findCloudletReply: FindCloudletReply, site: MobiledgeXiOSLibrary.PerformanceMetrics.Site) -> FindCloudletReply {
         let appInst = site.appInst
@@ -251,8 +259,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         )
     }
     
-    // Create a Site object per appInstance per CloudletLocation returned from AppInstListReply
-    // This will be used as the array of Sites for NetTest
+    /// Create a Site object per appInstance per CloudletLocation returned from AppInstListReply
+    /// This will be used as the array of Sites for NetTest
     @available(iOS 13.0, *)
     private func createSitesFromAppInstReply(reply: AppInstListReply) -> [MobiledgeXiOSLibrary.PerformanceMetrics.Site] {
         var sites: [MobiledgeXiOSLibrary.PerformanceMetrics.Site] = []

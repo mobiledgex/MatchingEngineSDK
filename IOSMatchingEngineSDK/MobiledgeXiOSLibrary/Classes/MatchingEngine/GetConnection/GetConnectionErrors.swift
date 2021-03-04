@@ -20,6 +20,7 @@ import os.log
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
+    /// Errors on GetConnection
     public enum GetConnectionError: Error {
         case invalidNetworkInterface
         case missingServerFqdn
@@ -53,6 +54,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// Errors related to trying to get a telco edge connection
     public enum EdgeError: Error {
         case wifiOnly(message: String)
         case missingCellularInterface(message: String)

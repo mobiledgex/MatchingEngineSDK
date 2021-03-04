@@ -22,6 +22,24 @@ import Promises
 extension MobiledgeXiOSLibrary.MatchingEngine
 {
 
+    /// registerAndFIndCloudlet
+    /// FindCloudlet returns information needed for the client app to connect to an application backend deployed through MobiledgeX.
+    /// If there is an application backend instance found, FindCloudetReply will contain the fqdn of the application backend and an array of AppPorts (with information specific to each application
+    /// backend endpoint)
+    ///
+    /// Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
+    /// for the current carrier, if any.
+    /// - Parameters:
+    ///   - orgName: orgName
+    ///   - appName: appName
+    ///   - appVers: appVers
+    ///   - gpsLocation: Loc
+    ///   - carrierName: Optional carrierName
+    ///   - authToken: Optional authToken
+    ///   - cellID: Optional cellID
+    ///   - tags: Optional dict
+    ///   - mode: Optional FindCloudletMode (default to Proximity)
+    /// - Returns: Promise<FindCloudletReply>
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: Loc, carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         
@@ -39,6 +57,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine
         return registerAndFindCloudlet(host: host, port: port, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: gpsLocation,  carrierName: carrierName, authToken: authToken, cellID: cellID, tags: tags, mode: mode)
     }
     
+    /// registerAndFindCloudlet overload with hardcoded DME host and port. Only use for testing. This API cannot be used for Non-Platform APPs.
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: Loc,  carrierName: String? = "", authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<FindCloudletReply> {
         

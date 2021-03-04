@@ -19,13 +19,14 @@
 //  MobiledgeXiOSLibrary
 //
 
-// Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
-// NetworkInterface, etc.)
-
 import Foundation
 
+/// Swift MobiledgeX SDK namespace
+/// Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
+/// NetworkInterface, etc.)
 public enum MobiledgeXiOSLibrary {
     
+    /// Occurs when MobiledgeX does not have user's MCC and MNC mapped to a DME
     public enum DmeDnsError: Error {
         case verifyDmeHostFailure(host: String, systemError: SystemError)
         case invalidMCCMNC(mcc: String, mnc: String)
@@ -40,6 +41,7 @@ public enum MobiledgeXiOSLibrary {
         }
     }
 
+    /// Occurs when GetConnection function using bsd sockets has an error
     public enum SystemError: Error {
         case getaddrinfo(Int32, Int32?)
         case socket(Int32, Int32?)
@@ -47,6 +49,7 @@ public enum MobiledgeXiOSLibrary {
         case connect(Int32, Int32?)
     }
     
+    /// Generic error from MobiledgeX SDK
     public enum MobiledgeXError: Error {
         case outdatedIOS(requiredIOS: Int, action: String)
         
@@ -58,6 +61,7 @@ public enum MobiledgeXiOSLibrary {
 
     }
     
+    /// Socket struct returned by some GetConnection functions
     public struct Socket {
         var addrInfo: UnsafeMutablePointer<addrinfo>
         var sockfd: Int32
