@@ -19,6 +19,7 @@
 
 extension MobiledgeXiOSLibrary {
     
+    /// Namespace for collecting network performance. Contains NetTest and Site classes
     public enum PerformanceMetrics { }
     
 }

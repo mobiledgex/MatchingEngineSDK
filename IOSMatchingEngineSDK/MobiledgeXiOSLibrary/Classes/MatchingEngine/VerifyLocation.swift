@@ -22,7 +22,8 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // VerifyLocationRequest struct
+    /// VerifyLocationRequest struct
+    /// Request object sent via VerifyLocation from client side to DME
     public struct VerifyLocationRequest: Encodable {
         public var ver: uint
         public var session_cookie: String
@@ -33,7 +34,10 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tags: [String: String]?
     }
 
-    // VerifyLocationReply struct
+    /// VerifyLocationReply struct
+    /// Reply object received via VerifyLocation
+    /// If verified, will return LOC_VERIFIED and CONNECTED_TO_SPECIFIED_TOWER
+    /// Also contains information about accuracy of provided gps location
     public struct VerifyLocationReply: Decodable {
         public var ver: uint
         public var tower_status: TowerStatus
@@ -41,14 +45,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var gps_location_accuracy_km: Double
         public var tags: [String: String]?
         
-        // Values for VerifyLocationReply tower_status field
+        /// Values for VerifyLocationReply tower_status field
         public enum TowerStatus: String, Decodable {
             case TOWER_UNKNOWN = "TOWER_UNKNOWN"
             case CONNECTED_TO_SPECIFIED_TOWER = "CONNECTED_TO_SPECIFIED_TOWER"
             case NOT_CONNECTED_TO_SPECIFIED_TOWER = "NOT_CONNECTED_TO_SPECIFIED_TOWER"
         }
         
-        // Values for VerifyLocationReply gps_location_status field
+        /// Values for VerifyLocationReply gps_location_status field
         public enum GPSLocationStatus: String, Decodable {
             case LOC_UNKNOWN = "LOC_UNKNOWN"
             case LOC_VERIFIED = "LOC_VERIFIED"
@@ -61,14 +65,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
-    /// <#Description#>
+    /// createVerifyLocationRequest
+    /// Creates the VerifyLocationRequest object that will be used in VerifyLocation
     ///
     /// - Parameters:
-    ///   - carrierName: <#carrierName description#>
-    ///   - gpslocation: <#gpslocation description#>
-    ///   - verifyloctoken: <#verifyloctoken description#>
-    ///
-    /// - Returns: API json/Dictionary
+    ///   - gpsLocation; Loc
+    ///   - carrierName: carrierName
+    ///   - cellID: Optional cellID
+    ///   - tags: Optional dict
+    /// - Returns: VerifyLocationRequest
     public func createVerifyLocationRequest(gpsLocation: Loc, carrierName: String?,
                                             cellID: uint? = nil, tags: [String: String]? = nil) throws -> VerifyLocationRequest {
             
@@ -173,6 +178,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
     
+    /// API: VerifyLocation
+    /// Makes sure that the user's location is not spoofed based on cellID and gps location.
+    /// Returns the Cell Tower status (CONNECTED_TO_SPECIFIED_TOWER if successful) and Gps Location status (LOC_VERIFIED if successful).
+    /// Also provides the distance between where the user claims to be and where carrier believes user to be (via gps and cell id) in km.
+    ///
+    /// - Parameters:
+    ///   - request: VerifyLocationRequest from createVerifyLocation
+    /// - Returns: Promise<VerifyLocationReply>
     public func verifyLocation(request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
         let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()
         
@@ -187,6 +200,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return verifyLocation(host: host, port: port, request: request)
     }
     
+    /// VerifyLocation overload with hardcoded DME host and port. Only use for testing.
     public func verifyLocation(host: String, port: UInt16, request: VerifyLocationRequest) -> Promise<VerifyLocationReply> {
         
         let promiseInputs: Promise<VerifyLocationReply> = Promise<VerifyLocationReply>.pending()

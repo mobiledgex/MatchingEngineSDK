@@ -20,6 +20,7 @@ import os.log
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
 
+    /// L4 and L7 protocols supported by MobiledgeX iOS GetConnection
     public enum GetConnectionProtocol {
       case tcp
       case udp
@@ -27,6 +28,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
       case websocket
     }
     
+    /// Checks whether device will use cellular data path
+    /// If using L4 getConnection protocol, GetConnection functions will bind local socket to cellular network interface. So as long as the device has a cellular interface up, it is edgeEnabled
+    /// If using L7 getConnection protocol (where we cannot control the network interface), we must check to make sure the device will not default to wifi
     public func isEdgeEnabled(proto: GetConnectionProtocol) -> EdgeError? {
         
         if (state.isUseWifiOnly()) {
@@ -50,6 +54,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return nil
     }
     
+    /// Returns the host of the developers app backend based on the findCloudletReply and appPort provided.
+    /// This function is called by L4 GetConnection functions, but can be called by developers if they are using their own communication client (use GetPort as well)
     public func getHost(findCloudletReply: FindCloudletReply, appPort: AppPort) throws -> String {
         // Convert fqdn_prefix and fqdn to string
         var fqdnPrefix = appPort.fqdn_prefix
@@ -63,6 +69,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return host
     }
     
+    /// Returns the port of the developers app backend service based on the appPort provided.
+    /// An optional desiredPort parameter is provided if the developer wants a specific port within their appPort port range (if none provided, the function will default to the public_port field in the AppPort).
+    /// This function is called by L4 GetConnection functions, but can be called by developers if they are using their own communication client (use GetHost as well).
     public func getPort(appPort: AppPort, desiredPort: Int = 0) throws -> UInt16 {
         
         let port = try self.validateDesiredPort(appPort: appPort, desiredPort: UInt16(truncatingIfNeeded: desiredPort))
@@ -73,6 +82,11 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return port
     }
     
+    ///  Returns the L7 path of the developers app backend based on the the findCloudletReply and appPort provided.
+    /// The desired port number must be specified by the developer (use -1 if you want the SDK to choose a port number).
+    /// An L7 protocol must also be provided (eg. http, https, ws, wss). The path variable is optional and will be appended to the end of the url.
+    /// This function is called by L7 GetConnection functions, but can be called by developers if they are using their own communication client.
+    /// Example return value: https://example.com:8888
     public func createUrl(findCloudletReply: FindCloudletReply, appPort: AppPort, proto: String, desiredPort: Int = 0, path: String = "") throws -> String {
         
         if (!validateAppPort(findCloudletReply: findCloudletReply, appPort: appPort)) {

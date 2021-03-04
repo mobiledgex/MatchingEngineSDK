@@ -23,8 +23,13 @@ import Promises
 
 extension MobiledgeXiOSLibrary {
     
+    /// MobiledgeX Location Services for easy location service integration with application
     public class MobiledgeXLocation {
         
+        /// Types of Location ServiceTypes, reflects built-in methods that iOS uses to get location
+        /// Visits: Only updates location when user spends time at location and then moves (the most power-efficient)
+        /// SignificantChange : Updates location when user's location significantly changes
+        /// Standard: For real time location updates (requires most power)
         public enum ServiceType {
             case Visits
             case SignificantChange
@@ -42,7 +47,8 @@ extension MobiledgeXiOSLibrary {
         static var currServiceType = ServiceType.Visits
         static var locationServicesRunning = false
         
-        public static func startLocationServices(serviceType: ServiceType = ServiceType.Visits) -> Promise<Bool> {
+        /// Begin monitoring location services. Default serviceType is SignificantChange
+        public static func startLocationServices(serviceType: ServiceType = ServiceType.SignificantChange) -> Promise<Bool> {
             let startPromise: Promise<Bool> = Promise<Bool>.pending()
             
             currServiceType = serviceType
@@ -70,7 +76,9 @@ extension MobiledgeXiOSLibrary {
             locationServicesRunning = false
         }
         
-        // Checks for Location Permissions (called before Location Services is started)
+        /// Checks to see what Location Permissions user has accepted (called before Location Services is started)
+        /// Will only return true (ie. that location services can start) if user has authorized location services always or when in app use
+        /// Otherwise the user has not accepted valid location permissions and we cannot start location services
         public static func checkLocationPermissions() -> Bool {
             if CLLocationManager.locationServicesEnabled() {
                 let authStatus = CLLocationManager.authorizationStatus()
@@ -91,7 +99,7 @@ extension MobiledgeXiOSLibrary {
             }
         }
         
-        // Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
+        /// Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
         public static func getLastLocation() -> MobiledgeXiOSLibrary.MatchingEngine.Loc? {
             guard let lastLoc = mobiledgeXLocationManager.lastLocation else {
                 os_log("Last location not available", log: OSLog.default, type: .debug)
@@ -100,13 +108,13 @@ extension MobiledgeXiOSLibrary {
             return convertCLLocationToMobiledgeXLocation(location: lastLoc)
         }
         
-        // Returns the ISO country code of the last location
+        /// Returns the ISO country code of the last location
         public static func getLastISOCountryCode() -> String? {
             // return mobiledgeXLocationManager.getISOCountryCodeFromLocation(location: mobiledgeXLocationManager.lastLocation!)
             return mobiledgeXLocationManager.isoCountryCode
         }
         
-        // Helper function that converts CLLocation object to object that can be used in MatchingEngine calls
+        /// Helper function that converts CLLocation object to object that can be used in MatchingEngine calls
         private static func convertCLLocationToMobiledgeXLocation(location: CLLocation) -> MobiledgeXiOSLibrary.MatchingEngine.Loc {
             
             var loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(

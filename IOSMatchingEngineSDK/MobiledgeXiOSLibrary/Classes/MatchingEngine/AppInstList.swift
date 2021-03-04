@@ -22,7 +22,9 @@ import Promises
 
 extension MobiledgeXiOSLibrary.MatchingEngine {
     
-    // AppInstListRequest struct
+    /// AppInstListRequest struct
+    /// Request object sent via GetAppInstList from client side to DME
+    /// Request requires session_cookie from RegisterClientReply, gps_location, and carrier_name
     public struct AppInstListRequest: Encodable {
         public var ver: uint
         public var session_cookie: String
@@ -32,14 +34,17 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var tags: [String: String]?
     }
 
-    // AppInstListReply struct
+    /// AppInstListReply struct
+    /// Reply object received via GetAppInstList
+    /// If an application instance exists, this will return AI_SUCCESS.
+    /// Will provide information about all application instances deployed on specified carrier network
     public struct AppInstListReply: Decodable {
         public var ver: uint
         public var status: AIStatus
         public var cloudlets: [CloudletLocation]
         public var tags: [String: String]?
         
-        // Values for AppInstList status field
+        /// Values for AppInstList status field
         public enum AIStatus: String, Decodable {
             case AI_UNDEFINED = "AI_UNDEFINED"
             case AI_SUCCESS = "AI_SUCCESS"
@@ -47,7 +52,9 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         }
     }
 
-    // Object returned in AppInstListReply cloudlets field
+    /// Object returned in AppInstListReply cloudlets field
+    /// The geo-location of Cloudlets (resources) within the Operator's Telco infrastructure,
+    /// where Developers can create and deploy application instances to the available Cloudlets.
     public struct CloudletLocation: Decodable {
         public var carrier_name: String
         public var cloudlet_name: String
@@ -56,7 +63,8 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         public var appinstances: [Appinstance]
     }
 
-    // Object returned in CloudletLocation appinstances field
+    /// Object returned in CloudletLocation appinstances field
+    /// Information about specific app instances
     public struct Appinstance: Decodable {
         public var app_name: String
         public var app_vers: String
@@ -66,12 +74,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
     }
     
     /// createGetAppInstListRequest
+    /// Creates the AppInstListRequest object that will be used in GetAppInstList
     ///
     /// - Parameters:
-    ///   - carrierName: Carrier name. This value can change depending on cell tower.
     ///   - gpslocation: A dictionary with at least longitude and latitude key values.
+    ///   - carrierName: Carrier name. This value can change depending on cell tower.
+    ///   - cellID: Optional cellID
+    ///   - tags: Optional dict
     ///
-    /// - Returns: API Dictionary/json
+    /// - Returns: AppInstListRequest
     public func createGetAppInstListRequest(gpsLocation: Loc, carrierName: String?,  cellID: uint? = nil, tags: [String: String]? = nil) throws -> AppInstListRequest {
         
         let req = AppInstListRequest(
@@ -93,6 +104,15 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         let _ = try validateGpsLocation(gpsLocation: request.gps_location)
     }
     
+    /// API getAppInstList
+    /// Returns a list of the developer's backend instances deployed on the specified carrier's network.
+    /// If carrier was "", returns all backend instances regardless of carrier network.
+    /// This is used internally in FindCloudlet Performance mode to grab the list of cloudlets to test.
+    ///
+    /// - Parameters:
+    ///   - request: AppInstListRequest from createGetAppInstListRequest
+    ///
+    /// - Returns: Promise<AppInstListReply>
     public func getAppInstList(request: AppInstListRequest) -> Promise<AppInstListReply> {
         let promiseInputs: Promise<AppInstListReply> = Promise<AppInstListReply>.pending()
                 
@@ -108,6 +128,7 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return getAppInstList(host: host, port: port, request: request)
     }
     
+    /// GetAppInstList overload with hardcoded DME host and port. Only use for testing.
     public func getAppInstList(host: String, port: UInt16, request: AppInstListRequest)
         -> Promise<AppInstListReply> {
         os_log("Finding nearby appInsts matching this MatchingEngine client.", log: OSLog.default, type: .debug)
