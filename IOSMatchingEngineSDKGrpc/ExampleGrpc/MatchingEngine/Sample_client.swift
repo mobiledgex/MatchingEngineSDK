@@ -29,7 +29,7 @@ import GoogleMaps
 
 import os.log
 import Promises
-import MobiledgeXiOSLibrary
+import MobiledgeXiOSLibraryGrpc
 
 // ----------------------------------------
 //
@@ -420,11 +420,13 @@ func doUserMarker(_ loc: CLLocationCoordinate2D)
 
 // MARK: -
 // used by: GetToken, getAppInstNow, verify  loc
-public func retrieveLocation() -> MobiledgeXiOSLibrary.MatchingEngine.Loc
+public func retrieveLocation() -> DistributedMatchEngine_Loc
 {
     // Swift.print("\(#function)")
 
-    var location = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: -122.149349, longitude: 37.459609)
+    var location = DistributedMatchEngine_Loc.init()
+    location.latitude = -122.149349
+    location.longitude = 37.459609
 
     if userMarker != nil // get app isnt sets userMarker
     {

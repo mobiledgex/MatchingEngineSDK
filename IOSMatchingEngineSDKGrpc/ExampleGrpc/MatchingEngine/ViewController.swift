@@ -25,7 +25,7 @@ import Promises
 import os.log
 
 import DropDown
-import MobiledgeXiOSLibrary
+import MobiledgeXiOSLibraryGrpc
 // quick and dirty global scope
 
 var theMap: GMSMapView?     //   used by sample.client
@@ -33,11 +33,11 @@ var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker
 
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
-    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
     
     var host = ""
     var port: UInt16 = 38001
-    var demoHost = "sdkdemo.dme.mobiledgex.net"
+    var demoHost = "eu-mexdemo.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var appVers = ""
     var authToken: String? = nil
     var uniqueID: String?
-    var uniqueIDType: MobiledgeXiOSLibrary.MatchingEngine.IDTypes?
+    var uniqueIDType: DistributedMatchEngine_IDTypes?
     var cellID: UInt32?
     var tags: [String: String]?
     
@@ -60,8 +60,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     // Menu triggered network states will be tracked here, since the user controls usage of the futures:
     var registerPromise: Promise<DistributedMatchEngine_RegisterClientReply>?
-    var findCloudletPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>?
-    var verifyLocationPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>?
+    var findCloudletPromise: Promise<DistributedMatchEngine_FindCloudletReply>?
+    var verifyLocationPromise: Promise<DistributedMatchEngine_VerifyLocationReply>?
 
     private var locationVerified: Bool = false //  todo where to set this true?
     private var locationVerificationAttempted: Bool = false
@@ -74,11 +74,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         if demo
         {
             host = demoHost
-            port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
-            appName =  "MobiledgeX SDK Demo"
-            appVers = "2.0"
-            orgName =  "MobiledgeX"
-            carrierName = "tdg"
+            port = MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants.dmeGrpcPort
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
+            carrierName = "TDG"
             authToken = nil
             uniqueID = nil
             uniqueIDType = nil
@@ -87,9 +87,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         else
         {
-            appName =  "MobiledgeX SDK Demo"
-            appVers =  "2.0"
-            orgName =  "MobiledgeX"             //   replace this with your orgName
+            appName =  "sdktest"
+            appVers =  "9.0"
+            orgName =  "MobiledgeX-Samples"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueID = nil
@@ -668,9 +668,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
     }
   
-    func createQoSPositionList(loc: MobiledgeXiOSLibrary.MatchingEngine.Loc, directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]
+    func createQoSPositionList(loc: DistributedMatchEngine_Loc, directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [DistributedMatchEngine_QosPosition]
     {
-        var qosPositionList = [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]()
+        var qosPositionList = [DistributedMatchEngine_QosPosition]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
         let addLongitude = (cos(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLong
@@ -681,8 +681,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         var latitude = loc.latitude ?? 0
         
         while i < totalDistanceKm {
-            let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: latitude, longitude: longitude)
-            let qosPosition = MobiledgeXiOSLibrary.MatchingEngine.QosPosition(positionId: idx, gpsLocation: loc)
+            var loc = DistributedMatchEngine_Loc.init()
+            loc.latitude = latitude
+            loc.longitude = longitude
+            var qosPosition = DistributedMatchEngine_QosPosition.init()
+            qosPosition.positionid = idx
+            qosPosition.gpsLocation = loc
             
             qosPositionList.append(qosPosition)
             

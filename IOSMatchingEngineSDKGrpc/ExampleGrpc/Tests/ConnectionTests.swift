@@ -15,16 +15,22 @@
 
 import XCTest
 
-@testable import MobiledgeXiOSLibrary
+@testable import MobiledgeXiOSLibraryGrpc
 @testable import Promises
 @testable import SocketIO
 import Network
 
 class ConnectionTests: XCTestCase {
     
-    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
     var connection: NWConnection!
     let queue = DispatchQueue.global(qos: .background)
+    
+    let host = "frankfurt-main.tdg.mobiledgex.net"
+    
+    let orgName = "MobiledgeX-Samples"
+    let appName = "sdktest"
+    let appVers = "9.0"
     
     enum TestError: Error {
         case runtimeError(String)
@@ -32,7 +38,7 @@ class ConnectionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibraryGrpc.MatchingEngine()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -47,7 +53,7 @@ class ConnectionTests: XCTestCase {
     }
     
     func testIsCellular() {
-        let hasCellular = MobiledgeXiOSLibrary.NetworkInterface.hasCellularInterface()
+        let hasCellular = MobiledgeXiOSLibraryGrpc.NetworkInterface.hasCellularInterface()
         if !hasCellular {
             XCTAssert(false, "Failed")
         }
@@ -55,7 +61,7 @@ class ConnectionTests: XCTestCase {
     
     func testIsWifi() {
         let wifiOn = true // tester specifies this
-        let hasWifi = MobiledgeXiOSLibrary.NetworkInterface.hasWifiInterface()
+        let hasWifi = MobiledgeXiOSLibraryGrpc.NetworkInterface.hasWifiInterface()
         if hasWifi != wifiOn {
             XCTAssert(false, "Failed")
         }
@@ -120,11 +126,9 @@ class ConnectionTests: XCTestCase {
     // test this against google
     @available(iOS 13.0, *)
     func testTCPTLSConnection() {
-        let host = "google.com"
-        let port = UInt16(443)
+        let port = UInt16(2015)
         // Bool states if Path is Satisfied and State is Ready -> successful connection
         var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port, timeout: 5)
-
         .then { c -> Promise<Bool> in
             let promiseInputs: Promise<Bool> = Promise<Bool>.pending()
             self.connection = c
@@ -147,17 +151,16 @@ class ConnectionTests: XCTestCase {
     }
     
     func testBSDTCPConnection() {
-        let host = "mextest-app-cluster.frankfurt-main.tdg.mobiledgex.net"
-        let port = UInt16(3001)
+        let port = UInt16(2016)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.Socket>!
+        var replyPromise: Promise<MobiledgeXiOSLibraryGrpc.Socket>!
         replyPromise = matchingEngine.getBSDTCPConnection(host: host, port: port)
             
         .then { socket in
             let string = try self.readAndWriteBSDSocket(socket: socket)
             // make sure to close socket on completion and errors
             close(socket.sockfd)
-            if !string.contains("Data") {
+            if !string.contains("pong") {
                 XCTAssert(false, "Echoed data is not correct")
                 throw TestError.runtimeError("Echoed data is not correct")
             }
@@ -178,7 +181,8 @@ class ConnectionTests: XCTestCase {
         var manager: SocketManager!
         
         // SocketIO server
-        let uri = "ws://arshooter-cluster.berlin-main.tdg.mobiledgex.net:3838"
+        let port = "3765"
+        let uri = "ws://" + host + ":" + port + "/ws"
         guard let url = URL(string: uri) else {
             XCTAssert(false, "Unable to create url")
             return
@@ -214,9 +218,8 @@ class ConnectionTests: XCTestCase {
     func testHTTPClient() {
         var urlRequest: URLRequest!
         
-        let host = "mextest-app-cluster.frankfurt-main.tdg.mobiledgex.net"
-        let port = "3001"
-        let uri = "http://" + host + ":" + port
+        let port = "8085"
+        let uri = "http://" + host + ":" + port + "/automation.html"
         let url = URL(string: uri)
         
         let replyPromise = matchingEngine.getHTTPClient(url: url!)
@@ -225,11 +228,7 @@ class ConnectionTests: XCTestCase {
             let promiseInputs: Promise<URLResponse> = Promise<URLResponse>.pending()
             // Initialize HTTP request
             urlRequest = request
-            let testString = "test string"
-            let testDict: [String: String] = ["Data": testString]
-            let jsonRequest = try JSONSerialization.data(withJSONObject: testDict)
-            urlRequest.httpBody = jsonRequest
-            urlRequest.httpMethod = "POST"
+            urlRequest.httpMethod = "GET"
             
             //send request via URLSession API
             let task = URLSession.shared.dataTask(with: urlRequest as URLRequest, completionHandler: { data, response, error in
@@ -244,22 +243,14 @@ class ConnectionTests: XCTestCase {
                     XCTAssert(false, "Nothing echoed")
                     return
                 }
-                do {
-                    // Converts json object to a Swift [String: String]? object
-                    let d = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String : String]
-                    // Make sure echo is correct
-                    guard let value = d!["Data"] else {
-                        XCTAssert(false, "Can't access response")
-                        return
-                    }
-                    if value != testString {
-                        XCTAssert(false, "Value is not correct")
-                    }
-                    promiseInputs.fulfill(response!)
-                } catch {
-                    XCTAssert(false, "unable to deserialize json \(error.localizedDescription)")
-                    return
+                var value = String(decoding: data, as: UTF8.self)
+                if !value.contains("Automation test server") {
+                    XCTAssert(false, "Value is not correct, value: \(value)")
                 }
+                if !value.contains("test server is running") {
+                    XCTAssert(false, "Value is not correct, value: \(value)")
+                }
+                promiseInputs.fulfill(response!)
             })
             task.resume()
             return(promiseInputs)
@@ -276,13 +267,15 @@ class ConnectionTests: XCTestCase {
     }
     
     // Test the developer workflow: RegisterAndFindCloudlet() -> Pick App Port -> GetConnection()
-    /*@available(iOS 13.0, *)
+    @available(iOS 13.0, *)
     func testGetConnectionWorkflow() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", gpsLocation: loc, carrierName: "TDG")
+        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "TDG")
             
-        .then { findCloudletReply -> Promise<MobiledgeXiOSLibrary.Socket> in
+        .then { findCloudletReply -> Promise<MobiledgeXiOSLibraryGrpc.Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
             guard let appPortsDict = try self.matchingEngine.getTCPAppPorts(findCloudletReply: findCloudletReply) else {
                 XCTAssert(false, "GetTCPPorts returned nil")
@@ -293,17 +286,17 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No AppPorts in dictionary")
             }
             // Select AppPort Dictionary corresponding to internal port 3001
-            guard let appPort = appPortsDict[3001] else {
+            guard let appPort = appPortsDict[2016] else {
                 XCTAssert(false, "No app ports with specified internal port")
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
-            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: 3001, timeout: 5000)
+            return self.matchingEngine.getBSDTCPConnection(findCloudletReply: findCloudletReply, appPort: appPort, desiredPort: 2016, timeout: 5000)
             
         }.then { socket in
             let string = try self.readAndWriteBSDSocket(socket: socket)
             close(socket.sockfd)
-            if !string.contains("Data") {
+            if !string.contains("pong") {
                 XCTAssert(false, "Echoed data is not correct")
                 throw TestError.runtimeError("Echoed data is not correct")
             }
@@ -317,23 +310,15 @@ class ConnectionTests: XCTestCase {
             XCTAssert(false, "TestGetConnection workflow did not return a value.")
             return
         }
-    }*/
+    }
     
     // Helper function for reading the writing data for Socket struct
-    private func readAndWriteBSDSocket(socket: MobiledgeXiOSLibrary.Socket) throws -> String {
+    private func readAndWriteBSDSocket(socket: MobiledgeXiOSLibraryGrpc.Socket) throws -> String {
         // returns Socket struct with fields: file descriptor and addrinfo struct
         let sockfd = socket.sockfd
         let addrInfo = socket.addrInfo
-        
-        // format string to write to HTTP server
-        let test = "{\"Data\": \"test string\"}"
-        var post = "POST / HTTP/1.1\r\n" +
-            "Host: 10.227.69.96:3001\r\n" +
-            "User-Agent: curl/7.54.0\r\n" +
-            "Accept: */*\r\n" +
-            "Content-Length: " +
-            String(describing: test.count) + "\r\n" +
-            "Content-Type: application/json\r\n" + "\r\n" + test
+
+        let post = "ping"
         // Convert string to data
         let data = post.data(using: .utf8) as! NSData
         let bytes = data.bytes
@@ -343,11 +328,11 @@ class ConnectionTests: XCTestCase {
         let writeError = write(sockfd, bytes, length)
         // WriteError tells number of bytes written or -1 for error
         if writeError == -1 {
-            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(Int32(writeError), errno)
+            let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(Int32(writeError), errno)
             close(socket.sockfd)
             throw(sysError)
         } else if writeError != length {
-            let sysError = MobiledgeXiOSLibrary.SystemError.getaddrinfo(Int32(writeError), errno)
+            let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(Int32(writeError), errno)
             close(socket.sockfd)
             throw(sysError)
         }
@@ -371,11 +356,13 @@ class ConnectionTests: XCTestCase {
         return s!
     }
     
-    /*@available(iOS 13.0, *)
+    @available(iOS 13.0, *)
     func testTimeout() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: "MobiledgeX", appName: "HttpEcho", appVers: "20191204", gpsLocation: loc, carrierName: "TDG")
+        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "TDG")
             
         .then { findCloudletReply -> Promise<NWConnection> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
@@ -389,18 +376,18 @@ class ConnectionTests: XCTestCase {
                 throw TestError.runtimeError("No AppPorts in dictionary")
             }
             // Select AppPort Dictionary corresponding to internal port 3001
-            guard let appPort = appPortsDict[3001] else {
+            guard let appPort = appPortsDict[2015] else {
                 XCTAssert(false, "No app ports with specified internal port")
                 throw TestError.runtimeError("No app ports with specified internal port")
             }
             
             var appPortTls = appPort
             appPortTls.tls = true
-            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPortTls, desiredPort: 3001, timeout: 100)
+            return self.matchingEngine.getTCPTLSConnection(findCloudletReply: findCloudletReply, appPort: appPortTls, desiredPort: 2015, timeout: 100)
         }.then { connection in
             XCTAssert(false, "Should have timed out")
         }.catch { error in
-            if case MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.connectionTimeout = error {
+            if case MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError.connectionTimeout = error {
                 print("error is \(error)")
                 XCTAssert(true, "error is \(error)")
             } else {
@@ -409,37 +396,40 @@ class ConnectionTests: XCTestCase {
         }
         
         XCTAssert(waitForPromises(timeout: 15))
-    }*/
+    }
     
     func testAppPortMappings() {
-        let appPort = MobiledgeXiOSLibrary.MatchingEngine.AppPort(
-            proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
-            internal_port: 8008,
-            public_port: 3000,
-            fqdn_prefix: nil,
-            end_port: 8010)
+        var appPort = DistributedMatchEngine_AppPort.init()
+        appPort.proto = DistributedMatchEngine_LProto.tcp
+        appPort.internalPort = 8008
+        appPort.publicPort = 3000
+        appPort.fqdnPrefix = ""
+        appPort.endPort = 8010
         
-        let appPort2 = MobiledgeXiOSLibrary.MatchingEngine.AppPort(
-            proto: MobiledgeXiOSLibrary.MatchingEngine.LProto.L_PROTO_TCP,
-            internal_port: 8008,
-            public_port: 3000,
-            fqdn_prefix: nil,
-            end_port: 0)
+        var appPort2 = DistributedMatchEngine_AppPort.init()
+        appPort2.proto = DistributedMatchEngine_LProto.tcp
+        appPort2.internalPort = 8008
+        appPort2.publicPort = 3000
+        appPort2.fqdnPrefix = ""
+        appPort2.endPort = 0
             
         let appPorts = [appPort]
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 33.45, longitude: -121.34)
-        let fce = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply(
-            ver: 1,
-            status: MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.FindStatus.FIND_FOUND,
-            fqdn: "mobiledgexmobiledgexsdkdemo20.sdkdemo-app-cluster.us-los-angeles.gcp.mobiledgex.net",
-            ports: appPorts,
-            cloudlet_location: loc)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 33.45
+        loc.longitude = -121.34
+        
+        var fce = DistributedMatchEngine_FindCloudletReply.init()
+        fce.ver = 1
+        fce.status = DistributedMatchEngine_FindCloudletReply.FindStatus.findFound
+        fce.fqdn = "mobiledgexmobiledgexsdkdemo20.sdkdemo-app-cluster.us-los-angeles.gcp.mobiledgex.net"
+        fce.ports = appPorts
+        fce.cloudletLocation = loc
 
         // Default -> Use Public Port
         do {
             let port = try matchingEngine.getPort(appPort: appPort)
             print("port is \(port)")
-            XCTAssert(port == appPort.public_port, "Default port did not return public port. Returned \(port)")
+            XCTAssert(port == appPort.publicPort, "Default port did not return public port. Returned \(port)")
         } catch {
             XCTAssert(false, "Default desired port should have returned public port. Error is \(error)")
         }
@@ -448,7 +438,7 @@ class ConnectionTests: XCTestCase {
         do {
             let port2 = try matchingEngine.getPort(appPort: appPort, desiredPort: 8008)
             print("port2 is \(port2)")
-            XCTAssert(port2 == appPort.public_port, "Internal port did not return public port. Returned \(port2)")
+            XCTAssert(port2 == appPort.publicPort, "Internal port did not return public port. Returned \(port2)")
         } catch {
            XCTAssert(false, "Desired port == Internal should have returned public port. Error is \(error)")
         }
@@ -466,7 +456,7 @@ class ConnectionTests: XCTestCase {
         do {
             let port4 = try matchingEngine.getPort(appPort: appPort, desiredPort: 2999)
             XCTAssert(false, "Desired port not in port range should have thrown GetConnectionError");
-        } catch MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
+        } catch MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
             print("Port not in AppPort range is \(port)")
             XCTAssert(port == 2999, "Error gave wrong port: \(port)")
         } catch {
@@ -477,7 +467,7 @@ class ConnectionTests: XCTestCase {
         do {
             let port5 = try matchingEngine.getPort(appPort: appPort2, desiredPort: 3001);
             XCTAssert(false, "Desired port not in port range should have thrown GetConnectionError");
-        } catch MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
+        } catch MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError.portNotInAppPortRange(let port) {
             print("Port not in AppPort range is \(port)")
             XCTAssert(port == 3001, "Error gave wrong port: \(port)")
         } catch {

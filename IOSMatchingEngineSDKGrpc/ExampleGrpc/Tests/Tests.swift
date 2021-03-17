@@ -15,7 +15,7 @@
 
 import XCTest
 
-@testable import MobiledgeXiOSLibrary
+@testable import MobiledgeXiOSLibraryGrpc
 @testable import Promises
 @testable import SocketIO
 import Network
@@ -25,15 +25,15 @@ class Tests: XCTestCase {
     let TEST = true
     
     // Use hardcoded dme host and port if TEST is true
-    let dmeHost = "wifi.dme.mobiledgex.net"
-    let dmePort: UInt16 = 38001
+    let dmeHost = "eu-mexdemo.dme.mobiledgex.net"
+    let dmePort: UInt16 = 50051
     
     var appName: String!
     var appVers: String!
     var orgName: String!
     var carrierName: String!
     
-    var matchingEngine: MobiledgeXiOSLibrary.MatchingEngine!
+    var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
     
     func propertyAssert(propertyNameList: [String], object: [String: AnyObject]) {
         for propertyName in propertyNameList {
@@ -48,19 +48,19 @@ class Tests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        matchingEngine = MobiledgeXiOSLibrary.MatchingEngine()
+        matchingEngine = MobiledgeXiOSLibraryGrpc.MatchingEngine()
         // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
         
         if TEST {
-            appName =  "MobiledgeX SDK Demo"
-            appVers = "2.0"
-            orgName =  "MobiledgeX"
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
             carrierName = "TDG"
         } else {
             // Unlikely path for testing...
             appName =  matchingEngine.getAppName()
             appVers =  matchingEngine.getAppVersion()
-            orgName =  "MobiledgeX"             //   replace this with your orgName
+            orgName =  "MobiledgeX-Samples"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
         }
     }
@@ -99,15 +99,17 @@ class Tests: XCTestCase {
         matchingEngine.registerClientResult(promiseValue)
     }
     
-/*
+
     // Test the FindCloudlet DME API
     @available(iOS 13.0, *)
     func testFindCloudletProximity() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
                 
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
+        var replyPromise: Promise<DistributedMatchEngine_FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
                     let req = try self.matchingEngine.createFindCloudletRequest(
@@ -124,8 +126,8 @@ class Tests: XCTestCase {
         }
         print("FindCloudletReply is \(val)")
 
-        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
-        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
+        let findCloudletReply = DistributedMatchEngine_FindCloudletReply.self
+        XCTAssert(val.status == DistributedMatchEngine_FindCloudletReply.FindStatus.findFound, "FindCloudlet failed, status: \(String(describing: val.status))")
         
         XCTAssertNil(replyPromise.error)
     }
@@ -133,16 +135,18 @@ class Tests: XCTestCase {
     // Test FindCloudlet that call AppInstList and NetTest to find cloudlet with lowest latency
     @available(iOS 13.0, *)
     func testFindCloudletPerformance() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
-                
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
+        
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply>!
+        var replyPromise: Promise<DistributedMatchEngine_FindCloudletReply>!
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
                     let req = try self.matchingEngine.createFindCloudletRequest(
                     gpsLocation: loc, carrierName: self.carrierName)
-                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req, mode: MobiledgeXiOSLibrary.MatchingEngine.FindCloudletMode.PERFORMANCE)
+                    return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req, mode: MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode.PERFORMANCE)
                 }.catch { error in
                     XCTAssert(false, "FindCloudlet encountered error: \(error)")
             }
@@ -152,23 +156,25 @@ class Tests: XCTestCase {
             XCTAssert(false, "FindCloudlet missing a return value.")
             return
         }
-        let cloudletLoc = val.cloudlet_location;
+        let cloudletLoc = val.cloudletLocation;
         XCTAssert(cloudletLoc.longitude != 0 && cloudletLoc.latitude != 0, "Received a bad gps cloudlet_location for findCloudlet performance mode")
 
         print("FindCloudletReply is \(val)")
 
-        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
-        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
+        let findCloudletReply = DistributedMatchEngine_FindCloudletReply.self
+        XCTAssert(val.status == DistributedMatchEngine_FindCloudletReply.FindStatus.findFound, "FindCloudlet failed, status: \(String(describing: val.status))")
         
         XCTAssertNil(replyPromise.error)
     }
     
     func testVerifyLocation() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
-
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
+        
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply>!
+        var replyPromise: Promise<DistributedMatchEngine_VerifyLocationReply>!
 
         replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
@@ -188,22 +194,24 @@ class Tests: XCTestCase {
         }
         print("VerifyLocationReply is \(val)")
         
-        let VerifyLocationReply = MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply.self
-        let gpsStatus = val.gps_location_status
+        let VerifyLocationReply = DistributedMatchEngine_VerifyLocationReply.self
+        let gpsStatus = val.gpsLocationStatus
         
         // The next value may change. Range of values are possible depending on location.
-        XCTAssert(gpsStatus == VerifyLocationReply.GPSLocationStatus.LOC_VERIFIED, "VerifyLocation failed: \(gpsStatus)")
+        XCTAssert(gpsStatus == DistributedMatchEngine_VerifyLocationReply.GPSLocationStatus.locVerified, "VerifyLocation failed: \(gpsStatus)")
         
         XCTAssertNil(replyPromise.error, "VerifyLocation Error is set: \(String(describing: replyPromise.error))")
     }
     
     func testAppInstList() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude:  37.459609, longitude: -122.149349)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
         
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
         // Host goes to mexdemo, not tdg. tdg is the registered name for the app.
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply>!
+        var replyPromise: Promise<DistributedMatchEngine_AppInstListReply>!
 
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
@@ -221,8 +229,8 @@ class Tests: XCTestCase {
         }
         print("AppInstListReply is \(val)")
         
-        let AppInstListReply = MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply.self
-        XCTAssert(val.status == AppInstListReply.AIStatus.AI_SUCCESS, "AppInstList failed, status: \(String(describing: val.status))")
+        let AppInstListReply = DistributedMatchEngine_AppInstListReply.self
+        XCTAssert(val.status == DistributedMatchEngine_AppInstListReply.AIStatus.aiSuccess, "AppInstList failed, status: \(String(describing: val.status))")
         
         // This one depends on the server for the number of cloudlets:
         let cloudlets = val.cloudlets
@@ -238,12 +246,12 @@ class Tests: XCTestCase {
         }
         
         let appinstance = appinstances[0]
-        if appinstance.app_name == "" {
+        if appinstance.appName == "" {
             XCTAssert(false, "Missing app_name in appinstance")
             return
         }
         
-        if appinstance.app_vers == "" {
+        if appinstance.appVers == "" {
             XCTAssert(false, "Missing app_vers in appinstance")
             return
         }
@@ -253,7 +261,7 @@ class Tests: XCTestCase {
             return
         }
         
-        if appinstance.org_name == "" {
+        if appinstance.orgName == "" {
             XCTAssert(false, "Missing org_name in appinstance")
             return
         }
@@ -273,21 +281,26 @@ class Tests: XCTestCase {
         }
     }
     
-    func createQoSPositionList(loc: MobiledgeXiOSLibrary.MatchingEngine.Loc, directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]
+    func createQoSPositionList(loc: DistributedMatchEngine_Loc, directionDegrees: Double, totalDistanceKm: Double, increment: Double) -> [DistributedMatchEngine_QosPosition]
     {
-        var qosPositionList = [MobiledgeXiOSLibrary.MatchingEngine.QosPosition]()
+        var qosPositionList = [DistributedMatchEngine_QosPosition]()
         let kmPerDegreeLong = 111.32 //at Equator
         let kmPerDegreeLat = 110.57 //at Equator
         let addLongitude = (cos(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLong
         let addLatitude = (sin(directionDegrees * (.pi/180)) * increment) / kmPerDegreeLat
         var i = 0.0
         var idx: Int64 = 1
-        var longitude = loc.longitude ?? 0
-        var latitude = loc.latitude ?? 0
+        var longitude = loc.longitude
+        var latitude = loc.latitude
         
         while i < totalDistanceKm {
-            let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: latitude, longitude: longitude)
-            let qosPosition = MobiledgeXiOSLibrary.MatchingEngine.QosPosition(positionId: idx, gpsLocation: loc)
+        
+            var loc = DistributedMatchEngine_Loc.init()
+            loc.latitude = latitude
+            loc.longitude = longitude
+            var qosPosition = DistributedMatchEngine_QosPosition.init()
+            qosPosition.positionid = idx
+            qosPosition.gpsLocation = loc
             
             qosPositionList.append(qosPosition)
             
@@ -301,7 +314,10 @@ class Tests: XCTestCase {
     }
     
     func testGetQosPositionKpi() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 52.5200, longitude: 13.4050)   //Berlin
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 52.5200
+        loc.longitude = 13.4050   //Berlin
+        
         let positions = createQoSPositionList(loc: loc,
                                               directionDegrees: 45,
                                               totalDistanceKm: 200,
@@ -309,7 +325,7 @@ class Tests: XCTestCase {
         
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply>!
+        var replyPromise: Promise<DistributedMatchEngine_QosPositionKpiReply>!
         
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
@@ -327,10 +343,10 @@ class Tests: XCTestCase {
         }
         print("QosPositionKpiReply is \(promiseValue)")
         
-        let QosPositionKpiReply = MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply.self
+        let QosPositionKpiReply = DistributedMatchEngine_QosPositionKpiReply.self
         let status = promiseValue.status
         
-        XCTAssert(status == MobiledgeXiOSLibrary.MatchingEngine.ReplyStatus.RS_SUCCESS, "QoSPosition failed: \(status)")
+        XCTAssert(status == DistributedMatchEngine_ReplyStatus.rsSuccess, "QoSPosition failed: \(status)")
         
         XCTAssertNil(replyPromise.error, "QoSPosition Error is set: \(String(describing: replyPromise.error))")
     }
@@ -338,7 +354,7 @@ class Tests: XCTestCase {
     func testAddUsertoGroup() {
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         
-        var replyPromise: Promise<MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply>!
+        var replyPromise: Promise<DistributedMatchEngine_DynamicLocGroupReply>!
 
             replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
                 .then { reply in
@@ -355,15 +371,18 @@ class Tests: XCTestCase {
         }
         print("DynamicLocGroupReply is \(promiseValue)")
         
-        let DynamicLocGroupReply = MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply.self
-        XCTAssert(promiseValue.status == MobiledgeXiOSLibrary.MatchingEngine.ReplyStatus.RS_SUCCESS, "AddUserToGroup Failed.")
+        let DynamicLocGroupReply = DistributedMatchEngine_DynamicLocGroupReply.self
+        XCTAssert(promiseValue.status == DistributedMatchEngine_ReplyStatus.rsSuccess, "AddUserToGroup Failed.")
         
         XCTAssertNil(replyPromise.error)
     }
     
     @available(iOS 13.0, *)
     func testRegisterAndFindCloudlet() {
-        let loc = MobiledgeXiOSLibrary.MatchingEngine.Loc(latitude: 37.459609, longitude: -122.149349)
+        var loc = DistributedMatchEngine_Loc.init()
+        loc.latitude = 37.459609
+        loc.longitude = -122.149349
+        
         let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: carrierName)
         .catch { error in
             XCTAssert(false, "Error is \(error)")
@@ -376,8 +395,8 @@ class Tests: XCTestCase {
         }
         print("FindCloudletReply is \(val)")
 
-        let findCloudletReply = MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.self
-        XCTAssert(val.status == findCloudletReply.FindStatus.FIND_FOUND, "FindCloudlet failed, status: \(String(describing: val.status))")
+        let findCloudletReply = DistributedMatchEngine_FindCloudletReply.self
+        XCTAssert(val.status == DistributedMatchEngine_FindCloudletReply.FindStatus.findFound, "FindCloudlet failed, status: \(String(describing: val.status))")
         
         XCTAssertNil(replyPromise.error)
     }
@@ -394,11 +413,11 @@ class Tests: XCTestCase {
     }
     
     func testLocationServices() {
-        let startLocationPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        let startLocationPromise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
         .then { success in
-            let country = MobiledgeXiOSLibrary.MobiledgeXLocation.getLastISOCountryCode()
+            let country = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastISOCountryCode()
             print("country code is \(country)")
-            print("lastLocation is \(MobiledgeXiOSLibrary.MobiledgeXLocation.getLastLocation())")
+            print("lastLocation is \(MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation())")
         }.catch { error in
             XCTAssert(false, "Error in location services test \(error)")
         }
@@ -410,13 +429,13 @@ class Tests: XCTestCase {
         }
         
         XCTAssert(successStartLocation)
-        MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
+        MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.stopLocationServices()
     }
     
     func testIsRoaming() {
-        let roamingPromise = MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        let roamingPromise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
         .then { success -> Bool in
-            let roaming = try MobiledgeXiOSLibrary.NetworkInterface.isRoaming()
+            let roaming = try MobiledgeXiOSLibraryGrpc.NetworkInterface.isRoaming()
             return roaming
         }.catch { error in
             XCTAssert(false, "Error in isRoaming test \(error)")
@@ -428,7 +447,6 @@ class Tests: XCTestCase {
             return
         }
         XCTAssert(isRoaming)
-        MobiledgeXiOSLibrary.MobiledgeXLocation.stopLocationServices()
+        MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.stopLocationServices()
     }
-*/
 }
