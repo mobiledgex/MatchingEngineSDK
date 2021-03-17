@@ -51,6 +51,7 @@ extension MobiledgeXiOSLibraryGrpc {
 
         public var state: MatchingEngineState
         var tlsEnabled = true
+        var allowSelfSignedCertsGetConnection = false
 
         /// MatchingEngine constructor
         public init() {
@@ -62,7 +63,6 @@ extension MobiledgeXiOSLibraryGrpc {
             let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
             let apiclient = DistributedMatchEngine_MatchEngineApiClient.init(channel: channel)
             return GrpcClient(group: group, apiclient: apiclient)
-            
         }
         
         func closeGrpcClient(client: GrpcClient) {
