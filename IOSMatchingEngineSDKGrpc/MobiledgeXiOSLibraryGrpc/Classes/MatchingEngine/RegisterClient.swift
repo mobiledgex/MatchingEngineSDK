@@ -43,7 +43,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - appName: Name of the application
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
-    /// - Returns: RegisterClientRequest
+    /// - Returns: DistributedMatchEngine_RegisterClientRequest
     public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil)
         -> DistributedMatchEngine_RegisterClientRequest { // Dictionary/json
             
@@ -71,8 +71,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Takes a RegisterClient request, and contacts the Distributed MatchingEngine host for the current
     /// carrier, if any.
     /// - Parameters:
-    ///   - request: RegisterClientRequest struct, from createRegisterClientReqwuest.
-    /// - Returns: Promise<RegisterClientReply>
+    ///   - request: DistributedMatchEngine_RegisterClientRequest struct, from createRegisterClientRequest.
+    /// - Returns: Promise<DistributedMatchEngine_RegisterClientReply>
     public func registerClient(request: DistributedMatchEngine_RegisterClientRequest) -> Promise<DistributedMatchEngine_RegisterClientReply> {
         os_log("registerClient", log: OSLog.default, type: .debug)
         
@@ -98,8 +98,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
-    ///   - request: RegisterClientRequest struct, from createRegisterClientRequest.
-    /// - Returns: Promise<RegisterClientReply>
+    ///   - request: DistributedMatchEngine_RegisterClientRequest struct, from createRegisterClientRequest.
+    /// - Returns: Promise<DistributedMatchEngine_RegisterClientReply>
     public func registerClient(host: String, port: UInt16, request: DistributedMatchEngine_RegisterClientRequest) -> Promise<DistributedMatchEngine_RegisterClientReply> {
         os_log("registerClient", log: OSLog.default, type: .debug)
         

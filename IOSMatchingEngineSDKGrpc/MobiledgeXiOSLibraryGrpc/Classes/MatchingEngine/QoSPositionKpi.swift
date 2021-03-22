@@ -27,12 +27,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Creates the QosPositionRequest object that will be used in CreateQosPositionRequest
     ///
     /// - Parameters:
-    ///   - requests: QosPositions (Dict: id -> gps location)
+    ///   - requests: DistributedMatchEngine_QosPositions (Dict: id -> gps location)
     ///   - lteCategory: Optional lteCategory
     ///   - bandSelection: Optional BandSelection
     ///   - cellID: Optional cellID
     ///   - tags: Optional dict
-    /// - Returns: QosPositionRequest
+    /// - Returns: DistributedMatchEngine_QosPositionRequest
     public func createQosKPIRequest(requests: [DistributedMatchEngine_QosPosition], lteCategory: Int32? = nil, bandSelection: DistributedMatchEngine_BandSelection? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_QosPositionRequest {
         
         var req = DistributedMatchEngine_QosPositionRequest.init()
@@ -62,8 +62,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///
     /// Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations
     /// - Parameters:
-    ///   - request: QosKPIRequest struct from createQosKPIRequest.
-    /// - Returns: Promise<QosPositionKpiReply>
+    ///   - request: DistributedMatchEngine_QosKPIRequest struct from createQosKPIRequest.
+    /// - Returns: Promise<DistributedMatchEngine_QosPositionKpiReply>
     public func getQosKPIPosition(request: DistributedMatchEngine_QosPositionRequest) -> Promise<DistributedMatchEngine_QosPositionKpiReply>
     {
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)
@@ -86,8 +86,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
-    ///   - request: QosKPIRequest dictionary, from createQosKPIRequest.
-    /// - Returns: Promise<QosPositionKpiReply>
+    ///   - request: DistributedMatchEngine_QosKPIRequest from createQosKPIRequest.
+    /// - Returns: Promise<DistributedMatchEngine_QosPositionKpiReply>
     public func getQosKPIPosition(host: String, port: UInt16, request: DistributedMatchEngine_QosPositionRequest) -> Promise<DistributedMatchEngine_QosPositionKpiReply>
     {
         os_log("getQosKPIPosition", log: OSLog.default, type: .debug)

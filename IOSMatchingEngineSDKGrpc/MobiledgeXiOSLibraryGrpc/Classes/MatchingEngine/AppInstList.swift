@@ -26,12 +26,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Creates the AppInstListRequest object that will be used in GetAppInstList
     ///
     /// - Parameters:
-    ///   - gpslocation: A dictionary with at least longitude and latitude key values.
+    ///   - gpslocation: A DistributedMatchEngine_Loc with at least longitude and latitude key values.
     ///   - carrierName: Carrier name. This value can change depending on cell tower.
     ///   - cellID: Optional cellID
     ///   - tags: Optional dict
     ///
-    /// - Returns: AppInstListRequest
+    /// - Returns: DistributedMatchEngine_AppInstListRequest
     public func createGetAppInstListRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil,  cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_AppInstListRequest {
         
         var req = DistributedMatchEngine_AppInstListRequest.init()
@@ -59,9 +59,9 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// This is used internally in FindCloudlet Performance mode to grab the list of cloudlets to test.
     ///
     /// - Parameters:
-    ///   - request: AppInstListRequest from createGetAppInstListRequest
+    ///   - request: DistributedMatchEngine_AppInstListRequest from createGetAppInstListRequest
     ///
-    /// - Returns: Promise<AppInstListReply>
+    /// - Returns: Promise<DistributedMatchEngine_AppInstListReply>
     public func getAppInstList(request: DistributedMatchEngine_AppInstListRequest) -> Promise<DistributedMatchEngine_AppInstListReply> {
         let promiseInputs: Promise<DistributedMatchEngine_AppInstListReply> = Promise<DistributedMatchEngine_AppInstListReply>.pending()
                 

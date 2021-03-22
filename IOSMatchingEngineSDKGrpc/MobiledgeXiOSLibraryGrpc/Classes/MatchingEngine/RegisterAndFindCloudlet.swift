@@ -38,7 +38,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - cellID: Optional cellID
     ///   - tags: Optional dict
     ///   - mode: Optional FindCloudletMode (default to Proximity)
-    /// - Returns: Promise<FindCloudletReply>
+    /// - Returns: Promise<DistributedMatchEngine_FindCloudletReply>
     @available(iOS 13.0, *)
     public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         

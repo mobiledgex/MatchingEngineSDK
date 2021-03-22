@@ -28,7 +28,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - comm_type
     ///   - user_data
     ///
-    /// - Returns: API Dictionary/json
+    /// - Returns: DistributedMatchEngine_DynamicLocGroupRequest
     func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_DynamicLocGroupRequest {
         
         var req = DistributedMatchEngine_DynamicLocGroupRequest.init()
@@ -54,8 +54,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///
     /// Takes a DynamicLocGroup request, and contacts the Distributed MatchingEngine host
     /// - Parameters:
-    ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
-    /// - Returns: API Dictionary/json
+    ///   - request: DistributedMatchEngine_DynamicLocGroupRequest, from createDynamicLocGroupRequest.
+    /// - Returns: Promise<DistributedMatchEngine_DynamicLocGroupReply>
     func addUserToGroup (request: DistributedMatchEngine_DynamicLocGroupRequest) -> Promise<DistributedMatchEngine_DynamicLocGroupReply>
     {
         let promiseInputs: Promise<DistributedMatchEngine_DynamicLocGroupReply> = Promise<DistributedMatchEngine_DynamicLocGroupReply>.pending()
@@ -77,8 +77,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
-    ///   - request: DynamicLocGroupRequest dictionary, from createDynamicLocGroupRequest.
-    /// - Returns: API Dictionary/json
+    ///   - request: DistributedMatchEngine_DynamicLocGroupRequest, from createDynamicLocGroupRequest.
+    /// - Returns: Promise<DistributedMatchEngine_DynamicLocGroupReply>
     func addUserToGroup (host: String, port: UInt16, request: DistributedMatchEngine_DynamicLocGroupRequest)
         -> Promise<DistributedMatchEngine_DynamicLocGroupReply>
     {

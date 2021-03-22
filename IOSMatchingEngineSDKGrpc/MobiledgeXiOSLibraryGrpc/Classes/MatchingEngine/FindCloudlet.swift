@@ -39,7 +39,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - carrierName: carrierName
     ///   - gpslocation: gpslocation
-    /// - Returns: FindCloudletRequest
+    /// - Returns: DistributedMatchEngine_FindCloudletRequest
     public func createFindCloudletRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws
         -> DistributedMatchEngine_FindCloudletRequest {
             
@@ -69,8 +69,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
     /// for the current carrier, if any.
     /// - Parameters:
-    ///   - request: FindCloudletRequest from createFindCloudletRequest.
-    /// - Returns: Promise<FindCloudletReply>
+    ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
+    /// - Returns: Promise<DistributedMatchEngine_FindCloudletReply>
     @available(iOS 13.0, *)
     public func findCloudlet(request: DistributedMatchEngine_FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         let promiseInputs: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
@@ -117,8 +117,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - host: dmeHost either generated or given explicitly
     ///   - port: dmePort either generated or given explicitly
-    ///   - request: FindCloudletRequest from createFindCloudletRequest.
-    /// - Returns: FindCloudletReply
+    ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
+    /// - Returns: DistributedMatchEngine_FindCloudletReply
     @available(iOS 13.0, *)
     private func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         let promise: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
@@ -192,8 +192,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// - Parameters:
     ///   - host: host override of the dme host server. DME must be reachable from current carrier.
     ///   - port: port override of the dme server port
-    ///   - request: FindCloudletRequest from createFindCloudletRequest.
-    /// - Returns: FindCloudletReply
+    ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
+    /// - Returns: DistributedMatchEngine_FindCloudletReply
     private func findCloudletProximity(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest)
         -> Promise<DistributedMatchEngine_FindCloudletReply>
     {

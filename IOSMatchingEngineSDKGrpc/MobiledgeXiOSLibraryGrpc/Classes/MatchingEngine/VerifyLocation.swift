@@ -26,11 +26,11 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Creates the VerifyLocationRequest object that will be used in VerifyLocation
     ///
     /// - Parameters:
-    ///   - gpsLocation; Loc
+    ///   - gpsLocation: DistributedMatchEngine_Loc
     ///   - carrierName: carrierName
     ///   - cellID: Optional cellID
     ///   - tags: Optional dict
-    /// - Returns: VerifyLocationRequest
+    /// - Returns: DistributedMatchEngine_VerifyLocationRequest
     public func createVerifyLocationRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil,
                                             cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_VerifyLocationRequest {
             
@@ -52,10 +52,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             throw MatchingEngineError.missingSessionCookie
         }
         let _ = try validateGpsLocation(gpsLocation: request.gpsLocation)
-        
-        /*if request.verifyLocToken == "" {
-            throw MatchingEngineError.missingTokenServerToken
-        }*/
     }
     
     private func getTokenPost(uri: String) // Dictionary/json
@@ -141,8 +137,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Also provides the distance between where the user claims to be and where carrier believes user to be (via gps and cell id) in km.
     ///
     /// - Parameters:
-    ///   - request: VerifyLocationRequest from createVerifyLocation
-    /// - Returns: Promise<VerifyLocationReply>
+    ///   - request: DistributedMatchEngine_VerifyLocationRequest from createVerifyLocation
+    /// - Returns: Promise<DistributedMatchEngine_VerifyLocationReply>
     public func verifyLocation(request: DistributedMatchEngine_VerifyLocationRequest) -> Promise<DistributedMatchEngine_VerifyLocationReply> {
         let promiseInputs: Promise<DistributedMatchEngine_VerifyLocationReply> = Promise<DistributedMatchEngine_VerifyLocationReply>.pending()
         
