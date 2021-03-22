@@ -25,7 +25,7 @@ class Tests: XCTestCase {
     let TEST = true
     
     // Use hardcoded dme host and port if TEST is true
-    let dmeHost = "wifi.dme.mobiledgex.net"
+    let dmeHost = "eu-mexdemo.dme.mobiledgex.net"
     let dmePort: UInt16 = 38001
     
     var appName: String!
@@ -52,15 +52,15 @@ class Tests: XCTestCase {
         // matchingEngine.state.setUseWifiOnly(enabled: true) // for simulator tests and phones without SIM
         
         if TEST {
-            appName =  "MobiledgeX SDK Demo"
-            appVers = "2.0"
-            orgName =  "MobiledgeX"
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
             carrierName = "TDG"
         } else {
             // Unlikely path for testing...
             appName =  matchingEngine.getAppName()
             appVers =  matchingEngine.getAppVersion()
-            orgName =  "MobiledgeX"             //   replace this with your orgName
+            orgName =  "MobiledgeX-Samples"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
         }
     }
