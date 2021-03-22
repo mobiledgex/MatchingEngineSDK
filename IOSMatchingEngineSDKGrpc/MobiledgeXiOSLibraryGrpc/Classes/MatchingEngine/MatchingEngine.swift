@@ -58,6 +58,11 @@ extension MobiledgeXiOSLibraryGrpc {
             state = MatchingEngineState()
         }
         
+        /// MatchingEngine destructor
+        public func close() {
+            // code for cleaning up
+        }
+        
         func getGrpcClient(host: String, port: UInt16) -> GrpcClient {
             let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
             let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
