@@ -1,0 +1,29 @@
+use_frameworks!
+
+platform :ios, '12.0'
+
+# Default Specs.git:
+source 'https://github.com/CocoaPods/Specs.git'
+# MobiledgeX Private Trunk for Specs.git equivalent, , if not using "../":
+source 'https://github.com/mobiledgex/PrivatePodTrunk.git'
+
+target 'MatchingEngine_Example' do
+  pod 'MobiledgeXiOSLibraryGrpc', :path => '../'
+  pod 'gRPC-Swift', '~> 1.0.0'
+ 
+  pod 'Eureka', '= 5.3.0'
+ 
+  pod 'DropDown', '= 2.3.13'
+  
+  pod 'GoogleMaps', '= 3.6.0'
+  pod 'GoogleSignIn', '= 5.0.2'
+
+  pod 'SPPermissions/Camera', '= 5.2.5'
+  pod 'SPPermissions/Location', '= 5.2.5'
+  
+  target 'MatchingEngine_Tests' do
+    inherit! :search_paths
+    
+  end
+  
+end

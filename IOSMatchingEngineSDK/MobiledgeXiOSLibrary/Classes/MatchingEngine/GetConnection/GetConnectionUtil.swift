@@ -106,6 +106,14 @@ extension MobiledgeXiOSLibrary.MatchingEngine {
         return url
     }
     
+    public func allowSelfSignedCerts() {
+        allowSelfSignedCertsGetConnection = true
+    }
+    
+    public func disableSelfSignedCerts() {
+        allowSelfSignedCertsGetConnection = false
+    }
+    
     private func validateAppPort(findCloudletReply: FindCloudletReply, appPort: AppPort) -> Bool {
         var found = false
         for ap in findCloudletReply.ports {
