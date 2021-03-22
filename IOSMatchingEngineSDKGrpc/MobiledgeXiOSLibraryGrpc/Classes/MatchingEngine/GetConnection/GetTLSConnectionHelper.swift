@@ -41,19 +41,20 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let serverEndpoint = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(String(describing: port))!)
             // default tls and tcp options, developer can adjust
             let options = NWProtocolTLS.Options()
-                sec_protocol_options_set_verify_block(options.securityProtocolOptions, { (sec_protocol_metadata, sec_trust, sec_protocol_verify_complete) in
-                    let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
-                    var error: CFError?
-                    if SecTrustEvaluateWithError(trust, &error) {
+            sec_protocol_options_set_verify_block(options.securityProtocolOptions, { (sec_protocol_metadata, sec_trust, sec_protocol_verify_complete) in
+                
+                let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
+                var error: CFError?
+                if SecTrustEvaluateWithError(trust, &error) {
+                    sec_protocol_verify_complete(true)
+                } else {
+                    if self.allowSelfSignedCertsGetConnection == true {
                         sec_protocol_verify_complete(true)
                     } else {
-                        if self.allowSelfSignedCertsGetConnection == true {
-                            sec_protocol_verify_complete(true)
-                        } else {
-                            sec_protocol_verify_complete(false)
-                        }
+                        sec_protocol_verify_complete(false)
                     }
-                }, self.state.executionQueue)
+                }
+            }, self.state.executionQueue)
             let parameters = NWParameters(tls: options, tcp: .init())
             // bind to specific local cellular ip
             parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
@@ -89,19 +90,20 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
             // default tls and tcp options
             let options = NWProtocolTLS.Options()
-                sec_protocol_options_set_verify_block(options.securityProtocolOptions, { (sec_protocol_metadata, sec_trust, sec_protocol_verify_complete) in
-                    let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
-                    var error: CFError?
-                    if SecTrustEvaluateWithError(trust, &error) {
+            sec_protocol_options_set_verify_block(options.securityProtocolOptions, { (sec_protocol_metadata, sec_trust, sec_protocol_verify_complete) in
+                    
+                let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
+                var error: CFError?
+                if SecTrustEvaluateWithError(trust, &error) {
+                    sec_protocol_verify_complete(true)
+                } else {
+                    if self.allowSelfSignedCertsGetConnection == true {
                         sec_protocol_verify_complete(true)
                     } else {
-                        if self.allowSelfSignedCertsGetConnection == true {
-                            sec_protocol_verify_complete(true)
-                        } else {
-                            sec_protocol_verify_complete(false)
-                        }
+                        sec_protocol_verify_complete(false)
                     }
-                }, self.state.executionQueue)
+                }
+            }, self.state.executionQueue)
             let parameters = NWParameters(dtls: options, udp: .init())
             // bind to specific cellular ip
             parameters.requiredInterfaceType = .cellular // works without specifying endpoint?? (does apple prevent non-wifi?)
