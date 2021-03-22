@@ -60,7 +60,7 @@ class ConnectionTests: XCTestCase {
     }
     
     func testIsWifi() {
-        let wifiOn = true // tester specifies this
+        let wifiOn = false // tester specifies this
         let hasWifi = MobiledgeXiOSLibraryGrpc.NetworkInterface.hasWifiInterface()
         if hasWifi != wifiOn {
             XCTAssert(false, "Failed")
@@ -127,6 +127,8 @@ class ConnectionTests: XCTestCase {
     @available(iOS 13.0, *)
     func testTCPTLSConnection() {
         let port = UInt16(2015)
+        // allow self-signed cert from test server
+        matchingEngine.allowSelfSignedCerts()
         // Bool states if Path is Satisfied and State is Ready -> successful connection
         var replyPromise = matchingEngine.getTCPTLSConnection(host: host, port: port, timeout: 5)
         .then { c -> Promise<Bool> in
@@ -181,8 +183,9 @@ class ConnectionTests: XCTestCase {
         var manager: SocketManager!
         
         // SocketIO server
-        let port = "3765"
-        let uri = "ws://" + host + ":" + port + "/ws"
+        let wsHost = "autoclusterarshooter.hamburg-main.tdg.mobiledgex.net"
+        let port = "3838"
+        let uri = "ws://" + wsHost + ":" + port
         guard let url = URL(string: uri) else {
             XCTAssert(false, "Unable to create url")
             return

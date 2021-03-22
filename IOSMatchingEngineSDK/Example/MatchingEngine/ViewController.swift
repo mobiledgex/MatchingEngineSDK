@@ -37,7 +37,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt16 = 38001
-    var demoHost = "sdkdemo.dme.mobiledgex.net"
+    var demoHost = "eu-mexdemo.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -75,10 +75,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         {
             host = demoHost
             port = MobiledgeXiOSLibrary.MatchingEngine.DMEConstants.dmeRestPort
-            appName =  "MobiledgeX SDK Demo"
-            appVers = "2.0"
-            orgName =  "MobiledgeX"
-            carrierName = "tdg"
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
+            carrierName = "TDG"
             authToken = nil
             uniqueID = nil
             uniqueIDType = nil
@@ -87,9 +87,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         else
         {
-            appName =  "MobiledgeX SDK Demo"
-            appVers =  "2.0"
-            orgName =  "MobiledgeX"             //   replace this with your orgName
+            appName =  "sdktest"
+            appVers =  "9.0"
+            orgName =  "MobiledgeX-Samples"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueID = nil

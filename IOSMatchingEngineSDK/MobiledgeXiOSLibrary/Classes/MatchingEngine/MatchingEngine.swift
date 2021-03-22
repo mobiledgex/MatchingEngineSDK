@@ -56,6 +56,7 @@ extension MobiledgeXiOSLibrary {
         
         var urlConfiguration: URLSessionConfiguration?
         var urlSession: URLSession?
+        var allowSelfSignedCertsGetConnection = false
 
 
         /// MatchingEngine constructor
