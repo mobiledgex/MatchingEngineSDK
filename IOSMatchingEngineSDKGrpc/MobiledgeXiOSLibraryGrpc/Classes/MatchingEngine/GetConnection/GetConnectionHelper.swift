@@ -46,7 +46,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
             self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                    fulfill(socket)
+                fulfill(socket)
             }.catch { error in
                 reject(error)
             }
@@ -78,7 +78,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                         
             self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                    fulfill(socket)
+                fulfill(socket)
             }.catch { error in
                 reject(error)
             }

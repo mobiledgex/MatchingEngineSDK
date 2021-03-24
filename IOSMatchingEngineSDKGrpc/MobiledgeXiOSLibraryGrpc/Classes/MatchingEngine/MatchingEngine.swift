@@ -50,6 +50,7 @@ extension MobiledgeXiOSLibraryGrpc {
                 ]
 
         public var state: MatchingEngineState
+        var edgeEventsConnection: EdgeEventsConnection? = nil
         var tlsEnabled = true
         var allowSelfSignedCertsGetConnection = false
 
@@ -61,16 +62,17 @@ extension MobiledgeXiOSLibraryGrpc {
         /// MatchingEngine destructor
         public func close() {
             // code for cleaning up
+            edgeEventsConnection!.close()
         }
         
-        func getGrpcClient(host: String, port: UInt16) -> GrpcClient {
+        static func getGrpcClient(host: String, port: UInt16, tlsEnabled: Bool) -> GrpcClient {
             let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
             let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
             let apiclient = DistributedMatchEngine_MatchEngineApiClient.init(channel: channel)
             return GrpcClient(group: group, apiclient: apiclient)
         }
         
-        func closeGrpcClient(client: GrpcClient) {
+        static func closeGrpcClient(client: GrpcClient) {
             do {
                 try client.apiclient.channel.close().wait()
                 try client.group.syncShutdownGracefully()

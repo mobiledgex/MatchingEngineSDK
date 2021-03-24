@@ -84,7 +84,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         os_log("============================================================", log: OSLog.default, type: .debug)
         
         return Promise<DistributedMatchEngine_AppInstListReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = self.getGrpcClient(host: host, port: port)
+            let client = MobiledgeXiOSLibraryGrpc.MatchingEngine.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             var reply = DistributedMatchEngine_AppInstListReply.init()
             do {
                 reply = try client.apiclient.getAppInstList(request).response.wait()
@@ -92,7 +92,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             } catch {
                 reject(error)
             }
-            self.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.MatchingEngine.closeGrpcClient(client: client)
         }
     }
 }
