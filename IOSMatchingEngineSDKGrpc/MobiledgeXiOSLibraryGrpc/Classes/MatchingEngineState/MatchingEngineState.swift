@@ -76,6 +76,7 @@ extension MobiledgeXiOSLibraryGrpc {
         }
         
         private var sessionCookie: String?
+        private var edgeEventsCookie: String?
         private var tokenServerUri: String?
         private var tokenServerToken: String?
         
@@ -98,6 +99,14 @@ extension MobiledgeXiOSLibraryGrpc {
         
         func getSessionCookie() -> String? {
             return self.sessionCookie
+        }
+        
+        func setEdgeEventsCookie(edgeEventsCookie: String?) {
+            self.edgeEventsCookie = edgeEventsCookie
+        }
+        
+        func getEdgeEventsCookie() -> String? {
+            return self.edgeEventsCookie
         }
         
         func setTokenServerUri(tokenServerUri: String?) {

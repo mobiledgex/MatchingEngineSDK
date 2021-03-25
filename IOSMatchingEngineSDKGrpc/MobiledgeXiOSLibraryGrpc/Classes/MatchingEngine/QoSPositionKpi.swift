@@ -94,7 +94,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         print("request is \(request)")
         
         return Promise<DistributedMatchEngine_QosPositionKpiReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = MobiledgeXiOSLibraryGrpc.MatchingEngine.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
+            let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             
             let stream = client.apiclient.getQosPositionKpi(request) { response in
                 fulfill(response)
@@ -111,7 +111,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 reject(error)
             }
                 
-            MobiledgeXiOSLibraryGrpc.MatchingEngine.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
         }
     }
 }

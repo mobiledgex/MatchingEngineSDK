@@ -84,28 +84,31 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         }
         let port = DMEConstants.dmeGrpcPort
         
-        switch mode {
-        case FindCloudletMode.PROXIMITY:
-            return findCloudletProximity(host: host, port: port, request: request)
-        case FindCloudletMode.PERFORMANCE:
-            return findCloudletPerformance(host: host, port: port, request: request)
-        default:
-            return findCloudletProximity(host: host, port: port, request: request)
-        }
+        return findCloudlet(host: host, port: port, request: request, mode: mode)
     }
     
     /// FindCloudlet overload with hardcoded DME host and port. Only use for testing.
     @available(iOS 13.0, *)
     public func findCloudlet(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         
+        var promise: Promise<DistributedMatchEngine_FindCloudletReply>
         switch mode {
         case FindCloudletMode.PROXIMITY:
-            return findCloudletProximity(host: host, port: port, request: request)
+            promise = findCloudletProximity(host: host, port: port, request: request)
         case FindCloudletMode.PERFORMANCE:
-            return findCloudletPerformance(host: host, port: port, request: request)
+            promise = findCloudletPerformance(host: host, port: port, request: request)
         default:
-            return findCloudletProximity(host: host, port: port, request: request)
+            promise = findCloudletProximity(host: host, port: port, request: request)
         }
+        
+        // Store edgeeventscookie
+        self.state.executionQueue.async {
+            promise.then { reply in
+                self.state.setEdgeEventsCookie(edgeEventsCookie: reply.edgeEventsCookie)
+                os_log("saved edgeeventscookie", log: OSLog.default, type: .debug)
+            }
+        }
+        return promise
     }
     
     /// FindCloudlet
@@ -201,7 +204,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         os_log("======================================================================", log: OSLog.default, type: .debug)
         
         return Promise<DistributedMatchEngine_FindCloudletReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = MobiledgeXiOSLibraryGrpc.MatchingEngine.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
+            let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             var reply = DistributedMatchEngine_FindCloudletReply.init()
             do {
                 reply = try client.apiclient.findCloudlet(request).response.wait()
@@ -209,7 +212,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             } catch {
                 reject(error)
             }
-            MobiledgeXiOSLibraryGrpc.MatchingEngine.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
         }
     }
     

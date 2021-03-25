@@ -38,11 +38,6 @@ extension MobiledgeXiOSLibraryGrpc {
             public static let wifiAlias: String = "wifi"
         }
         
-        struct GrpcClient {
-            var group: EventLoopGroup
-            var apiclient: DistributedMatchEngine_MatchEngineApiClient
-        }
-        
         let headers = [
                     "Accept": "application/json",
                     "Content-Type": "application/json", // This is the default
@@ -50,9 +45,12 @@ extension MobiledgeXiOSLibraryGrpc {
                 ]
 
         public var state: MatchingEngineState
-        var edgeEventsConnection: EdgeEventsConnection? = nil
         var tlsEnabled = true
         var allowSelfSignedCertsGetConnection = false
+        
+        var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
+        var lastRegisterClientReply: DistributedMatchEngine_RegisterClientReply? = nil
+        var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
 
         /// MatchingEngine constructor
         public init() {
@@ -62,23 +60,7 @@ extension MobiledgeXiOSLibraryGrpc {
         /// MatchingEngine destructor
         public func close() {
             // code for cleaning up
-            edgeEventsConnection!.close()
-        }
-        
-        static func getGrpcClient(host: String, port: UInt16, tlsEnabled: Bool) -> GrpcClient {
-            let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-            let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
-            let apiclient = DistributedMatchEngine_MatchEngineApiClient.init(channel: channel)
-            return GrpcClient(group: group, apiclient: apiclient)
-        }
-        
-        static func closeGrpcClient(client: GrpcClient) {
-            do {
-                try client.apiclient.channel.close().wait()
-                try client.group.syncShutdownGracefully()
-            } catch {
-                os_log("Unable to close grpc client. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
-            }
+            edgeEventsConnection?.close()
         }
     }
 }

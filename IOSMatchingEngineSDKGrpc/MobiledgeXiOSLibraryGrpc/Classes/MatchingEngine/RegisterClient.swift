@@ -115,7 +115,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
         // Return a promise chain:
         return Promise<DistributedMatchEngine_RegisterClientReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = MobiledgeXiOSLibraryGrpc.MatchingEngine.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
+            let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             var reply = DistributedMatchEngine_RegisterClientReply.init()
             do {
                 reply = try client.apiclient.registerClient(requestWithUniqueID).response.wait()
@@ -131,7 +131,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             } catch {
                 reject(error)
             }
-            MobiledgeXiOSLibraryGrpc.MatchingEngine.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
         }
     }
 }

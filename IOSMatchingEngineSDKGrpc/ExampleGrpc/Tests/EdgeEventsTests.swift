@@ -50,7 +50,7 @@ class EdgeEventsTests: XCTestCase {
 
     @available(iOS 13.0, *)
     func testEdgeEventsConnection() {
-        matchingEngine.initializeEdgeEvents(host: dmeHost, port: dmePort)
+        matchingEngine.initializeEdgeEvents(host: dmeHost, port: dmePort, newFindCloudletHandler: handleFindCloudlet)
         
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
@@ -65,7 +65,7 @@ class EdgeEventsTests: XCTestCase {
             gpsLocation: loc, carrierName: self.carrierName)
             return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
         }.then { fcReply -> Promise<Bool> in
-            return self.matchingEngine.edgeEventsConnection!.start(rcReply: registerReply, fcReply: fcReply)
+            return self.matchingEngine.startEdgeEvents()
         }.then { success in
             XCTAssertTrue(success, "EdgeEventsConnection failed")
         }.catch { error in
@@ -73,5 +73,9 @@ class EdgeEventsTests: XCTestCase {
         }
         
         XCTAssert(waitForPromises(timeout: 10))
+    }
+    
+    func handleFindCloudlet(reply: DistributedMatchEngine_FindCloudletReply) {
+        print("got new findcloudlet \(reply)")
     }
 }
