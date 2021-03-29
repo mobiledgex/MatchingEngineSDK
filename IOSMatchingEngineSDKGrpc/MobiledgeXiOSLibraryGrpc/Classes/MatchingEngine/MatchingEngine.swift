@@ -49,7 +49,6 @@ extension MobiledgeXiOSLibraryGrpc {
         var allowSelfSignedCertsGetConnection = false
         
         var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
-        var lastRegisterClientReply: DistributedMatchEngine_RegisterClientReply? = nil
         var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
 
         /// MatchingEngine constructor
@@ -60,7 +59,7 @@ extension MobiledgeXiOSLibraryGrpc {
         /// MatchingEngine destructor
         public func close() {
             // code for cleaning up
-            edgeEventsConnection?.close()
+            stopEdgeEvents()
         }
     }
 }

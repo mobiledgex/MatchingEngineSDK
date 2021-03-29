@@ -89,6 +89,16 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             }
             updateStats(removedVal: removed)
         }
+        
+        public func getDmeSamples() -> [DistributedMatchEngine_Sample] {
+            var dmeSamples: [DistributedMatchEngine_Sample] = []
+            for sample in self.samples {
+                var dmeSample = DistributedMatchEngine_Sample.init()
+                dmeSample.value = sample
+                dmeSamples.append(dmeSample)
+            }
+            return dmeSamples
+        }
 
         private func updateStats(removedVal: Double?) {
             updateAvg(removedVal: removedVal)

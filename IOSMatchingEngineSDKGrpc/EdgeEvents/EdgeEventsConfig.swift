@@ -25,16 +25,44 @@ import Promises
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
     public struct EdgeEventsConfig {
-        
+        // Configure how to send events
+        var latencyPort: UInt16 // port information for latency testing
+        var latencyUpdateConfig: ClientEventsConfig // config for latency updates
+        var locationUpdateConfig: ClientEventsConfig    // config for gps location updates
+          
+        // Configure how to respond to events
+        var latencyThresholdTrigger: Double // latency threshold in ms when new FindCloudlet is triggered
+        var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
     }
     
     public struct ClientEventsConfig {
-        var updatePattern: Int
-        var updateInterval: Double
+        var updatePattern: UpdatePattern
+        var updateInterval: Int // in seconds
         var numberOfUpdates: Int
+        
+        public enum UpdatePattern {
+            case onStart // only update on start
+            case onTrigger // application will call post[]update functions
+            case onInterval // update every updateInterval seconds
+        }
     }
     
     public static func getDefaultEdgeEventsConfig() -> EdgeEventsConfig {
-        return EdgeEventsConfig()
+        let latencyUpdateConfig = ClientEventsConfig(updatePattern: .onInterval, updateInterval: 60, numberOfUpdates: 5)
+        let locationUpdateConfig = ClientEventsConfig(updatePattern: .onInterval, updateInterval: 30, numberOfUpdates: 10)
+        let newFindCloudletEvents: Set = [DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletState, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletMaintenance, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventAppinstHealth, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyProcessed]
+        
+        let config = EdgeEventsConfig(latencyPort: 0, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig, latencyThresholdTrigger: 100, newFindCloudletEvents: newFindCloudletEvents)
+        return config
+    }
+    
+    public func createEdgeEventsConfig(latencyPort: UInt16, latencyUpdateConfig: ClientEventsConfig, locationUpdateConfig: ClientEventsConfig, latencyThresholdTrigger: Double, newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType>) -> EdgeEventsConfig {
+        let config = EdgeEventsConfig(latencyPort: latencyPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig, latencyThresholdTrigger: latencyThresholdTrigger, newFindCloudletEvents: newFindCloudletEvents)
+        return config
+    }
+    
+    public func createClientEventsConfig(updatePattern: ClientEventsConfig.UpdatePattern, updateInterval: Int, numberOfUpdates: Int) -> ClientEventsConfig {
+        let config = ClientEventsConfig(updatePattern: updatePattern, updateInterval: updateInterval, numberOfUpdates: numberOfUpdates)
+        return config
     }
 }

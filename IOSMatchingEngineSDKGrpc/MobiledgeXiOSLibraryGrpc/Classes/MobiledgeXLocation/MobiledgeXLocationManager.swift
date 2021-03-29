@@ -62,7 +62,9 @@ extension MobiledgeXiOSLibraryGrpc {
             // Initialize first lastLocation
             lastLocation = locationManager.location
             // Initialize first ISOCountryCode
-            getISOCountryCodeFromLocation(location: lastLocation!, startPromise: startPromise)
+            if lastLocation != nil {
+                getISOCountryCodeFromLocation(location: lastLocation!, startPromise: startPromise)
+            }
             return startPromise
         }
         

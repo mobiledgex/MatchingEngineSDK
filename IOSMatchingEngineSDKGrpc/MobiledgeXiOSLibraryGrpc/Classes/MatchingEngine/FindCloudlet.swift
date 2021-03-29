@@ -106,6 +106,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             promise.then { reply in
                 self.state.setEdgeEventsCookie(edgeEventsCookie: reply.edgeEventsCookie)
                 os_log("saved edgeeventscookie", log: OSLog.default, type: .debug)
+                
+                self.lastFindCloudletReply = reply
             }
         }
         return promise

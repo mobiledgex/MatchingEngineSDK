@@ -36,8 +36,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
     
     var host = ""
-    var port: UInt16 = 38001
-    var demoHost = "eu-mexdemo.dme.mobiledgex.net"
+    var port: UInt16 = 50051
+    var demoHost = "eu-qa.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -75,9 +75,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         {
             host = demoHost
             port = MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants.dmeGrpcPort
-            appName =  "sdktest"
-            appVers = "9.0"
-            orgName =  "MobiledgeX-Samples"
+            appName =  "automation-sdk-porttest"
+            appVers = "1.0"
+            orgName =  "MobiledgeX"
             carrierName = "TDG"
             authToken = nil
             uniqueID = nil
@@ -87,9 +87,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         else
         {
-            appName =  "sdktest"
-            appVers =  "9.0"
-            orgName =  "MobiledgeX-Samples"             //   replace this with your orgName
+            appName =  "automation-sdk-porttest"
+            appVers =  "1.0"
+            orgName =  "MobiledgeX"             //   replace this with your orgName
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueID = nil
@@ -442,6 +442,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             "Verify Location",
             "Find Closet Cloudlet",
             "Get QoS Position",
+            "Start EdgeEvents",
             "Reset Location",
         ]
     }
@@ -459,6 +460,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 //            "Verify Location",
 //            "Find Closest Cloudlet",
 //            "Get QoS Position",
+//            "Start EdgeEvents",
 //            "Reset Location",
             
             switch index
@@ -641,6 +643,35 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 }
                 
             case 5:
+                Swift.print("Start EdgeEvents")
+                MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
+                .then { success -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
+                    if !success {
+                        os_log("unable to start location services")
+                        SKToast.show(withMessage: "unable to start location services")
+                        let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
+                        promise.fulfill(.fail)
+                        return promise
+                    } else {
+                        if #available(iOS 13.0, *) {
+                            return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet)
+                        } else {
+                            let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
+                            promise.fulfill(.fail)
+                            return promise
+                        }
+                    }
+                }.then { status in
+                    if status == .success {
+                        os_log("Started edge events successfully", log: OSLog.default, type: .debug)
+                        SKToast.show(withMessage: "Started edge events successfully")
+                    } else {
+                        os_log("Started edge events failed", log: OSLog.default, type: .debug)
+                        SKToast.show(withMessage: "Started edge events failed")
+                    }
+                }
+                
+            case 6:
                 SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
                 
@@ -648,6 +679,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 break
             }
         }
+    }
+    
+    func handleNewFindCloudlet(reply: DistributedMatchEngine_FindCloudletReply) {
+        os_log("got new findcloudlet", log: OSLog.default, type: .debug)
+        SKToast.show(withMessage: "got new findcloudlet \(reply)")
     }
 
     @objc func menuButtonAction()

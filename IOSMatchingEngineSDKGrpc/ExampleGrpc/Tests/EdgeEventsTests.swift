@@ -48,31 +48,38 @@ class EdgeEventsTests: XCTestCase {
         XCTAssert(true, "pass")
     }
 
-    @available(iOS 13.0, *)
-    func testEdgeEventsConnection() {
-        matchingEngine.initializeEdgeEvents(host: dmeHost, port: dmePort, newFindCloudletHandler: handleFindCloudlet)
-        
+    @available(iOS 13.4, *)
+    func testStartEdgeEventsConnection() {
+        // on real device use: MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
         loc.longitude = -122.149349
                 
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         var registerReply = DistributedMatchEngine_RegisterClientReply.init()
-        var replyPromise = matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
+        let replyPromise = self.matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
         .then { reply -> Promise<DistributedMatchEngine_FindCloudletReply> in
             registerReply = reply
             let req = try self.matchingEngine.createFindCloudletRequest(
             gpsLocation: loc, carrierName: self.carrierName)
             return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
-        }.then { fcReply -> Promise<Bool> in
-            return self.matchingEngine.startEdgeEvents()
-        }.then { success in
-            XCTAssertTrue(success, "EdgeEventsConnection failed")
+        }.then { fcReply -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
+            if fcReply.status != .findFound {
+                XCTAssert(false, "Bad findcloudlet. Status is \(fcReply.status)")
+            }
+            MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: loc)
+            return self.matchingEngine.startEdgeEvents(host: self.dmeHost, port: self.dmePort, newFindCloudletHandler: self.handleFindCloudlet)
         }.catch { error in
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
         XCTAssert(waitForPromises(timeout: 10))
+        
+        guard let status = replyPromise.value else {
+            XCTAssert(false, "startedgeevents did not return a value.")
+            return
+        }
+        XCTAssertTrue(status == .success, "EdgeEventsConnection failed")
     }
     
     func handleFindCloudlet(reply: DistributedMatchEngine_FindCloudletReply) {
