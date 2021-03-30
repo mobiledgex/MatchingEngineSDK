@@ -39,7 +39,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var initializedWithConfig = false
         
         var latencyTimer: DispatchSourceTimer? = nil
+        var currLatencyInterval: Int = 0
         var locationTimer: DispatchSourceTimer? = nil
+        var currLocationInterval: Int = 0
         var lastLocation: DistributedMatchEngine_Loc? = nil
         
         var config: EdgeEventsConfig? = nil
@@ -47,7 +49,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var newFindCloudletHandler: ((DistributedMatchEngine_FindCloudletReply) -> Void)? = nil
         var serverEventsHandler: ((DistributedMatchEngine_ServerEdgeEvent) -> Void)? = nil
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
-                
+        
+        // Initializer with EdgeEventsConfig (will be the suggested initializer)
         init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: EdgeEventsConfig, getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil) {
             self.matchingEngine = matchingEngine
             self.config = config
@@ -64,6 +67,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
         }
         
+        // Initializer without EdgeEventsConfig (only use for developers that need access to raw events and understand how to receive and send events)
         init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
             self.matchingEngine = matchingEngine
             self.host = host
@@ -150,7 +154,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
             connectionReady = false
             connectionClosed = true
+            latencyTimer?.cancel()
             latencyTimer = nil
+            locationTimer?.cancel()
             locationTimer = nil
             promise.fulfill(.success)
             return promise
@@ -367,15 +373,19 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             case .onInterval:
                 latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
                 latencyTimer!.setEventHandler(handler: {
-                    var loc = self.getLastLocation!()
-                    if loc == nil {
-                        os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
-                        loc = self.lastLocation
-                    }
-                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                        os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    if self.currLatencyInterval < latencyConfig.numberOfUpdates {
+                        var loc = self.getLastLocation!()
+                        if loc == nil {
+                            os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
+                            loc = self.lastLocation
+                        }
+                        self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
+                            os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
+                        }.catch { error in
+                            os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        }
+                    } else {
+                        self.latencyTimer!.cancel()
                     }
                 })
                 latencyTimer!.schedule(deadline: .now(), repeating: .seconds(latencyConfig.updateInterval), leeway: .milliseconds(100))
@@ -403,15 +413,20 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             case .onInterval:
                 locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
                 locationTimer!.setEventHandler(handler: {
-                    var loc = self.getLastLocation!()
-                    if loc == nil {
-                        os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
-                        loc = self.lastLocation
-                    }
-                    self.postLocationUpdate(loc: loc!).then { status in
-                        os_log("successfully post location update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    if self.currLocationInterval < locationConfig.numberOfUpdates {
+                        var loc = self.getLastLocation!()
+                        if loc == nil {
+                            os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
+                            loc = self.lastLocation
+                        }
+                        self.postLocationUpdate(loc: loc!).then { status in
+                            os_log("successfully post location update", log: OSLog.default, type: .debug)
+                            self.currLocationInterval += 1
+                        }.catch { error in
+                            os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        }
+                    } else {
+                        self.locationTimer!.cancel()
                     }
                 })
                 locationTimer!.schedule(deadline: .now(), repeating: .seconds(locationConfig.updateInterval), leeway: .milliseconds(100))

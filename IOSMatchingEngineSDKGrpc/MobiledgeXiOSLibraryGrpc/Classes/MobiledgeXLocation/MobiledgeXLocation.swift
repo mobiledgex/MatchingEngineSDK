@@ -102,12 +102,12 @@ extension MobiledgeXiOSLibraryGrpc {
         @available(iOS 13.4, *)
         public static func setLastLocation(loc: DistributedMatchEngine_Loc) {
             let location = convertMobiledgeXLocationToCLLocation(loc: loc)
-            mobiledgeXLocationManager.lastLocation = location
+            mobiledgeXLocationManager.updateLastLocation(location: location)
         }
         
         /// Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
         public static func getLastLocation() -> DistributedMatchEngine_Loc? {
-            guard let lastLoc = mobiledgeXLocationManager.lastLocation else {
+            guard let lastLoc = mobiledgeXLocationManager.getLastLocation() else {
                 os_log("Last location not available", log: OSLog.default, type: .debug)
                 return nil
             }
