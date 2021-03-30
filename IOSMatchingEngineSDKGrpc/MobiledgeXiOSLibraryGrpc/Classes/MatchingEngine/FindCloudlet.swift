@@ -20,6 +20,7 @@
 import os.log
 import Promises
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// Two modes to call FindCloudlet. First is Proximity (default) which finds the nearest cloudlet based on gps location with application instance

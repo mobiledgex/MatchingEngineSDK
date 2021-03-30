@@ -31,6 +31,7 @@ import MobiledgeXiOSLibraryGrpc
 var theMap: GMSMapView?     //   used by sample.client
 var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker.
 
+@available(iOS 13.0, *)
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
@@ -576,32 +577,24 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 do {
                     let findCloudletRequest = try self!.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self!.carrierName)
                     if (self!.demo) {
-                        if #available(iOS 13.0, *) {
-                            self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
-                                .then { findCloudletReply in
-                                    os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
-                                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                            }
-                            .catch { error in
-                                os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                SKToast.show(withMessage: "findCloudlet error: \(error)")
-                            }
-                        } else {
-                            // Fallback on earlier versions
+                        self!.matchingEngine.findCloudlet(host: self!.demoHost, port: self!.port, request: findCloudletRequest)
+                            .then { findCloudletReply in
+                                os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
+                                SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                        }
+                        .catch { error in
+                            os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            SKToast.show(withMessage: "findCloudlet error: \(error)")
                         }
                     } else {
-                        if #available(iOS 13.0, *) {
-                            self!.matchingEngine.findCloudlet(request: findCloudletRequest)
-                                .then { findCloudletReply in
-                                    os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
-                                    SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
-                            }
-                            .catch { error in
-                                os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                SKToast.show(withMessage: "findCloudlet error: \(error)")
-                            }
-                        } else {
-                                // Fallback on earlier versions
+                        self!.matchingEngine.findCloudlet(request: findCloudletRequest)
+                            .then { findCloudletReply in
+                                os_log("findCloudlet Reply: %@", log: OSLog.default, type: .debug, String(describing: findCloudletReply))
+                                SKToast.show(withMessage: "findCloudlet Reply: \(findCloudletReply)")
+                        }
+                        .catch { error in
+                            os_log("findCloudlet Error: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            SKToast.show(withMessage: "findCloudlet error: \(error)")
                         }
                     }
                 } catch {
@@ -653,13 +646,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         promise.fulfill(.fail)
                         return promise
                     } else {
-                        if #available(iOS 13.0, *) {
-                            return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet)
-                        } else {
-                            let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
-                            promise.fulfill(.fail)
-                            return promise
-                        }
+                        return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet)
                     }
                 }.then { status in
                     if status == .success {

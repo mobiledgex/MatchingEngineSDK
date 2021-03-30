@@ -21,6 +21,7 @@ import Promises
 import SocketIO
 import Network
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// getTCPConnection

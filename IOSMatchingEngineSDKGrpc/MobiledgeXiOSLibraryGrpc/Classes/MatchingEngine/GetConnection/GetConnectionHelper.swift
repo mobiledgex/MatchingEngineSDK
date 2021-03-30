@@ -20,6 +20,7 @@ import os.log
 import Promises
 import SocketIO
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     // Returns TCP CFSocket promise

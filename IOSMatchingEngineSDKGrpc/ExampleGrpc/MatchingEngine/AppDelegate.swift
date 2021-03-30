@@ -27,6 +27,7 @@ import GoogleSignIn
 import os.log
 import MobiledgeXiOSLibraryGrpc
 
+@available(iOS 13.0, *)
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
@@ -120,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 //    }
 }
 
+@available(iOS 13.0, *)
 extension AppDelegate: GIDSignInDelegate
 {
     func sign(_: GIDSignIn!,

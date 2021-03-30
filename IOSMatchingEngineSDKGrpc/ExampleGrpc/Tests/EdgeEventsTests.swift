@@ -20,6 +20,7 @@ import XCTest
 @testable import SocketIO
 import Network
 
+@available(iOS 13.0, *)
 class EdgeEventsTests: XCTestCase {
     
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!

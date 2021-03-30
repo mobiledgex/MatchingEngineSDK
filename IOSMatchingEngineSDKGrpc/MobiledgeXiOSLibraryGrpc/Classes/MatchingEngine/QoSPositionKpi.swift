@@ -21,6 +21,7 @@ import os.log
 import Promises
 import GRPC
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// createQosKPIRequest

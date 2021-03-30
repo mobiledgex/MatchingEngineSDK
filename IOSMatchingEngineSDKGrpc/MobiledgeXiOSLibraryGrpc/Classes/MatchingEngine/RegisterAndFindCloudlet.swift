@@ -19,6 +19,7 @@
 
 import Promises
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
     /// registerAndFIndCloudlet

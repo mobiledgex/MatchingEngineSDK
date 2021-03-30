@@ -23,6 +23,7 @@ import Promises
 // RegisterClient code.
 // TODO: GRPC for Swift (none available).
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     func registerClientResult(_ registerClientReply: DistributedMatchEngine_RegisterClientReply) {

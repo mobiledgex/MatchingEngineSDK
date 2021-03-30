@@ -22,6 +22,7 @@ import GRPC
 import os.log
 import Promises
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
     // TODO: INCLUDE DEVICEINFO
@@ -51,7 +52,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
         
         // Initializer with EdgeEventsConfig (will be the suggested initializer)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: EdgeEventsConfig, getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: EdgeEventsConfig) {
             self.matchingEngine = matchingEngine
             self.config = config
             self.host = host
@@ -59,11 +60,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.tlsEnabled = tlsEnabled
             self.newFindCloudletHandler = newFindCloudletHandler
             self.initializedWithConfig = true
-            if getLastLocation == nil {
-                self.getLastLocation = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
-            } else {
-                self.getLastLocation = getLastLocation
-            }
+            self.getLastLocation = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
             self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
         }
         
@@ -78,7 +75,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
         }
         
-        @available(iOS 13.0, *)
         public func start(timeoutMs: Double = 10000) -> Promise<EdgeEventsStatus> {
             // validate config and handlers
             let err = validateEdgeEvents()
@@ -179,7 +175,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         public func postLatencyUpdate(site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             // initialize latency edgeevent
             var latencyEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
@@ -198,7 +193,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         public func testPingAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
@@ -241,7 +235,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         public func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
@@ -284,7 +277,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         func handleServerEvents(event: DistributedMatchEngine_ServerEdgeEvent) {
             switch event.eventType {
             case .eventInitConnection:
@@ -297,10 +289,18 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                     loc = lastLocation
                 }
-                self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                    os_log("successfully test ping and post latency update on latency request", log: OSLog.default, type: .debug)
-                }.catch { error in
-                    os_log("error testing ping and posting latency update on latency request: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                if self.config!.latencyTestType == .PING {
+                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
+                        os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
+                    }.catch { error in
+                        os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    }
+                } else {
+                    self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
+                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                    }.catch { error in
+                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    }
                 }
             case .eventLatencyProcessed:
                 os_log("latencyprocessed", log: OSLog.default, type: .debug)
@@ -335,7 +335,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         func sendFindCloudletToHandler(eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType) {
             do {
                 var loc = getLastLocation!()
@@ -352,7 +351,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        @available(iOS 13.0, *)
         func startSendClientEvents() {
             // Set up latency update timer
             let latencyConfig = config!.latencyUpdateConfig
@@ -364,10 +362,18 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     loc = lastLocation
                 }
                 matchingEngine.state.executionQueue.async {
-                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                        os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    if self.config!.latencyTestType == .PING {
+                        self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
+                            os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
+                        }.catch { error in
+                            os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        }
+                    } else {
+                        self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
+                            os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                        }.catch { error in
+                            os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        }
                     }
                 }
             case .onInterval:

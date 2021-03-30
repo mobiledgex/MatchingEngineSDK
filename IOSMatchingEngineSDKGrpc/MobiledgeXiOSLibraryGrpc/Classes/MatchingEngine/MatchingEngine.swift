@@ -29,6 +29,7 @@ extension MobiledgeXiOSLibraryGrpc {
     
     /// MatchingEngine class
     /// MobiledgeX MatchingEngine APIs
+    @available(iOS 13.0, *)
     public class MatchingEngine {
         
         public enum DMEConstants {

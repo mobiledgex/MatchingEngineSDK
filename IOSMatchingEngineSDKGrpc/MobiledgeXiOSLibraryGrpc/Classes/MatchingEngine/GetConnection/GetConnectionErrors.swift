@@ -18,6 +18,7 @@
 
 import os.log
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
     /// Errors on GetConnection

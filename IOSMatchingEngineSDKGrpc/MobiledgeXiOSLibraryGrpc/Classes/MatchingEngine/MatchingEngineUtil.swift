@@ -21,6 +21,7 @@ import os.log
 import CoreLocation
 import CryptoKit
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     func getAppName() -> String {

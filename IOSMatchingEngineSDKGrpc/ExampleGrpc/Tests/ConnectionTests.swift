@@ -20,6 +20,7 @@ import XCTest
 @testable import SocketIO
 import Network
 
+@available(iOS 13.0, *)
 class ConnectionTests: XCTestCase {
     
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
@@ -270,7 +271,6 @@ class ConnectionTests: XCTestCase {
     }
     
     // Test the developer workflow: RegisterAndFindCloudlet() -> Pick App Port -> GetConnection()
-    @available(iOS 13.0, *)
     func testGetConnectionWorkflow() {
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
@@ -359,7 +359,6 @@ class ConnectionTests: XCTestCase {
         return s!
     }
     
-    @available(iOS 13.0, *)
     func testTimeout() {
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609

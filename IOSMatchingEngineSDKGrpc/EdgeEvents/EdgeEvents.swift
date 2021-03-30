@@ -19,5 +19,6 @@
 
 extension MobiledgeXiOSLibraryGrpc {
     /// Namespace for EdgeEvents. Contains EdgeEventsConnection and EdgeEventsConfig classes
+    @available(iOS 13.0, *)
     public enum EdgeEvents { }
 }

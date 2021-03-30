@@ -16,6 +16,7 @@
 //  GetPorts.swift
 //
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// Returns dictionary: key -> internal port, value -> AppPort
