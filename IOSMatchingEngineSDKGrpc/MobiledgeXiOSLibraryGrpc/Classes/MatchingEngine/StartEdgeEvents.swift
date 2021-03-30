@@ -23,7 +23,7 @@ import Promises
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     @available(iOS 13.0, *)
-    public func startEdgeEvents(newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func startEdgeEvents(newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil, getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
         var host: String
         do {
@@ -33,17 +33,17 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             return promise
         }
         let port = DMEConstants.dmeGrpcPort
-        return startEdgeEvents(host: host, port: port, newFindCloudletHandler: newFindCloudletHandler, config: config)
+        return startEdgeEvents(host: host, port: port, newFindCloudletHandler: newFindCloudletHandler, config: config, getLastLocation: getLastLocation)
     }
     
     @available(iOS 13.0, *)
-    public func startEdgeEvents(host: String, port: UInt16, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func startEdgeEvents(host: String, port: UInt16, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil, getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         var eeConfig = config
         if config == nil {
             eeConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.getDefaultEdgeEventsConfig()
         }
         
-        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, host: host, port: port, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: eeConfig!)
+        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, host: host, port: port, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: eeConfig!, getLastLocation: getLastLocation)
         guard let _ = self.edgeEventsConnection else {
             let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
             promise.reject(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.uninitializedEdgeEventsConnection)

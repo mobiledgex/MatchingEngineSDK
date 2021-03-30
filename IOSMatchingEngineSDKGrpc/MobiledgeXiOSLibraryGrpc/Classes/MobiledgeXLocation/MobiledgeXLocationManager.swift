@@ -14,7 +14,7 @@
 // limitations under the License.
 
 //
-//  MobiledgeXLocation.swift
+//  MobiledgeXLocationManager.swift
 //
 
 import CoreLocation
