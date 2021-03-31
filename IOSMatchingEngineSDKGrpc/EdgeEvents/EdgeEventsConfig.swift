@@ -26,45 +26,25 @@ import Promises
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
     public struct EdgeEventsConfig {
+        // Configure how to respond to events
+        var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
+        var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
+        
         // Configure how to send events
-        var latencyPort: UInt16 // port information for latency testing if use connect
-        var latencyTestType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType // either PING or CONNECT
+        var latencyTestPort: UInt16 // port information for latency testing, use 0 if you don't care which port is used
         var latencyUpdateConfig: ClientEventsConfig // config for latency updates
         var locationUpdateConfig: ClientEventsConfig // config for gps location updates
-          
-        // Configure how to respond to events
-        var latencyThresholdTrigger: Double // latency threshold in ms when new FindCloudlet is triggered
-        var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
     }
     
     public struct ClientEventsConfig {
         var updatePattern: UpdatePattern
-        var updateInterval: Int // update interval in seconds
-        var numberOfUpdates: Int // number of updates throughout app lifetime
+        var updateIntervalSeconds: UInt? // update interval in seconds if updatePattern is .onInterval
+        var maxNumberOfUpdates: Int? // max number of updates throughout app lifetime (values <= 0 will update until EdgeEventsConnection is closed) if updatePattern is .onInterval
         
         public enum UpdatePattern {
             case onStart // only update on start
             case onTrigger // application will call post[]update functions
             case onInterval // update every updateInterval seconds
         }
-    }
-    
-    public static func getDefaultEdgeEventsConfig() -> EdgeEventsConfig {
-        let latencyUpdateConfig = ClientEventsConfig(updatePattern: .onInterval, updateInterval: 60, numberOfUpdates: 5)
-        let locationUpdateConfig = ClientEventsConfig(updatePattern: .onInterval, updateInterval: 30, numberOfUpdates: 10)
-        let newFindCloudletEvents: Set = [DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletState, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletMaintenance, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventAppinstHealth, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyProcessed]
-        
-        let config = EdgeEventsConfig(latencyPort: 0, latencyTestType: .CONNECT, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig, latencyThresholdTrigger: 100, newFindCloudletEvents: newFindCloudletEvents)
-        return config
-    }
-    
-    public func createEdgeEventsConfig(latencyPort: UInt16, latencyTestType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType, latencyUpdateConfig: ClientEventsConfig, locationUpdateConfig: ClientEventsConfig, latencyThresholdTrigger: Double, newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType>) -> EdgeEventsConfig {
-        let config = EdgeEventsConfig(latencyPort: latencyPort, latencyTestType: latencyTestType, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig, latencyThresholdTrigger: latencyThresholdTrigger, newFindCloudletEvents: newFindCloudletEvents)
-        return config
-    }
-    
-    public func createClientEventsConfig(updatePattern: ClientEventsConfig.UpdatePattern, updateInterval: Int, numberOfUpdates: Int) -> ClientEventsConfig {
-        let config = ClientEventsConfig(updatePattern: updatePattern, updateInterval: updateInterval, numberOfUpdates: numberOfUpdates)
-        return config
     }
 }

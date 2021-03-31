@@ -69,7 +69,7 @@ class EdgeEventsTests: XCTestCase {
                 XCTAssert(false, "Bad findcloudlet. Status is \(fcReply.status)")
             }
             MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: loc)
-            return self.matchingEngine.startEdgeEvents(host: self.dmeHost, port: self.dmePort, newFindCloudletHandler: self.handleFindCloudlet)
+            return self.matchingEngine.startEdgeEvents(host: self.dmeHost, port: self.dmePort, newFindCloudletHandler: self.handleNewFindCloudlet, config: self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
         }.catch { error in
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
@@ -83,7 +83,11 @@ class EdgeEventsTests: XCTestCase {
         XCTAssertTrue(status == .success, "EdgeEventsConnection failed")
     }
     
-    func handleFindCloudlet(reply: DistributedMatchEngine_FindCloudletReply) {
-        print("got new findcloudlet \(reply)")
+    func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, reply: DistributedMatchEngine_FindCloudletReply?) {
+        if status == .success {
+            print("got new findcloudlet \(reply)")
+        } else {
+            print("error during edgeevents \(status)")
+        }
     }
 }

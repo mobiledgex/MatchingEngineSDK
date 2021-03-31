@@ -23,7 +23,7 @@ import Promises
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
-    public func startEdgeEvents(newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func startEdgeEvents(newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
         var host: String
         do {
@@ -36,13 +36,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return startEdgeEvents(host: host, port: port, newFindCloudletHandler: newFindCloudletHandler, config: config)
     }
     
-    public func startEdgeEvents(host: String, port: UInt16, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
-        var eeConfig = config
-        if config == nil {
-            eeConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.getDefaultEdgeEventsConfig()
-        }
-        
-        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, host: host, port: port, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: eeConfig!)
+    public func startEdgeEvents(host: String, port: UInt16, newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, host: host, port: port, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: config)
         guard let _ = self.edgeEventsConnection else {
             let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
             promise.reject(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.uninitializedEdgeEventsConnection)
@@ -83,7 +78,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return eeConn.close()
     }
     
-    @available(iOS 13.0, *)
     public func restartEdgeEvents() -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
         var host: String
@@ -97,7 +91,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return restartEdgeEvents(host: host, port: port)
     }
     
-    @available(iOS 13.0, *)
     public func restartEdgeEvents(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         return stopEdgeEvents().then { status -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
             guard let eeConn = self.edgeEventsConnection else {
@@ -109,8 +102,26 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         }
     }
     
-    @available(iOS 13.0, *)
     public func getEdgeEventsConnection() -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? {
         return self.edgeEventsConnection
+    }
+    
+    public func createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: UInt, locationUpdateIntervalSeconds: UInt, latencyThresholdTriggerMs: Double) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+        let newFindCloudletEvents: Set = [DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletState, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletMaintenance, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventAppinstHealth, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyProcessed]
+        let latencyUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: .onInterval, updateIntervalSeconds: latencyUpdateIntervalSeconds, maxNumberOfUpdates: 0)
+        let locationUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: .onInterval, updateIntervalSeconds: locationUpdateIntervalSeconds, maxNumberOfUpdates: 0)
+        
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEvents: newFindCloudletEvents, latencyThresholdTriggerMs: latencyThresholdTriggerMs, latencyTestPort: 0, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
+        return config
+    }
+    
+    public func createEdgeEventsConfig(newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType>, latencyThresholdTriggerMs: Double?, latencyTestPort: UInt16, latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig, locationUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEvents: newFindCloudletEvents, latencyThresholdTriggerMs: latencyThresholdTriggerMs, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
+        return config
+    }
+    
+    public func createClientEventsConfig(updatePattern: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig.UpdatePattern, updateIntervalSeconds: UInt?, maxNumberOfUpdates: Int? = 0) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig {
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: updatePattern, updateIntervalSeconds: updateIntervalSeconds, maxNumberOfUpdates: maxNumberOfUpdates)
+        return config
     }
 }

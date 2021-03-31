@@ -34,6 +34,10 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case missingEdgeEventsConfig
         case missingNewFindCloudletHandler
         case missingServerEventsHandler
+        case missingLatencyThreshold
+        case invalidLatencyThreshold
+        case missingUpdateInterval
+        case invalidUpdateInterval
         case hasNotDoneFindCloudlet
         case emptyAppPorts
         case portDoesNotExist
@@ -42,6 +46,25 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
     public enum EdgeEventsStatus {
         case success
-        case fail
+        case fail(error: Error)
+        
+        public static func ==(lhs: EdgeEventsStatus, rhs: EdgeEventsStatus) -> Bool {
+            switch lhs {
+            case .success:
+                switch rhs {
+                case .success:
+                    return true
+                case .fail:
+                    return false
+                }
+            case .fail(let error1):
+                switch rhs {
+                case .success:
+                    return false
+                case .fail(let error2):
+                    return error1.localizedDescription == error2.localizedDescription
+                }
+            }
+        }
     }
 }

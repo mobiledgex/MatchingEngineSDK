@@ -643,10 +643,10 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         os_log("unable to start location services")
                         SKToast.show(withMessage: "unable to start location services")
                         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
-                        promise.fulfill(.fail)
+                        promise.fulfill(.fail(error: MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning))
                         return promise
                     } else {
-                        return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet)
+                        return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
                     }
                 }.then { status in
                     if status == .success {
@@ -654,7 +654,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         SKToast.show(withMessage: "Started edge events successfully")
                     } else {
                         os_log("Started edge events failed", log: OSLog.default, type: .debug)
-                        SKToast.show(withMessage: "Started edge events failed")
+                        SKToast.show(withMessage: "Started edge events failed \(status)")
                     }
                 }
                 
@@ -668,9 +668,14 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
     }
     
-    func handleNewFindCloudlet(reply: DistributedMatchEngine_FindCloudletReply) {
-        os_log("got new findcloudlet", log: OSLog.default, type: .debug)
-        SKToast.show(withMessage: "got new findcloudlet \(reply)")
+    func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, reply: DistributedMatchEngine_FindCloudletReply?) {
+        if status == .success {
+            os_log("got new findcloudlet", log: OSLog.default, type: .debug)
+            SKToast.show(withMessage: "got new findcloudlet \(reply)")
+        } else {
+            os_log("error during edgeevents", log: OSLog.default, type: .debug)
+            SKToast.show(withMessage: "error during edgeevents \(status)")
+        }
     }
 
     @objc func menuButtonAction()

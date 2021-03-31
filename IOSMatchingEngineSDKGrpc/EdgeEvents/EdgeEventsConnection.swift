@@ -42,17 +42,17 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var latencyTimer: DispatchSourceTimer? = nil
         var currLatencyInterval: Int = 0
         var locationTimer: DispatchSourceTimer? = nil
-        var currLocationInterval: Int = 0
+        var currLocationInterval: UInt = 0
         var lastLocation: DistributedMatchEngine_Loc? = nil
         
         var config: EdgeEventsConfig? = nil
         var stream: BidirectionalStreamingCall<DistributedMatchEngine_ClientEdgeEvent, DistributedMatchEngine_ServerEdgeEvent>? = nil
-        var newFindCloudletHandler: ((DistributedMatchEngine_FindCloudletReply) -> Void)? = nil
+        var newFindCloudletHandler: ((EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void)? = nil
         var serverEventsHandler: ((DistributedMatchEngine_ServerEdgeEvent) -> Void)? = nil
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
         
         // Initializer with EdgeEventsConfig (will be the suggested initializer)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((DistributedMatchEngine_FindCloudletReply) -> Void), config: EdgeEventsConfig) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void), config: EdgeEventsConfig) {
             self.matchingEngine = matchingEngine
             self.config = config
             self.host = host
@@ -289,24 +289,17 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                     loc = lastLocation
                 }
-                if self.config!.latencyTestType == .PING {
-                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                        os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    }
-                } else {
-                    self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    }
+                self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                    os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                }.catch { error in
+                    os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    self.newFindCloudletHandler!(.fail(error: error), nil)
                 }
             case .eventLatencyProcessed:
                 os_log("latencyprocessed", log: OSLog.default, type: .debug)
                 if config!.newFindCloudletEvents.contains(event.eventType) {
                     let stats = event.statistics
-                    if stats.avg >= config!.latencyThresholdTrigger {
+                    if stats.avg >= config!.latencyThresholdTriggerMs! {
                         sendFindCloudletToHandler(eventType: event.eventType)
                     }
                 }
@@ -327,7 +320,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
             case .eventCloudletUpdate:
                 os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                newFindCloudletHandler!(event.newCloudlet)
+                newFindCloudletHandler!(.success, event.newCloudlet)
             case .eventUnknown:
                 os_log("eventUnknown", log: OSLog.default, type: .debug)
             default:
@@ -344,10 +337,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
                 let req = try matchingEngine.createFindCloudletRequest(gpsLocation: loc!)
                 matchingEngine.findCloudlet(host: host, port: port, request: req).then { reply in
-                    self.newFindCloudletHandler!(reply)
+                    self.newFindCloudletHandler!(.success, reply)
                 }
             } catch {
                 os_log("received server event: %@, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, eventType.rawValue, error.localizedDescription)
+                newFindCloudletHandler!(.fail(error: error), nil)
             }
         }
         
@@ -362,39 +356,33 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     loc = lastLocation
                 }
                 matchingEngine.state.executionQueue.async {
-                    if self.config!.latencyTestType == .PING {
-                        self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                            os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
-                        }.catch { error in
-                            os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                        }
-                    } else {
-                        self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                            os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                        }.catch { error in
-                            os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                        }
+                    self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                    }.catch { error in
+                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                     }
                 }
             case .onInterval:
                 latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
                 latencyTimer!.setEventHandler(handler: {
-                    if self.currLatencyInterval < latencyConfig.numberOfUpdates {
+                    if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
                         var loc = self.getLastLocation!()
                         if loc == nil {
                             os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                             loc = self.lastLocation
                         }
-                        self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyPort, loc: loc!).then { status in
-                            os_log("successfully test ping and post latency update", log: OSLog.default, type: .debug)
+                        self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                            os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                            self.currLatencyInterval += 1
                         }.catch { error in
-                            os_log("error testing ping and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            self.newFindCloudletHandler!(.fail(error: error), nil)
                         }
                     } else {
                         self.latencyTimer!.cancel()
                     }
                 })
-                latencyTimer!.schedule(deadline: .now(), repeating: .seconds(latencyConfig.updateInterval), leeway: .milliseconds(100))
+                latencyTimer!.schedule(deadline: .now(), repeating: .seconds(Int(latencyConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
                 latencyTimer!.resume()
             default:
                 os_log("application will handle latency updates", log: OSLog.default, type: .debug)
@@ -419,7 +407,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             case .onInterval:
                 locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
                 locationTimer!.setEventHandler(handler: {
-                    if self.currLocationInterval < locationConfig.numberOfUpdates {
+                    if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
                         var loc = self.getLastLocation!()
                         if loc == nil {
                             os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
@@ -430,12 +418,13 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                             self.currLocationInterval += 1
                         }.catch { error in
                             os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            self.newFindCloudletHandler!(.fail(error: error), nil)
                         }
                     } else {
                         self.locationTimer!.cancel()
                     }
                 })
-                locationTimer!.schedule(deadline: .now(), repeating: .seconds(locationConfig.updateInterval), leeway: .milliseconds(100))
+                locationTimer!.schedule(deadline: .now(), repeating: .seconds(Int(locationConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
                 locationTimer!.resume()
             default:
                 os_log("application will handle location updates", log: OSLog.default, type: .debug)
@@ -474,10 +463,57 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         func validateEdgeEventsConfig() -> Error? {
+            // Check that config is non nil
             guard let _ = config else {
                 os_log("nil EdgeEventsConfig - a valid EdgeEventsConfig is required to send client events", log: OSLog.default, type: .debug)
                 return EdgeEventsError.missingEdgeEventsConfig
             }
+            // Check that if newFindCloudletEvents contains .eventLatencyProcessed that there is a valid latency threshold
+            if config!.newFindCloudletEvents.contains(.eventLatencyProcessed) {
+                guard let threshold = config!.latencyThresholdTriggerMs else {
+                    os_log("nil latencyThresholdTriggerMs - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.missingLatencyThreshold
+                }
+                if threshold <= 0 {
+                    os_log("latencyThresholdTriggerMs is not a positive number - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.invalidLatencyThreshold
+                }
+            }
+            // Validate latencyUpdateConfig
+            if config!.latencyUpdateConfig.updatePattern == .onInterval {
+                guard let interval = config!.latencyUpdateConfig.updateIntervalSeconds else {
+                    os_log("nil updateIntervalSeconds in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.missingUpdateInterval
+                }
+                if interval <= 0 {
+                    os_log("updateIntervalSeconds is not a positive number in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.invalidUpdateInterval
+                }
+                if config!.latencyUpdateConfig.maxNumberOfUpdates == nil {
+                    config!.latencyUpdateConfig.maxNumberOfUpdates = 0
+                }
+                if config!.latencyUpdateConfig.maxNumberOfUpdates! <= 0 {
+                    os_log("maxNumberOfUpdates is <= 0, so latencyUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
+                }
+            }
+            // Validate locationUpdateConfig
+            if config!.locationUpdateConfig.updatePattern == .onInterval {
+                guard let interval = config!.locationUpdateConfig.updateIntervalSeconds else {
+                    os_log("nil updateIntervalSeconds in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.missingUpdateInterval
+                }
+                if interval <= 0 {
+                    os_log("updateIntervalSeconds is not a positive number in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.invalidUpdateInterval
+                }
+                if config!.locationUpdateConfig.maxNumberOfUpdates == nil {
+                    config!.locationUpdateConfig.maxNumberOfUpdates = 0
+                }
+                if config!.locationUpdateConfig.maxNumberOfUpdates! <= 0 {
+                    os_log("maxNumberOfUpdates is <= 0, so locationUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
+                }
+            }
+            // No errors
             return nil
         }
     }
