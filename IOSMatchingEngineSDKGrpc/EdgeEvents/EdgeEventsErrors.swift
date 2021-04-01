@@ -42,6 +42,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case emptyAppPorts
         case portDoesNotExist
         case uninitializedEdgeEventsConnection
+        case failedToClose
+        
+        case eventTriggeredButCurrentCloudletIsBest
     }
     
     public enum EdgeEventsStatus {

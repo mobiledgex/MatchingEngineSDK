@@ -78,7 +78,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return eeConn.close()
     }
     
-    public func restartEdgeEvents() -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func switchedToNewCloudlet() -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
         var host: String
         do {
@@ -88,10 +88,10 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             return promise
         }
         let port = DMEConstants.dmeGrpcPort
-        return restartEdgeEvents(host: host, port: port)
+        return switchedToNewCloudlet(host: host, port: port)
     }
     
-    public func restartEdgeEvents(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func switchedToNewCloudlet(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         return stopEdgeEvents().then { status -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
             guard let eeConn = self.edgeEventsConnection else {
                 let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
@@ -123,5 +123,9 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     public func createClientEventsConfig(updatePattern: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig.UpdatePattern, updateIntervalSeconds: UInt?, maxNumberOfUpdates: Int? = 0) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig {
         let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: updatePattern, updateIntervalSeconds: updateIntervalSeconds, maxNumberOfUpdates: maxNumberOfUpdates)
         return config
+    }
+    
+    public func setAutoMigrationEdgeEventsConnection(autoMigrate: Bool) {
+        autoMigrationEdgeEventsConnection = autoMigrate
     }
 }

@@ -51,6 +51,7 @@ extension MobiledgeXiOSLibraryGrpc {
         
         var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
         var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
+        var autoMigrationEdgeEventsConnection = true
 
         /// MatchingEngine constructor
         public init() {

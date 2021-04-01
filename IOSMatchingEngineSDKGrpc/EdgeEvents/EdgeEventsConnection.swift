@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 
         var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine
         
-        var client: MobiledgeXiOSLibraryGrpc.GrpcClient
+        var client: MobiledgeXiOSLibraryGrpc.GrpcClient? = nil
         var host: String
         var port: UInt16
         var tlsEnabled = true
@@ -61,7 +61,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.newFindCloudletHandler = newFindCloudletHandler
             self.initializedWithConfig = true
             self.getLastLocation = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
-            self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
         }
         
         // Initializer without EdgeEventsConfig (only use for developers that need access to raw events and understand how to receive and send events)
@@ -72,7 +71,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.tlsEnabled = tlsEnabled
             self.serverEventsHandler = serverEventsHandler
             self.initializedWithConfig = false
-            self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
         }
         
         public func start(timeoutMs: Double = 10000) -> Promise<EdgeEventsStatus> {
@@ -83,8 +81,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 promise.reject(err!)
                 return promise
             }
+            self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: tlsEnabled)
             // create bidirectional stream
-            self.stream = client.apiclient.streamEdgeEvent(callOptions: nil, handler: self.serverEventsHandler ?? handleServerEvents)
+            self.stream = client!.apiclient.streamEdgeEvent(callOptions: nil, handler: self.serverEventsHandler ?? handleServerEvents)
             // initialize init edgeevent
             var initMessage = DistributedMatchEngine_ClientEdgeEvent.init()
             initMessage.eventType = .eventInitConnection
@@ -107,10 +106,10 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 do {
                     // add callback that checks that stream was successful in starting
                     self.stream!.status.whenSuccess { status in
-                        if status != .ok {
+                        os_log("edgeevents connection stopped. status is %@", log: OSLog.default, type: .debug, status.message ?? "")
+                        if !status.isOk {
                             reject(status)
                         }
-                        os_log("successful edgeevents status received", log: OSLog.default, type: .debug)
                     }
                     // send init message
                     let res = self.stream?.sendMessage(initMessage)
@@ -147,7 +146,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 return promise
             }
             // close grpc client and clean up variables
-            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client!)
             connectionReady = false
             connectionClosed = true
             latencyTimer?.cancel()
@@ -156,6 +155,37 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             locationTimer = nil
             promise.fulfill(.success)
             return promise
+        }
+        
+        public func restart() -> Promise<EdgeEventsStatus> {
+            // If autoMigrationEdgeEventsConnection is true, then automatically create new bidirectional connection
+            if self.matchingEngine.autoMigrationEdgeEventsConnection {
+                return close().then { status -> Promise<EdgeEventsStatus> in
+                    if status == .success {
+                        return self.start()
+                    } else {
+                        os_log("unable to close previous edgeevents connection. in order to restart edgeeventsconnection manually, call switchedToNewCloudlet", log: OSLog.default, type: .debug)
+                        let promise = Promise<EdgeEventsStatus>.pending()
+                        promise.fulfill(.fail(error: EdgeEventsError.failedToClose))
+                        return promise
+                    }
+                }.then { status -> Promise<EdgeEventsStatus> in
+                    if status == .success {
+                        os_log("successfully restarted edgeevents connection", log: OSLog.default, type: .debug)
+                    } else {
+                        os_log("unable to restart edgeevents connection. in order to restart edgeeventsconnection manually, call switchedToNewCloudlet", log: OSLog.default, type: .debug)
+                    }
+                    let promise = Promise<EdgeEventsStatus>.pending()
+                    promise.fulfill(.success)
+                    return promise
+                }
+            // If autoMigrationEdgeEventsConnection is false, it is up to the application to restart edgeevents connection by calling switchedToNewCloudlet if and when their application has switched to the new cloudlet provided
+            } else {
+                os_log("autoMigrationEdgeEventsConnection is false. Call switchedToNewCloudlet to receive edgeevents from new cloudlet", log: OSLog.default, type: .debug)
+                let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
+                promise.fulfill(.success)
+                return promise
+            }
         }
         
         public func postLocationUpdate(loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
@@ -293,10 +323,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                 }.catch { error in
                     os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    self.newFindCloudletHandler!(.fail(error: error), nil)
+                    self.sendErrorToHandler(error: error)
                 }
             case .eventLatencyProcessed:
                 os_log("latencyprocessed", log: OSLog.default, type: .debug)
+                print("latency stats are \(event.statistics)")
                 if config!.newFindCloudletEvents.contains(event.eventType) {
                     let stats = event.statistics
                     if stats.avg >= config!.latencyThresholdTriggerMs! {
@@ -320,7 +351,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
             case .eventCloudletUpdate:
                 os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                newFindCloudletHandler!(.success, event.newCloudlet)
+                sendFindCloudletToHandler(eventType: event.eventType, newCloudlet: event.newCloudlet)
             case .eventUnknown:
                 os_log("eventUnknown", log: OSLog.default, type: .debug)
             default:
@@ -328,21 +359,45 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        func sendFindCloudletToHandler(eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType) {
-            do {
-                var loc = getLastLocation!()
-                if loc == nil {
-                    os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
-                    loc = lastLocation
+        func sendFindCloudletToHandler(eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
+            if newCloudlet != nil {
+                matchingEngine.lastFindCloudletReply = newCloudlet
+                restart().then { status in
+                    self.newFindCloudletHandler!(.success, newCloudlet)
                 }
-                let req = try matchingEngine.createFindCloudletRequest(gpsLocation: loc!)
-                matchingEngine.findCloudlet(host: host, port: port, request: req).then { reply in
-                    self.newFindCloudletHandler!(.success, reply)
+            } else {
+                do {
+                    var loc = getLastLocation!()
+                    if loc == nil {
+                        os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
+                        loc = lastLocation
+                    }
+                    let req = try matchingEngine.createFindCloudletRequest(gpsLocation: loc!)
+                    matchingEngine.findCloudlet(host: host, port: port, request: req, mode: MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode.PERFORMANCE).then { reply -> Promise<EdgeEventsStatus> in
+                        if self.matchingEngine.lastFindCloudletReply!.fqdn == reply.fqdn {
+                            let promise = Promise<EdgeEventsStatus>.pending()
+                            promise.fulfill(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest))
+                            return promise
+                        } else {
+                            self.matchingEngine.lastFindCloudletReply = reply
+                            return self.restart()
+                        }
+                    }.then { status in
+                        if status == .success {
+                            self.newFindCloudletHandler!(.success, self.matchingEngine.lastFindCloudletReply)
+                        } else {
+                            self.newFindCloudletHandler!(status, nil)
+                        }
+                    }
+                } catch {
+                    os_log("received server event: %@, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, eventType.rawValue, error.localizedDescription)
+                    newFindCloudletHandler!(.fail(error: error), nil)
                 }
-            } catch {
-                os_log("received server event: %@, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, eventType.rawValue, error.localizedDescription)
-                newFindCloudletHandler!(.fail(error: error), nil)
             }
+        }
+        
+        func sendErrorToHandler(error: Error) {
+            self.newFindCloudletHandler!(.fail(error: error), nil)
         }
         
         func startSendClientEvents() {
@@ -376,7 +431,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                             self.currLatencyInterval += 1
                         }.catch { error in
                             os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            self.newFindCloudletHandler!(.fail(error: error), nil)
+                            self.sendErrorToHandler(error: error)
                         }
                     } else {
                         self.latencyTimer!.cancel()
@@ -418,7 +473,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                             self.currLocationInterval += 1
                         }.catch { error in
                             os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            self.newFindCloudletHandler!(.fail(error: error), nil)
+                            self.sendErrorToHandler(error: error)
                         }
                     } else {
                         self.locationTimer!.cancel()

@@ -228,6 +228,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         var reply = DistributedMatchEngine_FindCloudletReply.init()
         reply.ver = findCloudletReply.ver
         reply.status = DistributedMatchEngine_FindCloudletReply.FindStatus.findFound
+        reply.edgeEventsCookie = findCloudletReply.edgeEventsCookie
         reply.fqdn = appInst!.fqdn
         reply.ports = appInst!.ports
         reply.cloudletLocation = site.cloudletLocation ?? DistributedMatchEngine_Loc.init()

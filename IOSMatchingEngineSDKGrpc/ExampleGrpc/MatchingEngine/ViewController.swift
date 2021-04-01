@@ -669,12 +669,16 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     }
     
     func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, reply: DistributedMatchEngine_FindCloudletReply?) {
-        if status == .success {
+        switch status {
+        case .success :
             os_log("got new findcloudlet", log: OSLog.default, type: .debug)
             SKToast.show(withMessage: "got new findcloudlet \(reply)")
-        } else {
+        case .fail(let error):
             os_log("error during edgeevents", log: OSLog.default, type: .debug)
-            SKToast.show(withMessage: "error during edgeevents \(status)")
+            SKToast.show(withMessage: "error during edgeevents \(error)")
+            if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
+                // fallback to public cloud
+            }
         }
     }
 

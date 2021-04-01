@@ -51,10 +51,11 @@ class EdgeEventsTests: XCTestCase {
 
     @available(iOS 13.4, *)
     func testStartEdgeEventsConnection() {
-        // on real device use: MobiledgeXiOSLibrary.MobiledgeXLocation.startLocationServices()
+        // on real device use: MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
         loc.longitude = -122.149349
+        MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
                 
         let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
         var registerReply = DistributedMatchEngine_RegisterClientReply.init()
@@ -65,6 +66,7 @@ class EdgeEventsTests: XCTestCase {
             gpsLocation: loc, carrierName: self.carrierName)
             return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
         }.then { fcReply -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
+            print("fcreply is \(fcReply)")
             if fcReply.status != .findFound {
                 XCTAssert(false, "Bad findcloudlet. Status is \(fcReply.status)")
             }
@@ -74,7 +76,7 @@ class EdgeEventsTests: XCTestCase {
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 10))
+        XCTAssert(waitForPromises(timeout: 20))
         
         guard let status = replyPromise.value else {
             XCTAssert(false, "startedgeevents did not return a value.")
@@ -84,10 +86,14 @@ class EdgeEventsTests: XCTestCase {
     }
     
     func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, reply: DistributedMatchEngine_FindCloudletReply?) {
-        if status == .success {
+        switch status {
+        case .success :
             print("got new findcloudlet \(reply)")
-        } else {
-            print("error during edgeevents \(status)")
+        case .fail(let error):
+            print("error during edgeevents \(error)")
+            if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
+                // fallback to public cloud
+            }
         }
     }
 }
