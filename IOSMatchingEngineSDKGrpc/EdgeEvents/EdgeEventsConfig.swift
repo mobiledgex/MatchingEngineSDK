@@ -27,19 +27,19 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
     public struct EdgeEventsConfig {
         // Configure how to respond to events
-        var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
-        var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
+        public var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
+        public var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
         
         // Configure how to send events
-        var latencyTestPort: UInt16 // port information for latency testing, use 0 if you don't care which port is used
-        var latencyUpdateConfig: ClientEventsConfig // config for latency updates
-        var locationUpdateConfig: ClientEventsConfig // config for gps location updates
+        public var latencyTestPort: UInt16 // port information for latency testing, use 0 if you don't care which port is used
+        public var latencyUpdateConfig: ClientEventsConfig // config for latency updates
+        public var locationUpdateConfig: ClientEventsConfig // config for gps location updates
     }
     
     public struct ClientEventsConfig {
-        var updatePattern: UpdatePattern
-        var updateIntervalSeconds: UInt? // update interval in seconds if updatePattern is .onInterval
-        var maxNumberOfUpdates: Int? // max number of updates throughout app lifetime (values <= 0 will update until EdgeEventsConnection is closed) if updatePattern is .onInterval
+        public var updatePattern: UpdatePattern
+        public var updateIntervalSeconds: UInt? // update interval in seconds if updatePattern is .onInterval
+        public var maxNumberOfUpdates: Int? // max number of updates throughout app lifetime (values <= 0 will update until EdgeEventsConnection is closed) if updatePattern is .onInterval
         
         public enum UpdatePattern {
             case onStart // only update on start
@@ -47,4 +47,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             case onInterval // update every updateInterval seconds
         }
     }
+    
+    // TODO: DeviceInfoConfig
 }

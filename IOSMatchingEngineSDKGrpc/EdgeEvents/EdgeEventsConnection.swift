@@ -25,7 +25,6 @@ import Promises
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
-    // TODO: INCLUDE DEVICEINFO
     public class EdgeEventsConnection {
                 
         var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine
@@ -47,12 +46,12 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         
         var config: EdgeEventsConfig? = nil
         var stream: BidirectionalStreamingCall<DistributedMatchEngine_ClientEdgeEvent, DistributedMatchEngine_ServerEdgeEvent>? = nil
-        var newFindCloudletHandler: ((EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void)? = nil
+        var newFindCloudletHandler: ((EdgeEventsStatus, FindCloudletEvent?) -> Void)? = nil
         var serverEventsHandler: ((DistributedMatchEngine_ServerEdgeEvent) -> Void)? = nil
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
         
         // Initializer with EdgeEventsConfig (will be the suggested initializer)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, DistributedMatchEngine_FindCloudletReply?) -> Void), config: EdgeEventsConfig) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig) {
             self.matchingEngine = matchingEngine
             self.config = config
             self.host = host
@@ -87,6 +86,12 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             // initialize init edgeevent
             var initMessage = DistributedMatchEngine_ClientEdgeEvent.init()
             initMessage.eventType = .eventInitConnection
+            // check for valid lastFindCloudletReply
+            guard let _ = matchingEngine.lastFindCloudletReply else {
+                let promise = Promise<EdgeEventsStatus>.pending()
+                promise.reject(EdgeEventsError.hasNotDoneFindCloudlet)
+                return promise
+            }
             // check for session cookie
             guard let sessionCookie = matchingEngine.state.getSessionCookie() else {
                 let promise = Promise<EdgeEventsStatus>.pending()
@@ -193,6 +198,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             var locationEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
             locationEdgeEvent.eventType = .eventLocationUpdate
             locationEdgeEvent.gpsLocation = loc
+            locationEdgeEvent.deviceInfo = matchingEngine.getDeviceInfo()
             
             return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
                 do {
@@ -211,6 +217,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             latencyEdgeEvent.eventType = .eventLatencySamples
             latencyEdgeEvent.samples = site.getDmeSamples()
             latencyEdgeEvent.gpsLocation = loc
+            latencyEdgeEvent.deviceInfo = matchingEngine.getDeviceInfo()
             
             return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
                 do {
@@ -331,27 +338,27 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 if config!.newFindCloudletEvents.contains(event.eventType) {
                     let stats = event.statistics
                     if stats.avg >= config!.latencyThresholdTriggerMs! {
-                        sendFindCloudletToHandler(eventType: event.eventType)
+                        sendFindCloudletToHandler(eventType: .latencyTooHigh)
                     }
                 }
             case .eventCloudletState:
                 os_log("cloudletstate", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
-                    sendFindCloudletToHandler(eventType: event.eventType)
+                if config!.newFindCloudletEvents.contains(event.eventType) && event.cloudletState != .ready {
+                    sendFindCloudletToHandler(eventType: .cloudletStateChanged)
                 }
             case .eventCloudletMaintenance:
                 os_log("cloudletmaintenance", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
-                    sendFindCloudletToHandler(eventType: event.eventType)
+                if config!.newFindCloudletEvents.contains(event.eventType) && event.maintenanceState != .normalOperation {
+                    sendFindCloudletToHandler(eventType: .cloudletMaintenanceStateChanged)
                 }
             case .eventAppinstHealth:
                 os_log("appinsthealth", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
-                    sendFindCloudletToHandler(eventType: event.eventType)
+                if config!.newFindCloudletEvents.contains(event.eventType) && event.healthCheck != .ok {
+                    sendFindCloudletToHandler(eventType: .appInstHealthChanged)
                 }
             case .eventCloudletUpdate:
                 os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                sendFindCloudletToHandler(eventType: event.eventType, newCloudlet: event.newCloudlet)
+                sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
             case .eventUnknown:
                 os_log("eventUnknown", log: OSLog.default, type: .debug)
             default:
@@ -359,11 +366,12 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        func sendFindCloudletToHandler(eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
-            if newCloudlet != nil {
+        func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
+            if newCloudlet != nil && eventType == .closerCloudlet {
+                let findCloudletEvent = FindCloudletEvent(newCloudlet: newCloudlet!, trigger: eventType)
                 matchingEngine.lastFindCloudletReply = newCloudlet
                 restart().then { status in
-                    self.newFindCloudletHandler!(.success, newCloudlet)
+                    self.newFindCloudletHandler!(.success, findCloudletEvent)
                 }
             } else {
                 do {
@@ -384,13 +392,14 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         }
                     }.then { status in
                         if status == .success {
-                            self.newFindCloudletHandler!(.success, self.matchingEngine.lastFindCloudletReply)
+                            let findCloudletEvent = FindCloudletEvent(newCloudlet: self.matchingEngine.lastFindCloudletReply!, trigger: eventType)
+                            self.newFindCloudletHandler!(.success, findCloudletEvent)
                         } else {
                             self.newFindCloudletHandler!(status, nil)
                         }
                     }
                 } catch {
-                    os_log("received server event: %@, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, eventType.rawValue, error.localizedDescription)
+                    os_log("received server event: %@, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, eventType as! CVarArg, error.localizedDescription)
                     newFindCloudletHandler!(.fail(error: error), nil)
                 }
             }

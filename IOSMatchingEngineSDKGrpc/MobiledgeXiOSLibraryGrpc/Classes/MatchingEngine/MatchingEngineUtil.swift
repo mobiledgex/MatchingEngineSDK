@@ -159,7 +159,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     /// Device info will be sent as tags parameter in RegisterClient
-    public func getDeviceInfo() -> [String: String] {
+    public func getFullDeviceInfo() -> [String: String] {
         var deviceInfo = [String: String]()
         
         deviceInfo["ManufacturerCode"] = state.deviceManufacturer // Apple
@@ -201,6 +201,24 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         } catch {
             os_log("Unable to get ISO Country code for SIM. Will not send SimCountryCodeIso", log: OSLog.default, type: .debug)
         }
+        
+        // Get DataNetworkType
+        guard let dataNetType = MobiledgeXiOSLibraryGrpc.CarrierInfo.getDataNetworkType() else {
+            return deviceInfo
+        }
+        deviceInfo["DataNetworkType"] = dataNetType
+        return deviceInfo
+    }
+    
+    public func getDeviceInfo() -> DistributedMatchEngine_DeviceInfo {
+        var deviceInfo = DistributedMatchEngine_DeviceInfo.init()
+        deviceInfo.deviceModel = state.device.model
+        deviceInfo.deviceOs = state.device.systemName
+        
+        guard let dataNetType = MobiledgeXiOSLibraryGrpc.CarrierInfo.getDataNetworkType() else {
+            return deviceInfo
+        }
+        deviceInfo.dataNetworkType = dataNetType
         return deviceInfo
     }
     
@@ -211,16 +229,11 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             return nil
         }
         
-        if #available(iOS 13.0, *) {
-            guard let service = MobiledgeXiOSLibraryGrpc.CarrierInfo.networkInfo.dataServiceIdentifier else {
-                os_log("Unable to find data service identifier", log: OSLog.default, type: .debug)
-                return nil
-            }
-            return radioTech[service]
-        } else {
-            os_log("Data service identifier requires iOS 13.0+", log: OSLog.default, type: .debug)
+        guard let service = MobiledgeXiOSLibraryGrpc.CarrierInfo.networkInfo.dataServiceIdentifier else {
+            os_log("Unable to find data service identifier", log: OSLog.default, type: .debug)
             return nil
         }
+        return radioTech[service]
     }
     
     func getUniqueID() -> String? {
@@ -233,16 +246,11 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
 
     func hashSHA512(string: String) ->  String? {
-        if #available(iOS 13.0, *) {
-            guard let data = string.data(using: .utf8) else {
-                os_log("Unable to convert string: %@ to data. Returning nil", log: OSLog.default, type: .debug, string)
-                return nil
-            }
-            let digest = SHA512.hash(data: data)
-            return digest.description
-        } else {
-            os_log("SHA512 has required ios 13+. Returning nil", log: OSLog.default, type: .debug)
+        guard let data = string.data(using: .utf8) else {
+            os_log("Unable to convert string: %@ to data. Returning nil", log: OSLog.default, type: .debug, string)
             return nil
         }
+        let digest = SHA512.hash(data: data)
+        return digest.description
     }
 }

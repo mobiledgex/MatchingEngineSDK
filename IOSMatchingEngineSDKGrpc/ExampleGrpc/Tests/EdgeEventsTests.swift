@@ -85,10 +85,14 @@ class EdgeEventsTests: XCTestCase {
         XCTAssertTrue(status == .success, "EdgeEventsConnection failed")
     }
     
-    func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, reply: DistributedMatchEngine_FindCloudletReply?) {
+    func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
         switch status {
         case .success :
-            print("got new findcloudlet \(reply)")
+            guard let event = fcEvent else {
+                print("nil findcloudlet event")
+                return
+            }
+            print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
         case .fail(let error):
             print("error during edgeevents \(error)")
             if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
