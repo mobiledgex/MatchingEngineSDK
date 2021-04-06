@@ -51,11 +51,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
         
         // Initializer with EdgeEventsConfig (will be the suggested initializer)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig) {
             self.matchingEngine = matchingEngine
             self.config = config
-            self.host = host
-            self.port = port
+            self.host = dmeHost
+            self.port = dmePort
             self.tlsEnabled = tlsEnabled
             self.newFindCloudletHandler = newFindCloudletHandler
             self.initializedWithConfig = true
@@ -63,10 +63,10 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         // Initializer without EdgeEventsConfig (only use for developers that need access to raw events and understand how to receive and send events)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, host: String, port: UInt16, tlsEnabled: Bool, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
             self.matchingEngine = matchingEngine
-            self.host = host
-            self.port = port
+            self.host = dmeHost
+            self.port = dmePort
             self.tlsEnabled = tlsEnabled
             self.serverEventsHandler = serverEventsHandler
             self.initializedWithConfig = false
@@ -107,11 +107,12 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
             initMessage.edgeEventsCookie = edgeEventsCookie
             
-            return Promise<EdgeEventsStatus>(on: matchingEngine.state.executionQueue) { fulfill, reject in
+            return Promise<EdgeEventsStatus>(on: matchingEngine.state.edgeEventsQueue) { fulfill, reject in
                 do {
                     // add callback that checks that stream was successful in starting
                     self.stream!.status.whenSuccess { status in
                         os_log("edgeevents connection stopped. status is %@", log: OSLog.default, type: .debug, status.message ?? "")
+                        self.cleanup()
                         if !status.isOk {
                             reject(status)
                         }
@@ -139,7 +140,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         public func close() -> Promise<EdgeEventsStatus> {
-            let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
+            let promise = Promise<EdgeEventsStatus>.pending()
             // send terminate connection
             var terminateEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
             terminateEdgeEvent.eventType = .eventTerminateConnection
@@ -150,16 +151,20 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 promise.reject(error)
                 return promise
             }
+            cleanup()
+            promise.fulfill(.success)
+            return promise
+        }
+        
+        public func cleanup() {
             // close grpc client and clean up variables
-            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client!)
-            connectionReady = false
-            connectionClosed = true
             latencyTimer?.cancel()
             latencyTimer = nil
             locationTimer?.cancel()
             locationTimer = nil
-            promise.fulfill(.success)
-            return promise
+            connectionReady = false
+            connectionClosed = true
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client!)
         }
         
         public func restart() -> Promise<EdgeEventsStatus> {
@@ -187,7 +192,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             // If autoMigrationEdgeEventsConnection is false, it is up to the application to restart edgeevents connection by calling switchedToNewCloudlet if and when their application has switched to the new cloudlet provided
             } else {
                 os_log("autoMigrationEdgeEventsConnection is false. Call switchedToNewCloudlet to receive edgeevents from new cloudlet", log: OSLog.default, type: .debug)
-                let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
+                let promise = Promise<EdgeEventsStatus>.pending()
                 promise.fulfill(.success)
                 return promise
             }
@@ -200,13 +205,17 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             locationEdgeEvent.gpsLocation = loc
             locationEdgeEvent.deviceInfo = matchingEngine.getDeviceInfo()
             
-            return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
-                do {
-                    let res = self.stream?.sendMessage(locationEdgeEvent)
-                    try res!.wait()
-                    fulfill(.success)
-                } catch {
-                    reject(error)
+            return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
+                if self.connectionReady && !self.connectionClosed {
+                    do {
+                        let res = self.stream?.sendMessage(locationEdgeEvent)
+                        try res!.wait()
+                        fulfill(.success)
+                    } catch {
+                        reject(error)
+                    }
+                } else {
+                    reject(EdgeEventsError.connectionAlreadyClosed)
                 }
             }
         }
@@ -219,13 +228,17 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             latencyEdgeEvent.gpsLocation = loc
             latencyEdgeEvent.deviceInfo = matchingEngine.getDeviceInfo()
             
-            return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
-                do {
-                    let res = self.stream?.sendMessage(latencyEdgeEvent)
-                    try res!.wait()
-                    fulfill(.success)
-                } catch {
-                    reject(error)
+            return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
+                if self.connectionReady && !self.connectionClosed {
+                    do {
+                        let res = self.stream?.sendMessage(latencyEdgeEvent)
+                        try res!.wait()
+                        fulfill(.success)
+                    } catch {
+                        reject(error)
+                    }
+                } else {
+                    reject(EdgeEventsError.connectionAlreadyClosed)
                 }
             }
         }
@@ -261,7 +274,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
-                return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
+                return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
                     netTest.runTest(numSamples: 5).then { sites in
                         return self.postLatencyUpdate(site: sites[0], loc: loc)
                     }
@@ -303,7 +316,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 5)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
-                return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.executionQueue) { fulfill, reject in
+                return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
                     netTest.runTest(numSamples: 5).then { sites in
                         return self.postLatencyUpdate(site: sites[0], loc: loc)
                     }
@@ -419,7 +432,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                     loc = lastLocation
                 }
-                matchingEngine.state.executionQueue.async {
+                matchingEngine.state.edgeEventsQueue.async {
                     self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
                         os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                     }.catch { error in
@@ -427,7 +440,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     }
                 }
             case .onInterval:
-                latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
+                latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
                 latencyTimer!.setEventHandler(handler: {
                     if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
                         var loc = self.getLastLocation!()
@@ -461,7 +474,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                     loc = lastLocation
                 }
-                matchingEngine.state.executionQueue.async {
+                matchingEngine.state.edgeEventsQueue.async {
                     self.postLocationUpdate(loc: loc!).then { status in
                         os_log("successfully post location update", log: OSLog.default, type: .debug)
                     }.catch { error in
@@ -469,7 +482,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     }
                 }
             case .onInterval:
-                locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.executionQueue)
+                locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
                 locationTimer!.setEventHandler(handler: {
                     if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
                         var loc = self.getLastLocation!()

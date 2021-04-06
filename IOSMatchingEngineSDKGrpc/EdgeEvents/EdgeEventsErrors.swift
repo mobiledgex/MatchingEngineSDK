@@ -43,6 +43,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case portDoesNotExist
         case uninitializedEdgeEventsConnection
         case failedToClose
+        case connectionAlreadyClosed
         
         case eventTriggeredButCurrentCloudletIsBest
     }

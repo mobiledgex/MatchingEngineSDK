@@ -646,7 +646,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                         promise.fulfill(.fail(error: MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning))
                         return promise
                     } else {
-                        return self!.matchingEngine.startEdgeEvents(host: self!.demoHost, port: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
+                        return self!.matchingEngine.startEdgeEvents(dmeHost: self!.demoHost, dmePort: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
                     }
                 }.then { status in
                     if status == .success {
