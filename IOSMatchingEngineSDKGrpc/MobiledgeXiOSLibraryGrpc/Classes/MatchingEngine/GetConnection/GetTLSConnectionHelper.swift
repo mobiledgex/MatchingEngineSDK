@@ -21,6 +21,7 @@ import Promises
 import Network
 import SocketIO
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     // returns a TCP NWConnection promise

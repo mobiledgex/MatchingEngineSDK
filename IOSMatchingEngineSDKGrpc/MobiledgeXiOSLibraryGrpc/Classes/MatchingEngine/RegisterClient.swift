@@ -23,6 +23,7 @@ import Promises
 // RegisterClient code.
 // TODO: GRPC for Swift (none available).
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     func registerClientResult(_ registerClientReply: DistributedMatchEngine_RegisterClientReply) {
@@ -115,7 +116,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
         // Return a promise chain:
         return Promise<DistributedMatchEngine_RegisterClientReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = self.getGrpcClient(host: host, port: port)
+            let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             var reply = DistributedMatchEngine_RegisterClientReply.init()
             do {
                 reply = try client.apiclient.registerClient(requestWithUniqueID).response.wait()
@@ -131,7 +132,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             } catch {
                 reject(error)
             }
-            self.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
         }
     }
 }

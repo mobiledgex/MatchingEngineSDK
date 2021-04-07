@@ -20,6 +20,7 @@ import os.log
 import Promises
 import SocketIO
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     // Returns TCP CFSocket promise
@@ -46,7 +47,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
             self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                    fulfill(socket)
+                fulfill(socket)
             }.catch { error in
                 reject(error)
             }
@@ -78,7 +79,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                         
             self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                    fulfill(socket)
+                fulfill(socket)
             }.catch { error in
                 reject(error)
             }

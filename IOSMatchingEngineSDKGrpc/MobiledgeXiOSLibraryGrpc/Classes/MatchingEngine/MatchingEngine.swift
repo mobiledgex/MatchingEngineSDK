@@ -29,6 +29,7 @@ extension MobiledgeXiOSLibraryGrpc {
     
     /// MatchingEngine class
     /// MobiledgeX MatchingEngine APIs
+    @available(iOS 13.0, *)
     public class MatchingEngine {
         
         public enum DMEConstants {
@@ -36,11 +37,6 @@ extension MobiledgeXiOSLibraryGrpc {
             public static let dmeGrpcPort: UInt16 = 50051
             public static let fallbackCarrierName: String = ""
             public static let wifiAlias: String = "wifi"
-        }
-        
-        struct GrpcClient {
-            var group: EventLoopGroup
-            var apiclient: DistributedMatchEngine_MatchEngineApiClient
         }
         
         let headers = [
@@ -52,6 +48,10 @@ extension MobiledgeXiOSLibraryGrpc {
         public var state: MatchingEngineState
         var tlsEnabled = true
         var allowSelfSignedCertsGetConnection = false
+        
+        var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
+        var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
+        var autoMigrationEdgeEventsConnection = true
 
         /// MatchingEngine constructor
         public init() {
@@ -61,22 +61,7 @@ extension MobiledgeXiOSLibraryGrpc {
         /// MatchingEngine destructor
         public func close() {
             // code for cleaning up
-        }
-        
-        func getGrpcClient(host: String, port: UInt16) -> GrpcClient {
-            let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-            let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
-            let apiclient = DistributedMatchEngine_MatchEngineApiClient.init(channel: channel)
-            return GrpcClient(group: group, apiclient: apiclient)
-        }
-        
-        func closeGrpcClient(client: GrpcClient) {
-            do {
-                try client.apiclient.channel.close().wait()
-                try client.group.syncShutdownGracefully()
-            } catch {
-                os_log("Unable to close grpc client. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
-            }
+            stopEdgeEvents()
         }
     }
 }

@@ -19,6 +19,7 @@
 //  MatchingEngineSDK
 //
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// MatchingEngine API errors
