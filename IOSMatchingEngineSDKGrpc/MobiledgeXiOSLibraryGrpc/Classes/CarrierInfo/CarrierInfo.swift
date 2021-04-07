@@ -93,5 +93,9 @@ extension MobiledgeXiOSLibraryGrpc {
             }
             return carrier
         }
+        
+        static func getDataNetworkType() -> String? {
+            return networkInfo.serviceCurrentRadioAccessTechnology?.first?.value
+        }
     }
 }

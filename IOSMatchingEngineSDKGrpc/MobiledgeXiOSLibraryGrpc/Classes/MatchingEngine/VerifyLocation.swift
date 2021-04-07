@@ -20,6 +20,7 @@
 import os.log
 import Promises
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// createVerifyLocationRequest
@@ -177,7 +178,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             print("verifylocation token is \(verifyLocationToken)")
             
             return Promise<DistributedMatchEngine_VerifyLocationReply>(on: self.state.executionQueue) { fulfill, reject in
-                let client = self.getGrpcClient(host: host, port: port)
+                let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
                 var reply = DistributedMatchEngine_VerifyLocationReply.init()
                 do {
                     reply = try client.apiclient.verifyLocation(tokenizedRequest).response.wait()
@@ -185,7 +186,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 } catch {
                     reject(error)
                 }
-                self.closeGrpcClient(client: client)
+                MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
             }
         }
     }

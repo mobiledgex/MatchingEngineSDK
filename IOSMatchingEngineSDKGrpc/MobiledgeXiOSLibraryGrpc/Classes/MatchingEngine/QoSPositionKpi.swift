@@ -21,6 +21,7 @@ import os.log
 import Promises
 import GRPC
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// createQosKPIRequest
@@ -94,7 +95,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         print("request is \(request)")
         
         return Promise<DistributedMatchEngine_QosPositionKpiReply>(on: self.state.executionQueue) { fulfill, reject in
-            let client = self.getGrpcClient(host: host, port: port)
+            let client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: host, port: port, tlsEnabled: self.tlsEnabled)
             
             let stream = client.apiclient.getQosPositionKpi(request) { response in
                 fulfill(response)
@@ -111,7 +112,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 reject(error)
             }
                 
-            self.closeGrpcClient(client: client)
+            MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client)
         }
     }
 }

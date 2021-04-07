@@ -40,6 +40,9 @@ extension MobiledgeXiOSLibraryGrpc {
         // Just standard GCD Queues to dispatch promises into, user initiated priority.
         public var executionQueue = DispatchQueue.global(qos: .default)
         
+        // Serial queue for edgeeevents operations
+        public var edgeEventsQueue = DispatchQueue.init(label: "edgeeventsqueue", qos: .background)
+        
         private var useWifiOnly: Bool = false
         
         public var deviceManufacturer = "Apple"
@@ -76,6 +79,7 @@ extension MobiledgeXiOSLibraryGrpc {
         }
         
         private var sessionCookie: String?
+        private var edgeEventsCookie: String?
         private var tokenServerUri: String?
         private var tokenServerToken: String?
         
@@ -98,6 +102,14 @@ extension MobiledgeXiOSLibraryGrpc {
         
         func getSessionCookie() -> String? {
             return self.sessionCookie
+        }
+        
+        func setEdgeEventsCookie(edgeEventsCookie: String?) {
+            self.edgeEventsCookie = edgeEventsCookie
+        }
+        
+        func getEdgeEventsCookie() -> String? {
+            return self.edgeEventsCookie
         }
         
         func setTokenServerUri(tokenServerUri: String?) {

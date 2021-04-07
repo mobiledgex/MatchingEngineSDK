@@ -19,6 +19,7 @@
 import os.log
 import Promises
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
     func getBSDTCPConnection(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.Socket>

@@ -20,6 +20,7 @@ import XCTest
 @testable import SocketIO
 import Network
 
+@available(iOS 13.0, *)
 class Tests: XCTestCase {
     
     let TEST = true
@@ -101,7 +102,6 @@ class Tests: XCTestCase {
     
 
     // Test the FindCloudlet DME API
-    @available(iOS 13.0, *)
     func testFindCloudletProximity() {
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
@@ -133,7 +133,6 @@ class Tests: XCTestCase {
     }
     
     // Test FindCloudlet that call AppInstList and NetTest to find cloudlet with lowest latency
-    @available(iOS 13.0, *)
     func testFindCloudletPerformance() {
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609
@@ -377,7 +376,6 @@ class Tests: XCTestCase {
         XCTAssertNil(replyPromise.error)
     }
     
-    @available(iOS 13.0, *)
     func testRegisterAndFindCloudlet() {
         var loc = DistributedMatchEngine_Loc.init()
         loc.latitude = 37.459609

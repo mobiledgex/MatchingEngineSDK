@@ -18,6 +18,7 @@
 
 import os.log
 
+@available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
     /// L4 and L7 protocols supported by MobiledgeX iOS GetConnection

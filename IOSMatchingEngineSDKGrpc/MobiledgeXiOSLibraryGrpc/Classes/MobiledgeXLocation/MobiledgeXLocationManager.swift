@@ -14,7 +14,7 @@
 // limitations under the License.
 
 //
-//  MobiledgeXLocation.swift
+//  MobiledgeXLocationManager.swift
 //
 
 import CoreLocation
@@ -31,6 +31,8 @@ extension MobiledgeXiOSLibraryGrpc {
 
         var lastLocation: CLLocation? = nil
         var isoCountryCode: String? = nil
+        
+        let semaphore = DispatchSemaphore(value: 1) // used to lock/sync lastLocation across threads
         
         override init() {
             locationManager = CLLocationManager()
@@ -59,10 +61,9 @@ extension MobiledgeXiOSLibraryGrpc {
             case MobiledgeXLocation.ServiceType.Standard:
                 locationManager.startUpdatingLocation()
             }
-            // Initialize first lastLocation
-            lastLocation = locationManager.location
-            // Initialize first ISOCountryCode
-            getISOCountryCodeFromLocation(location: lastLocation!, startPromise: startPromise)
+            // Initialize first location
+            let firstLocation = locationManager.location
+            updateLastLocation(location: firstLocation, startPromise: startPromise)
             return startPromise
         }
         
@@ -79,16 +80,16 @@ extension MobiledgeXiOSLibraryGrpc {
         
         // ServiceType.Visit delegate
         func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-            lastLocation = manager.location
-            getISOCountryCodeFromLocation(location: lastLocation!)
+            let newLocation = manager.location
+            updateLastLocation(location: newLocation)
             os_log("Visited location was at Longitude: %@ and Latitude: %@. Time was %@", log: OSLog.default, type: .debug, visit.coordinate.longitude.description, visit.coordinate.latitude.description, visit.arrivalDate.description)
         }
         
         // ServiceType.SignificantChange and ServiceType.Standard delegate
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            lastLocation = locations.last!
-            getISOCountryCodeFromLocation(location: lastLocation!)
-            os_log("Last location was at Longitude: %@ and Latitude: %@. Time was %@", log: OSLog.default, type: .debug, lastLocation!.coordinate.latitude.description, lastLocation!.coordinate.latitude.description, lastLocation!.timestamp.description)
+            let newLocation = locations.last!
+            updateLastLocation(location: newLocation)
+            os_log("Last location was at Longitude: %@ and Latitude: %@. Time was %@", log: OSLog.default, type: .debug, newLocation.coordinate.latitude.description, newLocation.coordinate.latitude.description, newLocation.timestamp.description)
         }
         
         // Error delegate
@@ -101,7 +102,7 @@ extension MobiledgeXiOSLibraryGrpc {
         // Optional StartPromise parameters. This is so that ISOCountryCode is filled in before StartLocation returns
         func getISOCountryCodeFromLocation(location: CLLocation, startPromise: Promise<Bool>? = nil) {
             // Look up the location and pass it to the completion handler
-            geocoder.reverseGeocodeLocation(lastLocation!,
+            geocoder.reverseGeocodeLocation(location,
                         completionHandler: { (placemarks, error) in
                 if error == nil {
                     let firstLocation = placemarks?[0]
@@ -133,6 +134,25 @@ extension MobiledgeXiOSLibraryGrpc {
                     os_log("Unable to reverse geocode location. %@", log: OSLog.default, type: .error, error!.localizedDescription)
                 }
             })
+        }
+        
+        // Helper function to safely sync lastLocation across threads
+        func updateLastLocation(location: CLLocation?, startPromise: Promise<Bool>? = nil) {
+            if location != nil {
+                getISOCountryCodeFromLocation(location: location!, startPromise: startPromise)
+                semaphore.wait()
+                lastLocation = location
+                semaphore.signal()
+            }
+        }
+        
+        // Helper function to safely get lastLocation across threads
+        func getLastLocation() -> CLLocation? {
+            var location: CLLocation?
+            semaphore.wait()
+            location = lastLocation
+            semaphore.signal()
+            return location
         }
     }
 }

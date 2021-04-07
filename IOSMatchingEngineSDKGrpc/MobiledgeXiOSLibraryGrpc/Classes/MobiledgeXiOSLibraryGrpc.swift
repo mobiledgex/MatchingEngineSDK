@@ -20,6 +20,9 @@
 //
 
 import Foundation
+import GRPC
+import NIO
+import os.log
 
 /// Swift MobiledgeX SDK namespace
 /// Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
@@ -65,6 +68,27 @@ public enum MobiledgeXiOSLibraryGrpc {
     public struct Socket {
         var addrInfo: UnsafeMutablePointer<addrinfo>
         var sockfd: Int32
+    }
+    
+    struct GrpcClient {
+        var group: EventLoopGroup
+        var apiclient: DistributedMatchEngine_MatchEngineApiClient
+    }
+    
+    static func getGrpcClient(host: String, port: UInt16, tlsEnabled: Bool) -> GrpcClient {
+        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        let channel = tlsEnabled ? ClientConnection.secure(group: group).connect(host: host, port: Int(port)) : ClientConnection.insecure(group: group).connect(host: host, port: Int(port))
+        let apiclient = DistributedMatchEngine_MatchEngineApiClient.init(channel: channel)
+        return GrpcClient(group: group, apiclient: apiclient)
+    }
+    
+    static func closeGrpcClient(client: GrpcClient) {
+        do {
+            try client.apiclient.channel.close().wait()
+            try client.group.syncShutdownGracefully()
+        } catch {
+            os_log("Unable to close grpc client. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
+        }
     }
 }
 

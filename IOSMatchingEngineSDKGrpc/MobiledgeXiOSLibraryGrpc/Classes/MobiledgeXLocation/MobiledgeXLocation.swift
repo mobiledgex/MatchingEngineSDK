@@ -99,9 +99,15 @@ extension MobiledgeXiOSLibraryGrpc {
             }
         }
         
+        @available(iOS 13.4, *)
+        public static func setLastLocation(loc: DistributedMatchEngine_Loc) {
+            let location = convertMobiledgeXLocationToCLLocation(loc: loc)
+            mobiledgeXLocationManager.updateLastLocation(location: location)
+        }
+        
         /// Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
         public static func getLastLocation() -> DistributedMatchEngine_Loc? {
-            guard let lastLoc = mobiledgeXLocationManager.lastLocation else {
+            guard let lastLoc = mobiledgeXLocationManager.getLastLocation() else {
                 os_log("Last location not available", log: OSLog.default, type: .debug)
                 return nil
             }
@@ -116,7 +122,6 @@ extension MobiledgeXiOSLibraryGrpc {
         
         /// Helper function that converts CLLocation object to object that can be used in MatchingEngine calls
         private static func convertCLLocationToMobiledgeXLocation(location: CLLocation) -> DistributedMatchEngine_Loc {
-            
             var loc = DistributedMatchEngine_Loc.init()
             loc.latitude = location.coordinate.latitude
             loc.longitude = location.coordinate.longitude
@@ -127,6 +132,17 @@ extension MobiledgeXiOSLibraryGrpc {
             loc.course = location.course.magnitude
             loc.speed = location.speed.magnitude
             return loc
+        }
+        
+        @available(iOS 13.4, *)
+        private static func convertMobiledgeXLocationToCLLocation(loc: DistributedMatchEngine_Loc) -> CLLocation {
+            let coordinate = CLLocationCoordinate2D.init(latitude: loc.latitude, longitude: loc.longitude)
+            let altitude = CLLocationDistance.init(loc.altitude)
+            let horizontalAccuracy = CLLocationAccuracy.init(loc.horizontalAccuracy)
+            let verticalAccuracy = CLLocationAccuracy.init(loc.verticalAccuracy)
+            let course = CLLocationDirection.init(loc.course)
+            let speed = CLLocationSpeed.init(loc.speed)
+            return CLLocation.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: course, speed: speed, timestamp: Date())
         }
     }
 }
