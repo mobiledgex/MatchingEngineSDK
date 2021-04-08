@@ -285,7 +285,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        public func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
+        func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
                 guard let fcReply = matchingEngine.lastFindCloudletReply else {
@@ -433,7 +433,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     loc = lastLocation
                 }
                 matchingEngine.state.edgeEventsQueue.async {
-                    self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
                         os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                     }.catch { error in
                         os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
@@ -448,7 +448,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                             os_log("cannot get location. using last known location", log: OSLog.default, type: .debug)
                             loc = self.lastLocation
                         }
-                        self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                        self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
                             os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                             self.currLatencyInterval += 1
                         }.catch { error in
