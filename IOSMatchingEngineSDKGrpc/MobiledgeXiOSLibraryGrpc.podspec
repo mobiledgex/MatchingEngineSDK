@@ -36,6 +36,7 @@ Are you excited to connect to MobiledgeX Cloudlet Infrastructure and leverage th
   s.dependency 'PromisesSwift', '~> 1.2.8'
   s.dependency 'Socket.IO-Client-Swift', '~> 15.2.0'
   s.dependency 'gRPC-Swift', '~> 1.0.0'
-  
+  s.dependency 'SPLPing'
+ 
   s.swift_version = '4.2'
 end
