@@ -433,7 +433,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     loc = lastLocation
                 }
                 matchingEngine.state.edgeEventsQueue.async {
-                    self.testPingAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
+                    self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc!).then { status in
                         os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                     }.catch { error in
                         os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)

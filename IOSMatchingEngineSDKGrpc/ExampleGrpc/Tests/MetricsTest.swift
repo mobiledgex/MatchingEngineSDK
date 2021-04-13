@@ -105,54 +105,80 @@ class MetricsTest: XCTestCase {
         let sites = [site1, site2, site3, site4]
         
         let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: sites, qos: .background)
-        netTest.runTest(numSamples: 10)
-        sleep(5)
-        let sorted = netTest.returnSortedSites()
-        for site in sorted {
-            print("site name is \(site.host), avg is \(site.avg), stddev is \(site.stdDev)")
-        }
-        
-        // Make sure avg and stdDev are populated
-        if (site1.avg > 0 && site1.stdDev > 0) {
-            // Make sure avg is correct
-            XCTAssert(site1.avg - avg(arr: site1.samples) < 0.001, "Incorrect avg for site1")
-            // Make sure stdDev is correct
-            XCTAssert(site1.stdDev - stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
-        } else {
-            XCTAssert(false, "No data from site1")
-        }
-        
-        // Make sure avg and stdDev are populated
-        if (site2.avg > 0 && site2.stdDev > 0) {
-            // Make sure avg is correct
-            XCTAssert(site2.avg - avg(arr: site2.samples) < 0.001, "Incorrect avg for site2")
-            // Make sure stdDev is correct
-            XCTAssert(site2.stdDev - stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
-        } else {
-            XCTAssert(false, "No data from site2")
-        }
-        
-        // Make sure avg and stdDev are populated
-        if (site3.avg > 0 && site3.stdDev > 0) {
-            // Make sure avg is correct
-            XCTAssert(site3.avg - avg(arr: site3.samples) < 0.001, "Incorrect avg for site3")
-            // Make sure stdDev is correct
-            XCTAssert(site3.stdDev - stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
-        } else {
-            XCTAssert(false, "No data from site3")
-        }
-        
-        // Make sure avg and stdDev are populated
-        if (site4.avg > 0 && site4.stdDev > 0) {
-            // Make sure avg is correct
-            XCTAssert(site4.avg - avg(arr: site4.samples) < 0.001, "Incorrect avg for site4")
-            // Make sure stdDev is correct
-            XCTAssert(site4.stdDev - stdDev(arr: site4.samples) < 0.001, "Incorrect stdDev for site4")
-        } else {
-            XCTAssert(false, "No data from site4")
-        }
+        netTest.runTest(numSamples: 10).then { sorted in
+            for site in sorted {
+                print("site name is \(site.host), avg is \(site.avg), stddev is \(site.stdDev)")
+            }
             
-        netTest.cancelTest()
+            // Make sure avg and stdDev are populated
+            if (site1.avg > 0 && site1.stdDev > 0) {
+                // Make sure avg is correct
+                XCTAssert(site1.avg - self.avg(arr: site1.samples) < 0.001, "Incorrect avg for site1")
+                // Make sure stdDev is correct
+                XCTAssert(site1.stdDev - self.stdDev(arr: site1.samples) < 0.001, "Incorrect stdDev for site1")
+            } else {
+                XCTAssert(false, "No data from site1")
+            }
+            
+            // Make sure avg and stdDev are populated
+            if (site2.avg > 0 && site2.stdDev > 0) {
+                // Make sure avg is correct
+                XCTAssert(site2.avg - self.avg(arr: site2.samples) < 0.001, "Incorrect avg for site2")
+                // Make sure stdDev is correct
+                XCTAssert(site2.stdDev - self.stdDev(arr: site2.samples) < 0.001, "Incorrect stdDev for site2")
+            } else {
+                XCTAssert(false, "No data from site2")
+            }
+            
+            // Make sure avg and stdDev are populated
+            if (site3.avg > 0 && site3.stdDev > 0) {
+                // Make sure avg is correct
+                XCTAssert(site3.avg - self.avg(arr: site3.samples) < 0.001, "Incorrect avg for site3")
+                // Make sure stdDev is correct
+                XCTAssert(site3.stdDev - self.stdDev(arr: site3.samples) < 0.001, "Incorrect stdDev for site3")
+            } else {
+                XCTAssert(false, "No data from site3")
+            }
+            
+            // Make sure avg and stdDev are populated
+            if (site4.avg > 0 && site4.stdDev > 0) {
+                // Make sure avg is correct
+                XCTAssert(site4.avg - self.avg(arr: site4.samples) < 0.001, "Incorrect avg for site4")
+                // Make sure stdDev is correct
+                XCTAssert(site4.stdDev - self.stdDev(arr: site4.samples) < 0.001, "Incorrect stdDev for site4")
+            } else {
+                XCTAssert(false, "No data from site4")
+            }
+            netTest.cancelTest()
+        }.catch { error in
+            XCTAssert(false, "runNetTest encountered error: \(error)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 10))
+    }
+    
+    @available(iOS 13.0, *)
+    func testPing() {
+        let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: "google.com", port: 443, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
+        
+        let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
+        netTest.runTest(numSamples: 5).then { sites in
+            let site = sites[0]
+            print("site samples are \(site.samples)")
+            if (site.avg > 0 && site.stdDev > 0) {
+                // Make sure avg is correct
+                XCTAssert(site.avg - self.avg(arr: site.samples) < 0.001, "Incorrect avg for site")
+                // Make sure stdDev is correct
+                XCTAssert(site.stdDev - self.stdDev(arr: site.samples) < 0.001, "Incorrect stdDev for site")
+            } else {
+                XCTAssert(false, "No data from site1")
+            }
+            netTest.cancelTest()
+        }.catch { error in
+            XCTAssert(false, "testPing encountered error: \(error)")
+        }
+        
+        XCTAssert(waitForPromises(timeout: 10))
     }
     
     private func avg(arr: [Double]) -> Double {
