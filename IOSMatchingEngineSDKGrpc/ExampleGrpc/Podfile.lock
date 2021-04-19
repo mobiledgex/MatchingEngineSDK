@@ -46,12 +46,14 @@ PODS:
     - gRPC-Swift (~> 1.0.0)
     - PromisesSwift (~> 1.2.8)
     - Socket.IO-Client-Swift (~> 15.2.0)
+    - SPLPing
     - SwiftyJSON (~> 5.0.0)
   - PromisesObjC (1.2.12)
   - PromisesSwift (1.2.12):
     - PromisesObjC (= 1.2.12)
   - Socket.IO-Client-Swift (15.2.0):
     - Starscream (~> 3.1)
+  - SPLPing (1.1.8)
   - SPPermissions/Camera (5.2.5):
     - SPPermissions/Core
   - SPPermissions/Core (5.2.5)
@@ -131,6 +133,7 @@ SPEC REPOS:
     - PromisesObjC
     - PromisesSwift
     - Socket.IO-Client-Swift
+    - SPLPing
     - SPPermissions
     - Starscream
     - SwiftNIO
@@ -168,10 +171,11 @@ SPEC CHECKSUMS:
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MobiledgeXiOSLibraryGrpc: 10e7be5613acf7433c46a8128247c94c925ddc6c
+  MobiledgeXiOSLibraryGrpc: 232a3569c1b79a1f4c609422cafec87c4283c902
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   PromisesSwift: 64085cf6e5fc1b5001f90cf31e87a1f1621fefee
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
+  SPLPing: 420837fae1e19bba0a8360e91e7a384f22509663
   SPPermissions: d3ec7baf5865e152057a2352cff075333e19042f
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftNIO: 81d33ce8c500b7e41b6cdde5f2f12330b9750219
