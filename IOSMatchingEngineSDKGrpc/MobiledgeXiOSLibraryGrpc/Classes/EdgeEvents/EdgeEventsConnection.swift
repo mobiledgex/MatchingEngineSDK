@@ -285,7 +285,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        public func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
+        func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
                 guard let fcReply = matchingEngine.lastFindCloudletReply else {
