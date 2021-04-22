@@ -24,5 +24,5 @@ ifeq (, $(shell which swift-doc))
 endif
 	@echo Generating rest documentation...
 	$(shell rm -rf $(REPOROOT)/docs/rest)
-	$(shell swift doc generate $(SOURCE) --module-name "Swift SDK" --output $(REPOROOT)/docs/rest --format html --base-url .)
+	$(shell swift doc generate $(SOURCE) --module-name "Swift Rest SDK" --output $(REPOROOT)/docs/rest --format html --base-url .)
 
