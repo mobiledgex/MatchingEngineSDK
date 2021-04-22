@@ -31,6 +31,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
     /// newFindCloudletHandler
     ///
+    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents
+    ///
     /// - Parameters:
     ///   - newFindCloudletHandler: ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)
     ///   - config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig: EdgeEvents Configuration. Allows configuration of which events to look for a new cloudlet and how often the client sends latency and gps location updates to DME. Recommeded to get config from matchingEngine.createDefaultEdgeEventsConfig()
@@ -55,6 +57,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// For example, if .eventCloudletState is specified in EdgeEventsConfig in the set of newFindCloudletEvents, a new cloudlet will be provided to the newFindCloudletHandler when the cloudlet state changes.
     /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
     /// newFindCloudletHandler
+    ///
+    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents
     ///
     /// - Parameters:
     ///   - dmeHost: host override of the dme host server. DME must be reachable from current carrier.
