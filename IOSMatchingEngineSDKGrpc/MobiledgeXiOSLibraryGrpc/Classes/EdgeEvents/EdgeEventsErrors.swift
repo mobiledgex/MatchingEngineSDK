@@ -46,6 +46,30 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case connectionAlreadyClosed
         
         case eventTriggeredButCurrentCloudletIsBest
+        case eventError(msg: String)
+        
+        public static func ==(lhs: EdgeEventsError, rhs: EdgeEventsError) -> Bool {
+            switch lhs {
+            case .eventError(let msg1):
+                switch rhs {
+                case .eventError(let msg2):
+                    return msg1 == msg2
+                default:
+                    return false
+                }
+            default:
+                switch rhs {
+                case .eventError:
+                    return false
+                default:
+                    return lhs.localizedDescription == rhs.localizedDescription                }
+            }
+        }
+        
+        public static func !=(lhs: EdgeEventsError, rhs: EdgeEventsError) -> Bool {
+            let equals = lhs == rhs
+            return !equals
+        }
     }
     
     /// Status of EdgeEvents functions
@@ -70,6 +94,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return error1.localizedDescription == error2.localizedDescription
                 }
             }
+        }
+        
+        public static func !=(lhs: EdgeEventsStatus, rhs: EdgeEventsStatus) -> Bool {
+            let equals = lhs == rhs
+            return !equals
         }
     }
 }

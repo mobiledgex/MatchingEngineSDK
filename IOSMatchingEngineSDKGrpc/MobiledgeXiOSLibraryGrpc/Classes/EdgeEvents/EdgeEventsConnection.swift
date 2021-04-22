@@ -393,19 +393,24 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
             case .eventUnknown:
                 os_log("eventUnknown", log: OSLog.default, type: .debug)
+            case .eventError:
+                os_log("eventError", log: OSLog.default, type: .debug)
+                sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
             default:
                 os_log("default case, event: %@", log: OSLog.default, type: .debug, event.eventType.rawValue)
             }
         }
         
-        // TODO: Check that new cloudlet is different
-        // TODO: Do FindCloudletPerformance if latency event
         func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
             if newCloudlet != nil && eventType == .closerCloudlet {
-                let findCloudletEvent = FindCloudletEvent(newCloudlet: newCloudlet!, trigger: eventType)
-                matchingEngine.lastFindCloudletReply = newCloudlet
-                restart().then { status in
-                    self.newFindCloudletHandler!(.success, findCloudletEvent)
+                if self.validateNewCloudlet(newFindCloudletReply: newCloudlet!) {
+                    self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest), nil)
+                } else {
+                    let findCloudletEvent = FindCloudletEvent(newCloudlet: newCloudlet!, trigger: eventType)
+                    matchingEngine.lastFindCloudletReply = newCloudlet
+                    restart().then { status in
+                        self.newFindCloudletHandler!(.success, findCloudletEvent)
+                    }
                 }
             } else {
                 do {
@@ -416,7 +421,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     }
                     let req = try matchingEngine.createFindCloudletRequest(gpsLocation: loc!)
                     matchingEngine.findCloudlet(host: host, port: port, request: req, mode: MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode.PERFORMANCE).then { reply -> Promise<EdgeEventsStatus> in
-                        if self.matchingEngine.lastFindCloudletReply!.fqdn == reply.fqdn {
+                        if self.validateNewCloudlet(newFindCloudletReply: reply) {
                             let promise = Promise<EdgeEventsStatus>.pending()
                             promise.fulfill(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest))
                             return promise
@@ -613,6 +618,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
             // No errors
             return nil
+        }
+        
+        // Checks whether or not the newFindCloudletReply is the same as the current cloudlet
+        func validateNewCloudlet(newFindCloudletReply: DistributedMatchEngine_FindCloudletReply) -> Bool {
+            return self.matchingEngine.lastFindCloudletReply!.fqdn == newFindCloudletReply.fqdn
         }
     }
 }

@@ -128,32 +128,28 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     @available(iOS 13.0, *)
     private func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         let promise: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
-        var fcReply: DistributedMatchEngine_FindCloudletReply? = nil
+        var aiReply: DistributedMatchEngine_AppInstListReply? = nil
+        
+        // Dummy bytes to send to "load" mobile network
+        let bytes = Array(repeating: UInt8(1), count: 2048)
+        let tags = ["buffer": String(bytes: bytes, encoding: .utf8) ?? ""]
+        var appInstRequest: DistributedMatchEngine_AppInstListRequest
+        
+        // Create AppInstListRequest
+        do {
+            appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gpsLocation, carrierName: request.carrierName, tags: tags)
+        } catch {
+            promise.reject(error)
+            return promise
+        }
         
         // Promise Chain:
-        // 1. FindCloudlet
-        // 2. GetAppInstList
-        // 3. NetTest
-        // 4. Return Modified FindCloudletReply with closest cloudlet according to NetTest
-        return findCloudletProximity(host: host, port: port, request: request)
-            
-        .then { findCloudletReply -> Promise<DistributedMatchEngine_AppInstListReply> in
-            // Make sure we found a cloudlet from FindCloudletReply
-            if findCloudletReply.status != DistributedMatchEngine_FindCloudletReply.FindStatus.findFound {
-                let appInstPromise = Promise<DistributedMatchEngine_AppInstListReply>.init(MatchingEngineError.findCloudletFailed)
-                return appInstPromise
-            }
-            // initialize fcReply (to be used later)
-            fcReply = findCloudletReply
-            
-            // Dummy bytes to send to "load" mobile network
-            let bytes = Array(repeating: UInt8(1), count: 2048)
-            var tags = ["buffer": String(bytes: bytes, encoding: .utf8) ?? ""]
-            let appInstRequest = try self.createGetAppInstListRequest(gpsLocation: request.gpsLocation, carrierName: request.carrierName, tags: tags)
-            return self.getAppInstList(host: host, port: port, request: appInstRequest)
-            }
-            
+        // 1. GetAppInstList
+        // 2. NetTest
+        // 3. Return Modified FindCloudletReply with closest cloudlet according to NetTest
+        return self.getAppInstList(host: host, port: port, request: appInstRequest)
         .then { appInstListReply -> Promise<[MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site]> in
+            aiReply = appInstListReply
             // Check for successful getAppInstList
             if appInstListReply.status != DistributedMatchEngine_AppInstListReply.AIStatus.aiSuccess || appInstListReply.cloudlets.count == 0 {
                 let sitesPromise = Promise<[MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site]>.init(MatchingEngineError.getAppInstListFailed)
@@ -176,11 +172,11 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             // Log list of sites in order
             var idx = 0
             for site in orderedSites {
-                os_log("Site %d is %@. Avg is %f. StdDev is %f", log: OSLog.default, type: .debug, idx, site.host ?? site.l7Path ?? "No url for site", site.avg, site.stdDev ?? 0)
+                os_log("Site %d is %@. Avg is %f. StdDev is %f", log: OSLog.default, type: .debug, idx, site.host ?? site.l7Path ?? "No url for site", site.avg, site.stdDev)
                 idx += 1
             }
             // Create FindCloudletReply from actual FindCloudletReply and the best site from NetTest
-            let findCloudletReply = self.createFindCloudletReplyFromBestSite(findCloudletReply: fcReply!, site: orderedSites[0])
+            let findCloudletReply = self.createFindCloudletReplyFromBestSite(appInstListReply: aiReply!, site: orderedSites[0])
             promise.fulfill(findCloudletReply)
             return promise
             }
@@ -219,20 +215,19 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         }
     }
     
-    // TODO: Add edgeeventscookie to reply
-    /// Modify FindCloudletReply to hold the AppPorts and fqdn from nearest Site
+    /// Modify AppInstListReply to hold the AppPorts and fqdn from nearest Site
     @available(iOS 13.0, *)
-    private func createFindCloudletReplyFromBestSite(findCloudletReply: DistributedMatchEngine_FindCloudletReply, site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site) -> DistributedMatchEngine_FindCloudletReply {
+    private func createFindCloudletReplyFromBestSite(appInstListReply: DistributedMatchEngine_AppInstListReply, site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site) -> DistributedMatchEngine_FindCloudletReply {
         let appInst = site.appInst
         
         var reply = DistributedMatchEngine_FindCloudletReply.init()
-        reply.ver = findCloudletReply.ver
+        reply.ver = appInstListReply.ver
         reply.status = DistributedMatchEngine_FindCloudletReply.FindStatus.findFound
-        reply.edgeEventsCookie = findCloudletReply.edgeEventsCookie
+        reply.edgeEventsCookie = appInst!.edgeEventsCookie
         reply.fqdn = appInst!.fqdn
         reply.ports = appInst!.ports
         reply.cloudletLocation = site.cloudletLocation ?? DistributedMatchEngine_Loc.init()
-        reply.tags = findCloudletReply.tags
+        reply.tags = appInstListReply.tags
         return reply
     }
     

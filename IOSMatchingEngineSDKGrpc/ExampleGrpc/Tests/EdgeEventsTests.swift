@@ -76,7 +76,7 @@ class EdgeEventsTests: XCTestCase {
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 20))
+        XCTAssert(waitForPromises(timeout: 40))
         
         guard let status = replyPromise.value else {
             XCTAssert(false, "startedgeevents did not return a value.")
@@ -99,5 +99,13 @@ class EdgeEventsTests: XCTestCase {
                 // fallback to public cloud
             }
         }
+    }
+    
+    func testEdgeEventsErrorComparison() {
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts)
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.failedToClose)
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah"))
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah") == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah"))
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah1") != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah2"))
     }
 }
