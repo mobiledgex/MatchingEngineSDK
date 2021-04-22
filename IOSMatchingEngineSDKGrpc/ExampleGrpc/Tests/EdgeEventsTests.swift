@@ -76,7 +76,7 @@ class EdgeEventsTests: XCTestCase {
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 40))
+        XCTAssert(waitForPromises(timeout: 20))
         
         guard let status = replyPromise.value else {
             XCTAssert(false, "startedgeevents did not return a value.")
