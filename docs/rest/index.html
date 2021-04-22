@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift SDK - Swift SDK</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#classes">Classes</a></li><li><a href="#structures">Structures</a></li><li><a href="#enumerations">Enumerations</a></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+                <section id="classes">
+        <h2>Classes</h2>
+        <dl>
+            <dt class="class">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_DynamicLocGroupReply" title="class - MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Dynamic​Loc​Group​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine" title="class - MobiledgeXiOSLibrary.MatchingEngine">
+        Mobiledge​XiOSLibrary.​Matching​Engine
+    </a>
+</dt>
+<dd>
+    <p>MatchingEngine class
+MobiledgeX MatchingEngine APIs</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngineState" title="class - MobiledgeXiOSLibrary.MatchingEngineState">
+        Mobiledge​XiOSLibrary.​Matching​Engine​State
+    </a>
+</dt>
+<dd>
+    <p>Each instance of MatchingEngine class contains MatchingEngineState
+Holds information about app instance, information required for MatchingEngine API calls, and any necessary device info</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_MobiledgeXLocation" title="class - MobiledgeXiOSLibrary.MobiledgeXLocation">
+        Mobiledge​XiOSLibrary.​Mobiledge​XLocation
+    </a>
+</dt>
+<dd>
+    <p>MobiledgeX Location Services for easy location service integration with application</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_NetworkInterface" title="class - MobiledgeXiOSLibrary.NetworkInterface">
+        Mobiledge​XiOSLibrary.​Network​Interface
+    </a>
+</dt>
+<dd>
+    <p>Contains functions related to network interfaces (cellular, wifi)</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_PerformanceMetrics_NetTest" title="class - MobiledgeXiOSLibrary.PerformanceMetrics.NetTest">
+        Mobiledge​XiOSLibrary.​Performance​Metrics.​Net​Test
+    </a>
+</dt>
+<dd>
+    <p>Class that allows developers to easily test latency of their various backend servers.
+This is used in the implementation of FindCloudlet Performance Mode.</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibrary_PerformanceMetrics_Site" title="class - MobiledgeXiOSLibrary.PerformanceMetrics.Site">
+        Mobiledge​XiOSLibrary.​Performance​Metrics.​Site
+    </a>
+</dt>
+<dd>
+    <p>Object used by NetTest to test latency of server.
+Each site object contains the server path or host + port, avg latency, standard deviation, list of latency times, and the TestType.
+TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+
+</dd>
+        </dl>
+    </section>
+    <section id="structures">
+        <h2>Structures</h2>
+        <dl>
+            <dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_DynamicLocGroupRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Dynamic​Loc​Group​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_AppInstListRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.AppInstListRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​App​Inst​List​Request
+    </a>
+</dt>
+<dd>
+    <p>AppInstListRequest struct
+Request object sent via GetAppInstList from client side to DME
+Request requires session_cookie from RegisterClientReply, gps_location, and carrier_name</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_AppInstListReply" title="structure - MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​App​Inst​List​Reply
+    </a>
+</dt>
+<dd>
+    <p>AppInstListReply struct
+Reply object received via GetAppInstList
+If an application instance exists, this will return AI_SUCCESS.
+Will provide information about all application instances deployed on specified carrier network</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_CloudletLocation" title="structure - MobiledgeXiOSLibrary.MatchingEngine.CloudletLocation">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Cloudlet​Location
+    </a>
+</dt>
+<dd>
+    <p>Object returned in AppInstListReply cloudlets field
+The geo-location of Cloudlets (resources) within the Operator's Telco infrastructure,
+where Developers can create and deploy application instances to the available Cloudlets.</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_Appinstance" title="structure - MobiledgeXiOSLibrary.MatchingEngine.Appinstance">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Appinstance
+    </a>
+</dt>
+<dd>
+    <p>Object returned in CloudletLocation appinstances field
+Information about specific app instances</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_FindCloudletRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.FindCloudletRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Find​Cloudlet​Request
+    </a>
+</dt>
+<dd>
+    <p>FindCloudletRequest struct
+Request object sent via FindCloudlet from client side to DME
+Request requires session_cookie from RegisterClientReply, gps_location, and carrier_name</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_FindCloudletReply" title="structure - MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Find​Cloudlet​Reply
+    </a>
+</dt>
+<dd>
+    <p>FindCloudletReply struct
+Reply object received via FindCloudlet
+If application instance exists, this will return FIND_FOUND and contain information about the application instance.</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_AppPort" title="structure - MobiledgeXiOSLibrary.MatchingEngine.AppPort">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​App​Port
+    </a>
+</dt>
+<dd>
+    <p>Object returned in ports of several API replies</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_Timestamp" title="structure - MobiledgeXiOSLibrary.MatchingEngine.Timestamp">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Timestamp
+    </a>
+</dt>
+<dd>
+    <p>Object used in timestamp field of Loc</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_Loc" title="structure - MobiledgeXiOSLibrary.MatchingEngine.Loc">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Loc
+    </a>
+</dt>
+<dd>
+    <p>Object used and returned in gps_location field of serveral API requests and replies</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_QosPositionRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.QosPositionRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Qos​Position​Request
+    </a>
+</dt>
+<dd>
+    <p>QosPositionKpiRequest struct
+Request object sent via GetQosPositionKpi from client side to DME
+Request requires session_cookie from RegisterClientReply and an array of QosPositions</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_QosPosition" title="structure - MobiledgeXiOSLibrary.MatchingEngine.QosPosition">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Qos​Position
+    </a>
+</dt>
+<dd>
+    <p>Object in positions field in QosPositionRequest
+Object that contains gps location and id for that gps location</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_BandSelection" title="structure - MobiledgeXiOSLibrary.MatchingEngine.BandSelection">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Band​Selection
+    </a>
+</dt>
+<dd>
+    <p>Object in QosPositionRequest band_selection field
+Each field's value is an array of Strings
+Supported band values</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_QosPositionKpiReply" title="structure - MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Qos​Position​Kpi​Reply
+    </a>
+</dt>
+<dd>
+    <p>QosPositionKpiReply struct
+Reply object received via GetQosPositionKpi
+If an application instance exists, this will return RS_SUCCESS.
+Will provide quality of service information for gps locations specified</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_QosPositionKpiResult" title="structure - MobiledgeXiOSLibrary.MatchingEngine.QosPositionKpiResult">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Qos​Position​Kpi​Result
+    </a>
+</dt>
+<dd>
+    <p>Object returned in position_results field of QosPositionKpiReply
+Qos results for specific location</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_RegisterClientRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.RegisterClientRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Register​Client​Request
+    </a>
+</dt>
+<dd>
+    <p>RegisterClientRequest struct
+Request object sent via RegisterClient from client side to DME
+Request requires org_name, app_name, and app_vers</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_RegisterClientReply" title="structure - MobiledgeXiOSLibrary.MatchingEngine.RegisterClientReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Register​Client​Reply
+    </a>
+</dt>
+<dd>
+    <p>RegisterClientReply struct
+Reply object received via RegisterClient
+If application exists, this will return RS_SUCCESS and contain a session cookie to be used in other DME APIs</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_VerifyLocationRequest" title="structure - MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationRequest">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Verify​Location​Request
+    </a>
+</dt>
+<dd>
+    <p>VerifyLocationRequest struct
+Request object sent via VerifyLocation from client side to DME</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_VerifyLocationReply" title="structure - MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Verify​Location​Reply
+    </a>
+</dt>
+<dd>
+    <p>VerifyLocationReply struct
+Reply object received via VerifyLocation
+If verified, will return LOC_VERIFIED and CONNECTED_TO_SPECIFIED_TOWER
+Also contains information about accuracy of provided gps location</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibrary_Socket" title="structure - MobiledgeXiOSLibrary.Socket">
+        Mobiledge​XiOSLibrary.​Socket
+    </a>
+</dt>
+<dd>
+    <p>Socket struct returned by some GetConnection functions</p>
+
+</dd>
+        </dl>
+    </section>
+    <section id="enumerations">
+        <h2>Enumerations</h2>
+        <dl>
+            <dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_CarrierInfo_CarrierInfoError" title="enumeration - MobiledgeXiOSLibrary.CarrierInfo.CarrierInfoError">
+        Mobiledge​XiOSLibrary.​Carrier​Info.​Carrier​Info​Error
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_DynamicLocGroupRequest_DlgCommType" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.DynamicLocGroupRequest.DlgCommType">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Dynamic​Loc​Group​Request.​Dlg​Comm​Type
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_AppInstListReply_AIStatus" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.AppInstListReply.AIStatus">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​App​Inst​List​Reply.​AIStatus
+    </a>
+</dt>
+<dd>
+    <p>Values for AppInstList status field</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_FindCloudletReply_FindStatus" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.FindCloudletReply.FindStatus">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Find​Cloudlet​Reply.​Find​Status
+    </a>
+</dt>
+<dd>
+    <p>Values for FindCloudletReply status enum</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_FindCloudletMode" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.FindCloudletMode">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Find​Cloudlet​Mode
+    </a>
+</dt>
+<dd>
+    <p>Two modes to call FindCloudlet. First is Proximity (default) which finds the nearest cloudlet based on gps location with application instance
+Second is Performance. This mode will test all cloudlets with application instance deployed to find cloudlet with lowest latency. This mode takes longer to finish because of latency test.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_GetConnectionError" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.GetConnectionError">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Get​Connection​Error
+    </a>
+</dt>
+<dd>
+    <p>Errors on GetConnection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_EdgeError" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.EdgeError">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Edge​Error
+    </a>
+</dt>
+<dd>
+    <p>Errors related to trying to get a telco edge connection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_GetConnectionProtocol" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.GetConnectionProtocol">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Get​Connection​Protocol
+    </a>
+</dt>
+<dd>
+    <p>L4 and L7 protocols supported by MobiledgeX iOS GetConnection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_APIPaths" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.APIPaths">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​APIPaths
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_DMEConstants" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.DMEConstants">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​DMEConstants
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_MatchingEngineError" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.MatchingEngineError">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Matching​Engine​Error
+    </a>
+</dt>
+<dd>
+    <p>MatchingEngine API errors</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_InvalidTokenServerTokenError" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.InvalidTokenServerTokenError">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Invalid​Token​Server​Token​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when VerifyLocation API is unable to communicate with token server</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_UrlSessionError" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.UrlSessionError">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Url​Session​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs on bad HTTP requests</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_IDTypes" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.IDTypes">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​IDTypes
+    </a>
+</dt>
+<dd>
+    <p>IDTypes used for unique_id_type in RegisterClientRequest??</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_ReplyStatus" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.ReplyStatus">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Reply​Status
+    </a>
+</dt>
+<dd>
+    <p>Values for RegisterClientReply, DynamicLocGroupReply, and QosPositionKpiReply status field</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_LProto" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.LProto">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​LProto
+    </a>
+</dt>
+<dd>
+    <p>Values for AppPort proto field</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_VerifyLocationReply_TowerStatus" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply.TowerStatus">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Verify​Location​Reply.​Tower​Status
+    </a>
+</dt>
+<dd>
+    <p>Values for VerifyLocationReply tower_status field</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MatchingEngine_VerifyLocationReply_GPSLocationStatus" title="enumeration - MobiledgeXiOSLibrary.MatchingEngine.VerifyLocationReply.GPSLocationStatus">
+        Mobiledge​XiOSLibrary.​Matching​Engine.​Verify​Location​Reply.​GPSLocation​Status
+    </a>
+</dt>
+<dd>
+    <p>Values for VerifyLocationReply gps_location_status field</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MobiledgeXLocation_ServiceType" title="enumeration - MobiledgeXiOSLibrary.MobiledgeXLocation.ServiceType">
+        Mobiledge​XiOSLibrary.​Mobiledge​XLocation.​Service​Type
+    </a>
+</dt>
+<dd>
+    <p>Types of Location ServiceTypes, reflects built-in methods that iOS uses to get location
+Visits: Only updates location when user spends time at location and then moves (the most power-efficient)
+SignificantChange : Updates location when user's location significantly changes
+Standard: For real time location updates (requires most power)</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MobiledgeXLocation_MobiledgeXLocationError" title="enumeration - MobiledgeXiOSLibrary.MobiledgeXLocation.MobiledgeXLocationError">
+        Mobiledge​XiOSLibrary.​Mobiledge​XLocation.​Mobiledge​XLocation​Error
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary" title="enumeration - MobiledgeXiOSLibrary">
+        Mobiledge​XiOSLibrary
+    </a>
+</dt>
+<dd>
+    <p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_DmeDnsError" title="enumeration - MobiledgeXiOSLibrary.DmeDnsError">
+        Mobiledge​XiOSLibrary.​Dme​Dns​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when MobiledgeX does not have user's MCC and MNC mapped to a DME</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_SystemError" title="enumeration - MobiledgeXiOSLibrary.SystemError">
+        Mobiledge​XiOSLibrary.​System​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when GetConnection function using bsd sockets has an error</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_MobiledgeXError" title="enumeration - MobiledgeXiOSLibrary.MobiledgeXError">
+        Mobiledge​XiOSLibrary.​Mobiledge​XError
+    </a>
+</dt>
+<dd>
+    <p>Generic error from MobiledgeX SDK</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_PerformanceMetrics_NetTest_TestType" title="enumeration - MobiledgeXiOSLibrary.PerformanceMetrics.NetTest.TestType">
+        Mobiledge​XiOSLibrary.​Performance​Metrics.​Net​Test.​Test​Type
+    </a>
+</dt>
+<dd>
+    <p>TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibrary_PerformanceMetrics" title="enumeration - MobiledgeXiOSLibrary.PerformanceMetrics">
+        Mobiledge​XiOSLibrary.​Performance​Metrics
+    </a>
+</dt>
+<dd>
+    <p>Namespace for collecting network performance. Contains NetTest and Site classes</p>
+
+</dd>
+        </dl>
+    </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-04-22T13:01:25-0500">April 22, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>

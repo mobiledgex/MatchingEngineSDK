@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Grpc SDK - Swift Grpc SDK</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift Grpc SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#classes">Classes</a></li><li><a href="#structures">Structures</a></li><li><a href="#enumerations">Enumerations</a></li><li><a href="#variables">Variables</a></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+                <section id="classes">
+        <h2>Classes</h2>
+        <dl>
+            <dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_EdgeEventsConnection" title="class - MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Connection
+    </a>
+</dt>
+<dd>
+    <p>EdgeEventsConnection class
+Provides the client with useful information about their appinst state and other cloudlets that may be closer or have lower latency
+Provides functions to receive and send EdgeEvents</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine" title="class - MobiledgeXiOSLibraryGrpc.MatchingEngine">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine
+    </a>
+</dt>
+<dd>
+    <p>MatchingEngine class
+MobiledgeX MatchingEngine APIs</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngineState" title="class - MobiledgeXiOSLibraryGrpc.MatchingEngineState">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine​State
+    </a>
+</dt>
+<dd>
+    <p>Each instance of MatchingEngine class contains MatchingEngineState
+Holds information about app instance, information required for MatchingEngine API calls, and any necessary device info</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_MobiledgeXLocation" title="class - MobiledgeXiOSLibraryGrpc.MobiledgeXLocation">
+        Mobiledge​XiOSLibrary​Grpc.​Mobiledge​XLocation
+    </a>
+</dt>
+<dd>
+    <p>MobiledgeX Location Services for easy location service integration with application</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_NetworkInterface" title="class - MobiledgeXiOSLibraryGrpc.NetworkInterface">
+        Mobiledge​XiOSLibrary​Grpc.​Network​Interface
+    </a>
+</dt>
+<dd>
+    <p>Contains functions related to network interfaces (cellular, wifi)</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_PerformanceMetrics_NetTest" title="class - MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest">
+        Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics.​Net​Test
+    </a>
+</dt>
+<dd>
+    <p>Class that allows developers to easily test latency of their various backend servers.
+This is used in the implementation of FindCloudlet Performance Mode.</p>
+
+</dd>
+<dt class="class">
+    <a href="./MobiledgeXiOSLibraryGrpc_PerformanceMetrics_Site" title="class - MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site">
+        Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics.​Site
+    </a>
+</dt>
+<dd>
+    <p>Object used by NetTest to test latency of server.
+Each site object contains the server path or host + port, avg latency, standard deviation, list of latency times, and the TestType.
+TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+
+</dd>
+        </dl>
+    </section>
+    <section id="structures">
+        <h2>Structures</h2>
+        <dl>
+            <dt class="structure">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_EdgeEventsConfig" title="structure - MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Config
+    </a>
+</dt>
+<dd>
+    <p>Configuration for EdgeEventsConnection
+Determines on what events the SDK will search for a new cloudlet
+Determines how and when the SDK will send latency and location updates</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_ClientEventsConfig" title="structure - MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Client​Events​Config
+    </a>
+</dt>
+<dd>
+    <p>Configuration for sending client events
+Used for latencyUpdateConfig and locationUpdateConfig in EdgeEventsConfig
+Client events can be send .onStart, .onTrigger, or .onInterval
+If .onInterval, then an updateIntervalSeconds must be provided</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_FindCloudletEvent" title="structure - MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Find​Cloudlet​Event
+    </a>
+</dt>
+<dd>
+    <p>FindCloudletEvent is send to newFindCloudletHandler
+Contains information about a closer or better cloudlet and reason a new cloudlet was found</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_RegisterClientRequest" title="structure - DistributedMatchEngine_RegisterClientRequest">
+        Distributed​Match​Engine_Register​Client​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_RegisterClientReply" title="structure - DistributedMatchEngine_RegisterClientReply">
+        Distributed​Match​Engine_Register​Client​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_FindCloudletRequest" title="structure - DistributedMatchEngine_FindCloudletRequest">
+        Distributed​Match​Engine_Find​Cloudlet​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_PlatformFindCloudletRequest" title="structure - DistributedMatchEngine_PlatformFindCloudletRequest">
+        Distributed​Match​Engine_Platform​Find​Cloudlet​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_FindCloudletReply" title="structure - DistributedMatchEngine_FindCloudletReply">
+        Distributed​Match​Engine_Find​Cloudlet​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_VerifyLocationRequest" title="structure - DistributedMatchEngine_VerifyLocationRequest">
+        Distributed​Match​Engine_Verify​Location​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_VerifyLocationReply" title="structure - DistributedMatchEngine_VerifyLocationReply">
+        Distributed​Match​Engine_Verify​Location​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_GetLocationRequest" title="structure - DistributedMatchEngine_GetLocationRequest">
+        Distributed​Match​Engine_Get​Location​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_GetLocationReply" title="structure - DistributedMatchEngine_GetLocationReply">
+        Distributed​Match​Engine_Get​Location​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppInstListRequest" title="structure - DistributedMatchEngine_AppInstListRequest">
+        Distributed​Match​Engine_App​Inst​List​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_Appinstance" title="structure - DistributedMatchEngine_Appinstance">
+        Distributed​Match​Engine_Appinstance
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_CloudletLocation" title="structure - DistributedMatchEngine_CloudletLocation">
+        Distributed​Match​Engine_Cloudlet​Location
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppInstListReply" title="structure - DistributedMatchEngine_AppInstListReply">
+        Distributed​Match​Engine_App​Inst​List​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_FqdnListRequest" title="structure - DistributedMatchEngine_FqdnListRequest">
+        Distributed​Match​Engine_Fqdn​List​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppFqdn" title="structure - DistributedMatchEngine_AppFqdn">
+        Distributed​Match​Engine_App​Fqdn
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_FqdnListReply" title="structure - DistributedMatchEngine_FqdnListReply">
+        Distributed​Match​Engine_Fqdn​List​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppOfficialFqdnRequest" title="structure - DistributedMatchEngine_AppOfficialFqdnRequest">
+        Distributed​Match​Engine_App​Official​Fqdn​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppOfficialFqdnReply" title="structure - DistributedMatchEngine_AppOfficialFqdnReply">
+        Distributed​Match​Engine_App​Official​Fqdn​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_DynamicLocGroupRequest" title="structure - DistributedMatchEngine_DynamicLocGroupRequest">
+        Distributed​Match​Engine_Dynamic​Loc​Group​Request
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_DynamicLocGroupReply" title="structure - DistributedMatchEngine_DynamicLocGroupReply">
+        Distributed​Match​Engine_Dynamic​Loc​Group​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_QosPosition" title="structure - DistributedMatchEngine_QosPosition">
+        Distributed​Match​Engine_Qos​Position
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_BandSelection" title="structure - DistributedMatchEngine_BandSelection">
+        Distributed​Match​Engine_Band​Selection
+    </a>
+</dt>
+<dd>
+    <p>supported band values</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_QosPositionRequest" title="structure - DistributedMatchEngine_QosPositionRequest">
+        Distributed​Match​Engine_Qos​Position​Request
+    </a>
+</dt>
+<dd>
+    <p>QosPositionRequest is used for both GetQosPositionKpi</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_QosPositionKpiResult" title="structure - DistributedMatchEngine_QosPositionKpiResult">
+        Distributed​Match​Engine_Qos​Position​Kpi​Result
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_QosPositionKpiReply" title="structure - DistributedMatchEngine_QosPositionKpiReply">
+        Distributed​Match​Engine_Qos​Position​Kpi​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_ClientEdgeEvent" title="structure - DistributedMatchEngine_ClientEdgeEvent">
+        Distributed​Match​Engine_Client​Edge​Event
+    </a>
+</dt>
+<dd>
+    <p>Messages from SDK to DME</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_ServerEdgeEvent" title="structure - DistributedMatchEngine_ServerEdgeEvent">
+        Distributed​Match​Engine_Server​Edge​Event
+    </a>
+</dt>
+<dd>
+    <p>Message from DME to SDK</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_AppPort" title="structure - DistributedMatchEngine_AppPort">
+        Distributed​Match​Engine_App​Port
+    </a>
+</dt>
+<dd>
+    <p>Application Port</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_DeviceInfo" title="structure - DistributedMatchEngine_DeviceInfo">
+        Distributed​Match​Engine_Device​Info
+    </a>
+</dt>
+<dd>
+    <p>DeviceInfo</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_DlgMessage" title="structure - DistributedMatchEngine_DlgMessage">
+        Distributed​Match​Engine_Dlg​Message
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_DlgReply" title="structure - DistributedMatchEngine_DlgReply">
+        Distributed​Match​Engine_Dlg​Reply
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_Timestamp" title="structure - DistributedMatchEngine_Timestamp">
+        Distributed​Match​Engine_Timestamp
+    </a>
+</dt>
+<dd>
+    <p>This is a simple Timestamp message type
+grpc-gateway converts google.protobuf.Timestamp into an RFC3339-type string
+which is a waste of a conversion, so we define our own</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_Loc" title="structure - DistributedMatchEngine_Loc">
+        Distributed​Match​Engine_Loc
+    </a>
+</dt>
+<dd>
+    <p>GPS Location</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_Sample" title="structure - DistributedMatchEngine_Sample">
+        Distributed​Match​Engine_Sample
+    </a>
+</dt>
+<dd>
+    <p>Sample</p>
+
+</dd>
+<dt class="structure">
+    <a href="./DistributedMatchEngine_Statistics" title="structure - DistributedMatchEngine_Statistics">
+        Distributed​Match​Engine_Statistics
+    </a>
+</dt>
+<dd>
+    <p>Statistics</p>
+
+</dd>
+<dt class="structure">
+    <a href="./MobiledgeXiOSLibraryGrpc_Socket" title="structure - MobiledgeXiOSLibraryGrpc.Socket">
+        Mobiledge​XiOSLibrary​Grpc.​Socket
+    </a>
+</dt>
+<dd>
+    <p>Socket struct returned by some GetConnection functions</p>
+
+</dd>
+        </dl>
+    </section>
+    <section id="enumerations">
+        <h2>Enumerations</h2>
+        <dl>
+            <dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_CarrierInfo_CarrierInfoError" title="enumeration - MobiledgeXiOSLibraryGrpc.CarrierInfo.CarrierInfoError">
+        Mobiledge​XiOSLibrary​Grpc.​Carrier​Info.​Carrier​Info​Error
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents" title="enumeration - MobiledgeXiOSLibraryGrpc.EdgeEvents">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events
+    </a>
+</dt>
+<dd>
+    <p>Namespace for EdgeEvents. Contains EdgeEventsConnection and EdgeEventsConfig classes</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_ClientEventsConfig_UpdatePattern" title="enumeration - MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig.UpdatePattern">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Client​Events​Config.​Update​Pattern
+    </a>
+</dt>
+<dd>
+    <p>UpdatePattern for sending client events
+onStart will send one update when startEdgeEvents is called
+onInterval will send updates at the specified interval
+onTrigger will send no updates unless the application itself calls postLatencyUpdate, postLocationUpdate, etc.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_EdgeEventsError" title="enumeration - MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Error
+    </a>
+</dt>
+<dd>
+    <p>Errors on EdgeEvents</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_EdgeEventsStatus" title="enumeration - MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Status
+    </a>
+</dt>
+<dd>
+    <p>Status of EdgeEvents functions</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_FindCloudletEventTrigger" title="enumeration - MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEventTrigger">
+        Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Find​Cloudlet​Event​Trigger
+    </a>
+</dt>
+<dd>
+    <p>The reason why a new cloudlet was found
+For example, if on a location update, the DME finds a closer cloudlet, the FindCloudletEventTrigger will be .closerCloudlet</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_FindCloudletMode" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Find​Cloudlet​Mode
+    </a>
+</dt>
+<dd>
+    <p>Two modes to call FindCloudlet. First is Proximity (default) which finds the nearest cloudlet based on gps location with application instance
+Second is Performance. This mode will test all cloudlets with application instance deployed to find cloudlet with lowest latency. This mode takes longer to finish because of latency test.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_GetConnectionError" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Get​Connection​Error
+    </a>
+</dt>
+<dd>
+    <p>Errors on GetConnection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_EdgeError" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.EdgeError">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Edge​Error
+    </a>
+</dt>
+<dd>
+    <p>Errors related to trying to get a telco edge connection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_GetConnectionProtocol" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionProtocol">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Get​Connection​Protocol
+    </a>
+</dt>
+<dd>
+    <p>L4 and L7 protocols supported by MobiledgeX iOS GetConnection</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_DMEConstants" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​DMEConstants
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_MatchingEngineError" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.MatchingEngineError">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Matching​Engine​Error
+    </a>
+</dt>
+<dd>
+    <p>MatchingEngine API errors</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_InvalidTokenServerTokenError" title="enumeration - MobiledgeXiOSLibraryGrpc.MatchingEngine.InvalidTokenServerTokenError">
+        Mobiledge​XiOSLibrary​Grpc.​Matching​Engine.​Invalid​Token​Server​Token​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when VerifyLocation API is unable to communicate with token server</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_IDTypes" title="enumeration - DistributedMatchEngine_IDTypes">
+        Distributed​Match​Engine_IDTypes
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_ReplyStatus" title="enumeration - DistributedMatchEngine_ReplyStatus">
+        Distributed​Match​Engine_Reply​Status
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_FindCloudletReply_FindStatus" title="enumeration - DistributedMatchEngine_FindCloudletReply.FindStatus">
+        Distributed​Match​Engine_Find​Cloudlet​Reply.​Find​Status
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_VerifyLocationReply_TowerStatus" title="enumeration - DistributedMatchEngine_VerifyLocationReply.TowerStatus">
+        Distributed​Match​Engine_Verify​Location​Reply.​Tower​Status
+    </a>
+</dt>
+<dd>
+    <p>Status of the reply</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_VerifyLocationReply_GPSLocationStatus" title="enumeration - DistributedMatchEngine_VerifyLocationReply.GPSLocationStatus">
+        Distributed​Match​Engine_Verify​Location​Reply.​GPSLocation​Status
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_GetLocationReply_LocStatus" title="enumeration - DistributedMatchEngine_GetLocationReply.LocStatus">
+        Distributed​Match​Engine_Get​Location​Reply.​Loc​Status
+    </a>
+</dt>
+<dd>
+    <p>Status of the reply</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_AppInstListReply_AIStatus" title="enumeration - DistributedMatchEngine_AppInstListReply.AIStatus">
+        Distributed​Match​Engine_App​Inst​List​Reply.​AIStatus
+    </a>
+</dt>
+<dd>
+    <p>Status of the reply</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_FqdnListReply_FLStatus" title="enumeration - DistributedMatchEngine_FqdnListReply.FLStatus">
+        Distributed​Match​Engine_Fqdn​List​Reply.​FLStatus
+    </a>
+</dt>
+<dd>
+    <p>Status of the reply</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_AppOfficialFqdnReply_AOFStatus" title="enumeration - DistributedMatchEngine_AppOfficialFqdnReply.AOFStatus">
+        Distributed​Match​Engine_App​Official​Fqdn​Reply.​AOFStatus
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_DynamicLocGroupRequest_DlgCommType" title="enumeration - DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType">
+        Distributed​Match​Engine_Dynamic​Loc​Group​Request.​Dlg​Comm​Type
+    </a>
+</dt>
+<dd>
+    <p>Use Secure communication or Open with the group</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_ClientEdgeEvent_ClientEventType" title="enumeration - DistributedMatchEngine_ClientEdgeEvent.ClientEventType">
+        Distributed​Match​Engine_Client​Edge​Event.​Client​Event​Type
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_ServerEdgeEvent_ServerEventType" title="enumeration - DistributedMatchEngine_ServerEdgeEvent.ServerEventType">
+        Distributed​Match​Engine_Server​Edge​Event.​Server​Event​Type
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_LProto" title="enumeration - DistributedMatchEngine_LProto">
+        Distributed​Match​Engine_LProto
+    </a>
+</dt>
+<dd>
+    <p>Layer4 Protocol</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_HealthCheck" title="enumeration - DistributedMatchEngine_HealthCheck">
+        Distributed​Match​Engine_Health​Check
+    </a>
+</dt>
+<dd>
+    <p>Health check status</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_CloudletState" title="enumeration - DistributedMatchEngine_CloudletState">
+        Distributed​Match​Engine_Cloudlet​State
+    </a>
+</dt>
+<dd>
+    <p>CloudletState is the state of the Cloudlet.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_MaintenanceState" title="enumeration - DistributedMatchEngine_MaintenanceState">
+        Distributed​Match​Engine_Maintenance​State
+    </a>
+</dt>
+<dd>
+    <p>Cloudlet Maintenance States</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./DistributedMatchEngine_DlgMessage_DlgAck" title="enumeration - DistributedMatchEngine_DlgMessage.DlgAck">
+        Distributed​Match​Engine_Dlg​Message.​Dlg​Ack
+    </a>
+</dt>
+<dd>
+    <p>Need acknowledgement</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MobiledgeXLocation_ServiceType" title="enumeration - MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.ServiceType">
+        Mobiledge​XiOSLibrary​Grpc.​Mobiledge​XLocation.​Service​Type
+    </a>
+</dt>
+<dd>
+    <p>Types of Location ServiceTypes, reflects built-in methods that iOS uses to get location
+Visits: Only updates location when user spends time at location and then moves (the most power-efficient)
+SignificantChange : Updates location when user's location significantly changes
+Standard: For real time location updates (requires most power)</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MobiledgeXLocation_MobiledgeXLocationError" title="enumeration - MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.MobiledgeXLocationError">
+        Mobiledge​XiOSLibrary​Grpc.​Mobiledge​XLocation.​Mobiledge​XLocation​Error
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc" title="enumeration - MobiledgeXiOSLibraryGrpc">
+        Mobiledge​XiOSLibrary​Grpc
+    </a>
+</dt>
+<dd>
+    <p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_DmeDnsError" title="enumeration - MobiledgeXiOSLibraryGrpc.DmeDnsError">
+        Mobiledge​XiOSLibrary​Grpc.​Dme​Dns​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when MobiledgeX does not have user's MCC and MNC mapped to a DME</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_SystemError" title="enumeration - MobiledgeXiOSLibraryGrpc.SystemError">
+        Mobiledge​XiOSLibrary​Grpc.​System​Error
+    </a>
+</dt>
+<dd>
+    <p>Occurs when GetConnection function using bsd sockets has an error</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_MobiledgeXError" title="enumeration - MobiledgeXiOSLibraryGrpc.MobiledgeXError">
+        Mobiledge​XiOSLibrary​Grpc.​Mobiledge​XError
+    </a>
+</dt>
+<dd>
+    <p>Generic error from MobiledgeX SDK</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_PerformanceMetrics_NetTest_TestType" title="enumeration - MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType">
+        Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics.​Net​Test.​Test​Type
+    </a>
+</dt>
+<dd>
+    <p>TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.</p>
+
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_PerformanceMetrics_NetTestErrors" title="enumeration - MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTestErrors">
+        Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics.​Net​Test​Errors
+    </a>
+</dt>
+<dd>
+    
+</dd>
+<dt class="enumeration">
+    <a href="./MobiledgeXiOSLibraryGrpc_PerformanceMetrics" title="enumeration - MobiledgeXiOSLibraryGrpc.PerformanceMetrics">
+        Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics
+    </a>
+</dt>
+<dd>
+    <p>Namespace for collecting network performance. Contains NetTest and Site classes</p>
+
+</dd>
+        </dl>
+    </section>
+    <section id="variables">
+        <h2>Variables</h2>
+        <dl>
+            <dt class="variable">
+    <a href="./DistributedMatchEngine_Appcommon_Extensions" title="variable - DistributedMatchEngine_Appcommon_Extensions">
+        Distributed​Match​Engine_Appcommon_Extensions
+    </a>
+</dt>
+<dd>
+    <p>A <code>SwiftProtobuf.SimpleExtensionMap</code> that includes all of the extensions defined by
+this .proto file. It can be used any place an <code>SwiftProtobuf.ExtensionMap</code> is needed
+in parsing, or it can be combined with other <code>SwiftProtobuf.SimpleExtensionMap</code>s to create
+a larger <code>SwiftProtobuf.SimpleExtensionMap</code>.</p>
+
+</dd>
+<dt class="variable">
+    <a href="./DistributedMatchEngine_Extensions_enum_backend" title="variable - DistributedMatchEngine_Extensions_enum_backend">
+        Distributed​Match​Engine_Extensions_enum_backend
+    </a>
+</dt>
+<dd>
+    <p>Backend defines a field that is filled in by the back-end,
+not by the user.</p>
+
+</dd>
+        </dl>
+    </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-04-22T13:02:02-0500">April 22, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>
