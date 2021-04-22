@@ -25,6 +25,9 @@ import Promises
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
+    /// EdgeEventsConnection class
+    /// Provides the client with useful information about their appinst state and other cloudlets that may be closer or have lower latency
+    /// Provides functions to receive and send EdgeEvents
     public class EdgeEventsConnection {
                 
         var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine
@@ -50,7 +53,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var serverEventsHandler: ((DistributedMatchEngine_ServerEdgeEvent) -> Void)? = nil
         var getLastLocation: (() -> DistributedMatchEngine_Loc?)? = nil
         
-        // Initializer with EdgeEventsConfig (will be the suggested initializer)
+        /// Initializer with EdgeEventsConfig (Recommended)
         init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig) {
             self.matchingEngine = matchingEngine
             self.config = config
@@ -62,7 +65,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.getLastLocation = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
         }
         
-        // Initializer without EdgeEventsConfig (only use for developers that need access to raw events and understand how to receive and send events)
+        /// Initializer without EdgeEventsConfig (Not recommended. Recommended is with EdgeEventsConfig)
         init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
             self.matchingEngine = matchingEngine
             self.host = dmeHost
@@ -72,6 +75,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.initializedWithConfig = false
         }
         
+        /// Start EdgeEventsConnection
         public func start(timeoutMs: Double = 10000) -> Promise<EdgeEventsStatus> {
             // validate config and handlers
             let err = validateEdgeEvents()
@@ -139,6 +143,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }.timeout(timeoutMs/1000.0)
         }
         
+        /// Stop EdgeEventsConnection and cleanup
         public func close() -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             // send terminate connection
@@ -156,6 +161,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             return promise
         }
         
+        /// Clean up EdgeEventsConnection class variables
         public func cleanup() {
             // close grpc client and clean up variables
             latencyTimer?.cancel()
@@ -167,6 +173,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             MobiledgeXiOSLibraryGrpc.closeGrpcClient(client: client!)
         }
         
+        /// Restart EdgeEventsConnection
         public func restart() -> Promise<EdgeEventsStatus> {
             // If autoMigrationEdgeEventsConnection is true, then automatically create new bidirectional connection
             if self.matchingEngine.autoMigrationEdgeEventsConnection {
@@ -198,6 +205,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
+        /// Send a location update to DME
+        /// If the new location is closer to another cloudlet, DME will send a .eventCloudletUpdate as well as a new FIndCloudletReply
         public func postLocationUpdate(loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             // initialize location edgeevent
             var locationEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
@@ -220,6 +229,10 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
+        /// Send a latency update to DME
+        /// DME will send a .eventLatencyProcessed with summarized latency stats
+        /// If .eventLatencyProcessed is specified in EdgeEventsConfig, the SDK will check if the latency is greater than the latencyThresholdTriggerMs.
+        /// If latency is greater than latencyThresholdTriggerMs, then the SDK will try to find a better cloudlet. If a better cloudlet is found, it is returned to the newCloudletHandler
         public func postLatencyUpdate(site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             // initialize latency edgeevent
             var latencyEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
@@ -243,6 +256,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
+        /// Run Ping latency test and then send the latency samples to DME
+        /// Not recommended. Recommended is testConnectAndPostLatencyUpdate
+        /// (Swift does not support Ping natively, so there are some issues with the Ping test)
         public func testPingAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
@@ -285,6 +301,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
+        /// Run a connect/disconnect socket latency test and send latency samples to DME
+        /// Recommended test
+        /// Only works for TCP port
         func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
@@ -379,6 +398,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
+        // TODO: Check that new cloudlet is different
+        // TODO: Do FindCloudletPerformance if latency event
         func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
             if newCloudlet != nil && eventType == .closerCloudlet {
                 let findCloudletEvent = FindCloudletEvent(newCloudlet: newCloudlet!, trigger: eventType)

@@ -48,6 +48,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case eventTriggeredButCurrentCloudletIsBest
     }
     
+    /// Status of EdgeEvents functions
     public enum EdgeEventsStatus {
         case success
         case fail(error: Error)
