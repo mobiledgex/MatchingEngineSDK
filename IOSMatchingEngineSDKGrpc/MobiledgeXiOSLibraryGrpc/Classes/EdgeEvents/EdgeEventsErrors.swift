@@ -44,6 +44,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case uninitializedEdgeEventsConnection
         case failedToClose
         case connectionAlreadyClosed
+        case invalidEdgeEventsSetup
+        case unableToCleanup
+        case gpsLocationDidNotChange
         
         case eventTriggeredButCurrentCloudletIsBest
         case eventError(msg: String)

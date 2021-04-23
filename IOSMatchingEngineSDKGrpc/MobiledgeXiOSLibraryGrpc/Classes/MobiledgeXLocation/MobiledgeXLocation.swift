@@ -41,6 +41,7 @@ extension MobiledgeXiOSLibraryGrpc {
             case unableToFindCountry
             case locationServicesNotRunning
             case noISOCountryCodeAvailable
+            case nilLocation
         }
 
         static var mobiledgeXLocationManager = MobiledgeXLocationManager()
@@ -100,18 +101,23 @@ extension MobiledgeXiOSLibraryGrpc {
         }
         
         @available(iOS 13.4, *)
-        public static func setLastLocation(loc: DistributedMatchEngine_Loc) {
+        public static func setLastLocation(loc: DistributedMatchEngine_Loc) -> Promise<Bool> {
             let location = convertMobiledgeXLocationToCLLocation(loc: loc)
-            mobiledgeXLocationManager.updateLastLocation(location: location)
+            return mobiledgeXLocationManager.updateLastLocation(location: location)
         }
         
         /// Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object
-        public static func getLastLocation() -> DistributedMatchEngine_Loc? {
-            guard let lastLoc = mobiledgeXLocationManager.getLastLocation() else {
-                os_log("Last location not available", log: OSLog.default, type: .debug)
-                return nil
+        public static func getLastLocation() -> Promise<DistributedMatchEngine_Loc> {
+            let promise = Promise<DistributedMatchEngine_Loc>.pending()
+            mobiledgeXLocationManager.getLastLocation().then { lastLoc in
+                guard let loc = lastLoc else {
+                    os_log("Last location not available", log: OSLog.default, type: .debug)
+                    promise.reject(MobiledgeXLocationError.nilLocation)
+                    return
+                }
+                promise.fulfill(convertCLLocationToMobiledgeXLocation(location: loc))
             }
-            return convertCLLocationToMobiledgeXLocation(location: lastLoc)
+            return promise
         }
         
         /// Returns the ISO country code of the last location

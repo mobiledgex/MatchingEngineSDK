@@ -23,6 +23,7 @@ import Foundation
 import GRPC
 import NIO
 import os.log
+import Promises
 
 /// Swift MobiledgeX SDK namespace
 /// Used for "namespacing" purposes to prevent naming conflicts from common names (Util,
@@ -82,12 +83,17 @@ public enum MobiledgeXiOSLibraryGrpc {
         return GrpcClient(group: group, apiclient: apiclient)
     }
     
-    static func closeGrpcClient(client: GrpcClient) {
-        do {
-            try client.apiclient.channel.close().wait()
-            try client.group.syncShutdownGracefully()
-        } catch {
-            os_log("Unable to close grpc client. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
+    static func closeGrpcClient(client: GrpcClient) -> Promise<Bool> {
+        let queue = DispatchQueue(label: "closeGrpc")
+        return Promise<Bool>(on: queue) { fulfill, reject in
+            do {
+                try client.apiclient.channel.close().wait()
+                try client.group.syncShutdownGracefully()
+                fulfill(true)
+            } catch {
+                os_log("Unable to close grpc client. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                reject(error)
+            }
         }
     }
 }

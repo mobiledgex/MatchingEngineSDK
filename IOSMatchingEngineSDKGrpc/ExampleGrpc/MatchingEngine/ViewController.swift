@@ -31,7 +31,7 @@ import MobiledgeXiOSLibraryGrpc
 var theMap: GMSMapView?     //   used by sample.client
 var userMarker: GMSMarker?   // set by RegisterClient , was: mUserLocationMarker.
 
-@available(iOS 13.0, *)
+@available(iOS 13.4, *)
 class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentationControllerDelegate
 {
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
@@ -52,6 +52,9 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var cellID: UInt32?
     var tags: [String: String]?
     
+    var locs: [DistributedMatchEngine_Loc] = []
+    var spoofIteration = 0
+    
     // For the overriding me.getCarrierName() for contacting the DME host
     var overrideDmeCarrierName: String? = "sdkdemo"
 
@@ -71,6 +74,17 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
          #warning ("Action item: These values are a key value lookup for the Distributed Matching Engine backend to locate the matching edge cloudlet for your app")
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         matchingEngine = appDelegate.matchingEngine
+        
+        var hamburg = DistributedMatchEngine_Loc.init()
+        hamburg.latitude = 10
+        hamburg.longitude = 10
+        
+        var frankfurt = DistributedMatchEngine_Loc.init()
+        frankfurt.latitude = 50.110922
+        frankfurt.longitude = 8.682127
+        
+        locs.append(hamburg)
+        locs.append(frankfurt)
 
         if demo
         {
@@ -165,13 +179,15 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             return;
         }
         
-        let registerClientRequest = matchingEngine.createRegisterClientRequest(orgName: orgName,
-                                                                   appName: appName,
-                                                                   appVers: appVers)
-        matchingEngine.registerClient(host: host,
-                          port: port,
-                          request: registerClientRequest)
-        .then { registerReply in
+        // set last location
+        let loc = retrieveLocation()
+        MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: loc).then { set -> Promise<DistributedMatchEngine_RegisterClientReply> in
+            if set {
+                os_log("Set location success", log: OSLog.default, type: .debug)
+            }
+            let registerClientRequest = self.matchingEngine.createRegisterClientRequest(orgName: self.orgName, appName: self.appName, appVers: self.appVers)
+            return self.matchingEngine.registerClient(host: self.host, port: self.port, request: registerClientRequest)
+        }.then { registerReply in
             // Update UI. The MatchingEngine SDK keeps track of details for next calls.
             os_log("RegisterReply: %@", log: OSLog.default, type: .debug, String(describing: registerReply))
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Client Registered"), object: nil)
@@ -444,6 +460,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             "Find Closet Cloudlet",
             "Get QoS Position",
             "Start EdgeEvents",
+            "Spoof Location",
             "Reset Location",
         ]
     }
@@ -462,6 +479,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
 //            "Find Closest Cloudlet",
 //            "Get QoS Position",
 //            "Start EdgeEvents",
+//            "Spoof Location",
 //            "Reset Location",
             
             switch index
@@ -637,18 +655,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 
             case 5:
                 Swift.print("Start EdgeEvents")
-                MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices()
-                .then { success -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
-                    if !success {
-                        os_log("unable to start location services")
-                        SKToast.show(withMessage: "unable to start location services")
-                        let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
-                        promise.fulfill(.fail(error: MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.MobiledgeXLocationError.locationServicesNotRunning))
-                        return promise
-                    } else {
-                        return self!.matchingEngine.startEdgeEvents(dmeHost: self!.demoHost, dmePort: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
-                    }
-                }.then { status in
+                self!.matchingEngine.startEdgeEvents(dmeHost: self!.demoHost, dmePort: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 20, latencyThresholdTriggerMs: 300))
+                .then { status in
                     if status == .success {
                         os_log("Started edge events successfully", log: OSLog.default, type: .debug)
                         SKToast.show(withMessage: "Started edge events successfully")
@@ -659,6 +667,21 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 }
                 
             case 6:
+                Swift.print("Spoofing Location")
+                let location = self!.locs[self!.spoofIteration % 2]
+                
+                MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: location).then { set in
+                    if set {
+                        SKToast.show(withMessage: "Spoofing location to \(location)")
+                    } else {
+                        SKToast.show(withMessage: "Unable to spoof location")
+                    }
+                }.catch { error in
+                    SKToast.show(withMessage: "Error spoofing location: \(error)")
+                }
+                self!.spoofIteration += 1
+                
+            case 7:
                 SKToast.show(withMessage: "Reset Location")
                 resetUserLocation(false) // "Reset Location" Note: Locator.currentPositionnot working
                 
@@ -676,14 +699,11 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 SKToast.show(withMessage: "nil findcloudlet event")
                 return
             }
-            os_log("got new findcloudlet", log: OSLog.default, type: .debug)
+            print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
             SKToast.show(withMessage: "got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
         case .fail(let error):
-            os_log("error during edgeevents", log: OSLog.default, type: .debug)
-            SKToast.show(withMessage: "error during edgeevents \(error)")
-            if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
-                // fallback to public cloud
-            }
+            print("error during edgeevents \(error)")
+            // fallback to public cloud
         }
     }
 
