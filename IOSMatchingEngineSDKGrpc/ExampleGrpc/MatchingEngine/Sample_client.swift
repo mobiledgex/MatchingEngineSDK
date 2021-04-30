@@ -425,14 +425,14 @@ public func retrieveLocation() -> DistributedMatchEngine_Loc
     // Swift.print("\(#function)")
 
     var location = DistributedMatchEngine_Loc.init()
-    location.latitude = -122.149349
-    location.longitude = 37.459609
+    location.latitude = 50.110922
+    location.longitude = 8.682127
 
-    if userMarker != nil // get app isnt sets userMarker
+    /*if userMarker != nil // get app isnt sets userMarker
     {
         location.latitude = userMarker!.position.latitude
         location.longitude = userMarker!.position.longitude
-    }
+    }*/
 
     return location
 }

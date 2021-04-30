@@ -29,21 +29,32 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     public enum EdgeEventsError: Error {
         case missingSessionCookie
         case missingEdgeEventsCookie
+        
         case unableToGetLastLocation
         case missingGetLastLocationFunction
+        
+        case invalidEdgeEventsSetup
         case missingEdgeEventsConfig
+        case missingLatencyUpdateConfig
+        case missingLocationUpdateConfig
+        
         case missingNewFindCloudletHandler
         case missingServerEventsHandler
+        
         case missingLatencyThreshold
         case invalidLatencyThreshold
+        
         case missingUpdateInterval
         case invalidUpdateInterval
+        
         case hasNotDoneFindCloudlet
         case emptyAppPorts
         case portDoesNotExist
         case uninitializedEdgeEventsConnection
         case failedToClose
         case connectionAlreadyClosed
+        case unableToCleanup
+        case gpsLocationDidNotChange
         
         case eventTriggeredButCurrentCloudletIsBest
         case eventError(msg: String)
