@@ -100,4 +100,12 @@ class EdgeEventsTests: XCTestCase {
             }
         }
     }
+    
+    func testEdgeEventsErrorComparison() {
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts)
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.failedToClose)
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.emptyAppPorts != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah"))
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah") == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah"))
+        XCTAssert(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah1") != MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventError(msg: "blah2"))
+    }
 }

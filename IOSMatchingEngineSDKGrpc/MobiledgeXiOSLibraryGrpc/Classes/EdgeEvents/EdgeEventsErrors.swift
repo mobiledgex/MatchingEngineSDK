@@ -29,25 +29,61 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     public enum EdgeEventsError: Error {
         case missingSessionCookie
         case missingEdgeEventsCookie
+        
         case unableToGetLastLocation
         case missingGetLastLocationFunction
+        
+        case invalidEdgeEventsSetup
         case missingEdgeEventsConfig
+        case missingLatencyUpdateConfig
+        case missingLocationUpdateConfig
+        
         case missingNewFindCloudletHandler
         case missingServerEventsHandler
+        
         case missingLatencyThreshold
         case invalidLatencyThreshold
+        
         case missingUpdateInterval
         case invalidUpdateInterval
+        
         case hasNotDoneFindCloudlet
         case emptyAppPorts
         case portDoesNotExist
         case uninitializedEdgeEventsConnection
         case failedToClose
         case connectionAlreadyClosed
+        case unableToCleanup
+        case gpsLocationDidNotChange
         
         case eventTriggeredButCurrentCloudletIsBest
+        case eventError(msg: String)
+        
+        public static func ==(lhs: EdgeEventsError, rhs: EdgeEventsError) -> Bool {
+            switch lhs {
+            case .eventError(let msg1):
+                switch rhs {
+                case .eventError(let msg2):
+                    return msg1 == msg2
+                default:
+                    return false
+                }
+            default:
+                switch rhs {
+                case .eventError:
+                    return false
+                default:
+                    return lhs.localizedDescription == rhs.localizedDescription                }
+            }
+        }
+        
+        public static func !=(lhs: EdgeEventsError, rhs: EdgeEventsError) -> Bool {
+            let equals = lhs == rhs
+            return !equals
+        }
     }
     
+    /// Status of EdgeEvents functions
     public enum EdgeEventsStatus {
         case success
         case fail(error: Error)
@@ -69,6 +105,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return error1.localizedDescription == error2.localizedDescription
                 }
             }
+        }
+        
+        public static func !=(lhs: EdgeEventsStatus, rhs: EdgeEventsStatus) -> Bool {
+            let equals = lhs == rhs
+            return !equals
         }
     }
 }

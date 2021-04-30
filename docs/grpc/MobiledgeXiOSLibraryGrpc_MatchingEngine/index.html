@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Grpc SDK - MobiledgeXiOSLibraryGrpc.MatchingEngine</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift Grpc SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li><li><a href="#initializers">Initializers</a><ul><li class="initializer"><a href="#mobiledgexioslibrarygrpc.matchingengine.init()">init()</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrarygrpc.matchingengine.state">state</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.creategetappinstlistrequest(gpslocation:carriername:cellid:tags:)">create​Get​App​Inst​List​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getappinstlist(request:)">get​App​Inst​List(request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getappinstlist(host:port:request:)">get​App​Inst​List(host:​port:​request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createfindcloudletrequest(gpslocation:carriername:cellid:tags:)">create​Find​Cloudlet​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.findcloudlet(request:mode:)">find​Cloudlet(request:​mode:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.findcloudlet(host:port:request:mode:)">find​Cloudlet(host:​port:​request:​mode:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gettcpconnection(findcloudletreply:appport:desiredport:timeout:)">get​TCPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getbsdtcpconnection(findcloudletreply:appport:desiredport:timeout:)">get​BSDTCPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gettcptlsconnection(findcloudletreply:appport:desiredport:timeout:)">get​TCPTLSConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getudpconnection(findcloudletreply:appport:desiredport:timeout:)">get​UDPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getbsdudpconnection(findcloudletreply:appport:desiredport:timeout:)">get​BSDUDPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getudpdtlsconnection(findcloudletreply:appport:desiredport:timeout:)">get​UDPDTLSConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gethttpclient(findcloudletreply:appport:desiredport:timeout:)">get​HTTPClient(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gethttpsclient(findcloudletreply:appport:desiredport:timeout:)">get​HTTPSClient(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getwebsocketconnection(findcloudletreply:appport:desiredport:timeout:)">get​Websocket​Connection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getsecurewebsocketconnection(findcloudletreply:appport:desiredport:timeout:)">get​Secure​Websocket​Connection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.isedgeenabled(proto:)">is​Edge​Enabled(proto:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gethost(findcloudletreply:appport:)">get​Host(find​Cloudlet​Reply:​app​Port:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getport(appport:desiredport:)">get​Port(app​Port:​desired​Port:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createurl(findcloudletreply:appport:proto:desiredport:path:)">create​Url(find​Cloudlet​Reply:​app​Port:​proto:​desired​Port:​path:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.allowselfsignedcerts()">allow​Self​Signed​Certs()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.disableselfsignedcerts()">disable​Self​Signed​Certs()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getappportsbyprotocol(findcloudletreply:proto:)">get​App​Ports​ByProtocol(find​Cloudlet​Reply:​proto:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.gettcpappports(findcloudletreply:)">get​TCPApp​Ports(find​Cloudlet​Reply:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getudpappports(findcloudletreply:)">get​UDPApp​Ports(find​Cloudlet​Reply:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.close()">close()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.enabletls()">enable​Tls()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.disabletls()">disable​Tls()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.validategpslocation(gpslocation:)">validate​Gps​Location(gps​Location:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getcarriername()">get​Carrier​Name()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.generatedmehostaddress()">generate​Dme​Host​Address()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.generatefallbackdmehost(carriername:)">generate​Fallback​Dme​Host(carrier​Name:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.verifydmehost(host:)">verify​Dme​Host(host:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getfulldeviceinfo()">get​Full​Device​Info()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getdeviceinfo()">get​Device​Info()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getnetworkdatatype()">get​Network​Data​Type()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createqoskpirequest(requests:ltecategory:bandselection:cellid:tags:)">create​Qos​KPIRequest(requests:​lte​Category:​band​Selection:​cell​ID:​tags:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getqoskpiposition(request:)">get​Qos​KPIPosition(request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getqoskpiposition(host:port:request:)">get​Qos​KPIPosition(host:​port:​request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">register​And​Find​Cloudlet(org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(host:port:orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">register​And​Find​Cloudlet(host:​port:​org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createregisterclientrequest(orgname:appname:appvers:authtoken:cellid:tags:)">create​Register​Client​Request(org​Name:​app​Name:​app​Vers:​auth​Token:​cell​ID:​tags:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.registerclient(request:)">register​Client(request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.registerclient(host:port:request:)">register​Client(host:​port:​request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.startedgeevents(newfindcloudlethandler:config:)">start​Edge​Events(new​Find​Cloudlet​Handler:​config:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.startedgeevents(dmehost:dmeport:newfindcloudlethandler:config:)">start​Edge​Events(dme​Host:​dme​Port:​new​Find​Cloudlet​Handler:​config:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.startedgeeventswithoutconfig(servereventshandler:)">start​Edge​Events​Without​Config(server​Events​Handler:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.startedgeeventswithoutconfig(dmehost:dmeport:servereventshandler:)">start​Edge​Events​Without​Config(dme​Host:​dme​Port:​server​Events​Handler:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.stopedgeevents()">stop​Edge​Events()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.switchedtonewcloudlet()">switched​ToNew​Cloudlet()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.switchedtonewcloudlet(host:port:)">switched​ToNew​Cloudlet(host:​port:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.getedgeeventsconnection()">get​Edge​Events​Connection()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createdefaultedgeeventsconfig(latencyupdateintervalseconds:locationupdateintervalseconds:latencythresholdtriggerms:)">create​Default​Edge​Events​Config(latency​Update​Interval​Seconds:​location​Update​Interval​Seconds:​latency​Threshold​Trigger​Ms:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createedgeeventsconfig(newfindcloudletevents:latencythresholdtriggerms:latencytestport:latencyupdateconfig:locationupdateconfig:)">create​Edge​Events​Config(new​Find​Cloudlet​Events:​latency​Threshold​Trigger​Ms:​latency​Test​Port:​latency​Update​Config:​location​Update​Config:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createclienteventsconfig(updatepattern:updateintervalseconds:maxnumberofupdates:)">create​Client​Events​Config(update​Pattern:​update​Interval​Seconds:​max​Number​OfUpdates:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.setautomigrationedgeeventsconnection(automigrate:)">set​Auto​Migration​Edge​Events​Connection(auto​Migrate:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.createverifylocationrequest(gpslocation:carriername:cellid:tags:)">create​Verify​Location​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.verifylocation(request:)">verify​Location(request:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.matchingengine.verifylocation(host:port:request:)">verify​Location(host:​port:​request:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Mobiledge​XiOSLibrary​Grpc.​Matching​Engine</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">class</span> <span class="type">MatchingEngine</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>MatchingEngine class
+MobiledgeX MatchingEngine APIs</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc">MobiledgeXiOSLibraryGrpc</a></code></dt>
+<dd><p>Swift MobiledgeX SDK namespace
+Used for &quot;namespacing&quot; purposes to prevent naming conflicts from common names (Util,
+NetworkInterface, etc.)</p>
+</dd>
+</dl>
+<h3>Nested Types</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_FindCloudletMode">MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode</a></code></dt>
+<dd><p>Two modes to call FindCloudlet. First is Proximity (default) which finds the nearest cloudlet based on gps location with application instance
+Second is Performance. This mode will test all cloudlets with application instance deployed to find cloudlet with lowest latency. This mode takes longer to finish because of latency test.</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_GetConnectionError">MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError</a></code></dt>
+<dd><p>Errors on GetConnection</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_EdgeError">MobiledgeXiOSLibraryGrpc.MatchingEngine.EdgeError</a></code></dt>
+<dd><p>Errors related to trying to get a telco edge connection</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_GetConnectionProtocol">MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionProtocol</a></code></dt>
+<dd><p>L4 and L7 protocols supported by MobiledgeX iOS GetConnection</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_DMEConstants">MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants</a></code></dt>
+<dd></dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_MatchingEngineError">MobiledgeXiOSLibraryGrpc.MatchingEngine.MatchingEngineError</a></code></dt>
+<dd><p>MatchingEngine API errors</p>
+</dd>
+<dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_MatchingEngine_InvalidTokenServerTokenError">MobiledgeXiOSLibraryGrpc.MatchingEngine.InvalidTokenServerTokenError</a></code></dt>
+<dd><p>Occurs when VerifyLocation API is unable to communicate with token server</p>
+</dd>
+</dl>
+</section>
+    <section id="initializers">
+        <h2>Initializers</h2>
+
+        <div role="article" class="initializer" id="mobiledgexioslibrarygrpc.matchingengine.init()">
+    <h3>
+        <code>init()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">init</span>()</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>MatchingEngine constructor</p>
+
+</div>
+</div>
+    </section>
+    <section id="properties">
+        <h2>Properties</h2>
+
+        <div role="article" class="variable" id="mobiledgexioslibrarygrpc.matchingengine.state">
+    <h3>
+        <code>state</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">state</span>: <span class="type">MatchingEngineState</span></code></pre></body></html>
+</div>
+    </section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.creategetappinstlistrequest(gpslocation:carriername:cellid:tags:)">
+    <h3>
+        <code>create​Get​App​Inst​List​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createGetAppInstListRequest</span>(<span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>, <span class="variable">carrierName</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">uint</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>) <span class="keyword">throws</span> -&gt; <a href="./DistributedMatchEngine_AppInstListRequest"><span class="type">DistributedMatchEngine_AppInstListRequest</span></a></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>createGetAppInstListRequest
+Creates the AppInstListRequest object that will be used in GetAppInstList</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>gpslocation</th>
+    <td></td>
+    <td><p>A DistributedMatchEngine_Loc with at least longitude and latitude key values.</p>
+</td>
+</tr>
+<tr>
+    <th>carrier​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>Carrier name. This value can change depending on cell tower.</p>
+</td>
+</tr>
+<tr>
+    <th>cell​ID</th>
+    <td><code class="type">uint?</code></td>
+    <td><p>Optional cellID</p>
+</td>
+</tr>
+<tr>
+    <th>tags</th>
+    <td><code class="type">[String:​ String]?</code></td>
+    <td><p>Optional dict</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>DistributedMatchEngine_AppInstListRequest</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getappinstlist(request:)">
+    <h3>
+        <code>get​App​Inst​List(request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getAppInstList</span>(<span class="variable">request</span>: <a href="./DistributedMatchEngine_AppInstListRequest"><span class="type">DistributedMatchEngine_AppInstListRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_AppInstListReply"><span class="type">DistributedMatchEngine_AppInstListReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API getAppInstList
+Returns a list of the developer's backend instances deployed on the specified carrier's network.
+If carrier was &quot;&quot;, returns all backend instances regardless of carrier network.
+This is used internally in FindCloudlet Performance mode to grab the list of cloudlets to test.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_App​Inst​List​Request</code></td>
+    <td><p>DistributedMatchEngine_AppInstListRequest from createGetAppInstListRequest</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_AppInstListReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getappinstlist(host:port:request:)">
+    <h3>
+        <code>get​App​Inst​List(host:​port:​request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getAppInstList</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">request</span>: <a href="./DistributedMatchEngine_AppInstListRequest"><span class="type">DistributedMatchEngine_AppInstListRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_AppInstListReply"><span class="type">DistributedMatchEngine_AppInstListReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>GetAppInstList overload with hardcoded DME host and port. Only use for testing.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createfindcloudletrequest(gpslocation:carriername:cellid:tags:)">
+    <h3>
+        <code>create​Find​Cloudlet​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createFindCloudletRequest</span>(<span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>, <span class="variable">carrierName</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">uint</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>) <span class="keyword">throws</span> -&gt; <a href="./DistributedMatchEngine_FindCloudletRequest"><span class="type">DistributedMatchEngine_FindCloudletRequest</span></a></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>createFindCloudletRequest
+Creates the FindCloudletRequest object that will be used in the FindCloudlet function.
+The FindCloudletRequest object wraps the parameters that have been provided to this function.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>carrier​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>carrierName</p>
+</td>
+</tr>
+<tr>
+    <th>gpslocation</th>
+    <td></td>
+    <td><p>gpslocation</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>DistributedMatchEngine_FindCloudletRequest</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.findcloudlet(request:mode:)">
+    <h3>
+        <code>find​Cloudlet(request:​mode:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">findCloudlet</span>(<span class="variable">request</span>: <a href="./DistributedMatchEngine_FindCloudletRequest"><span class="type">DistributedMatchEngine_FindCloudletRequest</span></a>, <span class="variable">mode</span>: <span class="type">FindCloudletMode</span> = <span class="variable">FindCloudletMode</span>.<span class="type">PROXIMITY</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API findCloudlet
+FindCloudlet returns information needed for the client app to connect to an application backend deployed through MobiledgeX.
+If there is an application backend instance found, FindCloudetReply will contain the fqdn of the application backend and an array of AppPorts (with information specific to each application
+backend endpoint)</p>
+
+</div>
+<div class="discussion">
+    <p>Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
+for the current carrier, if any.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Find​Cloudlet​Request</code></td>
+    <td><p>DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_FindCloudletReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.findcloudlet(host:port:request:mode:)">
+    <h3>
+        <code>find​Cloudlet(host:​port:​request:​mode:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">findCloudlet</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">request</span>: <a href="./DistributedMatchEngine_FindCloudletRequest"><span class="type">DistributedMatchEngine_FindCloudletRequest</span></a>, <span class="variable">mode</span>: <span class="type">FindCloudletMode</span> = <span class="variable">FindCloudletMode</span>.<span class="type">PROXIMITY</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>FindCloudlet overload with hardcoded DME host and port. Only use for testing.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gettcpconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​TCPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getTCPConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">CFSocket</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getTCPConnection
+Get a TCP socket bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<CFSocket></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getbsdtcpconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​BSDTCPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getBSDTCPConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">Socket</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getBSDTCPConnection
+Gets a BSD TCP socket bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse&lt;MobiledgeXiOSLibrary.Socket&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gettcptlsconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​TCPTLSConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getTCPTLSConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">NWConnection</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getTCPTLSConnection
+Gets a TCP socket that is tls configured bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<NWConnection></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getudpconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​UDPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getUDPConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">CFSocket</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getUDPConnection
+Get a UDP socket bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<CFSocket></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getbsdudpconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​BSDUDPConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getBSDUDPConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">Socket</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getBSDUDPConnection
+Get a BSD UDP socket bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse&lt;MobiledgeXiOSLibrary.Socket&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getudpdtlsconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​UDPDTLSConnection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getUDPDTLSConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">NWConnection</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getUDPDTLSConnection
+Get a UDP socket with DTLS configured bound to the local cellular interface and connected to the application's backend server.
+If no exceptions thrown and object is not null, the socket is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<CFSocket></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gethttpclient(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​HTTPClient(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getHTTPClient</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">URLRequest</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getHTTPClient
+Gets an HTTPClient (URLRequest) object that is edgeEnabled.
+If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+If no exceptions thrown and object is not null, the Client is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<URLRequest></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gethttpsclient(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​HTTPSClient(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getHTTPSClient</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">URLRequest</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getHTTPSClient
+Gets an HTTPSClient (URLRequest) object that is tls configured that is edgeEnabled.
+If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+If no exceptions thrown and object is not null, the Client is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<URLRequest></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getwebsocketconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​Websocket​Connection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getWebsocketConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">SocketManager</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getWebsocketConnection
+Gets a websocket client that is edgeEnabled.
+If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+If no exceptions thrown and object is not null, the Client is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<SocketManager></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getsecurewebsocketconnection(findcloudletreply:appport:desiredport:timeout:)">
+    <h3>
+        <code>get​Secure​Websocket​Connection(find​Cloudlet​Reply:​app​Port:​desired​Port:​timeout:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getSecureWebsocketConnection</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">timeout</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">SocketManager</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>getSecureWebsocketConnection
+Gets a websocket client that is tls configured that is edgeEnabled.
+If the device is not telco edge enabled (ie. not using cellular data path), error will be returned.
+If no exceptions thrown and object is not null, the Client is ready to send application data to backend.</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>Parameters</p>
+<ul>
+<li>findCloudletReply: FindCloudletReply from findCloudlet</li>
+<li>appPort: Specific AppPort wanted from FindCloudletReply</li>
+<li>desiredPort: Optional desired port. If none specified, will use public port in given appPort</li>
+<li>timeout: Optional timeout. Default is 10 seconds</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promse<SocketManager></p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.isedgeenabled(proto:)">
+    <h3>
+        <code>is​Edge​Enabled(proto:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">isEdgeEnabled</span>(<span class="variable">proto</span>: <span class="type">GetConnectionProtocol</span>) -&gt; <span class="type">EdgeError</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Checks whether device will use cellular data path
+If using L4 getConnection protocol, GetConnection functions will bind local socket to cellular network interface. So as long as the device has a cellular interface up, it is edgeEnabled
+If using L7 getConnection protocol (where we cannot control the network interface), we must check to make sure the device will not default to wifi</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gethost(findcloudletreply:appport:)">
+    <h3>
+        <code>get​Host(find​Cloudlet​Reply:​app​Port:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getHost</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>) <span class="keyword">throws</span> -&gt; <span class="type">String</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the host of the developers app backend based on the findCloudletReply and appPort provided.
+This function is called by L4 GetConnection functions, but can be called by developers if they are using their own communication client (use GetPort as well)</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getport(appport:desiredport:)">
+    <h3>
+        <code>get​Port(app​Port:​desired​Port:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getPort</span>(<span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>) <span class="keyword">throws</span> -&gt; <span class="type">UInt16</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the port of the developers app backend service based on the appPort provided.
+An optional desiredPort parameter is provided if the developer wants a specific port within their appPort port range (if none provided, the function will default to the public_port field in the AppPort).
+This function is called by L4 GetConnection functions, but can be called by developers if they are using their own communication client (use GetHost as well).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createurl(findcloudletreply:appport:proto:desiredport:path:)">
+    <h3>
+        <code>create​Url(find​Cloudlet​Reply:​app​Port:​proto:​desired​Port:​path:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createUrl</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">appPort</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>, <span class="variable">proto</span>: <span class="type">String</span>, <span class="variable">desiredPort</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">path</span>: <span class="type">String</span> = <span class="string literal">"</span><span class="string literal"/><span class="string literal">"</span>) <span class="keyword">throws</span> -&gt; <span class="type">String</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the L7 path of the developers app backend based on the the findCloudletReply and appPort provided.
+The desired port number must be specified by the developer (use -1 if you want the SDK to choose a port number).
+An L7 protocol must also be provided (eg. http, https, ws, wss). The path variable is optional and will be appended to the end of the url.
+This function is called by L7 GetConnection functions, but can be called by developers if they are using their own communication client.
+Example return value: https://example.com:8888</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.allowselfsignedcerts()">
+    <h3>
+        <code>allow​Self​Signed​Certs()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">allowSelfSignedCerts</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.disableselfsignedcerts()">
+    <h3>
+        <code>disable​Self​Signed​Certs()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">disableSelfSignedCerts</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getappportsbyprotocol(findcloudletreply:proto:)">
+    <h3>
+        <code>get​App​Ports​ByProtocol(find​Cloudlet​Reply:​proto:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getAppPortsByProtocol</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>, <span class="variable">proto</span>: <a href="./DistributedMatchEngine_LProto"><span class="type">DistributedMatchEngine_LProto</span></a>) <span class="keyword">throws</span> -&gt; [<span class="type">UInt16</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>]?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns dictionary: key -&gt; internal port, value -&gt; AppPort</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.gettcpappports(findcloudletreply:)">
+    <h3>
+        <code>get​TCPApp​Ports(find​Cloudlet​Reply:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getTCPAppPorts</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>) <span class="keyword">throws</span> -&gt; [<span class="type">UInt16</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>]?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Return dictionary of TCP AppPorts given in findCloudletReply</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getudpappports(findcloudletreply:)">
+    <h3>
+        <code>get​UDPApp​Ports(find​Cloudlet​Reply:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getUDPAppPorts</span>(<span class="variable">findCloudletReply</span>: <a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>) <span class="keyword">throws</span> -&gt; [<span class="type">UInt16</span>: <a href="./DistributedMatchEngine_AppPort"><span class="type">DistributedMatchEngine_AppPort</span></a>]?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Return dictionary of UDP AppPorts given in findCloudletReply</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.close()">
+    <h3>
+        <code>close()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">close</span>()</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>MatchingEngine destructor</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.enabletls()">
+    <h3>
+        <code>enable​Tls()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">enableTls</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.disabletls()">
+    <h3>
+        <code>disable​Tls()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">disableTls</span>()</code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.validategpslocation(gpslocation:)">
+    <h3>
+        <code>validate​Gps​Location(gps​Location:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">validateGpsLocation</span>(<span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) <span class="keyword">throws</span> -&gt; <span class="type">Bool</span></code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getcarriername()">
+    <h3>
+        <code>get​Carrier​Name()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getCarrierName</span>() -&gt; <span class="type">String</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Retrieve the carrier name of the cellular network interface (MCC and MNC)
+Returns the carrier's mcc+mnc which is mapped to a carrier in the backend (ie. 26201 -&gt; TDG).
+MCC stands for Mobile Country Code and MNC stands for Mobile Network Code.
+If useWifiOnly or cellular is off + wifi is up, this will return &quot;&quot;.
+Empty string carrierName is the alias for any, which will search all carriers for application instances.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.generatedmehostaddress()">
+    <h3>
+        <code>generate​Dme​Host​Address()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">generateDmeHostAddress</span>() <span class="keyword">throws</span> -&gt; <span class="type">String</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>This will generate the dme host name based on GetMccMnc() -&gt; &quot;mcc-mnc.dme.mobiledgex.net&quot;.
+If getMccMnc fails or returns null, this will return a fallback dme host: &quot;wifi.dme.mobiledgex.net&quot;(this is the EU + TDG DME).
+This function is used by any DME APIs calls where no host and port overloads are provided.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.generatefallbackdmehost(carriername:)">
+    <h3>
+        <code>generate​Fallback​Dme​Host(carrier​Name:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">generateFallbackDmeHost</span>(<span class="variable">carrierName</span>: <span class="type">String</span>?) -&gt; <span class="type">String</span></code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.verifydmehost(host:)">
+    <h3>
+        <code>verify​Dme​Host(host:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">verifyDmeHost</span>(<span class="variable">host</span>: <span class="type">String</span>) <span class="keyword">throws</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Makes sure host generated in generateDmeHostAddress is valid
+DNS Lookup</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getfulldeviceinfo()">
+    <h3>
+        <code>get​Full​Device​Info()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getFullDeviceInfo</span>() -&gt; [<span class="type">String</span>: <span class="type">String</span>]</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Device info will be sent as tags parameter in RegisterClient</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getdeviceinfo()">
+    <h3>
+        <code>get​Device​Info()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getDeviceInfo</span>() -&gt; <a href="./DistributedMatchEngine_DeviceInfo"><span class="type">DistributedMatchEngine_DeviceInfo</span></a></code></pre></body></html>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getnetworkdatatype()">
+    <h3>
+        <code>get​Network​Data​Type()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getNetworkDataType</span>() -&gt; <span class="type">String</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>NetworkDataType is sent along with latency information when sending samples to DME</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createqoskpirequest(requests:ltecategory:bandselection:cellid:tags:)">
+    <h3>
+        <code>create​Qos​KPIRequest(requests:​lte​Category:​band​Selection:​cell​ID:​tags:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createQosKPIRequest</span>(<span class="variable">requests</span>: [<a href="./DistributedMatchEngine_QosPosition"><span class="type">DistributedMatchEngine_QosPosition</span></a>], <span class="variable">lteCategory</span>: <span class="type">Int32</span>? = <span class="keyword">nil</span>, <span class="variable">bandSelection</span>: <a href="./DistributedMatchEngine_BandSelection"><span class="type">DistributedMatchEngine_BandSelection</span></a>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">uint</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>) <span class="keyword">throws</span> -&gt; <a href="./DistributedMatchEngine_QosPositionRequest"><span class="type">DistributedMatchEngine_QosPositionRequest</span></a></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>createQosKPIRequest
+Creates the QosPositionRequest object that will be used in CreateQosPositionRequest</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>requests</th>
+    <td><code class="type">[Distributed​Match​Engine_Qos​Position]</code></td>
+    <td><p>DistributedMatchEngine_QosPositions (Dict: id -&gt; gps location)</p>
+</td>
+</tr>
+<tr>
+    <th>lte​Category</th>
+    <td><code class="type">Int32?</code></td>
+    <td><p>Optional lteCategory</p>
+</td>
+</tr>
+<tr>
+    <th>band​Selection</th>
+    <td><code class="type">Distributed​Match​Engine_Band​Selection?</code></td>
+    <td><p>Optional BandSelection</p>
+</td>
+</tr>
+<tr>
+    <th>cell​ID</th>
+    <td><code class="type">uint?</code></td>
+    <td><p>Optional cellID</p>
+</td>
+</tr>
+<tr>
+    <th>tags</th>
+    <td><code class="type">[String:​ String]?</code></td>
+    <td><p>Optional dict</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>DistributedMatchEngine_QosPositionRequest</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getqoskpiposition(request:)">
+    <h3>
+        <code>get​Qos​KPIPosition(request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getQosKPIPosition</span>(<span class="variable">request</span>: <a href="./DistributedMatchEngine_QosPositionRequest"><span class="type">DistributedMatchEngine_QosPositionRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_QosPositionKpiReply"><span class="type">DistributedMatchEngine_QosPositionKpiReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API getQosKPIPosition
+Returns quality of service metrics for each location provided in qos position request</p>
+
+</div>
+<div class="discussion">
+    <p>Takes a QosKPIRequest request, and contacts the Distributed MatchingEngine host for quality of service at specified locations</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Qos​Position​Request</code></td>
+    <td><p>DistributedMatchEngine_QosKPIRequest struct from createQosKPIRequest.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_QosPositionKpiReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getqoskpiposition(host:port:request:)">
+    <h3>
+        <code>get​Qos​KPIPosition(host:​port:​request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getQosKPIPosition</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">request</span>: <a href="./DistributedMatchEngine_QosPositionRequest"><span class="type">DistributedMatchEngine_QosPositionRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_QosPositionKpiReply"><span class="type">DistributedMatchEngine_QosPositionKpiReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API getQosKPIPosition
+GetQosPositionKpi overload with hardcoded DME host and port. Only use for testing.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>host</th>
+    <td><code class="type">String</code></td>
+    <td><p>host override of the dme host server. DME must be reachable from current carrier.</p>
+</td>
+</tr>
+<tr>
+    <th>port</th>
+    <td><code class="type">UInt16</code></td>
+    <td><p>port override of the dme server port</p>
+</td>
+</tr>
+<tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Qos​Position​Request</code></td>
+    <td><p>DistributedMatchEngine_QosKPIRequest from createQosKPIRequest.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_QosPositionKpiReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">
+    <h3>
+        <code>register​And​Find​Cloudlet(org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">registerAndFindCloudlet</span>(<span class="variable">orgName</span>: <span class="type">String</span>, <span class="variable">appName</span>: <span class="type">String</span>?, <span class="variable">appVers</span>: <span class="type">String</span>?, <span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>, <span class="variable">carrierName</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">authToken</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">UInt32</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>, <span class="variable">mode</span>: <span class="type">FindCloudletMode</span> = <span class="variable">FindCloudletMode</span>.<span class="type">PROXIMITY</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>registerAndFIndCloudlet
+FindCloudlet returns information needed for the client app to connect to an application backend deployed through MobiledgeX.
+If there is an application backend instance found, FindCloudetReply will contain the fqdn of the application backend and an array of AppPorts (with information specific to each application
+backend endpoint)</p>
+
+</div>
+<div class="discussion">
+    <p>Takes a FindCloudlet request, and contacts the specified Distributed MatchingEngine host and port
+for the current carrier, if any.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>org​Name</th>
+    <td><code class="type">String</code></td>
+    <td><p>orgName</p>
+</td>
+</tr>
+<tr>
+    <th>app​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>appName</p>
+</td>
+</tr>
+<tr>
+    <th>app​Vers</th>
+    <td><code class="type">String?</code></td>
+    <td><p>appVers</p>
+</td>
+</tr>
+<tr>
+    <th>gps​Location</th>
+    <td><code class="type">Distributed​Match​Engine_Loc</code></td>
+    <td><p>Loc</p>
+</td>
+</tr>
+<tr>
+    <th>carrier​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>Optional carrierName</p>
+</td>
+</tr>
+<tr>
+    <th>auth​Token</th>
+    <td><code class="type">String?</code></td>
+    <td><p>Optional authToken</p>
+</td>
+</tr>
+<tr>
+    <th>cell​ID</th>
+    <td><code class="type">UInt32?</code></td>
+    <td><p>Optional cellID</p>
+</td>
+</tr>
+<tr>
+    <th>tags</th>
+    <td><code class="type">[String:​ String]?</code></td>
+    <td><p>Optional dict</p>
+</td>
+</tr>
+<tr>
+    <th>mode</th>
+    <td><code class="type">Find​Cloudlet​Mode</code></td>
+    <td><p>Optional FindCloudletMode (default to Proximity)</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_FindCloudletReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(host:port:orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">
+    <h3>
+        <code>register​And​Find​Cloudlet(host:​port:​org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">registerAndFindCloudlet</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">orgName</span>: <span class="type">String</span>, <span class="variable">appName</span>: <span class="type">String</span>?, <span class="variable">appVers</span>: <span class="type">String</span>?, <span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>, <span class="variable">carrierName</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">authToken</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">UInt32</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>, <span class="variable">mode</span>: <span class="type">FindCloudletMode</span> = <span class="variable">FindCloudletMode</span>.<span class="type">PROXIMITY</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>registerAndFindCloudlet overload with hardcoded DME host and port. Only use for testing. This API cannot be used for Non-Platform APPs.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createregisterclientrequest(orgname:appname:appvers:authtoken:cellid:tags:)">
+    <h3>
+        <code>create​Register​Client​Request(org​Name:​app​Name:​app​Vers:​auth​Token:​cell​ID:​tags:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createRegisterClientRequest</span>(<span class="variable">orgName</span>: <span class="type">String</span>, <span class="variable">appName</span>: <span class="type">String</span>?, <span class="variable">appVers</span>: <span class="type">String</span>?, <span class="variable">authToken</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">UInt32</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>) -&gt; <a href="./DistributedMatchEngine_RegisterClientRequest"><span class="type">DistributedMatchEngine_RegisterClientRequest</span></a></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API createRegisterClientRequest
+Creates the RegisterClientRequest object that will be used in the RegisterClient function.The RegisterClientRequest object wraps the parameters that have been provided to this function.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>org​Name</th>
+    <td><code class="type">String</code></td>
+    <td><p>Name of the developer</p>
+</td>
+</tr>
+<tr>
+    <th>app​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>Name of the application</p>
+</td>
+</tr>
+<tr>
+    <th>app​Vers</th>
+    <td><code class="type">String?</code></td>
+    <td><p>Version of the application.</p>
+</td>
+</tr>
+<tr>
+    <th>auth​Token</th>
+    <td><code class="type">String?</code></td>
+    <td><p>An optional opaque string to authenticate the client.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>DistributedMatchEngine_RegisterClientRequest</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerclient(request:)">
+    <h3>
+        <code>register​Client(request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">registerClient</span>(<span class="variable">request</span>: <a href="./DistributedMatchEngine_RegisterClientRequest"><span class="type">DistributedMatchEngine_RegisterClientRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_RegisterClientReply"><span class="type">DistributedMatchEngine_RegisterClientReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API registerClient
+First DME API called. This will register the client with the MobiledgeX backend and
+check to make sure that the app that the user is running exists. (ie. This confirms
+that CreateApp in Console/Mcctl has been run successfully). RegisterClientReply
+contains a session cookie that will be used (automatically) in later API calls.
+It also contains a uri that will be used to get the verifyLocToken used in VerifyLocation.</p>
+
+</div>
+<div class="discussion">
+    <p>Takes a RegisterClient request, and contacts the Distributed MatchingEngine host for the current
+carrier, if any.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Register​Client​Request</code></td>
+    <td><p>DistributedMatchEngine_RegisterClientRequest struct, from createRegisterClientRequest.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_RegisterClientReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerclient(host:port:request:)">
+    <h3>
+        <code>register​Client(host:​port:​request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">registerClient</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">request</span>: <a href="./DistributedMatchEngine_RegisterClientRequest"><span class="type">DistributedMatchEngine_RegisterClientRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_RegisterClientReply"><span class="type">DistributedMatchEngine_RegisterClientReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API registerClient
+RegisterClient overload with hardcoded DME host and port. Only use for testing.</p>
+
+</div>
+<div class="discussion">
+    <p>Takes a RegisterClient request, and contacts the specified Distributed MatchingEngine host and port
+for the current carrier, if any.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>host</th>
+    <td><code class="type">String</code></td>
+    <td><p>host override of the dme host server. DME must be reachable from current carrier.</p>
+</td>
+</tr>
+<tr>
+    <th>port</th>
+    <td><code class="type">UInt16</code></td>
+    <td><p>port override of the dme server port</p>
+</td>
+</tr>
+<tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Register​Client​Request</code></td>
+    <td><p>DistributedMatchEngine_RegisterClientRequest struct, from createRegisterClientRequest.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_RegisterClientReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.startedgeevents(newfindcloudlethandler:config:)">
+    <h3>
+        <code>start​Edge​Events(new​Find​Cloudlet​Handler:​config:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">startEdgeEvents</span>(<span class="variable">newFindCloudletHandler</span>: <span class="attribute">@</span><span class="attribute">escaping</span> ((<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>, <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">FindCloudletEvent</span>?) -&gt; <span class="type">Void</span>), <span class="variable">config</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsConfig</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API startEdgeEvents
+Starts persistent EdgeEvents connection between client and DME. This connection is used to provide events/information to the client about the application backend.
+After starting EdgeEvents and based on the EdgeEventsConfig provided, the MobiledgeX SDK will find a new cloudlet for the client on the specified events.
+The new cloudlet will be returned to the client via the newFindCloudletHandler.
+For example, if .eventCloudletState is specified in EdgeEventsConfig in the set of newFindCloudletEvents, a new cloudlet will be provided to the newFindCloudletHandler when the cloudlet state changes.
+Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
+newFindCloudletHandler</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>new​Find​Cloudlet​Handler</th>
+    <td><code class="type">@escaping ((Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Status, Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Find​Cloudlet​Event?) -&gt; Void)</code></td>
+    <td><p>((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -&gt; Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)</p>
+</td>
+</tr>
+<tr>
+    <th>config</th>
+    <td><code class="type">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Config</code></td>
+    <td><p>MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig: EdgeEvents Configuration. Allows configuration of which events to look for a new cloudlet and how often the client sends latency and gps location updates to DME. Recommeded to get config from matchingEngine.createDefaultEdgeEventsConfig()</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.startedgeevents(dmehost:dmeport:newfindcloudlethandler:config:)">
+    <h3>
+        <code>start​Edge​Events(dme​Host:​dme​Port:​new​Find​Cloudlet​Handler:​config:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">startEdgeEvents</span>(<span class="variable">dmeHost</span>: <span class="type">String</span>, <span class="variable">dmePort</span>: <span class="type">UInt16</span>, <span class="variable">newFindCloudletHandler</span>: <span class="attribute">@</span><span class="attribute">escaping</span> ((<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>, <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">FindCloudletEvent</span>?) -&gt; <span class="type">Void</span>), <span class="variable">config</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsConfig</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API startEdgeEvents
+Starts persistent EdgeEvents connection between client and DME. This connection is used to provide events/information to the client about the application backend.
+After starting EdgeEvents and based on the EdgeEventsConfig provided, the MobiledgeX SDK will find a new cloudlet for the client on the specified events.
+The new cloudlet will be returned to the client via the newFindCloudletHandler.
+For example, if .eventCloudletState is specified in EdgeEventsConfig in the set of newFindCloudletEvents, a new cloudlet will be provided to the newFindCloudletHandler when the cloudlet state changes.
+Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
+newFindCloudletHandler</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>dme​Host</th>
+    <td><code class="type">String</code></td>
+    <td><p>host override of the dme host server. DME must be reachable from current carrier.</p>
+</td>
+</tr>
+<tr>
+    <th>dme​Port</th>
+    <td><code class="type">UInt16</code></td>
+    <td><p>port override of the dme server port</p>
+</td>
+</tr>
+<tr>
+    <th>new​Find​Cloudlet​Handler</th>
+    <td><code class="type">@escaping ((Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Status, Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Find​Cloudlet​Event?) -&gt; Void)</code></td>
+    <td><p>((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -&gt; Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)</p>
+</td>
+</tr>
+<tr>
+    <th>config</th>
+    <td><code class="type">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Config</code></td>
+    <td><p>MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig: EdgeEvents Configuration. Allows configuration of which events to look for a new cloudlet and how often the client sends latency and gps location updates to DME. Recommeded to get config from matchingEngine.createDefaultEdgeEventsConfig()</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.startedgeeventswithoutconfig(servereventshandler:)">
+    <h3>
+        <code>start​Edge​Events​Without​Config(server​Events​Handler:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">startEdgeEventsWithoutConfig</span>(<span class="variable">serverEventsHandler</span>: <span class="attribute">@</span><span class="attribute">escaping</span> ((<a href="./DistributedMatchEngine_ServerEdgeEvent"><span class="type">DistributedMatchEngine_ServerEdgeEvent</span></a>) -&gt; <span class="type">Void</span>)) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API startEdgeEventsWithoutConfig
+This API is not recommended. The recommended API is startEdgeEvents
+Starts persistent EdgeEvents connection between client and DME. This connection is used to provide events/information to the client about the application backend.
+The application provided serverEventsHandler will handle receipt of ServerEdgeEvents
+To send ClientEdgeEvents, the application must grab the edgeEventsConnection via getEdgeEventsConnection() and then use the provided postLatencyUpdate, postLocationUpdate, testConnectAndPostLatencyUpdate functions</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>server​Events​Handler</th>
+    <td><code class="type">@escaping ((Distributed​Match​Engine_Server​Edge​Event) -&gt; Void)</code></td>
+    <td><p>((DistributedMatchEngine_ServerEdgeEvent) -&gt; Void): Function that handles application logic on receipt of server events</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.startedgeeventswithoutconfig(dmehost:dmeport:servereventshandler:)">
+    <h3>
+        <code>start​Edge​Events​Without​Config(dme​Host:​dme​Port:​server​Events​Handler:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">startEdgeEventsWithoutConfig</span>(<span class="variable">dmeHost</span>: <span class="type">String</span>, <span class="variable">dmePort</span>: <span class="type">UInt16</span>, <span class="variable">serverEventsHandler</span>: <span class="attribute">@</span><span class="attribute">escaping</span> ((<a href="./DistributedMatchEngine_ServerEdgeEvent"><span class="type">DistributedMatchEngine_ServerEdgeEvent</span></a>) -&gt; <span class="type">Void</span>)) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API startEdgeEventsWithoutConfig
+This API is not recommended. The recommended API is startEdgeEvents
+Starts persistent EdgeEvents connection between client and DME. This connection is used to provide events/information to the client about the application backend.
+The application provided serverEventsHandler will handle receipt of ServerEdgeEvents
+To send ClientEdgeEvents, the application must grab the edgeEventsConnection via getEdgeEventsConnection() and then use the provided postLatencyUpdate, postLocationUpdate, testConnectAndPostLatencyUpdate functions</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>dme​Host</th>
+    <td><code class="type">String</code></td>
+    <td><p>host override of the dme host server. DME must be reachable from current carrier.</p>
+</td>
+</tr>
+<tr>
+    <th>dme​Port</th>
+    <td><code class="type">UInt16</code></td>
+    <td><p>port override of the dme server port</p>
+</td>
+</tr>
+<tr>
+    <th>server​Events​Handler</th>
+    <td><code class="type">@escaping ((Distributed​Match​Engine_Server​Edge​Event) -&gt; Void)</code></td>
+    <td><p>((DistributedMatchEngine_ServerEdgeEvent) -&gt; Void): Function that handles application logic on receipt of server events</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.stopedgeevents()">
+    <h3>
+        <code>stop​Edge​Events()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">stopEdgeEvents</span>() -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API stopEdgeEvents
+Stops the persistent EdgeEvents connection between client and DME</p>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.switchedtonewcloudlet()">
+    <h3>
+        <code>switched​ToNew​Cloudlet()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">switchedToNewCloudlet</span>() -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>By default, autoMigrationEdgeEventsConnection is true, which means that when a new cloudlet is found, the MobiledgeX SDK will automatically switch the EdgeEventsConnection to monitor and receive events from the new cloudlet
+However, if autoMigrationEdgeEventsConnection is set to false, it is up to the application to call switchedToNewCloudlet after it switches over to the new cloudlet so that the SDK can receive events from the new cloudlet.</p>
+
+</div>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.switchedtonewcloudlet(host:port:)">
+    <h3>
+        <code>switched​ToNew​Cloudlet(host:​port:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">switchedToNewCloudlet</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>) -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>By default, autoMigrationEdgeEventsConnection is true, which means that when a new cloudlet is found, the MobiledgeX SDK will automatically switch the EdgeEventsConnection to monitor and receive events from the new cloudlet
+However, if autoMigrationEdgeEventsConnection is set to false, it is up to the application to call switchedToNewCloudlet after it switches over to the new cloudlet so that the SDK can receive events from the new cloudlet.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>dme​Host</th>
+    <td></td>
+    <td><p>host override of the dme host server. DME must be reachable from current carrier.</p>
+</td>
+</tr>
+<tr>
+    <th>dme​Port</th>
+    <td></td>
+    <td><p>port override of the dme server port</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.getedgeeventsconnection()">
+    <h3>
+        <code>get​Edge​Events​Connection()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">getEdgeEventsConnection</span>() -&gt; <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsConnection</span>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Returns the EdgeEventsConnection created after startEdgeEvents</p>
+
+</div>
+  <h4>Returns</h4>
+  <p>MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection?</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createdefaultedgeeventsconfig(latencyupdateintervalseconds:locationupdateintervalseconds:latencythresholdtriggerms:)">
+    <h3>
+        <code>create​Default​Edge​Events​Config(latency​Update​Interval​Seconds:​location​Update​Interval​Seconds:​latency​Threshold​Trigger​Ms:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createDefaultEdgeEventsConfig</span>(<span class="variable">latencyUpdateIntervalSeconds</span>: <span class="type">UInt</span>, <span class="variable">locationUpdateIntervalSeconds</span>: <span class="type">UInt</span>, <span class="variable">latencyThresholdTriggerMs</span>: <span class="type">Double</span>) -&gt; <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsConfig</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Creates the Default EdgeEventsConfig
+This config will determine how the SDK handles events and how often the SDK monitors GPS Location and Latency
+A new cloudlet will be returned to newFindCloudletHandler on .eventCloudletState, .eventCloudletMaintenance, .eventAppinstHealth, and .eventLatencyProcessed
+Location and Latency will be monitored in the background at an interval. The interval in seconds is up to the application.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>latency​Update​Interval​Seconds</th>
+    <td><code class="type">UInt</code></td>
+    <td><p>UInt: The interval in seconds that the SDK will check latency</p>
+</td>
+</tr>
+<tr>
+    <th>location​Update​Interval​Seconds</th>
+    <td><code class="type">UInt</code></td>
+    <td><p>UInt: The interval in seconds that the SDK will check gps location</p>
+</td>
+</tr>
+<tr>
+    <th>latency​Threshold​Trigger​Ms</th>
+    <td><code class="type">Double</code></td>
+    <td><p>Double: The latency threshold at which the application wants to look for a better cloudlet. For example, if latencyThresholdTriggerMs is set to 50 and if the SDK finds that latency is &gt; 50ms, the SDK will check to see if there is a cloudlet with lower latency</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createedgeeventsconfig(newfindcloudletevents:latencythresholdtriggerms:latencytestport:latencyupdateconfig:locationupdateconfig:)">
+    <h3>
+        <code>create​Edge​Events​Config(new​Find​Cloudlet​Events:​latency​Threshold​Trigger​Ms:​latency​Test​Port:​latency​Update​Config:​location​Update​Config:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createEdgeEventsConfig</span>(<span class="variable">newFindCloudletEvents</span>: <span class="type">Set</span>&lt;<a href="./DistributedMatchEngine_ServerEdgeEvent"><span class="type">DistributedMatchEngine_ServerEdgeEvent</span></a>.<span class="type">ServerEventType</span>&gt;, <span class="variable">latencyThresholdTriggerMs</span>: <span class="type">Double</span>?, <span class="variable">latencyTestPort</span>: <span class="type">UInt16</span>, <span class="variable">latencyUpdateConfig</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">ClientEventsConfig</span>, <span class="variable">locationUpdateConfig</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">ClientEventsConfig</span>) -&gt; <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsConfig</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Creates an EdgeEventsConfig
+This config will determine how the SDK handles events and how often the SDK monitors GPS Location and Latency</p>
+
+</div>
+<div class="discussion">
+    <ul>
+<li>
+<p>locationUpdateConfig; MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig: Configures how often and when the SDK will check gps location changes</p>
+</li>
+</ul>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>new​Find​Cloudlet​Events</th>
+    <td><code class="type">Set&lt;Distributed​Match​Engine_Server​Edge​Event.​Server​Event​Type&gt;</code></td>
+    <td><p>Set&lt;DistributedMatchEngine_ServerEdgeEvent.ServerEventType&gt;: List of ServerEventTypes that the SDK will look for a new cloudlet on</p>
+</td>
+</tr>
+<tr>
+    <th>latency​Threshold​Trigger​Ms</th>
+    <td><code class="type">Double?</code></td>
+    <td><p>Double?: The latency threshold at which the application wants to look for a better cloudlet. For example, if latencyThresholdTriggerMs is set to 50 and if the SDK finds that latency is &gt; 50ms, the SDK will check to see if there is a cloudlet with lower latency</p>
+</td>
+</tr>
+<tr>
+    <th>latency​Test​Port</th>
+    <td><code class="type">UInt16</code></td>
+    <td><p>UInt16: Port to do latency test on (must be a TCP port)</p>
+</td>
+</tr>
+<tr>
+    <th>latency​Update​Config</th>
+    <td><code class="type">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Client​Events​Config</code></td>
+    <td><p>MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig: Configures how often and when the SDK will test latency</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createclienteventsconfig(updatepattern:updateintervalseconds:maxnumberofupdates:)">
+    <h3>
+        <code>create​Client​Events​Config(update​Pattern:​update​Interval​Seconds:​max​Number​OfUpdates:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createClientEventsConfig</span>(<span class="variable">updatePattern</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">ClientEventsConfig</span>.<span class="type">UpdatePattern</span>, <span class="variable">updateIntervalSeconds</span>: <span class="type">UInt</span>?, <span class="variable">maxNumberOfUpdates</span>: <span class="type">Int</span>? = <span class="number literal">0</span>) -&gt; <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">ClientEventsConfig</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Creates a ClientEventsConfig
+This config determines how the SDK handles ClientEdgeEvents (ie. Sending latency updates and gps location updates)</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>update​Pattern</th>
+    <td><code class="type">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Client​Events​Config.​Update​Pattern</code></td>
+    <td><p>MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig.UpdatePattern: Options are .onStart, .onTrigger, or .onInterval</p>
+</td>
+</tr>
+<tr>
+    <th>update​Interval​Seconds</th>
+    <td><code class="type">UInt?</code></td>
+    <td><p>UInt?: Interval in seconds between updates</p>
+</td>
+</tr>
+<tr>
+    <th>max​Number​OfUpdates</th>
+    <td><code class="type">Int?</code></td>
+    <td><p>Int?: Maximum number of updates SDK can do. Default is 0, which will not limit the number of updates</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.setautomigrationedgeeventsconnection(automigrate:)">
+    <h3>
+        <code>set​Auto​Migration​Edge​Events​Connection(auto​Migrate:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">setAutoMigrationEdgeEventsConnection</span>(<span class="variable">autoMigrate</span>: <span class="type">Bool</span>)</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Sets the autoMigrationEdgeEventsConnection variable
+If autoMigrationEdgeEventsConnection is true, the SDK will automatically start and EdgeEvents connection to a new cloudlet when a better cloudlet is found
+If autoMigrationEdgeEventsConnection is fale, it is up to the application to start a new EdgeEvents connection or call switchedToNewCloudlet() to notify the SDK to start a new EdgeEvents connection when/if the application switches
+cloudlets.
+Default is true.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>auto​Migrate</th>
+    <td><code class="type">Bool</code></td>
+    <td><p>Bool</p>
+</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createverifylocationrequest(gpslocation:carriername:cellid:tags:)">
+    <h3>
+        <code>create​Verify​Location​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">createVerifyLocationRequest</span>(<span class="variable">gpsLocation</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>, <span class="variable">carrierName</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">cellID</span>: <span class="type">uint</span>? = <span class="keyword">nil</span>, <span class="variable">tags</span>: [<span class="type">String</span>: <span class="type">String</span>]? = <span class="keyword">nil</span>) <span class="keyword">throws</span> -&gt; <a href="./DistributedMatchEngine_VerifyLocationRequest"><span class="type">DistributedMatchEngine_VerifyLocationRequest</span></a></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>createVerifyLocationRequest
+Creates the VerifyLocationRequest object that will be used in VerifyLocation</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>gps​Location</th>
+    <td><code class="type">Distributed​Match​Engine_Loc</code></td>
+    <td><p>DistributedMatchEngine_Loc</p>
+</td>
+</tr>
+<tr>
+    <th>carrier​Name</th>
+    <td><code class="type">String?</code></td>
+    <td><p>carrierName</p>
+</td>
+</tr>
+<tr>
+    <th>cell​ID</th>
+    <td><code class="type">uint?</code></td>
+    <td><p>Optional cellID</p>
+</td>
+</tr>
+<tr>
+    <th>tags</th>
+    <td><code class="type">[String:​ String]?</code></td>
+    <td><p>Optional dict</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>DistributedMatchEngine_VerifyLocationRequest</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.verifylocation(request:)">
+    <h3>
+        <code>verify​Location(request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">verifyLocation</span>(<span class="variable">request</span>: <a href="./DistributedMatchEngine_VerifyLocationRequest"><span class="type">DistributedMatchEngine_VerifyLocationRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_VerifyLocationReply"><span class="type">DistributedMatchEngine_VerifyLocationReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>API: VerifyLocation
+Makes sure that the user's location is not spoofed based on cellID and gps location.
+Returns the Cell Tower status (CONNECTED_TO_SPECIFIED_TOWER if successful) and Gps Location status (LOC_VERIFIED if successful).
+Also provides the distance between where the user claims to be and where carrier believes user to be (via gps and cell id) in km.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>request</th>
+    <td><code class="type">Distributed​Match​Engine_Verify​Location​Request</code></td>
+    <td><p>DistributedMatchEngine_VerifyLocationRequest from createVerifyLocation</p>
+</td>
+</tr>
+  </tbody>
+</table>
+  <h4>Returns</h4>
+  <p>Promise&lt;DistributedMatchEngine_VerifyLocationReply&gt;</p>
+
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.verifylocation(host:port:request:)">
+    <h3>
+        <code>verify​Location(host:​port:​request:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">verifyLocation</span>(<span class="variable">host</span>: <span class="type">String</span>, <span class="variable">port</span>: <span class="type">UInt16</span>, <span class="variable">request</span>: <a href="./DistributedMatchEngine_VerifyLocationRequest"><span class="type">DistributedMatchEngine_VerifyLocationRequest</span></a>) -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_VerifyLocationReply"><span class="type">DistributedMatchEngine_VerifyLocationReply</span></a>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>VerifyLocation overload with hardcoded DME host and port. Only use for testing.</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-04-22T13:02:01-0500">April 22, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>
