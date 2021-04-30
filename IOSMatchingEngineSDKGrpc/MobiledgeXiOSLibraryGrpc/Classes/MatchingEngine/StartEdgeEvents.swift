@@ -184,12 +184,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - locationUpdateIntervalSeconds: UInt: The interval in seconds that the SDK will check gps location
     ///   - latencyThresholdTriggerMs: Double: The latency threshold at which the application wants to look for a better cloudlet. For example, if latencyThresholdTriggerMs is set to 50 and if the SDK finds that latency is > 50ms, the SDK will check to see if there is a cloudlet with lower latency
     /// - Returns: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig
-    public func createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: UInt, locationUpdateIntervalSeconds: UInt, latencyThresholdTriggerMs: Double) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
-        let newFindCloudletEvents: Set = [DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletState, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletMaintenance, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventAppinstHealth, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyProcessed]
+    public func createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: UInt, locationUpdateIntervalSeconds: UInt, latencyThresholdTriggerMs: Double, latencyTestPort: UInt16 = 0) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+        let newFindCloudletEvents: Set = [DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletState, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletMaintenance, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventAppinstHealth, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyProcessed, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventLatencyRequest, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventCloudletUpdate, DistributedMatchEngine_ServerEdgeEvent.ServerEventType.eventError]
         let latencyUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: .onInterval, updateIntervalSeconds: latencyUpdateIntervalSeconds, maxNumberOfUpdates: 0)
         let locationUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig(updatePattern: .onInterval, updateIntervalSeconds: locationUpdateIntervalSeconds, maxNumberOfUpdates: 0)
         
-        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEvents: newFindCloudletEvents, latencyThresholdTriggerMs: latencyThresholdTriggerMs, latencyTestPort: 0, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEvents: newFindCloudletEvents, latencyThresholdTriggerMs: latencyThresholdTriggerMs, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
         return config
     }
     
@@ -204,10 +204,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig: Configures how often and when the SDK will test latency
     ///   - locationUpdateConfig; MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig: Configures how often and when the SDK will check gps location changes
     /// - Returns: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig
-    public func createEdgeEventsConfig(newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType>, latencyThresholdTriggerMs: Double?, latencyTestPort: UInt16, latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig, locationUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+    public func createEdgeEventsConfig(newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType>, latencyThresholdTriggerMs: Double?, latencyTestPort: UInt16?, latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig?, locationUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig?) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
         let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEvents: newFindCloudletEvents, latencyThresholdTriggerMs: latencyThresholdTriggerMs, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
         return config
     }
+    
+    
+    // TODO: ADD createDefaultClientEventsConfig
     
     /// Creates a ClientEventsConfig
     /// This config determines how the SDK handles ClientEdgeEvents (ie. Sending latency updates and gps location updates)

@@ -364,13 +364,15 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 connectionClosed = false
             case .eventLatencyRequest:
                 os_log("latencyrequest", log: OSLog.default, type: .debug)
-                getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                    return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc)
-                }.then { status in
-                    os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                }.catch { error in
-                    os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    self.sendErrorToHandler(error: error)
+                if config!.newFindCloudletEvents.contains(event.eventType) {
+                    getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                        return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
+                    }.then { status in
+                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                    }.catch { error in
+                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        self.sendErrorToHandler(error: error)
+                    }
                 }
             case .eventLatencyProcessed:
                 os_log("latencyprocessed", log: OSLog.default, type: .debug)
@@ -398,12 +400,16 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
             case .eventCloudletUpdate:
                 os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
-            case .eventUnknown:
-                os_log("eventUnknown", log: OSLog.default, type: .debug)
+                if config!.newFindCloudletEvents.contains(event.eventType) {
+                    sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
+                }
             case .eventError:
                 os_log("eventError", log: OSLog.default, type: .debug)
-                sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
+                if config!.newFindCloudletEvents.contains(event.eventType) {
+                    sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
+                }
+            case .eventUnknown:
+                os_log("eventUnknown", log: OSLog.default, type: .debug)
             default:
                 os_log("default case, event: %@", log: OSLog.default, type: .debug, event.eventType.rawValue)
             }
@@ -453,76 +459,78 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         func startSendClientEvents() {
-            // Set up latency update timer
-            let latencyConfig = config!.latencyUpdateConfig
-            switch latencyConfig.updatePattern {
-            case .onStart:
-                matchingEngine.state.edgeEventsQueue.async {
-                    self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                        return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc)
-                    }.then { status in
-                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    }
-                }
-            case .onInterval:
-                latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
-                latencyTimer!.setEventHandler(handler: {
-                    if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
+            // Set up latency update timer if latencyUpdateConfig proviced
+            if let latencyConfig = config!.latencyUpdateConfig {
+                switch latencyConfig.updatePattern {
+                case .onStart:
+                    matchingEngine.state.edgeEventsQueue.async {
                         self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                            return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort, loc: loc)
+                            return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
                         }.then { status in
                             os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                            self.currLatencyInterval += 1
                         }.catch { error in
                             os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            self.sendErrorToHandler(error: error)
                         }
-                    } else {
-                        self.latencyTimer!.cancel()
                     }
-                })
-                latencyTimer!.schedule(deadline: .now(), repeating: .seconds(Int(latencyConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
-                latencyTimer!.resume()
-            default:
-                os_log("application will handle latency updates", log: OSLog.default, type: .debug)
+                case .onInterval:
+                    latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
+                    latencyTimer!.setEventHandler(handler: {
+                        if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
+                            self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
+                            }.then { status in
+                                os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                                self.currLatencyInterval += 1
+                            }.catch { error in
+                                os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                self.sendErrorToHandler(error: error)
+                            }
+                        } else {
+                            self.latencyTimer!.cancel()
+                        }
+                    })
+                    latencyTimer!.schedule(deadline: .now(), repeating: .seconds(Int(latencyConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
+                    latencyTimer!.resume()
+                default:
+                    os_log("application will handle latency updates", log: OSLog.default, type: .debug)
+                }
             }
             
-            // Set up location update timer
-            let locationConfig = config!.locationUpdateConfig
-            switch locationConfig.updatePattern {
-            case .onStart:
-                matchingEngine.state.edgeEventsQueue.async {
-                    self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                        return self.postLocationUpdate(loc: loc)
-                    }.then { status in
-                        os_log("successfully post location update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                    }
-                }
-            case .onInterval:
-                locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
-                locationTimer!.setEventHandler(handler: {
-                    if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
+            // Set up location update timer if locationUpdateConfig provided
+            if let locationConfig = config!.locationUpdateConfig {
+                switch locationConfig.updatePattern {
+                case .onStart:
+                    matchingEngine.state.edgeEventsQueue.async {
                         self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
                             return self.postLocationUpdate(loc: loc)
                         }.then { status in
                             os_log("successfully post location update", log: OSLog.default, type: .debug)
-                            self.currLocationInterval += 1
                         }.catch { error in
                             os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                            self.sendErrorToHandler(error: error)
                         }
-                    } else {
-                        self.locationTimer!.cancel()
                     }
-                })
-                locationTimer!.schedule(deadline: .now(), repeating: .seconds(Int(locationConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
-                locationTimer!.resume()
-            default:
-                os_log("application will handle location updates", log: OSLog.default, type: .debug)
+                case .onInterval:
+                    locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
+                    locationTimer!.setEventHandler(handler: {
+                        if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
+                            self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                return self.postLocationUpdate(loc: loc)
+                            }.then { status in
+                                os_log("successfully post location update", log: OSLog.default, type: .debug)
+                                self.currLocationInterval += 1
+                            }.catch { error in
+                                os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                self.sendErrorToHandler(error: error)
+                            }
+                        } else {
+                            self.locationTimer!.cancel()
+                        }
+                    })
+                    locationTimer!.schedule(deadline: .now(), repeating: .seconds(Int(locationConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
+                    locationTimer!.resume()
+                default:
+                    os_log("application will handle location updates", log: OSLog.default, type: .debug)
+                }
             }
         }
         
@@ -569,8 +577,22 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 os_log("nil EdgeEventsConfig - a valid EdgeEventsConfig is required to send client events", log: OSLog.default, type: .debug)
                 return EdgeEventsError.missingEdgeEventsConfig
             }
-            // Check that if newFindCloudletEvents contains .eventLatencyProcessed that there is a valid latency threshold
+            // Check that if newFindCloudletEvents contains .eventLatencyProcessed or .eventLatencyRequest valid latency fields are populated
+            if config!.newFindCloudletEvents.contains(.eventLatencyProcessed) || config!.newFindCloudletEvents.contains(.eventLatencyRequest) {
+                // Validate latency test port
+                if config!.latencyTestPort == nil {
+                    os_log("latencyTestPort is required if .eventLatencyProcessed or .eventLatencyRequest are in newFindCloudletEvents. Using 0, which will test any port", log: OSLog.default, type: .debug)
+                    config!.latencyTestPort = 0
+                }
+            }
+            // Check that if newFindCloudletEvents contains .eventLatencyProcessed valid latency fields are populated
             if config!.newFindCloudletEvents.contains(.eventLatencyProcessed) {
+                // Validate latencyUpdateConfig
+                guard let latencyUpdateConfig = config!.latencyUpdateConfig else {
+                    os_log("A latencyUpdateConfig is required if .eventLatencyProcessed is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.missingLatencyUpdateConfig
+                }
+                // Validate latency threshold
                 guard let threshold = config!.latencyThresholdTriggerMs else {
                     os_log("nil latencyThresholdTriggerMs - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
                     return EdgeEventsError.missingLatencyThreshold
@@ -579,39 +601,49 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("latencyThresholdTriggerMs is not a positive number - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
                     return EdgeEventsError.invalidLatencyThreshold
                 }
+                // Validate latencyUpdateConfig .onInterval
+                if latencyUpdateConfig.updatePattern == .onInterval {
+                    guard let interval = latencyUpdateConfig.updateIntervalSeconds else {
+                        os_log("nil updateIntervalSeconds in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                        return EdgeEventsError.missingUpdateInterval
+                    }
+                    if interval <= 0 {
+                        os_log("updateIntervalSeconds is not a positive number in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                        return EdgeEventsError.invalidUpdateInterval
+                    }
+                    if latencyUpdateConfig.maxNumberOfUpdates == nil {
+                        config!.latencyUpdateConfig!.maxNumberOfUpdates = 0
+                    }
+                    if latencyUpdateConfig.maxNumberOfUpdates! <= 0 {
+                        os_log("maxNumberOfUpdates is <= 0, so latencyUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
+                    }
+                }
             }
-            // Validate latencyUpdateConfig
-            if config!.latencyUpdateConfig.updatePattern == .onInterval {
-                guard let interval = config!.latencyUpdateConfig.updateIntervalSeconds else {
-                    os_log("nil updateIntervalSeconds in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                    return EdgeEventsError.missingUpdateInterval
+            
+            
+            // Check that if newFindCloudletEvents contains .eventCloudletUpdate valid location fields are populated
+            if config!.newFindCloudletEvents.contains(.eventCloudletUpdate) {
+                // Validate locationUpdateConfig
+                guard let locationUpdateConfig = config!.locationUpdateConfig else {
+                    os_log("A locationUpdateConfig is required if .eventCloudletUpdate is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    return EdgeEventsError.missingLocationUpdateConfig
                 }
-                if interval <= 0 {
-                    os_log("updateIntervalSeconds is not a positive number in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                    return EdgeEventsError.invalidUpdateInterval
-                }
-                if config!.latencyUpdateConfig.maxNumberOfUpdates == nil {
-                    config!.latencyUpdateConfig.maxNumberOfUpdates = 0
-                }
-                if config!.latencyUpdateConfig.maxNumberOfUpdates! <= 0 {
-                    os_log("maxNumberOfUpdates is <= 0, so latencyUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
-                }
-            }
-            // Validate locationUpdateConfig
-            if config!.locationUpdateConfig.updatePattern == .onInterval {
-                guard let interval = config!.locationUpdateConfig.updateIntervalSeconds else {
-                    os_log("nil updateIntervalSeconds in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                    return EdgeEventsError.missingUpdateInterval
-                }
-                if interval <= 0 {
-                    os_log("updateIntervalSeconds is not a positive number in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                    return EdgeEventsError.invalidUpdateInterval
-                }
-                if config!.locationUpdateConfig.maxNumberOfUpdates == nil {
-                    config!.locationUpdateConfig.maxNumberOfUpdates = 0
-                }
-                if config!.locationUpdateConfig.maxNumberOfUpdates! <= 0 {
-                    os_log("maxNumberOfUpdates is <= 0, so locationUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
+                // Validate locationUpdateConfig .onInterval
+                if locationUpdateConfig.updatePattern == .onInterval {
+                    guard let interval = locationUpdateConfig.updateIntervalSeconds else {
+                        os_log("nil updateIntervalSeconds in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                        return EdgeEventsError.missingUpdateInterval
+                    }
+                    if interval <= 0 {
+                        os_log("updateIntervalSeconds is not a positive number in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
+                        return EdgeEventsError.invalidUpdateInterval
+                    }
+                    if locationUpdateConfig.maxNumberOfUpdates == nil {
+                        config!.locationUpdateConfig!.maxNumberOfUpdates = 0
+                    }
+                    if locationUpdateConfig.maxNumberOfUpdates! <= 0 {
+                        os_log("maxNumberOfUpdates is <= 0, so locationUpdates will occur until edgeevents is stopped", log: OSLog.default, type: .debug)
+                    }
                 }
             }
             // No errors

@@ -34,9 +34,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         public var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
         
         // Configure how to send events
-        public var latencyTestPort: UInt16 // port information for latency testing, use 0 if you don't care which port is used
-        public var latencyUpdateConfig: ClientEventsConfig // config for latency updates
-        public var locationUpdateConfig: ClientEventsConfig // config for gps location updates
+        public var latencyTestPort: UInt16? // port information for latency testing, use 0 if you don't care which port is used
+        public var latencyUpdateConfig: ClientEventsConfig? // config for latency updates
+        public var locationUpdateConfig: ClientEventsConfig? // config for gps location updates
     }
     
     /// Configuration for sending client events
@@ -53,9 +53,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         /// onInterval will send updates at the specified interval
         /// onTrigger will send no updates unless the application itself calls postLatencyUpdate, postLocationUpdate, etc.
         public enum UpdatePattern {
+            case onInterval // update every updateInterval seconds
             case onStart // only update on start
             case onTrigger // application will call post[]update functions
-            case onInterval // update every updateInterval seconds
         }
     }
     

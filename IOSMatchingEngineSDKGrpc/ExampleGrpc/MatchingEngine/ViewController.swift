@@ -655,7 +655,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
                 
             case 5:
                 Swift.print("Start EdgeEvents")
-                self!.matchingEngine.startEdgeEvents(dmeHost: self!.demoHost, dmePort: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 20, latencyThresholdTriggerMs: 300))
+                self!.matchingEngine.startEdgeEvents(dmeHost: self!.demoHost, dmePort: self!.port, newFindCloudletHandler: self!.handleNewFindCloudlet, config: self!.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 10, locationUpdateIntervalSeconds: 10, latencyThresholdTriggerMs: 300, latencyTestPort: 2016))
                 .then { status in
                     if status == .success {
                         os_log("Started edge events successfully", log: OSLog.default, type: .debug)
