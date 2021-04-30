@@ -22,8 +22,8 @@ import Foundation
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     
-    /// FindCloudletEvent is send to newFindCloudletHandler
-    /// Contains information about a closer or better cloudlet and reason a new cloudlet was found
+    /// FindCloudletEvent is sent to newFindCloudletHandler
+    /// Contains information about a closer or better cloudlet and the reason why a new cloudlet was found
     public struct FindCloudletEvent {
         public var newCloudlet: DistributedMatchEngine_FindCloudletReply
         public var trigger: FindCloudletEventTrigger

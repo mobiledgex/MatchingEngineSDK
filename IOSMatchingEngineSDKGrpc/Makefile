@@ -36,7 +36,7 @@ gen-docs:
 ifeq (, $(shell which swift-doc))
 	$(error "swift doc is not installed. Go to https://github.com/SwiftDocOrg/swift-doc for directions on how to install.")	
 endif
-	@echo Generating grpc documentation...
+	@echo Generating gRPC documentation...
 	$(shell rm -rf $(REPOROOT)/docs/grpc)
 	$(shell swift doc generate $(SOURCE) --module-name "Swift Grpc SDK" --output $(REPOROOT)/docs/grpc --format html --base-url .)
 

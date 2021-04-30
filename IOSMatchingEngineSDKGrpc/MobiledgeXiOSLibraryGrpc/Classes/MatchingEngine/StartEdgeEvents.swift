@@ -226,7 +226,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     /// Sets the autoMigrationEdgeEventsConnection variable
-    /// If autoMigrationEdgeEventsConnection is true, the SDK will automatically start and EdgeEvents connection to a new cloudlet when a better cloudlet is found
+    /// If autoMigrationEdgeEventsConnection is true, the SDK will automatically stop the current EdgeEvents connection and then start a new EdgeEvents connection that will receive events from the new cloudlet
     /// If autoMigrationEdgeEventsConnection is fale, it is up to the application to start a new EdgeEvents connection or call switchedToNewCloudlet() to notify the SDK to start a new EdgeEvents connection when/if the application switches
     /// cloudlets.
     /// Default is true.
