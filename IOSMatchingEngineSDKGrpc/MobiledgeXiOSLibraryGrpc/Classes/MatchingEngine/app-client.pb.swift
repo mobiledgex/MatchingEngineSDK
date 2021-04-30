@@ -357,6 +357,19 @@ public struct DistributedMatchEngine_PlatformFindCloudletRequest {
   public var clientToken: String = String()
 
   ///
+  /// Device Info
+  ///
+  /// _(optional)_ Device information for stats
+  public var deviceInfo: DistributedMatchEngine_DeviceInfo {
+    get {return _deviceInfo ?? DistributedMatchEngine_DeviceInfo()}
+    set {_deviceInfo = newValue}
+  }
+  /// Returns true if `deviceInfo` has been explicitly set.
+  public var hasDeviceInfo: Bool {return self._deviceInfo != nil}
+  /// Clears the value of `deviceInfo`. Subsequent reads from it will return its default value.
+  public mutating func clearDeviceInfo() {self._deviceInfo = nil}
+
+  ///
   /// Tags
   ///
   /// _(optional)_ Vendor specific data
@@ -365,6 +378,8 @@ public struct DistributedMatchEngine_PlatformFindCloudletRequest {
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _deviceInfo: DistributedMatchEngine_DeviceInfo? = nil
 }
 
 public struct DistributedMatchEngine_FindCloudletReply {
@@ -828,6 +843,9 @@ public struct DistributedMatchEngine_Appinstance {
 
   /// App Organization Name
   public var orgName: String = String()
+
+  /// Session Cookie for specific EdgeEvents for specific AppInst
+  public var edgeEventsCookie: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1636,6 +1654,12 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
   /// Clears the value of `newCloudlet`. Subsequent reads from it will return its default value.
   public mutating func clearNewCloudlet() {_uniqueStorage()._newCloudlet = nil}
 
+  /// Error message if event_type is EVENT_ERROR
+  public var errorMsg: String {
+    get {return _storage._errorMsg}
+    set {_uniqueStorage()._errorMsg = newValue}
+  }
+
   /// _(optional)_ Vendor specific data
   public var tags: Dictionary<String,String> {
     get {return _storage._tags}
@@ -1654,6 +1678,7 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
     case eventCloudletMaintenance // = 5
     case eventAppinstHealth // = 6
     case eventCloudletUpdate // = 7
+    case eventError // = 8
     case UNRECOGNIZED(Int)
 
     public init() {
@@ -1670,6 +1695,7 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
       case 5: self = .eventCloudletMaintenance
       case 6: self = .eventAppinstHealth
       case 7: self = .eventCloudletUpdate
+      case 8: self = .eventError
       default: self = .UNRECOGNIZED(rawValue)
       }
     }
@@ -1684,6 +1710,7 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
       case .eventCloudletMaintenance: return 5
       case .eventAppinstHealth: return 6
       case .eventCloudletUpdate: return 7
+      case .eventError: return 8
       case .UNRECOGNIZED(let i): return i
       }
     }
@@ -1708,6 +1735,7 @@ extension DistributedMatchEngine_ServerEdgeEvent.ServerEventType: CaseIterable {
     .eventCloudletMaintenance,
     .eventAppinstHealth,
     .eventCloudletUpdate,
+    .eventError,
   ]
 }
 
@@ -2007,6 +2035,7 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     2: .standard(proto: "session_cookie"),
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "client_token"),
+    5: .standard(proto: "device_info"),
     100: .same(proto: "tags"),
   ]
 
@@ -2020,6 +2049,7 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.clientToken) }()
+      case 5: try { try decoder.decodeSingularMessageField(value: &self._deviceInfo) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2039,6 +2069,9 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     if !self.clientToken.isEmpty {
       try visitor.visitSingularStringField(value: self.clientToken, fieldNumber: 4)
     }
+    if let v = self._deviceInfo {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2050,6 +2083,7 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     if lhs.sessionCookie != rhs.sessionCookie {return false}
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs.clientToken != rhs.clientToken {return false}
+    if lhs._deviceInfo != rhs._deviceInfo {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -2479,6 +2513,7 @@ extension DistributedMatchEngine_Appinstance: SwiftProtobuf.Message, SwiftProtob
     3: .same(proto: "fqdn"),
     4: .same(proto: "ports"),
     5: .standard(proto: "org_name"),
+    6: .standard(proto: "edge_events_cookie"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -2492,6 +2527,7 @@ extension DistributedMatchEngine_Appinstance: SwiftProtobuf.Message, SwiftProtob
       case 3: try { try decoder.decodeSingularStringField(value: &self.fqdn) }()
       case 4: try { try decoder.decodeRepeatedMessageField(value: &self.ports) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.orgName) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self.edgeEventsCookie) }()
       default: break
       }
     }
@@ -2513,6 +2549,9 @@ extension DistributedMatchEngine_Appinstance: SwiftProtobuf.Message, SwiftProtob
     if !self.orgName.isEmpty {
       try visitor.visitSingularStringField(value: self.orgName, fieldNumber: 5)
     }
+    if !self.edgeEventsCookie.isEmpty {
+      try visitor.visitSingularStringField(value: self.edgeEventsCookie, fieldNumber: 6)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -2522,6 +2561,7 @@ extension DistributedMatchEngine_Appinstance: SwiftProtobuf.Message, SwiftProtob
     if lhs.fqdn != rhs.fqdn {return false}
     if lhs.ports != rhs.ports {return false}
     if lhs.orgName != rhs.orgName {return false}
+    if lhs.edgeEventsCookie != rhs.edgeEventsCookie {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -3555,6 +3595,7 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
     4: .standard(proto: "health_check"),
     5: .same(proto: "statistics"),
     6: .standard(proto: "new_cloudlet"),
+    7: .standard(proto: "error_msg"),
     100: .same(proto: "tags"),
   ]
 
@@ -3565,6 +3606,7 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
     var _healthCheck: DistributedMatchEngine_HealthCheck = .unknown
     var _statistics: DistributedMatchEngine_Statistics? = nil
     var _newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil
+    var _errorMsg: String = String()
     var _tags: Dictionary<String,String> = [:]
 
     static let defaultInstance = _StorageClass()
@@ -3578,6 +3620,7 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
       _healthCheck = source._healthCheck
       _statistics = source._statistics
       _newCloudlet = source._newCloudlet
+      _errorMsg = source._errorMsg
       _tags = source._tags
     }
   }
@@ -3603,6 +3646,7 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
         case 4: try { try decoder.decodeSingularEnumField(value: &_storage._healthCheck) }()
         case 5: try { try decoder.decodeSingularMessageField(value: &_storage._statistics) }()
         case 6: try { try decoder.decodeSingularMessageField(value: &_storage._newCloudlet) }()
+        case 7: try { try decoder.decodeSingularStringField(value: &_storage._errorMsg) }()
         case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &_storage._tags) }()
         default: break
         }
@@ -3630,6 +3674,9 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
       if let v = _storage._newCloudlet {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
       }
+      if !_storage._errorMsg.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._errorMsg, fieldNumber: 7)
+      }
       if !_storage._tags.isEmpty {
         try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: _storage._tags, fieldNumber: 100)
       }
@@ -3648,6 +3695,7 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
         if _storage._healthCheck != rhs_storage._healthCheck {return false}
         if _storage._statistics != rhs_storage._statistics {return false}
         if _storage._newCloudlet != rhs_storage._newCloudlet {return false}
+        if _storage._errorMsg != rhs_storage._errorMsg {return false}
         if _storage._tags != rhs_storage._tags {return false}
         return true
       }
@@ -3668,5 +3716,6 @@ extension DistributedMatchEngine_ServerEdgeEvent.ServerEventType: SwiftProtobuf.
     5: .same(proto: "EVENT_CLOUDLET_MAINTENANCE"),
     6: .same(proto: "EVENT_APPINST_HEALTH"),
     7: .same(proto: "EVENT_CLOUDLET_UPDATE"),
+    8: .same(proto: "EVENT_ERROR"),
   ]
 }

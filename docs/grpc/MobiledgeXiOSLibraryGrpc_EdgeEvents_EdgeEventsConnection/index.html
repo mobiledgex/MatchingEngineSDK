@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Grpc SDK - MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href=".">
+            <strong>
+                Swift Grpc SDK
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.start(timeoutms:)">start(timeout​Ms:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.close()">close()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.cleanup()">cleanup()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.restart()">restart()</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.postlocationupdate(loc:)">post​Location​Update(loc:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.postlatencyupdate(site:loc:)">post​Latency​Update(site:​loc:​)</a></li><li class="function"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.testpingandpostlatencyupdate(testport:loc:)">test​Ping​And​Post​Latency​Update(test​Port:​loc:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Edge​Events​Connection</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">EdgeEventsConnection</span></code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>EdgeEventsConnection class
+Provides the client with useful information about their appinst state and other cloudlets that may be closer or have lower latency
+Provides functions to receive and send EdgeEvents</p>
+
+</div>
+<section id="relationships">
+    <h2 hidden>Relationships</h2>
+        
+        <h3>Member Of</h3>
+<dl>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents">MobiledgeXiOSLibraryGrpc.EdgeEvents</a></code></dt>
+<dd><p>Namespace for EdgeEvents. Contains EdgeEventsConnection and EdgeEventsConfig classes</p>
+</dd>
+</dl>
+</section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.start(timeoutms:)">
+    <h3>
+        <code>start(timeout​Ms:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">start</span>(<span class="variable">timeoutMs</span>: <span class="type">Double</span> = <span class="number literal">10000</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Start EdgeEventsConnection</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.close()">
+    <h3>
+        <code>close()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">close</span>() -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Stop EdgeEventsConnection and cleanup</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.cleanup()">
+    <h3>
+        <code>cleanup()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">cleanup</span>()</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Clean up EdgeEventsConnection class variables</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.restart()">
+    <h3>
+        <code>restart()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">restart</span>() -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Restart EdgeEventsConnection</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.postlocationupdate(loc:)">
+    <h3>
+        <code>post​Location​Update(loc:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">postLocationUpdate</span>(<span class="variable">loc</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Send a location update to DME
+If the new location is closer to another cloudlet, DME will send a .eventCloudletUpdate as well as a new FIndCloudletReply</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.postlatencyupdate(site:loc:)">
+    <h3>
+        <code>post​Latency​Update(site:​loc:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">postLatencyUpdate</span>(<span class="variable">site</span>: <a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">PerformanceMetrics</span>.<span class="type">Site</span>, <span class="variable">loc</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Send a latency update to DME
+DME will send a .eventLatencyProcessed with summarized latency stats
+If .eventLatencyProcessed is specified in EdgeEventsConfig, the SDK will check if the latency is greater than the latencyThresholdTriggerMs.
+If latency is greater than latencyThresholdTriggerMs, then the SDK will try to find a better cloudlet. If a better cloudlet is found, it is returned to the newCloudletHandler</p>
+
+</div>
+</div>
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconnection.testpingandpostlatencyupdate(testport:loc:)">
+    <h3>
+        <code>test​Ping​And​Post​Latency​Update(test​Port:​loc:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">testPingAndPostLatencyUpdate</span>(<span class="variable">testPort</span>: <span class="type">UInt16</span>, <span class="variable">loc</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) -&gt; <span class="type">Promise</span>&lt;<span class="type">EdgeEventsStatus</span>&gt;</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Run Ping latency test and then send the latency samples to DME
+Not recommended. Recommended is testConnectAndPostLatencyUpdate
+(Swift does not support Ping natively, so there are some issues with the Ping test)</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-04-22T13:02:02-0500">April 22, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+</p>
+    </footer>
+</body>
+</html>

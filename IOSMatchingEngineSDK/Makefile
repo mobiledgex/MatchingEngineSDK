@@ -22,7 +22,7 @@ gen-docs:
 ifeq (, $(shell which swift-doc))
 	$(error "swift doc is not installed. Go to https://github.com/SwiftDocOrg/swift-doc for directions on how to install.")	
 endif
-	@echo Generating documentation...
-	$(shell rm -rf $(REPOROOT)/docs)
-	$(shell swift doc generate $(SOURCE) --module-name "Swift SDK" --output $(REPOROOT)/docs --format html --base-url .)
+	@echo Generating rest documentation...
+	$(shell rm -rf $(REPOROOT)/docs/rest)
+	$(shell swift doc generate $(SOURCE) --module-name "Swift Rest SDK" --output $(REPOROOT)/docs/rest --format html --base-url .)
 

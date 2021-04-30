@@ -101,7 +101,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                     return self.connectAndDisconnectSocket(site: site)
                 }
             case .PING:
-                os_log("Swift does not have ping build in natively, so ping times may not be accurate. If possible, use connectAndDisconnect for more accurate results.", log: OSLog.default, type: .debug)
+                os_log("Swift does not have ping built in natively, so ping times may not be accurate. If possible, use connectAndDisconnect for more accurate results.", log: OSLog.default, type: .debug)
                 return self.ping(site: site)
             }
         }
