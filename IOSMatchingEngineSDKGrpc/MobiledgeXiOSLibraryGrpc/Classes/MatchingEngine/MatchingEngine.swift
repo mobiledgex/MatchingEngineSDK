@@ -49,7 +49,7 @@ extension MobiledgeXiOSLibraryGrpc {
         var tlsEnabled = true
         var allowSelfSignedCertsGetConnection = false
         
-        var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
+        public var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
         var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
         var lastFindCloudletRequest: DistributedMatchEngine_FindCloudletRequest? = nil
         var autoMigrationEdgeEventsConnection = true
