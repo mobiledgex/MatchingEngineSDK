@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     /// Determines how and when the SDK will send latency and location updates
     public struct EdgeEventsConfig {
         // Configure how to respond to events
-        public var newFindCloudletEvents: Set<DistributedMatchEngine_ServerEdgeEvent.ServerEventType> // events that application wants a new find cloudlet for
+        public var newFindCloudletEventTriggers: Set<FindCloudletEventTrigger> // events that application wants a new find cloudlet for
         public var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
         
         // Configure how to send events

@@ -364,7 +364,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 connectionClosed = false
             case .eventLatencyRequest:
                 os_log("latencyrequest", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
+                if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                     getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
                         return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
                     }.then { status in
@@ -377,7 +377,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             case .eventLatencyProcessed:
                 os_log("latencyprocessed", log: OSLog.default, type: .debug)
                 print("latency stats are \(event.statistics)")
-                if config!.newFindCloudletEvents.contains(event.eventType) {
+                if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                     let stats = event.statistics
                     if stats.avg >= config!.latencyThresholdTriggerMs! {
                         sendFindCloudletToHandler(eventType: .latencyTooHigh)
@@ -385,27 +385,27 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
             case .eventCloudletState:
                 os_log("cloudletstate", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) && event.cloudletState != .ready {
+                if config!.newFindCloudletEventTriggers.contains(.cloudletStateChanged) && event.cloudletState != .ready {
                     sendFindCloudletToHandler(eventType: .cloudletStateChanged)
                 }
             case .eventCloudletMaintenance:
                 os_log("cloudletmaintenance", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) && event.maintenanceState != .normalOperation {
+                if config!.newFindCloudletEventTriggers.contains(.cloudletMaintenanceStateChanged) && event.maintenanceState != .normalOperation {
                     sendFindCloudletToHandler(eventType: .cloudletMaintenanceStateChanged)
                 }
             case .eventAppinstHealth:
                 os_log("appinsthealth", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) && event.healthCheck != .ok {
+                if config!.newFindCloudletEventTriggers.contains(.appInstHealthChanged) && event.healthCheck != .ok {
                     sendFindCloudletToHandler(eventType: .appInstHealthChanged)
                 }
             case .eventCloudletUpdate:
                 os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
+                if config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
                     sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
                 }
             case .eventError:
                 os_log("eventError", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEvents.contains(event.eventType) {
+                if config!.newFindCloudletEventTriggers.contains(.error) {
                     sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
                 }
             case .eventUnknown:
@@ -577,16 +577,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 os_log("nil EdgeEventsConfig - a valid EdgeEventsConfig is required to send client events", log: OSLog.default, type: .debug)
                 return EdgeEventsError.missingEdgeEventsConfig
             }
-            // Check that if newFindCloudletEvents contains .eventLatencyProcessed or .eventLatencyRequest valid latency fields are populated
-            if config!.newFindCloudletEvents.contains(.eventLatencyProcessed) || config!.newFindCloudletEvents.contains(.eventLatencyRequest) {
-                // Validate latency test port
-                if config!.latencyTestPort == nil {
-                    os_log("latencyTestPort is required if .eventLatencyProcessed or .eventLatencyRequest are in newFindCloudletEvents. Using 0, which will test any port", log: OSLog.default, type: .debug)
-                    config!.latencyTestPort = 0
-                }
-            }
-            // Check that if newFindCloudletEvents contains .eventLatencyProcessed valid latency fields are populated
-            if config!.newFindCloudletEvents.contains(.eventLatencyProcessed) {
+            // Check that if newFindCloudletEventTriggers contains .latencyTooHigh valid latency fields are populated
+            if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                 // Validate latencyUpdateConfig
                 guard let latencyUpdateConfig = config!.latencyUpdateConfig else {
                     os_log("A latencyUpdateConfig is required if .eventLatencyProcessed is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
@@ -600,6 +592,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 if threshold <= 0 {
                     os_log("latencyThresholdTriggerMs is not a positive number - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
                     return EdgeEventsError.invalidLatencyThreshold
+                }
+                // Validate latency test port
+                if config!.latencyTestPort == nil {
+                    os_log("latencyTestPort is required if .eventLatencyProcessed or .eventLatencyRequest are in newFindCloudletEvents. Using 0, which will test any port", log: OSLog.default, type: .debug)
+                    config!.latencyTestPort = 0
                 }
                 // Validate latencyUpdateConfig .onInterval
                 if latencyUpdateConfig.updatePattern == .onInterval {
@@ -621,8 +618,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
             
             
-            // Check that if newFindCloudletEvents contains .eventCloudletUpdate valid location fields are populated
-            if config!.newFindCloudletEvents.contains(.eventCloudletUpdate) {
+            // Check that if newFindCloudletEventTriggers contains .closerCloudlet valid location fields are populated
+            if config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
                 // Validate locationUpdateConfig
                 guard let locationUpdateConfig = config!.locationUpdateConfig else {
                     os_log("A locationUpdateConfig is required if .eventCloudletUpdate is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
