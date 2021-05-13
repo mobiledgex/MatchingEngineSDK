@@ -22,8 +22,8 @@
 import os.log
 import Promises
 import CoreTelephony
-import GRPC
-import NIO
+@_implementationOnly import GRPC
+@_implementationOnly import NIO
 
 extension MobiledgeXiOSLibraryGrpc {
     

@@ -18,12 +18,33 @@
 //
 
 import Foundation
-import GRPC
+@_implementationOnly import GRPC
+@_implementationOnly import NIO
 import os.log
 import Promises
 
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
+    
+    class Stream {
+        var stream: BidirectionalStreamingCall<DistributedMatchEngine_ClientEdgeEvent, DistributedMatchEngine_ServerEdgeEvent>
+        
+        init(client: MobiledgeXiOSLibraryGrpc.GrpcClient, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
+            self.stream = client.apiclient.streamEdgeEvent(callOptions: nil, handler: serverEventsHandler)
+            // add callback that checks if the stream closed gracefully
+            /*self.stream.status.whenSuccess { status in
+                os_log("edgeevents connection stopped. status is %@", log: OSLog.default, type: .debug, status.message ?? "")
+                self.cleanup()
+                if !status.isOk {
+                    reject(status)
+                }
+            }*/
+        }
+        
+        func sendMessage(clientEdgeEvent: DistributedMatchEngine_ClientEdgeEvent) -> EventLoopFuture<Void> {
+            return self.stream.sendMessage(clientEdgeEvent)
+        }
+    }
     
     /// EdgeEventsConnection class
     /// Provides the client with useful information about their appinst state and other cloudlets that may be closer or have lower latency
@@ -48,7 +69,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var lastStoredLocation: DistributedMatchEngine_Loc = DistributedMatchEngine_Loc.init()
         
         var config: EdgeEventsConfig? = nil
-        var stream: BidirectionalStreamingCall<DistributedMatchEngine_ClientEdgeEvent, DistributedMatchEngine_ServerEdgeEvent>? = nil
+        var stream: Stream? = nil
         var newFindCloudletHandler: ((EdgeEventsStatus, FindCloudletEvent?) -> Void)? = nil
         var serverEventsHandler: ((DistributedMatchEngine_ServerEdgeEvent) -> Void)? = nil
         var getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil
@@ -87,7 +108,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     }
                     self.client = MobiledgeXiOSLibraryGrpc.getGrpcClient(host: self.host, port: self.port, tlsEnabled: self.tlsEnabled)
                     // create bidirectional stream
-                    self.stream = self.client!.apiclient.streamEdgeEvent(callOptions: nil, handler: self.serverEventsHandler ?? self.handleServerEvents)
+                    self.stream = Stream.init(client: self.client!, serverEventsHandler: self.serverEventsHandler ?? self.handleServerEvents)
                     // initialize init edgeevent
                     var initMessage = DistributedMatchEngine_ClientEdgeEvent.init()
                     initMessage.eventType = .eventInitConnection
@@ -110,16 +131,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     initMessage.edgeEventsCookie = edgeEventsCookie
             
                     do {
-                        // add callback that checks that stream was successful in starting
-                        self.stream!.status.whenSuccess { status in
-                            os_log("edgeevents connection stopped. status is %@", log: OSLog.default, type: .debug, status.message ?? "")
-                            self.cleanup()
-                            if !status.isOk {
-                                reject(status)
-                            }
-                        }
+                        
                         // send init message
-                        let res = self.stream?.sendMessage(initMessage)
+                        let res = self.stream?.sendMessage(clientEdgeEvent: initMessage)
                         try res!.wait()
                         // wait until receive init message back or timeout
                         while true {
@@ -149,7 +163,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 // send terminate connection
                 var terminateEdgeEvent = DistributedMatchEngine_ClientEdgeEvent.init()
                 terminateEdgeEvent.eventType = .eventTerminateConnection
-                let res = self.stream?.sendMessage(terminateEdgeEvent)
+                let res = self.stream?.sendMessage(clientEdgeEvent: terminateEdgeEvent)
                 do {
                     try res!.wait()
                 } catch {
@@ -227,7 +241,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
                 if self.connectionReady && !self.connectionClosed {
                     do {
-                        let res = self.stream?.sendMessage(locationEdgeEvent)
+                        let res = self.stream?.sendMessage(clientEdgeEvent: locationEdgeEvent)
                         try res!.wait()
                         fulfill(.success)
                     } catch {
@@ -254,7 +268,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
                 if self.connectionReady && !self.connectionClosed {
                     do {
-                        let res = self.stream?.sendMessage(latencyEdgeEvent)
+                        let res = self.stream?.sendMessage(clientEdgeEvent: latencyEdgeEvent)
                         try res!.wait()
                         fulfill(.success)
                     } catch {

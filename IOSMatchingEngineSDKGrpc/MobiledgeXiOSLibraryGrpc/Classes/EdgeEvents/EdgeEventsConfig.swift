@@ -18,7 +18,7 @@
 //
 
 import Foundation
-import GRPC
+@_implementationOnly import GRPC
 import os.log
 import Promises
 
