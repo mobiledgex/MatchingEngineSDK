@@ -31,14 +31,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         
         init(client: MobiledgeXiOSLibraryGrpc.GrpcClient, serverEventsHandler: @escaping ((DistributedMatchEngine_ServerEdgeEvent) -> Void)) {
             self.stream = client.apiclient.streamEdgeEvent(callOptions: nil, handler: serverEventsHandler)
-            // add callback that checks if the stream closed gracefully
-            /*self.stream.status.whenSuccess { status in
-                os_log("edgeevents connection stopped. status is %@", log: OSLog.default, type: .debug, status.message ?? "")
-                self.cleanup()
-                if !status.isOk {
-                    reject(status)
-                }
-            }*/
         }
         
         func sendMessage(clientEdgeEvent: DistributedMatchEngine_ClientEdgeEvent) -> EventLoopFuture<Void> {
