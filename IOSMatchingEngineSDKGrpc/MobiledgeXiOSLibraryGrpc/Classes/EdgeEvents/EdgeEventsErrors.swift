@@ -56,8 +56,13 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case unableToCleanup
         case gpsLocationDidNotChange
         
-        case eventTriggeredButCurrentCloudletIsBest
+        case stateChanged(msg: String)
+        
+        case eventTriggeredButCurrentCloudletIsBest(event: FindCloudletEventTrigger)
+        case eventTriggeredButFindCloudletError(event: FindCloudletEventTrigger, msg: String)
+
         case eventError(msg: String)
+        
         
         public static func ==(lhs: EdgeEventsError, rhs: EdgeEventsError) -> Bool {
             switch lhs {

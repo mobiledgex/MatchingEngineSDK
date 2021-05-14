@@ -95,8 +95,12 @@ class EdgeEventsTests: XCTestCase {
             print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
         case .fail(let error):
             print("error during edgeevents \(error)")
-            if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
+            switch error {
+            case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
                 // fallback to public cloud
+                break
+            default:
+                break
             }
         }
     }

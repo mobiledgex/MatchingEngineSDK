@@ -210,16 +210,22 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return deviceInfo
     }
     
-    public func getDeviceInfo() -> DistributedMatchEngine_DeviceInfo {
-        var deviceInfo = DistributedMatchEngine_DeviceInfo.init()
-        deviceInfo.deviceModel = state.device.model
-        deviceInfo.deviceOs = state.device.systemName
+    public func getDeviceInfoStatic() -> DistributedMatchEngine_DeviceInfoStatic {
+        var deviceInfoStatic = DistributedMatchEngine_DeviceInfoStatic.init()
+        deviceInfoStatic.deviceModel = state.device.model
+        deviceInfoStatic.deviceOs = state.device.systemName
+        return deviceInfoStatic
+    }
+    
+    public func getDeviceInfoDynamic() -> DistributedMatchEngine_DeviceInfoDynamic {
+        var deviceInfoDynamic = DistributedMatchEngine_DeviceInfoDynamic.init()
         
-        guard let dataNetType = MobiledgeXiOSLibraryGrpc.CarrierInfo.getDataNetworkType() else {
-            return deviceInfo
+        let dataNetType = MobiledgeXiOSLibraryGrpc.CarrierInfo.getDataNetworkType()
+        if dataNetType != nil {
+            deviceInfoDynamic.dataNetworkType = dataNetType!
         }
-        deviceInfo.dataNetworkType = dataNetType
-        return deviceInfo
+        deviceInfoDynamic.carrierName = getCarrierName()
+        return deviceInfoDynamic
     }
     
     /// NetworkDataType is sent along with latency information when sending samples to DME

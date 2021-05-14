@@ -251,79 +251,51 @@ public struct DistributedMatchEngine_FindCloudletRequest {
   /// API version
   ///
   /// _(hidden)_ Reserved for future use
-  public var ver: UInt32 {
-    get {return _storage._ver}
-    set {_uniqueStorage()._ver = newValue}
-  }
+  public var ver: UInt32 = 0
 
   ///
   /// Session Cookie
   ///
   /// Session Cookie from RegisterClientRequest
-  public var sessionCookie: String {
-    get {return _storage._sessionCookie}
-    set {_uniqueStorage()._sessionCookie = newValue}
-  }
+  public var sessionCookie: String = String()
 
   ///
   /// Carrier Name
   ///
   /// _(optional)_ By default, all SDKs will automatically fill in this parameter with the MCC+MNC of your current provider. Only override this parameter if you need to filter for a specific carrier on the DME. The DME will filter for App instances that are associated with the specified carrier.
   /// If you wish to search for any App Instance on the DME regardless of carrier name, you can input “” to consider all carriers as “Any”.
-  public var carrierName: String {
-    get {return _storage._carrierName}
-    set {_uniqueStorage()._carrierName = newValue}
-  }
+  public var carrierName: String = String()
 
   ///
   /// GPS Location
   ///
   /// The GPS location of the user
   public var gpsLocation: DistributedMatchEngine_Loc {
-    get {return _storage._gpsLocation ?? DistributedMatchEngine_Loc()}
-    set {_uniqueStorage()._gpsLocation = newValue}
+    get {return _gpsLocation ?? DistributedMatchEngine_Loc()}
+    set {_gpsLocation = newValue}
   }
   /// Returns true if `gpsLocation` has been explicitly set.
-  public var hasGpsLocation: Bool {return _storage._gpsLocation != nil}
+  public var hasGpsLocation: Bool {return self._gpsLocation != nil}
   /// Clears the value of `gpsLocation`. Subsequent reads from it will return its default value.
-  public mutating func clearGpsLocation() {_uniqueStorage()._gpsLocation = nil}
+  public mutating func clearGpsLocation() {self._gpsLocation = nil}
 
   ///
   /// Cell ID
   ///
   /// _(optional)_ Cell ID where the client is
-  public var cellID: UInt32 {
-    get {return _storage._cellID}
-    set {_uniqueStorage()._cellID = newValue}
-  }
-
-  ///
-  /// Device Info
-  ///
-  /// _(optional)_ Device information for stats
-  public var deviceInfo: DistributedMatchEngine_DeviceInfo {
-    get {return _storage._deviceInfo ?? DistributedMatchEngine_DeviceInfo()}
-    set {_uniqueStorage()._deviceInfo = newValue}
-  }
-  /// Returns true if `deviceInfo` has been explicitly set.
-  public var hasDeviceInfo: Bool {return _storage._deviceInfo != nil}
-  /// Clears the value of `deviceInfo`. Subsequent reads from it will return its default value.
-  public mutating func clearDeviceInfo() {_uniqueStorage()._deviceInfo = nil}
+  public var cellID: UInt32 = 0
 
   ///
   /// Tags
   ///
   /// _(optional)_ Vendor specific data
-  public var tags: Dictionary<String,String> {
-    get {return _storage._tags}
-    set {_uniqueStorage()._tags = newValue}
-  }
+  public var tags: Dictionary<String,String> = [:]
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
 
-  fileprivate var _storage = _StorageClass.defaultInstance
+  fileprivate var _gpsLocation: DistributedMatchEngine_Loc? = nil
 }
 
 public struct DistributedMatchEngine_PlatformFindCloudletRequest {
@@ -357,19 +329,6 @@ public struct DistributedMatchEngine_PlatformFindCloudletRequest {
   public var clientToken: String = String()
 
   ///
-  /// Device Info
-  ///
-  /// _(optional)_ Device information for stats
-  public var deviceInfo: DistributedMatchEngine_DeviceInfo {
-    get {return _deviceInfo ?? DistributedMatchEngine_DeviceInfo()}
-    set {_deviceInfo = newValue}
-  }
-  /// Returns true if `deviceInfo` has been explicitly set.
-  public var hasDeviceInfo: Bool {return self._deviceInfo != nil}
-  /// Clears the value of `deviceInfo`. Subsequent reads from it will return its default value.
-  public mutating func clearDeviceInfo() {self._deviceInfo = nil}
-
-  ///
   /// Tags
   ///
   /// _(optional)_ Vendor specific data
@@ -378,8 +337,6 @@ public struct DistributedMatchEngine_PlatformFindCloudletRequest {
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
-
-  fileprivate var _deviceInfo: DistributedMatchEngine_DeviceInfo? = nil
 }
 
 public struct DistributedMatchEngine_FindCloudletReply {
@@ -1498,7 +1455,7 @@ public struct DistributedMatchEngine_ClientEdgeEvent {
     set {_uniqueStorage()._eventType = newValue}
   }
 
-  /// GPS Location info if event_type is EVENT_LOCATION_UPDATE or EVENT_LATENCY_SAMPLES
+  /// GPS Location info if event_type is EVENT_LOCATION_UPDATE or EVENT_LATENCY_SAMPLES. Also must be sent on EVENT_INIT_CONNECTION.
   public var gpsLocation: DistributedMatchEngine_Loc {
     get {return _storage._gpsLocation ?? DistributedMatchEngine_Loc()}
     set {_uniqueStorage()._gpsLocation = newValue}
@@ -1514,21 +1471,31 @@ public struct DistributedMatchEngine_ClientEdgeEvent {
     set {_uniqueStorage()._samples = newValue}
   }
 
-  /// Carrier name for EVENT_LATENCY_SAMPLES or EVENT_LOCATION_UPDATE (can be different from cloudlet org if used "")
-  public var carrierName: String {
-    get {return _storage._carrierName}
-    set {_uniqueStorage()._carrierName = newValue}
+  /// 
+  /// _(optional)_ Static device information for latency and deviceinfo stats 
+  /// Send on EVENT_INIT_CONNECTION to get this information in latency stats and deviceinfo stats
+  public var deviceInfoStatic: DistributedMatchEngine_DeviceInfoStatic {
+    get {return _storage._deviceInfoStatic ?? DistributedMatchEngine_DeviceInfoStatic()}
+    set {_uniqueStorage()._deviceInfoStatic = newValue}
   }
+  /// Returns true if `deviceInfoStatic` has been explicitly set.
+  public var hasDeviceInfoStatic: Bool {return _storage._deviceInfoStatic != nil}
+  /// Clears the value of `deviceInfoStatic`. Subsequent reads from it will return its default value.
+  public mutating func clearDeviceInfoStatic() {_uniqueStorage()._deviceInfoStatic = nil}
 
-  /// Device information for stats
-  public var deviceInfo: DistributedMatchEngine_DeviceInfo {
-    get {return _storage._deviceInfo ?? DistributedMatchEngine_DeviceInfo()}
-    set {_uniqueStorage()._deviceInfo = newValue}
+  ///
+  /// _(optional)_ Dynamic device information for latency and deviceinfo stats
+  /// Send on EVENT_INIT_CONNECTION to get this information in first deviceinfo stat
+  /// Send on EVENT_LOCATION_UPDATE to get this information in dynamic deviceinfo stats
+  /// Send on EVENT_LATENCY_SAMPLES to get this information in latency stats
+  public var deviceInfoDynamic: DistributedMatchEngine_DeviceInfoDynamic {
+    get {return _storage._deviceInfoDynamic ?? DistributedMatchEngine_DeviceInfoDynamic()}
+    set {_uniqueStorage()._deviceInfoDynamic = newValue}
   }
-  /// Returns true if `deviceInfo` has been explicitly set.
-  public var hasDeviceInfo: Bool {return _storage._deviceInfo != nil}
-  /// Clears the value of `deviceInfo`. Subsequent reads from it will return its default value.
-  public mutating func clearDeviceInfo() {_uniqueStorage()._deviceInfo = nil}
+  /// Returns true if `deviceInfoDynamic` has been explicitly set.
+  public var hasDeviceInfoDynamic: Bool {return _storage._deviceInfoDynamic != nil}
+  /// Clears the value of `deviceInfoDynamic`. Subsequent reads from it will return its default value.
+  public mutating func clearDeviceInfoDynamic() {_uniqueStorage()._deviceInfoDynamic = nil}
 
   /// Custom event specified by the application
   public var customEvent: String {
@@ -1634,7 +1601,7 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
     set {_uniqueStorage()._healthCheck = newValue}
   }
 
-  /// Summarized RTT Latency statis from samples provided from client if event_type is EVENT_LATENCY
+  /// Summarized RTT Latency stats from samples provided from client if event_type is EVENT_LATENCY
   public var statistics: DistributedMatchEngine_Statistics {
     get {return _storage._statistics ?? DistributedMatchEngine_Statistics()}
     set {_uniqueStorage()._statistics = newValue}
@@ -1644,7 +1611,11 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
   /// Clears the value of `statistics`. Subsequent reads from it will return its default value.
   public mutating func clearStatistics() {_uniqueStorage()._statistics = nil}
 
-  /// New and closer cloudlet if event_type is EVENT_CLOUDLET_UPDATE
+  /// 
+  /// New and closer cloudlet if event_type is EVENT_CLOUDLET_UPDATE. 
+  /// Also sent on EVENT_CLOUDLET_STATE, if cloudlet_state != CLOUDLET_STATE_READY
+  /// Also sent on EVENT_CLOUDLET_MAINTENANCE, if maintenance_state == UNDER_MAINTENANCE
+  /// Also sent on EVENT_APPINST_HEALTH, if health_check != HEALTH_CHECK_OK && health_check != HEALTH_CHECK_UNKNOWN
   public var newCloudlet: DistributedMatchEngine_FindCloudletReply {
     get {return _storage._newCloudlet ?? DistributedMatchEngine_FindCloudletReply()}
     set {_uniqueStorage()._newCloudlet = newValue}
@@ -1924,105 +1895,55 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "gps_location"),
     8: .standard(proto: "cell_id"),
-    7: .standard(proto: "device_info"),
     100: .same(proto: "tags"),
   ]
 
-  fileprivate class _StorageClass {
-    var _ver: UInt32 = 0
-    var _sessionCookie: String = String()
-    var _carrierName: String = String()
-    var _gpsLocation: DistributedMatchEngine_Loc? = nil
-    var _cellID: UInt32 = 0
-    var _deviceInfo: DistributedMatchEngine_DeviceInfo? = nil
-    var _tags: Dictionary<String,String> = [:]
-
-    static let defaultInstance = _StorageClass()
-
-    private init() {}
-
-    init(copying source: _StorageClass) {
-      _ver = source._ver
-      _sessionCookie = source._sessionCookie
-      _carrierName = source._carrierName
-      _gpsLocation = source._gpsLocation
-      _cellID = source._cellID
-      _deviceInfo = source._deviceInfo
-      _tags = source._tags
-    }
-  }
-
-  fileprivate mutating func _uniqueStorage() -> _StorageClass {
-    if !isKnownUniquelyReferenced(&_storage) {
-      _storage = _StorageClass(copying: _storage)
-    }
-    return _storage
-  }
-
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    _ = _uniqueStorage()
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      while let fieldNumber = try decoder.nextFieldNumber() {
-        // The use of inline closures is to circumvent an issue where the compiler
-        // allocates stack space for every case branch when no optimizations are
-        // enabled. https://github.com/apple/swift-protobuf/issues/1034
-        switch fieldNumber {
-        case 1: try { try decoder.decodeSingularUInt32Field(value: &_storage._ver) }()
-        case 2: try { try decoder.decodeSingularStringField(value: &_storage._sessionCookie) }()
-        case 3: try { try decoder.decodeSingularStringField(value: &_storage._carrierName) }()
-        case 4: try { try decoder.decodeSingularMessageField(value: &_storage._gpsLocation) }()
-        case 7: try { try decoder.decodeSingularMessageField(value: &_storage._deviceInfo) }()
-        case 8: try { try decoder.decodeSingularUInt32Field(value: &_storage._cellID) }()
-        case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &_storage._tags) }()
-        default: break
-        }
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._gpsLocation) }()
+      case 8: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if _storage._ver != 0 {
-        try visitor.visitSingularUInt32Field(value: _storage._ver, fieldNumber: 1)
-      }
-      if !_storage._sessionCookie.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._sessionCookie, fieldNumber: 2)
-      }
-      if !_storage._carrierName.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._carrierName, fieldNumber: 3)
-      }
-      if let v = _storage._gpsLocation {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-      }
-      if let v = _storage._deviceInfo {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-      }
-      if _storage._cellID != 0 {
-        try visitor.visitSingularUInt32Field(value: _storage._cellID, fieldNumber: 8)
-      }
-      if !_storage._tags.isEmpty {
-        try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: _storage._tags, fieldNumber: 100)
-      }
+    if self.ver != 0 {
+      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
+    }
+    if !self.sessionCookie.isEmpty {
+      try visitor.visitSingularStringField(value: self.sessionCookie, fieldNumber: 2)
+    }
+    if !self.carrierName.isEmpty {
+      try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
+    }
+    if let v = self._gpsLocation {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }
+    if self.cellID != 0 {
+      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 8)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: DistributedMatchEngine_FindCloudletRequest, rhs: DistributedMatchEngine_FindCloudletRequest) -> Bool {
-    if lhs._storage !== rhs._storage {
-      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
-        let _storage = _args.0
-        let rhs_storage = _args.1
-        if _storage._ver != rhs_storage._ver {return false}
-        if _storage._sessionCookie != rhs_storage._sessionCookie {return false}
-        if _storage._carrierName != rhs_storage._carrierName {return false}
-        if _storage._gpsLocation != rhs_storage._gpsLocation {return false}
-        if _storage._cellID != rhs_storage._cellID {return false}
-        if _storage._deviceInfo != rhs_storage._deviceInfo {return false}
-        if _storage._tags != rhs_storage._tags {return false}
-        return true
-      }
-      if !storagesAreEqual {return false}
-    }
+    if lhs.ver != rhs.ver {return false}
+    if lhs.sessionCookie != rhs.sessionCookie {return false}
+    if lhs.carrierName != rhs.carrierName {return false}
+    if lhs._gpsLocation != rhs._gpsLocation {return false}
+    if lhs.cellID != rhs.cellID {return false}
+    if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2035,7 +1956,6 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     2: .standard(proto: "session_cookie"),
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "client_token"),
-    5: .standard(proto: "device_info"),
     100: .same(proto: "tags"),
   ]
 
@@ -2049,7 +1969,6 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.clientToken) }()
-      case 5: try { try decoder.decodeSingularMessageField(value: &self._deviceInfo) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2069,9 +1988,6 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     if !self.clientToken.isEmpty {
       try visitor.visitSingularStringField(value: self.clientToken, fieldNumber: 4)
     }
-    if let v = self._deviceInfo {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2083,7 +1999,6 @@ extension DistributedMatchEngine_PlatformFindCloudletRequest: SwiftProtobuf.Mess
     if lhs.sessionCookie != rhs.sessionCookie {return false}
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs.clientToken != rhs.clientToken {return false}
-    if lhs._deviceInfo != rhs._deviceInfo {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -3455,8 +3370,8 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
     3: .standard(proto: "event_type"),
     4: .standard(proto: "gps_location"),
     5: .same(proto: "samples"),
-    6: .standard(proto: "carrier_name"),
-    7: .standard(proto: "device_info"),
+    6: .standard(proto: "device_info_static"),
+    7: .standard(proto: "device_info_dynamic"),
     8: .standard(proto: "custom_event"),
     100: .same(proto: "tags"),
   ]
@@ -3467,8 +3382,8 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
     var _eventType: DistributedMatchEngine_ClientEdgeEvent.ClientEventType = .eventUnknown
     var _gpsLocation: DistributedMatchEngine_Loc? = nil
     var _samples: [DistributedMatchEngine_Sample] = []
-    var _carrierName: String = String()
-    var _deviceInfo: DistributedMatchEngine_DeviceInfo? = nil
+    var _deviceInfoStatic: DistributedMatchEngine_DeviceInfoStatic? = nil
+    var _deviceInfoDynamic: DistributedMatchEngine_DeviceInfoDynamic? = nil
     var _customEvent: String = String()
     var _tags: Dictionary<String,String> = [:]
 
@@ -3482,8 +3397,8 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
       _eventType = source._eventType
       _gpsLocation = source._gpsLocation
       _samples = source._samples
-      _carrierName = source._carrierName
-      _deviceInfo = source._deviceInfo
+      _deviceInfoStatic = source._deviceInfoStatic
+      _deviceInfoDynamic = source._deviceInfoDynamic
       _customEvent = source._customEvent
       _tags = source._tags
     }
@@ -3509,8 +3424,8 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
         case 3: try { try decoder.decodeSingularEnumField(value: &_storage._eventType) }()
         case 4: try { try decoder.decodeSingularMessageField(value: &_storage._gpsLocation) }()
         case 5: try { try decoder.decodeRepeatedMessageField(value: &_storage._samples) }()
-        case 6: try { try decoder.decodeSingularStringField(value: &_storage._carrierName) }()
-        case 7: try { try decoder.decodeSingularMessageField(value: &_storage._deviceInfo) }()
+        case 6: try { try decoder.decodeSingularMessageField(value: &_storage._deviceInfoStatic) }()
+        case 7: try { try decoder.decodeSingularMessageField(value: &_storage._deviceInfoDynamic) }()
         case 8: try { try decoder.decodeSingularStringField(value: &_storage._customEvent) }()
         case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &_storage._tags) }()
         default: break
@@ -3536,10 +3451,10 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
       if !_storage._samples.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._samples, fieldNumber: 5)
       }
-      if !_storage._carrierName.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._carrierName, fieldNumber: 6)
+      if let v = _storage._deviceInfoStatic {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
       }
-      if let v = _storage._deviceInfo {
+      if let v = _storage._deviceInfoDynamic {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
       }
       if !_storage._customEvent.isEmpty {
@@ -3562,8 +3477,8 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
         if _storage._eventType != rhs_storage._eventType {return false}
         if _storage._gpsLocation != rhs_storage._gpsLocation {return false}
         if _storage._samples != rhs_storage._samples {return false}
-        if _storage._carrierName != rhs_storage._carrierName {return false}
-        if _storage._deviceInfo != rhs_storage._deviceInfo {return false}
+        if _storage._deviceInfoStatic != rhs_storage._deviceInfoStatic {return false}
+        if _storage._deviceInfoDynamic != rhs_storage._deviceInfoDynamic {return false}
         if _storage._customEvent != rhs_storage._customEvent {return false}
         if _storage._tags != rhs_storage._tags {return false}
         return true
