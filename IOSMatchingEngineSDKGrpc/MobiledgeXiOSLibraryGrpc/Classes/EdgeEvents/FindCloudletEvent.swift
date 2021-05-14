@@ -32,6 +32,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
     /// The reason why a new cloudlet was found
     /// For example, if on a location update, the DME finds a closer cloudlet, the FindCloudletEventTrigger will be .closerCloudlet
     public enum FindCloudletEventTrigger {
+        case error
         case closerCloudlet
         case cloudletStateChanged
         case appInstHealthChanged

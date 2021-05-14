@@ -20,8 +20,8 @@
 //
 
 import Foundation
-import GRPC
-import NIO
+@_implementationOnly import GRPC
+@_implementationOnly import NIO
 import os.log
 import Promises
 
