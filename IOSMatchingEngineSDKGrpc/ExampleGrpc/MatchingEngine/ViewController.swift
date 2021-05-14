@@ -38,7 +38,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt16 = 50051
-    var demoHost = "eu-qa.dme.mobiledgex.net"
+    //var demoHost = "eu-qa.dme.mobiledgex.net"
+    var demoHost = "wifi.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -90,10 +91,14 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         {
             host = demoHost
             port = MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants.dmeGrpcPort
-            appName =  "automation-sdk-porttest"
+            /*appName =  "automation-sdk-porttest"
             appVers = "1.0"
             orgName =  "MobiledgeX"
-            carrierName = "GDDT"
+            carrierName = "GDDT"*/
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
+            carrierName = "TELUS"
             authToken = nil
             uniqueID = nil
             uniqueIDType = nil
@@ -102,9 +107,12 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         }
         else
         {
-            appName =  "automation-sdk-porttest"
+            /*appName =  "automation-sdk-porttest"
             appVers =  "1.0"
-            orgName =  "MobiledgeX"             //   replace this with your orgName
+            orgName =  "MobiledgeX"  */           //   replace this with your orgName
+            appName =  "sdktest"
+            appVers = "9.0"
+            orgName =  "MobiledgeX-Samples"
             carrierName = matchingEngine.getCarrierName() ?? ""  // This value can change, and is observed by the MatchingEngine.
             authToken = nil // opaque developer specific String? value.
             uniqueID = nil
