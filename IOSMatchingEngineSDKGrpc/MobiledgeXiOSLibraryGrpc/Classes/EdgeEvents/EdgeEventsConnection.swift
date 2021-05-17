@@ -426,7 +426,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudlet maintenance state changed: \(event.maintenanceState)"))
                     }
                 }
-            // EventAppinstHealth: handle appinst health state (if not .ok and not .unknow, then send client newCloudlet
+            // EventAppinstHealth: handle appinst health state (if not .ok and not .unknown, then send client newCloudlet
             case .eventAppinstHealth:
                 os_log("appinsthealth", log: OSLog.default, type: .debug)
                 if config!.newFindCloudletEventTriggers.contains(.appInstHealthChanged) {
@@ -587,14 +587,14 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return promise
                 }
                 guard let _ = self.getLastLocation else {
-                    os_log("nil getLastLocation function - a valid getLastLocation function is required to send client events", log: OSLog.default, type: .debug)
+                    os_log("nil getLastLocation function - a valid getLastLocation function is required to send client events. make sure MobiledgeXLocation services has started", log: OSLog.default, type: .debug)
                     promise.reject(EdgeEventsError.missingGetLastLocationFunction)
                     return promise
                 }
                 self.updateLastStoredLocation().then { loc in
                     promise.fulfill(true)
                 }.catch { error in
-                    os_log("A valid return value from getLastLocation is required to send client events. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    os_log("A valid return value from getLastLocation is required to send client events. Make sure location permissions are enabled and MobiledgeXLocation services has started. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
                     promise.reject(EdgeEventsError.unableToGetLastLocation)
                 }
             } else {
