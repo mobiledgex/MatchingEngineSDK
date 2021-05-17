@@ -37,7 +37,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - newFindCloudletHandler: ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)
     ///   - config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig: EdgeEvents Configuration. Allows configuration of which events to look for a new cloudlet and how often the client sends latency and gps location updates to DME. Recommeded to get config from matchingEngine.createDefaultEdgeEventsConfig()
     /// - Returns: Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>
-    public func startEdgeEvents(newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+    public func startEdgeEvents(newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig, getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
         var host: String
         do {
@@ -66,8 +66,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - newFindCloudletHandler: ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)
     ///   - config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig: EdgeEvents Configuration. Allows configuration of which events to look for a new cloudlet and how often the client sends latency and gps location updates to DME. Recommeded to get config from matchingEngine.createDefaultEdgeEventsConfig()
     /// - Returns: Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>
-    public func startEdgeEvents(dmeHost: String, dmePort: UInt16, newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
-        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, dmeHost: dmeHost, dmePort: dmePort, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: config)
+    public func startEdgeEvents(dmeHost: String, dmePort: UInt16, newFindCloudletHandler: @escaping ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void), config: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig, getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> {
+        self.edgeEventsConnection = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection.init(matchingEngine: self, dmeHost: dmeHost, dmePort: dmePort, tlsEnabled: self.tlsEnabled, newFindCloudletHandler: newFindCloudletHandler, config: config, getLastLocation: getLastLocation)
         guard let _ = self.edgeEventsConnection else {
             let promise = Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus>.pending()
             promise.reject(MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.uninitializedEdgeEventsConnection)

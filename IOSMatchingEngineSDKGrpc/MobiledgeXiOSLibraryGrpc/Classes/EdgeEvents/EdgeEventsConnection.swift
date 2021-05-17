@@ -69,7 +69,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         let getLocationQueue = DispatchQueue(label: "getLocationQueue") // used to sync lastLocation
                         
         /// Initializer with EdgeEventsConfig (Recommended)
-        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig) {
+        init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig, getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil) {
             self.matchingEngine = matchingEngine
             self.config = config
             self.host = dmeHost
@@ -77,7 +77,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             self.tlsEnabled = tlsEnabled
             self.newFindCloudletHandler = newFindCloudletHandler
             self.initializedWithConfig = true
-            self.getLastLocation = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
+            self.getLastLocation = getLastLocation ?? MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.getLastLocation
         }
         
         /// Initializer without EdgeEventsConfig (Not recommended. Recommended is with EdgeEventsConfig)
