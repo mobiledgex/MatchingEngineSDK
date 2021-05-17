@@ -412,7 +412,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudletstate changed: \(event.cloudletState)"))
                     }
                 }
-            // EventCloudletMaintenance: handle cloudlet maintenance state (if .underMaintenance, then send client newCloudlet
+            // EventCloudletMaintenance: handle cloudlet maintenance state (if .underMaintenance, then send client newCloudlet)
             case .eventCloudletMaintenance:
                 os_log("cloudletmaintenance", log: OSLog.default, type: .debug)
                 if config!.newFindCloudletEventTriggers.contains(.cloudletMaintenanceStateChanged) {
@@ -594,7 +594,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 self.updateLastStoredLocation().then { loc in
                     promise.fulfill(true)
                 }.catch { error in
-                    os_log("A valid return value from getLastLocation is required to send client events. Make sure location permissions are enabled and MobiledgeXLocation services has started. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                    os_log("A valid return value from getLastLocation is required to send client events. Make sure location permissions are enabled and the MobiledgeXLocation service has started. Error is %@", log: OSLog.default, type: .debug, error.localizedDescription)
                     promise.reject(EdgeEventsError.unableToGetLastLocation)
                 }
             } else {
