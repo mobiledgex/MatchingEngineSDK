@@ -86,6 +86,7 @@ class EdgeEventsTests: XCTestCase {
     }
     
     func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
+        // Check the status
         switch status {
         case .success :
             guard let event = fcEvent else {
@@ -94,9 +95,12 @@ class EdgeEventsTests: XCTestCase {
             }
             print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
         case .fail(let error):
-            print("error during edgeevents \(error)")
-            if error as! MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError == MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest {
-                // fallback to public cloud
+            // Check the error if status is fail
+            switch error {
+            case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
+                print("There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud")
+            default:
+                print("Non fatal error occured during EdgeEventsConnection: \(error)")
             }
         }
     }

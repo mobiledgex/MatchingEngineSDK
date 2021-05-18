@@ -359,14 +359,11 @@ public struct DistributedMatchEngine_AppPort {
 }
 
 ///
-/// DeviceInfo
-public struct DistributedMatchEngine_DeviceInfo {
+/// DeviceInfoStatic
+public struct DistributedMatchEngine_DeviceInfoStatic {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
-
-  /// LTE, 5G, etc.
-  public var dataNetworkType: String = String()
 
   /// Android or iOS
   public var deviceOs: String = String()
@@ -374,8 +371,26 @@ public struct DistributedMatchEngine_DeviceInfo {
   /// Device model
   public var deviceModel: String = String()
 
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+///
+/// DeviceInfoDynamic
+public struct DistributedMatchEngine_DeviceInfoDynamic {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// LTE, 5G, etc.
+  public var dataNetworkType: String = String()
+
   /// Device signal strength (0-5)
-  public var signalStrength: UInt32 = 0
+  public var signalStrength: UInt64 = 0
+
+  /// Carrier name (can be different from cloudlet org if using "")
+  public var carrierName: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -551,13 +566,50 @@ extension DistributedMatchEngine_AppPort: SwiftProtobuf.Message, SwiftProtobuf._
   }
 }
 
-extension DistributedMatchEngine_DeviceInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".DeviceInfo"
+extension DistributedMatchEngine_DeviceInfoStatic: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".DeviceInfoStatic"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "device_os"),
+    2: .standard(proto: "device_model"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.deviceOs) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.deviceModel) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.deviceOs.isEmpty {
+      try visitor.visitSingularStringField(value: self.deviceOs, fieldNumber: 1)
+    }
+    if !self.deviceModel.isEmpty {
+      try visitor.visitSingularStringField(value: self.deviceModel, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: DistributedMatchEngine_DeviceInfoStatic, rhs: DistributedMatchEngine_DeviceInfoStatic) -> Bool {
+    if lhs.deviceOs != rhs.deviceOs {return false}
+    if lhs.deviceModel != rhs.deviceModel {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension DistributedMatchEngine_DeviceInfoDynamic: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".DeviceInfoDynamic"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "data_network_type"),
-    2: .standard(proto: "device_os"),
-    3: .standard(proto: "device_model"),
-    4: .standard(proto: "signal_strength"),
+    2: .standard(proto: "signal_strength"),
+    3: .standard(proto: "carrier_name"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -567,9 +619,8 @@ extension DistributedMatchEngine_DeviceInfo: SwiftProtobuf.Message, SwiftProtobu
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.dataNetworkType) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.deviceOs) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.deviceModel) }()
-      case 4: try { try decoder.decodeSingularUInt32Field(value: &self.signalStrength) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.signalStrength) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       default: break
       }
     }
@@ -579,23 +630,19 @@ extension DistributedMatchEngine_DeviceInfo: SwiftProtobuf.Message, SwiftProtobu
     if !self.dataNetworkType.isEmpty {
       try visitor.visitSingularStringField(value: self.dataNetworkType, fieldNumber: 1)
     }
-    if !self.deviceOs.isEmpty {
-      try visitor.visitSingularStringField(value: self.deviceOs, fieldNumber: 2)
-    }
-    if !self.deviceModel.isEmpty {
-      try visitor.visitSingularStringField(value: self.deviceModel, fieldNumber: 3)
-    }
     if self.signalStrength != 0 {
-      try visitor.visitSingularUInt32Field(value: self.signalStrength, fieldNumber: 4)
+      try visitor.visitSingularUInt64Field(value: self.signalStrength, fieldNumber: 2)
+    }
+    if !self.carrierName.isEmpty {
+      try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: DistributedMatchEngine_DeviceInfo, rhs: DistributedMatchEngine_DeviceInfo) -> Bool {
+  public static func ==(lhs: DistributedMatchEngine_DeviceInfoDynamic, rhs: DistributedMatchEngine_DeviceInfoDynamic) -> Bool {
     if lhs.dataNetworkType != rhs.dataNetworkType {return false}
-    if lhs.deviceOs != rhs.deviceOs {return false}
-    if lhs.deviceModel != rhs.deviceModel {return false}
     if lhs.signalStrength != rhs.signalStrength {return false}
+    if lhs.carrierName != rhs.carrierName {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
