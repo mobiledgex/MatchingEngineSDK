@@ -444,7 +444,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     case .eventCloudletUpdate:
                         os_log("cloudletupdate", log: OSLog.default, type: .debug)
                         if self.config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
-                            self.sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
+                            if event.hasNewCloudlet {
+                                self.sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
+                            } else {
+                                self.sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .appInstHealthChanged, msg: "unable to get newCloudlet on cloudletUpdate - error is \(event.errorMsg)"))
+                            }
                         }
                     // EventError: send client non-fatal error
                     case .eventError:
