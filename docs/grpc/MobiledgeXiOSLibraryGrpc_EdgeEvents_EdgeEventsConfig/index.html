@@ -26,7 +26,7 @@
     <nav>
         <div class="wrapper">
             <h2>On This Page</h2>
-            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.newfindcloudletevents">new​Find​Cloudlet​Events</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencythresholdtriggerms">latency​Threshold​Trigger​Ms</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencytestport">latency​Test​Port</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencyupdateconfig">latency​Update​Config</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.locationupdateconfig">location​Update​Config</a></li></ul></li></ol>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.newfindcloudleteventtriggers">new​Find​Cloudlet​Event​Triggers</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencythresholdtriggerms">latency​Threshold​Trigger​Ms</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencytestport">latency​Test​Port</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencyupdateconfig">latency​Update​Config</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.locationupdateconfig">location​Update​Config</a></li></ul></li></ol>
         </div>
     </nav>
 
@@ -57,11 +57,11 @@ Determines how and when the SDK will send latency and location updates</p>
     <section id="properties">
         <h2>Properties</h2>
 
-        <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.newfindcloudletevents">
+        <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.newfindcloudleteventtriggers">
     <h3>
-        <code>new​Find​Cloudlet​Events</code>
+        <code>new​Find​Cloudlet​Event​Triggers</code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">newFindCloudletEvents</span>: <span class="type">Set</span>&lt;<a href="./DistributedMatchEngine_ServerEdgeEvent"><span class="type">DistributedMatchEngine_ServerEdgeEvent</span></a>.<span class="type">ServerEventType</span>&gt;</code></pre></body></html>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">newFindCloudletEventTriggers</span>: <span class="type">Set</span>&lt;<span class="type">FindCloudletEventTrigger</span>&gt;</code></pre></body></html>
 </div>
 <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencythresholdtriggerms">
     <h3>
@@ -73,19 +73,19 @@ Determines how and when the SDK will send latency and location updates</p>
     <h3>
         <code>latency​Test​Port</code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">latencyTestPort</span>: <span class="type">UInt16</span></code></pre></body></html>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">latencyTestPort</span>: <span class="type">UInt16</span>?</code></pre></body></html>
 </div>
 <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.latencyupdateconfig">
     <h3>
         <code>latency​Update​Config</code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">latencyUpdateConfig</span>: <span class="type">ClientEventsConfig</span></code></pre></body></html>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">latencyUpdateConfig</span>: <span class="type">ClientEventsConfig</span>?</code></pre></body></html>
 </div>
 <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.edgeeventsconfig.locationupdateconfig">
     <h3>
         <code>location​Update​Config</code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">locationUpdateConfig</span>: <span class="type">ClientEventsConfig</span></code></pre></body></html>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">locationUpdateConfig</span>: <span class="type">ClientEventsConfig</span>?</code></pre></body></html>
 </div>
     </section>
 
@@ -96,7 +96,7 @@ Determines how and when the SDK will send latency and location updates</p>
 
     <footer>
         <p>
-    Generated on <time datetime="2021-04-22T13:02:02-0500">April 22, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2021-05-24T10:41:56-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
 </p>
     </footer>
 </body>

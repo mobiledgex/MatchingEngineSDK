@@ -701,7 +701,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
         switch status {
-        case .success :
+        case .success:
             guard let event = fcEvent else {
                 os_log("nil findcloudlet event", log: OSLog.default, type: .debug)
                 SKToast.show(withMessage: "nil findcloudlet event")
