@@ -1199,6 +1199,8 @@ Example newFindCloudletHandler:</p>
         <span class="keyword">switch</span> <span class="variable">error</span> {
         <span class="keyword">case</span> <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsError</span>.<span class="type">eventTriggeredButCurrentCloudletIsBest</span>(<span class="keyword">let</span> <span class="variable">event</span>):
             <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud</span><span class="string literal">"</span>)
+        <span class="keyword">case</span> <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsError</span>.<span class="type">eventTriggeredButFindCloudletError</span>(<span class="keyword">let</span> <span class="variable">event</span>, <span class="keyword">let</span> <span class="variable">msg</span>):
+            <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">Event triggered </span>\<span class="string literal">(</span><span class="variable">event</span><span class="string literal">)</span><span class="string literal">, but error trying to find another cloudlet </span>\<span class="string literal">(</span><span class="variable">msg</span><span class="string literal">)</span><span class="string literal">. If needed, fallback to public cloud</span><span class="string literal">"</span>)
         <span class="keyword">default</span>:
             <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">Non fatal error occured during EdgeEventsConnection: </span>\<span class="string literal">(</span><span class="variable">error</span><span class="string literal">)</span><span class="string literal"/><span class="string literal">"</span>)
         }
@@ -1301,6 +1303,8 @@ Example newFindCloudletHandler:</p>
         <span class="keyword">switch</span> <span class="variable">error</span> {
         <span class="keyword">case</span> <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsError</span>.<span class="type">eventTriggeredButCurrentCloudletIsBest</span>(<span class="keyword">let</span> <span class="variable">event</span>):
             <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud</span><span class="string literal">"</span>)
+        <span class="keyword">case</span> <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsError</span>.<span class="type">eventTriggeredButFindCloudletError</span>(<span class="keyword">let</span> <span class="variable">event</span>, <span class="keyword">let</span> <span class="variable">msg</span>):
+            <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">Event triggered </span>\<span class="string literal">(</span><span class="variable">event</span><span class="string literal">)</span><span class="string literal">, but error trying to find another cloudlet </span>\<span class="string literal">(</span><span class="variable">msg</span><span class="string literal">)</span><span class="string literal">. If needed, fallback to public cloud</span><span class="string literal">"</span>)
         <span class="keyword">default</span>:
             <span class="type">print</span>(<span class="string literal">"</span><span class="string literal">Non fatal error occured during EdgeEventsConnection: </span>\<span class="string literal">(</span><span class="variable">error</span><span class="string literal">)</span><span class="string literal"/><span class="string literal">"</span>)
         }
@@ -1835,7 +1839,7 @@ Also provides the distance between where the user claims to be and where carrier
 
     <footer>
         <p>
-    Generated on <time datetime="2021-05-24T11:37:24-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2021-05-24T12:54:31-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
 </p>
     </footer>
 </body>

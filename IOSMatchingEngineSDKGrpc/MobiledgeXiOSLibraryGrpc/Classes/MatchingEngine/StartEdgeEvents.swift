@@ -48,6 +48,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///         switch error {
     ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
     ///             print("There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud")
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButFindCloudletError(let event, let msg):
+    ///             print("Event triggered \(event), but error trying to find another cloudlet \(msg). If needed, fallback to public cloud")
     ///         default:
     ///             print("Non fatal error occured during EdgeEventsConnection: \(error)")
     ///         }
@@ -126,6 +128,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///         switch error {
     ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
     ///             print("There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud")
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButFindCloudletError(let event, let msg):
+    ///             print("Event triggered \(event), but error trying to find another cloudlet \(msg). If needed, fallback to public cloud")
     ///         default:
     ///             print("Non fatal error occured during EdgeEventsConnection: \(error)")
     ///         }
