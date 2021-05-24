@@ -31,7 +31,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to
     /// the newFindCloudletHandler
     ///
-    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents.
+    /// Workflow should be startLocationServices -> registerClient -> findCloudlet -> startEdgeEvents.
     /// Example newFindCloudletHandler:
     /// ```
     /// func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
@@ -109,7 +109,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to
     /// the newFindCloudletHandler
     ///
-    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents.
+    /// Workflow should be startLocationServices -> registerClient -> findCloudlet -> startEdgeEvents.
     /// Example newFindCloudletHandler:
     /// ```
     /// func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
