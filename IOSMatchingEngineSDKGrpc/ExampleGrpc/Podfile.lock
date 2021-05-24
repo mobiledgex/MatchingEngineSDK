@@ -6,9 +6,9 @@ PODS:
   - AppAuth/ExternalUserAgent (1.4.0)
   - CGRPCZlib (1.0.0)
   - CNIOAtomics (2.27.0)
-  - CNIOBoringSSL (2.10.5)
-  - CNIOBoringSSLShims (2.10.5):
-    - CNIOBoringSSL (= 2.10.5)
+  - CNIOBoringSSL (2.12.0)
+  - CNIOBoringSSLShims (2.12.0):
+    - CNIOBoringSSL (= 2.12.0)
   - CNIODarwin (2.27.0)
   - CNIOHTTPParser (2.27.0)
   - CNIOLinux (2.27.0)
@@ -42,24 +42,24 @@ PODS:
   - GTMSessionFetcher/Full (1.5.0):
     - GTMSessionFetcher/Core (= 1.5.0)
   - Logging (1.4.0)
-  - MobiledgeXiOSLibraryGrpc (2.4.0):
+  - MobiledgeXiOSLibraryGrpc (2.6.1):
     - gRPC-Swift (~> 1.0.0)
-    - PromisesSwift (~> 1.2.8)
-    - Socket.IO-Client-Swift (~> 15.2.0)
-    - SPLPing
-    - SwiftyJSON (~> 5.0.0)
-  - PromisesObjC (1.2.12)
-  - PromisesSwift (1.2.12):
-    - PromisesObjC (= 1.2.12)
-  - Socket.IO-Client-Swift (15.2.0):
-    - Starscream (~> 3.1)
+    - PromisesSwift (~> 2.0.0)
+    - Socket.IO-Client-Swift (~> 16.0.1)
+    - SPLPing (~> 1.1.8)
+    - SwiftyJSON (~> 5.0.1)
+  - PromisesObjC (2.0.0)
+  - PromisesSwift (2.0.0):
+    - PromisesObjC (= 2.0.0)
+  - Socket.IO-Client-Swift (16.0.1):
+    - Starscream (~> 4.0)
   - SPLPing (1.1.8)
   - SPPermissions/Camera (5.2.5):
     - SPPermissions/Core
   - SPPermissions/Core (5.2.5)
   - SPPermissions/Location (5.2.5):
     - SPPermissions/Core
-  - Starscream (3.1.1)
+  - Starscream (4.0.4)
   - SwiftNIO (2.27.0):
     - CNIODarwin (= 2.27.0)
     - CNIOLinux (= 2.27.0)
@@ -71,42 +71,41 @@ PODS:
     - SwiftNIO (< 3, >= 2.9.0)
   - SwiftNIOFoundationCompat (2.27.0):
     - SwiftNIO (= 2.27.0)
-  - SwiftNIOHPACK (1.16.3):
-    - SwiftNIO (< 3, >= 2.18.0)
-    - SwiftNIOConcurrencyHelpers (< 3, >= 2.18.0)
-    - SwiftNIOHTTP1 (< 3, >= 2.18.0)
+  - SwiftNIOHPACK (1.17.0):
+    - SwiftNIO (< 3, >= 2.27.0)
+    - SwiftNIOConcurrencyHelpers (< 3, >= 2.27.0)
+    - SwiftNIOHTTP1 (< 3, >= 2.27.0)
   - SwiftNIOHTTP1 (2.27.0):
     - CNIOHTTPParser (= 2.27.0)
     - SwiftNIO (= 2.27.0)
     - SwiftNIOConcurrencyHelpers (= 2.27.0)
-  - SwiftNIOHTTP2 (1.16.3):
-    - SwiftNIO (< 3, >= 2.18.0)
-    - SwiftNIOConcurrencyHelpers (< 3, >= 2.18.0)
-    - SwiftNIOHPACK (= 1.16.3)
-    - SwiftNIOHTTP1 (< 3, >= 2.18.0)
-    - SwiftNIOTLS (< 3, >= 2.18.0)
-  - SwiftNIOSSL (2.10.5):
-    - CNIOBoringSSL (= 2.10.5)
-    - CNIOBoringSSLShims (= 2.10.5)
+  - SwiftNIOHTTP2 (1.17.0):
+    - SwiftNIO (< 3, >= 2.27.0)
+    - SwiftNIOConcurrencyHelpers (< 3, >= 2.27.0)
+    - SwiftNIOHPACK (= 1.17.0)
+    - SwiftNIOHTTP1 (< 3, >= 2.27.0)
+    - SwiftNIOTLS (< 3, >= 2.27.0)
+  - SwiftNIOSSL (2.12.0):
+    - CNIOBoringSSL (= 2.12.0)
+    - CNIOBoringSSLShims (= 2.12.0)
     - SwiftNIO (< 3, >= 2.15.0)
     - SwiftNIOConcurrencyHelpers (< 3, >= 2.15.0)
     - SwiftNIOTLS (< 3, >= 2.15.0)
   - SwiftNIOTLS (2.27.0):
     - SwiftNIO (= 2.27.0)
-  - SwiftNIOTransportServices (1.9.2):
-    - SwiftNIO (< 3, >= 2.19.0)
-    - SwiftNIOConcurrencyHelpers (< 3, >= 2.19.0)
-    - SwiftNIOFoundationCompat (< 3, >= 2.19.0)
-    - SwiftNIOTLS (< 3, >= 2.19.0)
-  - SwiftProtobuf (1.15.0)
-  - SwiftyJSON (5.0.0)
+  - SwiftNIOTransportServices (1.10.0):
+    - SwiftNIO (< 3, >= 2.27.0)
+    - SwiftNIOConcurrencyHelpers (< 3, >= 2.27.0)
+    - SwiftNIOFoundationCompat (< 3, >= 2.27.0)
+    - SwiftNIOTLS (< 3, >= 2.27.0)
+  - SwiftProtobuf (1.17.0)
+  - SwiftyJSON (5.0.1)
 
 DEPENDENCIES:
   - DropDown (= 2.3.13)
   - Eureka (= 5.3.0)
   - GoogleMaps (= 3.6.0)
   - GoogleSignIn (= 5.0.2)
-  - gRPC-Swift (~> 1.0.0)
   - MobiledgeXiOSLibraryGrpc (from `../`)
   - SPPermissions/Camera (= 5.2.5)
   - SPPermissions/Location (= 5.2.5)
@@ -157,8 +156,8 @@ SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   CGRPCZlib: b0c9d704a12fa667f1824ffff20688f191945989
   CNIOAtomics: 43316aa185f4bd639aa0a9cd49741151bbe8de7f
-  CNIOBoringSSL: 7ff9c35139a115f93269915b9555044d741b2ac9
-  CNIOBoringSSLShims: 6edde63429e353ba78992b2d4d1b0627752a4a43
+  CNIOBoringSSL: 2433ef7bb7f34e0903f576771c3004b42a8c30df
+  CNIOBoringSSLShims: 97f8c084e74a2d2f7e3bfa1695e4a0c7e1e7ecc5
   CNIODarwin: 9eb3c09e9f3fc5ed47cecdd032aad926df81e3a6
   CNIOHTTPParser: c6051552c5f332e4ec0756581e5cbd5632ca24e6
   CNIOLinux: 79227941d64216792c3c59238b0106b9e0df25bc
@@ -171,26 +170,26 @@ SPEC CHECKSUMS:
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MobiledgeXiOSLibraryGrpc: 232a3569c1b79a1f4c609422cafec87c4283c902
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  PromisesSwift: 64085cf6e5fc1b5001f90cf31e87a1f1621fefee
-  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
+  MobiledgeXiOSLibraryGrpc: a07841b7b6e329a65e45ab7c06dbf36a43a3c76d
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  PromisesSwift: e0b2a6433469efb0b83a2b84c62a2abab8e5e5d4
+  Socket.IO-Client-Swift: c116d6dc9fd6be9c259bacfe143f8725bce7d79e
   SPLPing: 420837fae1e19bba0a8360e91e7a384f22509663
   SPPermissions: d3ec7baf5865e152057a2352cff075333e19042f
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftNIO: 81d33ce8c500b7e41b6cdde5f2f12330b9750219
   SwiftNIOConcurrencyHelpers: 23fc68bac541a465162d7225d2c743edd2f1012c
   SwiftNIOExtras: aa561b71020cd6844f722cf4513fb176c577414d
   SwiftNIOFoundationCompat: 0e52ac0e2c9b7b60ff9141eebb64f5a82d974118
-  SwiftNIOHPACK: 38e855a72ae0c5176485ddd039b3933b99daa2b7
+  SwiftNIOHPACK: 7b780cf61fa41025042ca34a3918b651c3c9f655
   SwiftNIOHTTP1: 846277d7fc7661fba655540e529d7ba3c728ca50
-  SwiftNIOHTTP2: de7eff9d32fd347338f85b86c6fd0e13c3fbd1a0
-  SwiftNIOSSL: 6a1f0499a5319e823eae0b6f053ecb502bcce3f5
+  SwiftNIOHTTP2: 57fc74b454df553028744b8e4cd0ab3a33911a2d
+  SwiftNIOSSL: 6a212ff5802c39cdee830c613501fcb414218427
   SwiftNIOTLS: 4f8df225f03393f08e0b47b4d876ae38167f8a27
-  SwiftNIOTransportServices: 896c9a4ac98698d32aa2feea7657ade219ae80bb
-  SwiftProtobuf: 3320217e9d8fb75f36b40282e78c482640fd75dd
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  SwiftNIOTransportServices: eee29d06a617e6b37c534d8589ae27c31b119f81
+  SwiftProtobuf: 9c85136c6ba74b0a1b84279dbf0f6db8efb714e0
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: 3547ee15ce2d0baf03d3bc4ad3704a6d42eb6b8a
+PODFILE CHECKSUM: 48f4e50697e05138f77235d4e8dbb99557f6d76d
 
 COCOAPODS: 1.10.0
