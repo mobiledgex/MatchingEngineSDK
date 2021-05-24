@@ -121,8 +121,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         return
                     }
                     initMessage.edgeEventsCookie = edgeEventsCookie
-                    // add gps location
-                    initMessage.gpsLocation = self.lastStoredLocation
                     // add deviceinfo static
                     initMessage.deviceInfoStatic = self.matchingEngine.getDeviceInfoStatic()
                     // add deviceinfo dynamic
@@ -369,95 +367,99 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         func handleServerEvents(event: DistributedMatchEngine_ServerEdgeEvent) {
-            switch event.eventType {
-            // EventInitConnection: set connection state vars
-            case .eventInitConnection:
-                os_log("initconnection", log: OSLog.default, type: .debug)
-                connectionReady = true
-                connectionClosed = false
-            // EventLatencyRequest: do latency test and send back to DME
-            case .eventLatencyRequest:
-                os_log("latencyrequest", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
-                    getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                        return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
-                    }.then { status in
-                        os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                    }.catch { error in
-                        os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                        self.sendErrorToHandler(error: error)
-                    }
-                }
-            // EventLatencyProcessed: handle latency stats
-            case .eventLatencyProcessed:
-                os_log("latencyprocessed", log: OSLog.default, type: .debug)
-                print("latency stats are \(event.statistics)")
-                if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
-                    let stats = event.statistics
-                    if stats.avg >= config!.latencyThresholdTriggerMs! {
-                        sendFindCloudletToHandler(eventType: .latencyTooHigh)
-                    }
-                }
-            // EventCloudletState: handle cloudlet state (if not .ready, then send client newCloudlet)
-            case .eventCloudletState:
-                os_log("cloudletstate", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.cloudletStateChanged) {
-                    if event.cloudletState != .ready {
-                        if event.hasNewCloudlet {
-                            sendFindCloudletToHandler(eventType: .cloudletStateChanged, newCloudlet: event.newCloudlet)
-                        } else {
-                            sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .cloudletStateChanged, msg: "unable to get newCloudlet on bad cloudletstate - error is \(event.errorMsg)"))
+            matchingEngine.state.edgeEventsQueue.async {
+                if (self.connectionReady && !self.connectionClosed) || event.eventType == .eventInitConnection {
+                    switch event.eventType {
+                    // EventInitConnection: set connection state vars
+                    case .eventInitConnection:
+                        os_log("initconnection", log: OSLog.default, type: .debug)
+                        self.connectionReady = true
+                        self.connectionClosed = false
+                    // EventLatencyRequest: do latency test and send back to DME
+                    case .eventLatencyRequest:
+                        os_log("latencyrequest", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
+                            self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
+                            }.then { status in
+                                os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                            }.catch { error in
+                                os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                self.sendErrorToHandler(error: error)
+                            }
                         }
-                    } else {
-                        sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudletstate changed: \(event.cloudletState)"))
-                    }
-                }
-            // EventCloudletMaintenance: handle cloudlet maintenance state (if .underMaintenance, then send client newCloudlet)
-            case .eventCloudletMaintenance:
-                os_log("cloudletmaintenance", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.cloudletMaintenanceStateChanged) {
-                    if event.maintenanceState == .underMaintenance {
-                        if event.hasNewCloudlet {
-                            sendFindCloudletToHandler(eventType: .cloudletMaintenanceStateChanged, newCloudlet: event.newCloudlet)
-                        } else {
-                            sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .cloudletMaintenanceStateChanged, msg: "unable to get newCloudlet on bad cloudlet maintenance state - error is \(event.errorMsg)"))
+                    // EventLatencyProcessed: handle latency stats
+                    case .eventLatencyProcessed:
+                        os_log("latencyprocessed", log: OSLog.default, type: .debug)
+                        print("latency stats are \(event.statistics)")
+                        if self.config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
+                            let stats = event.statistics
+                            if stats.avg >= self.config!.latencyThresholdTriggerMs! {
+                                self.sendFindCloudletToHandler(eventType: .latencyTooHigh)
+                            }
                         }
-                    } else {
-                        sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudlet maintenance state changed: \(event.maintenanceState)"))
-                    }
-                }
-            // EventAppinstHealth: handle appinst health state (if not .ok and not .unknown, then send client newCloudlet
-            case .eventAppinstHealth:
-                os_log("appinsthealth", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.appInstHealthChanged) {
-                    if event.healthCheck != .ok &&  event.healthCheck != .unknown {
-                        if event.hasNewCloudlet {
-                            sendFindCloudletToHandler(eventType: .appInstHealthChanged, newCloudlet: event.newCloudlet)
-                        } else {
-                            sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .appInstHealthChanged, msg: "unable to get newCloudlet on bad appinst health - error is \(event.errorMsg)"))
+                    // EventCloudletState: handle cloudlet state (if not .ready, then send client newCloudlet)
+                    case .eventCloudletState:
+                        os_log("cloudletstate", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.cloudletStateChanged) {
+                            if event.cloudletState != .ready {
+                                if event.hasNewCloudlet {
+                                    self.sendFindCloudletToHandler(eventType: .cloudletStateChanged, newCloudlet: event.newCloudlet)
+                                } else {
+                                    self.sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .cloudletStateChanged, msg: "unable to get newCloudlet on bad cloudletstate - error is \(event.errorMsg)"))
+                                }
+                            } else {
+                                self.sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudletstate changed: \(event.cloudletState)"))
+                            }
                         }
-                    } else {
-                        sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "appinst health state changed: \(event.healthCheck)"))
+                    // EventCloudletMaintenance: handle cloudlet maintenance state (if .underMaintenance, then send client newCloudlet)
+                    case .eventCloudletMaintenance:
+                        os_log("cloudletmaintenance", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.cloudletMaintenanceStateChanged) {
+                            if event.maintenanceState == .underMaintenance {
+                                if event.hasNewCloudlet {
+                                    self.sendFindCloudletToHandler(eventType: .cloudletMaintenanceStateChanged, newCloudlet: event.newCloudlet)
+                                } else {
+                                    self.sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .cloudletMaintenanceStateChanged, msg: "unable to get newCloudlet on bad cloudlet maintenance state - error is \(event.errorMsg)"))
+                                }
+                            } else {
+                                self.sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "cloudlet maintenance state changed: \(event.maintenanceState)"))
+                            }
+                        }
+                    // EventAppinstHealth: handle appinst health state (if not .ok and not .unknown, then send client newCloudlet
+                    case .eventAppinstHealth:
+                        os_log("appinsthealth", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.appInstHealthChanged) {
+                            if event.healthCheck != .ok &&  event.healthCheck != .unknown {
+                                if event.hasNewCloudlet {
+                                    self.sendFindCloudletToHandler(eventType: .appInstHealthChanged, newCloudlet: event.newCloudlet)
+                                } else {
+                                    self.sendErrorToHandler(error: EdgeEventsError.eventTriggeredButFindCloudletError(event: .appInstHealthChanged, msg: "unable to get newCloudlet on bad appinst health - error is \(event.errorMsg)"))
+                                }
+                            } else {
+                                self.sendErrorToHandler(error: EdgeEventsError.stateChanged(msg: "appinst health state changed: \(event.healthCheck)"))
+                            }
+                        }
+                    // EventCloudletUpdate: send client newCloudlet
+                    case .eventCloudletUpdate:
+                        os_log("cloudletupdate", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
+                            self.sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
+                        }
+                    // EventError: send client non-fatal error
+                    case .eventError:
+                        os_log("eventError", log: OSLog.default, type: .debug)
+                        if self.config!.newFindCloudletEventTriggers.contains(.error) {
+                            self.sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
+                        }
+                    // Event Unknown
+                    case .eventUnknown:
+                        os_log("eventUnknown", log: OSLog.default, type: .debug)
+                        
+                    default:
+                        os_log("default case, event: %@", log: OSLog.default, type: .debug, event.eventType.rawValue)
                     }
                 }
-            // EventCloudletUpdate: send client newCloudlet
-            case .eventCloudletUpdate:
-                os_log("cloudletupdate", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
-                    sendFindCloudletToHandler(eventType: .closerCloudlet, newCloudlet: event.newCloudlet)
-                }
-            // EventError: send client non-fatal error
-            case .eventError:
-                os_log("eventError", log: OSLog.default, type: .debug)
-                if config!.newFindCloudletEventTriggers.contains(.error) {
-                    sendErrorToHandler(error: EdgeEventsError.eventError(msg: event.errorMsg))
-                }
-            // Event Unknown
-            case .eventUnknown:
-                os_log("eventUnknown", log: OSLog.default, type: .debug)
-                
-            default:
-                os_log("default case, event: %@", log: OSLog.default, type: .debug, event.eventType.rawValue)
             }
         }
         
@@ -502,29 +504,33 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 switch latencyConfig.updatePattern {
                 case .onStart:
                     matchingEngine.state.edgeEventsQueue.async {
-                        self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                            return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
-                        }.then { status in
-                            os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                        }.catch { error in
-                            os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        if self.connectionReady && !self.connectionClosed {
+                            self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
+                            }.then { status in
+                                os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                            }.catch { error in
+                                os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            }
                         }
                     }
                 case .onInterval:
                     latencyTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
                     latencyTimer!.setEventHandler(handler: {
-                        if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
-                            self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
-                            }.then { status in
-                                os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
-                                self.currLatencyInterval += 1
-                            }.catch { error in
-                                os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                self.sendErrorToHandler(error: error)
+                        if self.connectionReady && !self.connectionClosed {
+                            if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
+                                self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                    return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
+                                }.then { status in
+                                    os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
+                                    self.currLatencyInterval += 1
+                                }.catch { error in
+                                    os_log("error testing connect and posting latency update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                    self.sendErrorToHandler(error: error)
+                                }
+                            } else {
+                                self.latencyTimer!.cancel()
                             }
-                        } else {
-                            self.latencyTimer!.cancel()
                         }
                     })
                     latencyTimer!.schedule(deadline: .now(), repeating: .seconds(Int(latencyConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
@@ -539,29 +545,33 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 switch locationConfig.updatePattern {
                 case .onStart:
                     matchingEngine.state.edgeEventsQueue.async {
-                        self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                            return self.postLocationUpdate(loc: loc)
-                        }.then { status in
-                            os_log("successfully post location update", log: OSLog.default, type: .debug)
-                        }.catch { error in
-                            os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                        if self.connectionReady && !self.connectionClosed {
+                            self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                return self.postLocationUpdate(loc: loc)
+                            }.then { status in
+                                os_log("successfully post location update", log: OSLog.default, type: .debug)
+                            }.catch { error in
+                                os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                            }
                         }
                     }
                 case .onInterval:
                     locationTimer = DispatchSource.makeTimerSource(queue: matchingEngine.state.edgeEventsQueue)
                     locationTimer!.setEventHandler(handler: {
-                        if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
-                            self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                                return self.postLocationUpdate(loc: loc)
-                            }.then { status in
-                                os_log("successfully post location update", log: OSLog.default, type: .debug)
-                                self.currLocationInterval += 1
-                            }.catch { error in
-                                os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                self.sendErrorToHandler(error: error)
+                        if self.connectionReady && !self.connectionClosed {
+                            if self.currLocationInterval < locationConfig.maxNumberOfUpdates! || locationConfig.maxNumberOfUpdates! <= 0 {
+                                self.updateLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
+                                    return self.postLocationUpdate(loc: loc)
+                                }.then { status in
+                                    os_log("successfully post location update", log: OSLog.default, type: .debug)
+                                    self.currLocationInterval += 1
+                                }.catch { error in
+                                    os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                    self.sendErrorToHandler(error: error)
+                                }
+                            } else {
+                                self.locationTimer!.cancel()
                             }
-                        } else {
-                            self.locationTimer!.cancel()
                         }
                     })
                     locationTimer!.schedule(deadline: .now(), repeating: .seconds(Int(locationConfig.updateIntervalSeconds!)), leeway: .milliseconds(100))
