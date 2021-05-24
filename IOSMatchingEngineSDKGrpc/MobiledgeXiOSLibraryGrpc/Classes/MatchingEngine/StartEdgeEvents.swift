@@ -59,17 +59,17 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// ```
     /// let promise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices().then { success ->
     ///     if !success {
-    ///         // handle unable to start locaiton service
+    ///         // handle unable to start location service
     ///     }
     ///     let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
-    ///     return self.matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
+    ///     return self.matchingEngine.registerClient(request: regRequest)
     /// }.then { registerReply -> Promise<DistributedMatchEngine_FindCloudletReply> in
     ///     if registerReply == nil || registerReply.status != .rsSuccess {
     ///         print("Bad registerclient. Status is \(registerReply.status)")
     ///         // handle bad registerclient
     ///     }
     ///     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self.carrierName)
-    ///     return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
+    ///     return self.matchingEngine.findCloudlet(request: req)
     /// }.then { fcReply -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
     ///     if fcReply.status != .findFound {
     ///         print("Bad findcloudlet. Status is \(fcReply.status)")
@@ -137,7 +137,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// ```
     /// let promise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices().then { success ->
     ///     if !success {
-    ///         // handle unable to start locaiton service
+    ///         // handle unable to start location service
     ///     }
     ///     let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
     ///     return self.matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)

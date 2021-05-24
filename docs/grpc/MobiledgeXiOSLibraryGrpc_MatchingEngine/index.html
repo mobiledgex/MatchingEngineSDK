@@ -1209,17 +1209,17 @@ Example newFindCloudletHandler:</p>
 
 <html><body><pre class="highlight"><code><span class="keyword">let</span> <span class="variable">promise</span> = <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">MobiledgeXLocation</span>.<span class="type">startLocationServices</span>().<span class="type">then</span> { <span class="variable">success</span> -&gt;
     <span class="keyword">if</span> !<span class="variable">success</span> {
-        <span class="comment">// handle unable to start locaiton service</span>
+        <span class="comment">// handle unable to start location service</span>
     }
     <span class="keyword">let</span> <span class="variable">regRequest</span> = <span class="variable">matchingEngine</span>.<span class="type">createRegisterClientRequest</span>(<span class="variable">orgName</span>: <span class="type">orgName</span>, <span class="variable">appName</span>: <span class="type">appName</span>, <span class="variable">appVers</span>: <span class="type">appVers</span>)
-    <span class="keyword">return</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">registerClient</span>(<span class="variable">host</span>: <span class="type">dmeHost</span>, <span class="variable">port</span>: <span class="type">dmePort</span>, <span class="variable">request</span>: <span class="type">regRequest</span>)
+    <span class="keyword">return</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">registerClient</span>(<span class="variable">request</span>: <span class="type">regRequest</span>)
 }.<span class="type">then</span> { <span class="variable">registerReply</span> -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_FindCloudletReply"><span class="type">DistributedMatchEngine_FindCloudletReply</span></a>&gt; <span class="keyword">in</span>
     <span class="keyword">if</span> <span class="variable">registerReply</span> == <span class="keyword">nil</span> || <span class="variable">registerReply</span>.<span class="type">status</span> != .<span class="variable">rsSuccess</span> {
         <span class="variable">print</span>(<span class="string literal">"</span><span class="string literal">Bad registerclient. Status is </span>\<span class="string literal">(</span><span class="variable">registerReply</span>.<span class="type">status</span><span class="string literal">)</span><span class="string literal"/><span class="string literal">"</span>)
         <span class="comment">// handle bad registerclient</span>
     }
     <span class="keyword">let</span> <span class="variable">req</span> = <span class="keyword">try</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">createFindCloudletRequest</span>(<span class="variable">gpsLocation</span>: <span class="type">loc</span>, <span class="variable">carrierName</span>: <span class="keyword">self</span>.<span class="type">carrierName</span>)
-    <span class="keyword">return</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">findCloudlet</span>(<span class="variable">host</span>: <span class="keyword">self</span>.<span class="type">dmeHost</span>, <span class="variable">port</span>: <span class="keyword">self</span>.<span class="type">dmePort</span>, <span class="variable">request</span>: <span class="type">req</span>)
+    <span class="keyword">return</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">findCloudlet</span>(<span class="variable">request</span>: <span class="type">req</span>)
 }.<span class="type">then</span> { <span class="variable">fcReply</span> -&gt; <span class="type">Promise</span>&lt;<a href="./MobiledgeXiOSLibraryGrpc"><span class="type">MobiledgeXiOSLibraryGrpc</span></a>.<span class="type">EdgeEvents</span>.<span class="type">EdgeEventsStatus</span>&gt; <span class="keyword">in</span>
     <span class="keyword">if</span> <span class="variable">fcReply</span>.<span class="type">status</span> != .<span class="variable">findFound</span> {
         <span class="variable">print</span>(<span class="string literal">"</span><span class="string literal">Bad findcloudlet. Status is </span>\<span class="string literal">(</span><span class="variable">fcReply</span>.<span class="type">status</span><span class="string literal">)</span><span class="string literal"/><span class="string literal">"</span>)
@@ -1311,7 +1311,7 @@ Example newFindCloudletHandler:</p>
 
 <html><body><pre class="highlight"><code><span class="keyword">let</span> <span class="variable">promise</span> = <span class="variable">MobiledgeXiOSLibraryGrpc</span>.<span class="type">MobiledgeXLocation</span>.<span class="type">startLocationServices</span>().<span class="type">then</span> { <span class="variable">success</span> -&gt;
     <span class="keyword">if</span> !<span class="variable">success</span> {
-        <span class="comment">// handle unable to start locaiton service</span>
+        <span class="comment">// handle unable to start location service</span>
     }
     <span class="keyword">let</span> <span class="variable">regRequest</span> = <span class="variable">matchingEngine</span>.<span class="type">createRegisterClientRequest</span>(<span class="variable">orgName</span>: <span class="type">orgName</span>, <span class="variable">appName</span>: <span class="type">appName</span>, <span class="variable">appVers</span>: <span class="type">appVers</span>)
     <span class="keyword">return</span> <span class="keyword">self</span>.<span class="type">matchingEngine</span>.<span class="type">registerClient</span>(<span class="variable">host</span>: <span class="type">dmeHost</span>, <span class="variable">port</span>: <span class="type">dmePort</span>, <span class="variable">request</span>: <span class="type">regRequest</span>)
@@ -1835,7 +1835,7 @@ Also provides the distance between where the user claims to be and where carrier
 
     <footer>
         <p>
-    Generated on <time datetime="2021-05-24T10:50:05-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2021-05-24T11:37:24-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
 </p>
     </footer>
 </body>
