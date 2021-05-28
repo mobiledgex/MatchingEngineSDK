@@ -28,10 +28,62 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// After starting EdgeEvents and based on the EdgeEventsConfig provided, the MobiledgeX SDK will find a new cloudlet for the client on the specified events.
     /// The new cloudlet will be returned to the client via the newFindCloudletHandler.
     /// For example, if .eventCloudletState is specified in EdgeEventsConfig in the set of newFindCloudletEvents, a new cloudlet will be provided to the newFindCloudletHandler when the cloudlet state changes.
-    /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
-    /// newFindCloudletHandler
+    /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to
+    /// the newFindCloudletHandler
     ///
-    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents
+    /// Workflow should be startLocationServices -> registerClient -> findCloudlet -> startEdgeEvents.
+    /// Example newFindCloudletHandler:
+    /// ```
+    /// func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
+    ///     switch status {
+    ///     case .success:
+    ///         guard let event = fcEvent else {
+    ///             os_log("nil findcloudlet event", log: OSLog.default, type: .debug)
+    ///             return
+    ///         }
+    ///         print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
+    ///     case .fail(let error):
+    ///         print("error during edgeevents \(error)")
+    ///         // Check the error if status is fail
+    ///         switch error {
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
+    ///             print("There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud")
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButFindCloudletError(let event, let msg):
+    ///             print("Event triggered \(event), but error trying to find another cloudlet \(msg). If needed, fallback to public cloud")
+    ///         default:
+    ///             print("Non fatal error occured during EdgeEventsConnection: \(error)")
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// Example workflow:
+    /// ```
+    /// let promise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices().then { success ->
+    ///     if !success {
+    ///         // handle unable to start location service
+    ///     }
+    ///     let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
+    ///     return self.matchingEngine.registerClient(request: regRequest)
+    /// }.then { registerReply -> Promise<DistributedMatchEngine_FindCloudletReply> in
+    ///     if registerReply == nil || registerReply.status != .rsSuccess {
+    ///         print("Bad registerclient. Status is \(registerReply.status)")
+    ///         // handle bad registerclient
+    ///     }
+    ///     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self.carrierName)
+    ///     return self.matchingEngine.findCloudlet(request: req)
+    /// }.then { fcReply -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
+    ///     if fcReply.status != .findFound {
+    ///         print("Bad findcloudlet. Status is \(fcReply.status)")
+    ///         // handle bad findcloudlet
+    ///     }
+    ///     let config = self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50)
+    ///     return self.matchingEngine.startEdgeEvents(newFindCloudletHandler: self.handleNewFindCloudlet, config: config)
+    /// }.catch { error in
+    ///     print("EdgeEventsConnection encountered error: \(error)")
+    ///     // handle error
+    /// }
+    /// ```
     ///
     /// - Parameters:
     ///   - newFindCloudletHandler: ((MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) -> Void): Function that handles a new, better cloudlet for the current user (eg. Switch over application connection to the new fqdn)
@@ -56,10 +108,62 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// After starting EdgeEvents and based on the EdgeEventsConfig provided, the MobiledgeX SDK will find a new cloudlet for the client on the specified events.
     /// The new cloudlet will be returned to the client via the newFindCloudletHandler.
     /// For example, if .eventCloudletState is specified in EdgeEventsConfig in the set of newFindCloudletEvents, a new cloudlet will be provided to the newFindCloudletHandler when the cloudlet state changes.
-    /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to the
-    /// newFindCloudletHandler
+    /// Also, if specified in the EdgeEventsConfig, the SDK will periodically monitor gps location and latency to the application backend. If there is a closer cloudlet or a cloudlet with lower latency from the client, that cloudlet will be provided to
+    /// the newFindCloudletHandler
     ///
-    /// Workflow should be registerClient -> findCloudlet -> startEdgeEvents
+    /// Workflow should be startLocationServices -> registerClient -> findCloudlet -> startEdgeEvents.
+    /// Example newFindCloudletHandler:
+    /// ```
+    /// func handleNewFindCloudlet(status: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus, fcEvent: MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEvent?) {
+    ///     switch status {
+    ///     case .success:
+    ///         guard let event = fcEvent else {
+    ///             os_log("nil findcloudlet event", log: OSLog.default, type: .debug)
+    ///             return
+    ///         }
+    ///         print("got new findcloudlet \(event.newCloudlet), on event \(event.trigger)")
+    ///     case .fail(let error):
+    ///         print("error during edgeevents \(error)")
+    ///         // Check the error if status is fail
+    ///         switch error {
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(let event):
+    ///             print("There are no cloudlets that satisfy your latencyThreshold requirement. If needed, fallback to public cloud")
+    ///         case MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsError.eventTriggeredButFindCloudletError(let event, let msg):
+    ///             print("Event triggered \(event), but error trying to find another cloudlet \(msg). If needed, fallback to public cloud")
+    ///         default:
+    ///             print("Non fatal error occured during EdgeEventsConnection: \(error)")
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// Example workflow:
+    /// ```
+    /// let promise = MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.startLocationServices().then { success ->
+    ///     if !success {
+    ///         // handle unable to start location service
+    ///     }
+    ///     let regRequest = matchingEngine.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers)
+    ///     return self.matchingEngine.registerClient(host: dmeHost, port: dmePort, request: regRequest)
+    /// }.then { registerReply -> Promise<DistributedMatchEngine_FindCloudletReply> in
+    ///     if registerReply == nil || registerReply.status != .rsSuccess {
+    ///         print("Bad registerclient. Status is \(registerReply.status)")
+    ///         // handle bad registerclient
+    ///     }
+    ///     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self.carrierName)
+    ///     return self.matchingEngine.findCloudlet(host: self.dmeHost, port: self.dmePort, request: req)
+    /// }.then { fcReply -> Promise<MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsStatus> in
+    ///     if fcReply.status != .findFound {
+    ///         print("Bad findcloudlet. Status is \(fcReply.status)")
+    ///         // handle bad findcloudlet
+    ///     }
+    ///     let config = self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50)
+    ///     return self.matchingEngine.startEdgeEvents(dmeHost: host, dmePort: port, newFindCloudletHandler: self.handleNewFindCloudlet, config: config)
+    /// }.catch { error in
+    ///     print("EdgeEventsConnection encountered error: \(error)")
+    ///     // handle error
+    /// }
+    /// ```
     ///
     /// - Parameters:
     ///   - dmeHost: host override of the dme host server. DME must be reachable from current carrier.
