@@ -35,15 +35,15 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         
         // Configure how to send events
         public var latencyTestPort: UInt16? // port information for latency testing, use 0 if you don't care which port is used
-        public var latencyUpdateConfig: ClientEventsConfig? // config for latency updates
-        public var locationUpdateConfig: ClientEventsConfig? // config for gps location updates
+        public var latencyUpdateConfig: UpdateConfig? // config for latency updates
+        public var locationUpdateConfig: UpdateConfig? // config for gps location updates
     }
     
     /// Configuration for sending client events
     /// Used for latencyUpdateConfig and locationUpdateConfig in EdgeEventsConfig
     /// Client events can be send .onStart, .onTrigger, or .onInterval
     /// If .onInterval, then an updateIntervalSeconds must be provided
-    public struct ClientEventsConfig {
+    public struct UpdateConfig {
         public var updatePattern: UpdatePattern
         public var updateIntervalSeconds: UInt? // update interval in seconds if updatePattern is .onInterval
         public var maxNumberOfUpdates: Int? // max number of updates throughout app lifetime (values <= 0 will update until EdgeEventsConnection is closed) if updatePattern is .onInterval
