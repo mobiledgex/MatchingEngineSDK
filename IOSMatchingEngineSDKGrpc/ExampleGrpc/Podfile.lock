@@ -33,14 +33,10 @@ PODS:
     - SwiftNIOSSL (< 3.0.0, >= 2.8.0)
     - SwiftNIOTransportServices (< 2.0.0, >= 1.6.0)
     - SwiftProtobuf (< 2.0.0, >= 1.9.0)
-  - GTMAppAuth (1.1.0):
+  - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher (~> 1.4)
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
   - Logging (1.4.0)
   - MobiledgeXiOSLibraryGrpc (2.6.1):
     - gRPC-Swift (~> 1.0.0)
@@ -167,7 +163,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 82f8fe307193bb4de6ef6bf9e88f1d624b718f9d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   gRPC-Swift: 77154009a019e97f8c4bd8f2bb75fe9726801157
-  GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MobiledgeXiOSLibraryGrpc: a07841b7b6e329a65e45ab7c06dbf36a43a3c76d

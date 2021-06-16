@@ -79,9 +79,10 @@ extension MobiledgeXiOSLibraryGrpc {
         }
         
         private var sessionCookie: String?
-        private var edgeEventsCookie: String?
         private var tokenServerUri: String?
         private var tokenServerToken: String?
+        
+        var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply?
         
         var deviceGpsLocation: [String: AnyObject]?
         // Various known states (should create non-dictionary classes)
@@ -104,12 +105,11 @@ extension MobiledgeXiOSLibraryGrpc {
             return self.sessionCookie
         }
         
-        func setEdgeEventsCookie(edgeEventsCookie: String?) {
-            self.edgeEventsCookie = edgeEventsCookie
-        }
-        
         func getEdgeEventsCookie() -> String? {
-            return self.edgeEventsCookie
+            guard let reply = lastFindCloudletReply else {
+                return nil
+            }
+            return reply.edgeEventsCookie
         }
         
         func setTokenServerUri(tokenServerUri: String?) {

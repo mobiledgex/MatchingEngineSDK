@@ -45,6 +45,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 
         var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine
         
+        var currentFindCloudletReply: DistributedMatchEngine_FindCloudletReply? // current FindCloudletReply that EdgeEventsConnection is sending and receiving events
+        
         var client: MobiledgeXiOSLibraryGrpc.GrpcClient? = nil
         var host: String
         var port: UInt16
@@ -104,19 +106,20 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     // initialize init edgeevent
                     var initMessage = DistributedMatchEngine_ClientEdgeEvent.init()
                     initMessage.eventType = .eventInitConnection
-                    // check for valid lastFindCloudletReply
-                    guard let _ = self.matchingEngine.lastFindCloudletReply else {
-                        reject(EdgeEventsError.hasNotDoneFindCloudlet)
-                        return
-                    }
                     // check for session cookie
                     guard let sessionCookie = self.matchingEngine.state.getSessionCookie() else {
                         reject(EdgeEventsError.missingSessionCookie)
                         return
                     }
                     initMessage.sessionCookie = sessionCookie
+                    // check for valid lastFindCloudletReply
+                    guard let cur = self.matchingEngine.state.lastFindCloudletReply else {
+                        reject(EdgeEventsError.hasNotDoneFindCloudlet)
+                        return
+                    }
+                    self.currentFindCloudletReply = cur
                     // check for edgeevents cookie
-                    guard let edgeEventsCookie = self.matchingEngine.state.getEdgeEventsCookie() else {
+                    guard let edgeEventsCookie = self.currentFindCloudletReply?.edgeEventsCookie else {
                         reject(EdgeEventsError.missingEdgeEventsCookie)
                         return
                     }
@@ -282,7 +285,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         public func testPingAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
-                guard let fcReply = matchingEngine.lastFindCloudletReply else {
+                guard let fcReply = currentFindCloudletReply else {
                     promise.reject(EdgeEventsError.hasNotDoneFindCloudlet)
                     return promise
                 }
@@ -327,7 +330,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
-                guard let fcReply = matchingEngine.lastFindCloudletReply else {
+                guard let fcReply = currentFindCloudletReply else {
                     promise.reject(EdgeEventsError.hasNotDoneFindCloudlet)
                     return promise
                 }
@@ -469,25 +472,25 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         
         func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
             if newCloudlet != nil {
-                if !self.newCloudletIsDifferent(newCloudlet: newCloudlet!, oldCloudlet: self.matchingEngine.lastFindCloudletReply!) {
+                if !self.newCloudletIsDifferent(newCloudlet: newCloudlet!) {
                     self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(event: eventType)), nil)
                 } else {
                     let findCloudletEvent = FindCloudletEvent(newCloudlet: newCloudlet!, trigger: eventType)
-                    matchingEngine.lastFindCloudletReply = newCloudlet
-                    matchingEngine.state.setEdgeEventsCookie(edgeEventsCookie: newCloudlet?.edgeEventsCookie)
+                    matchingEngine.state.lastFindCloudletReply = newCloudlet
                     self.newFindCloudletHandler!(.success, findCloudletEvent)
                     restart()
                 }
             } else {
-                let oldCloudlet = self.matchingEngine.lastFindCloudletReply
+                // Do FindCloudlet ourself if newCloudlet is nil
                 getLastStoredLocation().then { loc -> Promise<DistributedMatchEngine_FindCloudletReply> in
-                    let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc, carrierName: self.matchingEngine.lastFindCloudletRequest?.carrierName)
+                    let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc)
                     return self.matchingEngine.findCloudlet(host: self.host, port: self.port, request: req, mode: MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode.PERFORMANCE)
                 }.then { reply in
-                    if !self.newCloudletIsDifferent(newCloudlet: reply, oldCloudlet: oldCloudlet!) {
+                    if !self.newCloudletIsDifferent(newCloudlet: reply) {
                         self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(event: eventType)), nil)
                     } else {
-                        let findCloudletEvent = FindCloudletEvent(newCloudlet: self.matchingEngine.lastFindCloudletReply!, trigger: eventType)
+                        let findCloudletEvent = FindCloudletEvent(newCloudlet: reply, trigger: eventType)
+                        self.matchingEngine.state.lastFindCloudletReply = reply
                         self.newFindCloudletHandler!(.success, findCloudletEvent)
                         self.restart()
                     }
@@ -496,6 +499,10 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     self.newFindCloudletHandler!(.fail(error: error), nil)
                 }
             }
+        }
+        
+        func setCurrentFindCloudletReply(reply: DistributedMatchEngine_FindCloudletReply) {
+            currentFindCloudletReply = reply
         }
         
         func sendErrorToHandler(error: Error) {
@@ -700,8 +707,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         }
         
         // Checks whether or not the newFindCloudletReply is the same as the current cloudlet
-        func newCloudletIsDifferent(newCloudlet: DistributedMatchEngine_FindCloudletReply, oldCloudlet: DistributedMatchEngine_FindCloudletReply) -> Bool {
-            return oldCloudlet.fqdn != newCloudlet.fqdn
+        func newCloudletIsDifferent(newCloudlet: DistributedMatchEngine_FindCloudletReply) -> Bool {
+            guard let cur = currentFindCloudletReply else {
+                return true
+            }
+            return newCloudlet.fqdn != cur.fqdn
         }
         
         // Helper function that calls the getLastLocation function and syncs lastStoredLocation
