@@ -38,8 +38,8 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt16 = 50051
-    //var demoHost = "eu-qa.dme.mobiledgex.net"
-    var demoHost = "wifi.dme.mobiledgex.net"
+    var demoHost = "eu-qa.dme.mobiledgex.net"
+    //var demoHost = "wifi.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
     
@@ -77,7 +77,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         matchingEngine = appDelegate.matchingEngine
         
         var hamburg = DistributedMatchEngine_Loc.init()
-        hamburg.latitude = 10
+        hamburg.latitude = 53.55
         hamburg.longitude = 10
         
         var frankfurt = DistributedMatchEngine_Loc.init()
@@ -91,14 +91,14 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         {
             host = demoHost
             port = MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants.dmeGrpcPort
-            /*appName =  "automation-sdk-porttest"
+            appName =  "automation-sdk-porttest"
             appVers = "1.0"
             orgName =  "MobiledgeX"
-            carrierName = "TDG"*/
-            appName =  "sdktest"
+            carrierName = "TDG"
+            /*appName =  "sdktest"
             appVers = "9.0"
             orgName =  "MobiledgeX-Samples"
-            carrierName = "TELUS"
+            carrierName = "TELUS"*/
             authToken = nil
             uniqueID = nil
             uniqueIDType = nil
