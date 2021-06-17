@@ -69,9 +69,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         var getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil
         
         let getLocationQueue = DispatchQueue(label: "getLocationQueue") // used to sync lastLocation
-        
-        let minTriggerThresholdMs: Double = 30
-                        
+                                
         /// Initializer with EdgeEventsConfig (Recommended)
         init(matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine, dmeHost: String, dmePort: UInt16, tlsEnabled: Bool, newFindCloudletHandler: @escaping ((EdgeEventsStatus, FindCloudletEvent?) -> Void), config: EdgeEventsConfig, getLastLocation: (() -> Promise<DistributedMatchEngine_Loc>)? = nil) {
             self.matchingEngine = matchingEngine
@@ -662,8 +660,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     os_log("nil latencyThresholdTriggerMs - using default", log: OSLog.default, type: .debug)
                     config!.latencyThresholdTriggerMs = MobiledgeXiOSLibraryGrpc.MatchingEngine.defaultLatencyThresholdTriggerMs
                 }
-                if config!.latencyThresholdTriggerMs! < minTriggerThresholdMs {
-                    os_log("latencyThresholdTriggerMs must be greater than %@ - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug, minTriggerThresholdMs.description)
+                if config!.latencyThresholdTriggerMs! <= 0 {
+                    os_log("latencyThresholdTriggerMs must be greater than 0 - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug)
                     return EdgeEventsError.invalidLatencyThreshold
                 }
                 // Validate performance switch margin

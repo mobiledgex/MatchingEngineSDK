@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swift Grpc SDK - MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig</title>
+    <title>Swift Grpc SDK - MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig</title>
     <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
 </head>
 <body>
@@ -26,7 +26,7 @@
     <nav>
         <div class="wrapper">
             <h2>On This Page</h2>
-            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.updatepattern">update​Pattern</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.updateintervalseconds">update​Interval​Seconds</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.maxnumberofupdates">max​Number​OfUpdates</a></li></ul></li></ol>
+            <ol><li><a href="#relationships">Relationships</a><ul><li><a href="#relationships">Member Of</a></li><li><a href="#relationships">Nested Types</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.updateconfig.updatepattern">update​Pattern</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.updateconfig.updateintervalseconds">update​Interval​Seconds</a></li><li class="variable"><a href="#mobiledgexioslibrarygrpc.edgeevents.updateconfig.maxnumberofupdates">max​Number​OfUpdates</a></li></ul></li></ol>
         </div>
     </nav>
 
@@ -34,10 +34,10 @@
         <article>
             <h1>
     <small>Structure</small>
-    <code class="name">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Client​Events​Config</code>
+    <code class="name">Mobiledge​XiOSLibrary​Grpc.​Edge​Events.​Update​Config</code>
 </h1>
 
-<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">struct</span> <span class="type">ClientEventsConfig</span></code></pre></body></html>
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">struct</span> <span class="type">UpdateConfig</span></code></pre></body></html>
 <div class="summary" role="doc-abstract">
     <p>Configuration for sending client events
 Used for latencyUpdateConfig and locationUpdateConfig in EdgeEventsConfig
@@ -56,7 +56,7 @@ If .onInterval, then an updateIntervalSeconds must be provided</p>
 </dl>
 <h3>Nested Types</h3>
 <dl>
-    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_ClientEventsConfig_UpdatePattern">MobiledgeXiOSLibraryGrpc.EdgeEvents.ClientEventsConfig.UpdatePattern</a></code></dt>
+    <dt class="enumeration"><code><a href="./MobiledgeXiOSLibraryGrpc_EdgeEvents_UpdateConfig_UpdatePattern">MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig.UpdatePattern</a></code></dt>
 <dd><p>UpdatePattern for sending client events
 onStart will send one update when startEdgeEvents is called
 onInterval will send updates at the specified interval
@@ -67,19 +67,19 @@ onTrigger will send no updates unless the application itself calls postLatencyUp
     <section id="properties">
         <h2>Properties</h2>
 
-        <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.updatepattern">
+        <div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.updateconfig.updatepattern">
     <h3>
         <code>update​Pattern</code>
     </h3>
     <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">updatePattern</span>: <span class="type">UpdatePattern</span></code></pre></body></html>
 </div>
-<div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.updateintervalseconds">
+<div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.updateconfig.updateintervalseconds">
     <h3>
         <code>update​Interval​Seconds</code>
     </h3>
     <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">updateIntervalSeconds</span>: <span class="type">UInt</span>?</code></pre></body></html>
 </div>
-<div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.clienteventsconfig.maxnumberofupdates">
+<div role="article" class="variable" id="mobiledgexioslibrarygrpc.edgeevents.updateconfig.maxnumberofupdates">
     <h3>
         <code>max​Number​OfUpdates</code>
     </h3>
@@ -94,7 +94,7 @@ onTrigger will send no updates unless the application itself calls postLatencyUp
 
     <footer>
         <p>
-    Generated on <time datetime="2021-05-24T12:54:29-0500">May 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2021-06-17T13:43:54-0700">June 17, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
 </p>
     </footer>
 </body>
