@@ -400,7 +400,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         if self.config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                             let stats = event.statistics
                             if stats.avg >= self.config!.latencyThresholdTriggerMs! {
-                                self.sendFindCloudletToHandler(eventType: .latencyTooHigh, latencyStats: event.statistics)
+                                self.sendFindCloudletToHandler(eventType: .latencyTooHigh, latencyStats: stats)
                             }
                         }
                     // EventCloudletState: handle cloudlet state (if not .ready, then send client newCloudlet)
@@ -658,20 +658,20 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return EdgeEventsError.missingLatencyUpdateConfig
                 }
                 // Validate latency threshold
-                guard let threshold = config!.latencyThresholdTriggerMs else {
-                    os_log("nil latencyThresholdTriggerMs - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug)
-                    return EdgeEventsError.missingLatencyThreshold
+                if config!.latencyThresholdTriggerMs == nil {
+                    os_log("nil latencyThresholdTriggerMs - using default", log: OSLog.default, type: .debug)
+                    config!.latencyThresholdTriggerMs = MobiledgeXiOSLibraryGrpc.MatchingEngine.defaultLatencyThresholdTriggerMs
                 }
-                if threshold < minTriggerThresholdMs {
+                if config!.latencyThresholdTriggerMs! < minTriggerThresholdMs {
                     os_log("latencyThresholdTriggerMs must be greater than %@ - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug, minTriggerThresholdMs.description)
                     return EdgeEventsError.invalidLatencyThreshold
                 }
                 // Validate performance switch margin
-                guard let margin = config!.performanceSwitchMargin else {
-                    os_log("nil performanceSwitchMargin - a valid performanceSwitchMargin is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type:.debug)
-                    return EdgeEventsError.missingPerformanceSwitchMargin
+                if config!.performanceSwitchMargin == nil {
+                    os_log("nil performanceSwitchMargin - using default", log: OSLog.default, type:.debug)
+                    config!.performanceSwitchMargin = MobiledgeXiOSLibraryGrpc.MatchingEngine.defaultPerformanceSwitchMargin
                 }
-                if margin < 0 || margin > 1 {
+                if config!.performanceSwitchMargin! < 0 || config!.performanceSwitchMargin! > 1 {
                     os_log("performanceSwitchMargin must be greater than 0 and less than 1 - a valid performanceSwitchMargin is required if .latencyTooHigh is in newFindCloudletEventTriggers")
                     return EdgeEventsError.invalidPerformanceSwitchMargin
                 }
@@ -682,11 +682,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
                 // Validate latencyUpdateConfig .onInterval
                 if latencyUpdateConfig.updatePattern == .onInterval {
-                    guard let interval = latencyUpdateConfig.updateIntervalSeconds else {
-                        os_log("nil updateIntervalSeconds in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                        return EdgeEventsError.missingUpdateInterval
+                    if latencyUpdateConfig.updateIntervalSeconds == nil {
+                        os_log("nil updateIntervalSeconds in latencyUpdateConfig - using default", log: OSLog.default, type: .debug)
+                        config!.latencyUpdateConfig!.updateIntervalSeconds = MobiledgeXiOSLibraryGrpc.MatchingEngine.defaultLatencyUpdateIntervalSeconds
                     }
-                    if interval <= 0 {
+                    if config!.latencyUpdateConfig!.updateIntervalSeconds! <= 0 {
                         os_log("updateIntervalSeconds is not a positive number in latencyUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
                         return EdgeEventsError.invalidUpdateInterval
                     }
@@ -709,11 +709,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
                 // Validate locationUpdateConfig .onInterval
                 if locationUpdateConfig.updatePattern == .onInterval {
-                    guard let interval = locationUpdateConfig.updateIntervalSeconds else {
-                        os_log("nil updateIntervalSeconds in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
-                        return EdgeEventsError.missingUpdateInterval
+                    if locationUpdateConfig.updateIntervalSeconds == nil {
+                        os_log("nil updateIntervalSeconds in locationUpdateConfig - using default", log: OSLog.default, type: .debug)
+                        config!.locationUpdateConfig!.updateIntervalSeconds = MobiledgeXiOSLibraryGrpc.MatchingEngine.defaultLocationUpdateIntervalSeconds
                     }
-                    if interval <= 0 {
+                    if config!.locationUpdateConfig!.updateIntervalSeconds! <= 0 {
                         os_log("updateIntervalSeconds is not a positive number in locationUpdateConfig - a valid updateIntervalSeconds is required if updatePattern is .onInterval", log: OSLog.default, type: .debug)
                         return EdgeEventsError.invalidUpdateInterval
                     }
