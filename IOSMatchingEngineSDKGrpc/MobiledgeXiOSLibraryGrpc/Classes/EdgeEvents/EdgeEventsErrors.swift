@@ -44,6 +44,9 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case missingLatencyThreshold
         case invalidLatencyThreshold
         
+        case missingPerformanceSwitchMargin
+        case invalidPerformanceSwitchMargin
+        
         case missingUpdateInterval
         case invalidUpdateInterval
         

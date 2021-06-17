@@ -400,7 +400,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         if self.config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                             let stats = event.statistics
                             if stats.avg >= self.config!.latencyThresholdTriggerMs! {
-                                self.sendFindCloudletToHandler(eventType: .latencyTooHigh)
+                                self.sendFindCloudletToHandler(eventType: .latencyTooHigh, latencyStats: event.statistics)
                             }
                         }
                     // EventCloudletState: handle cloudlet state (if not .ready, then send client newCloudlet)
@@ -472,7 +472,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             }
         }
         
-        func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil) {
+        func sendFindCloudletToHandler(eventType: FindCloudletEventTrigger, newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil, latencyStats: DistributedMatchEngine_Statistics? = nil) {
             if newCloudlet != nil {
                 if !self.newCloudletIsDifferent(newCloudlet: newCloudlet!) {
                     self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(event: eventType)), nil)
@@ -484,23 +484,35 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 }
             } else {
                 // Do FindCloudlet ourself if newCloudlet is nil
-                getLastStoredLocation().then { loc -> Promise<DistributedMatchEngine_FindCloudletReply> in
+                getLastStoredLocation().then { loc -> Promise<MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletPerformanceReply> in
                     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc)
-                    return self.matchingEngine.findCloudlet(host: self.host, port: self.port, request: req, mode: MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletMode.PERFORMANCE)
-                }.then { reply in
+                    return self.matchingEngine.findCloudletPerformance(host: self.host, port: self.port, request: req)
+                }.then { performanceReply in
+                    let reply = performanceReply.reply
+                    self.matchingEngine.state.lastFindCloudletReply = reply
+                    
                     if !self.newCloudletIsDifferent(newCloudlet: reply) {
+                        // new cloudlet is the same
                         self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(event: eventType)), nil)
                     } else {
-                        let findCloudletEvent = FindCloudletEvent(newCloudlet: reply, trigger: eventType)
-                        self.matchingEngine.state.lastFindCloudletReply = reply
-                        self.newFindCloudletHandler!(.success, findCloudletEvent)
-                        self.restart()
+                        // new cloudlet is different, check if latency is better than latencyStats
+                        if self.isBetterLatency(newSite: performanceReply.bestSite, oldStats: latencyStats!) {                 let findCloudletEvent = FindCloudletEvent(newCloudlet: reply, trigger: eventType)
+                            self.newFindCloudletHandler!(.success, findCloudletEvent)
+                            self.restart()
+                        } else {
+                            self.newFindCloudletHandler!(.fail(error: EdgeEventsError.eventTriggeredButCurrentCloudletIsBest(event: eventType)), nil)
+                        }
                     }
                 }.catch { error in
                     os_log("received server event, but error doing findcloudlet: %@", log: OSLog.default, type: .debug, error.localizedDescription)
                     self.newFindCloudletHandler!(.fail(error: error), nil)
                 }
             }
+        }
+        
+        func isBetterLatency(newSite: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site, oldStats: DistributedMatchEngine_Statistics) -> Bool {
+            let threshold = oldStats.avg - (config!.performanceSwitchMargin!*oldStats.avg)
+            return newSite.avg < threshold
         }
         
         func setCurrentFindCloudletReply(reply: DistributedMatchEngine_FindCloudletReply) {
@@ -642,21 +654,30 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             if config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                 // Validate latencyUpdateConfig
                 guard let latencyUpdateConfig = config!.latencyUpdateConfig else {
-                    os_log("A latencyUpdateConfig is required if .eventLatencyProcessed is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    os_log("A latencyUpdateConfig is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug)
                     return EdgeEventsError.missingLatencyUpdateConfig
                 }
                 // Validate latency threshold
                 guard let threshold = config!.latencyThresholdTriggerMs else {
-                    os_log("nil latencyThresholdTriggerMs - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    os_log("nil latencyThresholdTriggerMs - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug)
                     return EdgeEventsError.missingLatencyThreshold
                 }
                 if threshold < minTriggerThresholdMs {
-                    os_log("latencyThresholdTriggerMs must be greater than %@ - a valid latencyThresholdTriggerMs is required if .eventLatencyProcessed is in newFindCloudletEvents", log: OSLog.default, type: .debug, minTriggerThresholdMs.description)
+                    os_log("latencyThresholdTriggerMs must be greater than %@ - a valid latencyThresholdTriggerMs is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug, minTriggerThresholdMs.description)
                     return EdgeEventsError.invalidLatencyThreshold
+                }
+                // Validate performance switch margin
+                guard let margin = config!.performanceSwitchMargin else {
+                    os_log("nil performanceSwitchMargin - a valid performanceSwitchMargin is required if .latencyTooHigh is in newFindCloudletEventTriggers", log: OSLog.default, type:.debug)
+                    return EdgeEventsError.missingPerformanceSwitchMargin
+                }
+                if margin < 0 || margin > 1 {
+                    os_log("performanceSwitchMargin must be greater than 0 and less than 1 - a valid performanceSwitchMargin is required if .latencyTooHigh is in newFindCloudletEventTriggers")
+                    return EdgeEventsError.invalidPerformanceSwitchMargin
                 }
                 // Validate latency test port
                 if config!.latencyTestPort == nil {
-                    os_log("latencyTestPort is required if .eventLatencyProcessed or .eventLatencyRequest are in newFindCloudletEvents. Using 0, which will test any port", log: OSLog.default, type: .debug)
+                    os_log("latencyTestPort is required if .latencyTooHigh is in newFindCloudletEventTriggers. Using 0, which will test any port", log: OSLog.default, type: .debug)
                     config!.latencyTestPort = 0
                 }
                 // Validate latencyUpdateConfig .onInterval
@@ -683,7 +704,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
             if config!.newFindCloudletEventTriggers.contains(.closerCloudlet) {
                 // Validate locationUpdateConfig
                 guard let locationUpdateConfig = config!.locationUpdateConfig else {
-                    os_log("A locationUpdateConfig is required if .eventCloudletUpdate is specified in newFindCloudletEvents", log: OSLog.default, type: .debug)
+                    os_log("A locationUpdateConfig is required if .closerCloudlet is in newFindCloudletEventTriggers", log: OSLog.default, type: .debug)
                     return EdgeEventsError.missingLocationUpdateConfig
                 }
                 // Validate locationUpdateConfig .onInterval
