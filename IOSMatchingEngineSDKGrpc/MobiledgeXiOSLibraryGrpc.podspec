@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name 	     = 'MobiledgeXiOSLibraryGrpc' 
-  s.version          = '2.6.1'
+  s.version          = '2.6.2'
   s.summary          = 'The MobiledgeX Grpc SDK for iOS Swift provides Swift APIs that allows developers to communicate to MobiledgeX service infrastructure'
 
 # This description is used to generate tags and improve search results.

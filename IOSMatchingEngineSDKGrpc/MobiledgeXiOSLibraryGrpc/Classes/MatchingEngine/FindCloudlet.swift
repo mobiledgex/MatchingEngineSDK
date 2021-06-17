@@ -71,6 +71,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// for the current carrier, if any.
     /// - Parameters:
     ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
+    ///   - mode: (Optional): FindCloudletMode, default is PROXIMITY
     /// - Returns: Promise<DistributedMatchEngine_FindCloudletReply>
     @available(iOS 13.0, *)
     public func findCloudlet(request: DistributedMatchEngine_FindCloudletRequest, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
@@ -97,21 +98,29 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         case FindCloudletMode.PROXIMITY:
             promise = findCloudletProximity(host: host, port: port, request: request)
         case FindCloudletMode.PERFORMANCE:
-            promise = findCloudletPerformance(host: host, port: port, request: request)
+            promise = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
+            findCloudletPerformance(host: host, port: port, request: request).then { performanceReply in
+                promise.fulfill(performanceReply.reply)
+            }.catch { error in
+                promise.reject(error)
+            }
         default:
             promise = findCloudletProximity(host: host, port: port, request: request)
         }
         
-        // Store edgeeventscookie
+        // Store lastFindCloudletReply
         self.state.executionQueue.async {
             promise.then { reply in
-                self.state.setEdgeEventsCookie(edgeEventsCookie: reply.edgeEventsCookie)
-                os_log("saved edgeeventscookie", log: OSLog.default, type: .debug)
-                self.lastFindCloudletRequest = request
-                self.lastFindCloudletReply = reply
+                self.state.lastFindCloudletReply = reply
+                os_log("saved lastFindCloudletReply", log: OSLog.default, type: .debug)
             }
         }
         return promise
+    }
+    
+    struct FindCloudletPerformanceReply {
+        var reply: DistributedMatchEngine_FindCloudletReply
+        var bestSite: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site
     }
     
     /// FindCloudlet
@@ -124,10 +133,10 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - host: dmeHost either generated or given explicitly
     ///   - port: dmePort either generated or given explicitly
     ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
-    /// - Returns: DistributedMatchEngine_FindCloudletReply
+    /// - Returns: FindCloudletPerformanceReply
     @available(iOS 13.0, *)
-    private func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest) -> Promise<DistributedMatchEngine_FindCloudletReply> {
-        let promise: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
+    func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest) -> Promise<FindCloudletPerformanceReply> {
+        let promise: Promise<FindCloudletPerformanceReply> = Promise<FindCloudletPerformanceReply>.pending()
         var aiReply: DistributedMatchEngine_AppInstListReply? = nil
         
         // Dummy bytes to send to "load" mobile network
@@ -167,7 +176,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             return netTest.runTest()
             }
             
-        .then { orderedSites -> Promise<DistributedMatchEngine_FindCloudletReply> in
+        .then { orderedSites -> Promise<FindCloudletPerformanceReply> in
             
             // Log list of sites in order
             var idx = 0
@@ -177,7 +186,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             }
             // Create FindCloudletReply from actual FindCloudletReply and the best site from NetTest
             let findCloudletReply = self.createFindCloudletReplyFromBestSite(appInstListReply: aiReply!, site: orderedSites[0])
-            promise.fulfill(findCloudletReply)
+            let findCloudletPerformanceReply = FindCloudletPerformanceReply(reply: findCloudletReply, bestSite: orderedSites[0])
+            promise.fulfill(findCloudletPerformanceReply)
             return promise
             }
             
