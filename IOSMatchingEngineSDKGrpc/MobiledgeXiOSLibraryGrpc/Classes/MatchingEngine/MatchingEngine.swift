@@ -50,8 +50,6 @@ extension MobiledgeXiOSLibraryGrpc {
         var allowSelfSignedCertsGetConnection = false
         
         public var edgeEventsConnection: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConnection? = nil
-        var lastFindCloudletReply: DistributedMatchEngine_FindCloudletReply? = nil
-        var lastFindCloudletRequest: DistributedMatchEngine_FindCloudletRequest? = nil
         var autoMigrationEdgeEventsConnection = true
 
         /// MatchingEngine constructor

@@ -41,10 +41,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         case missingNewFindCloudletHandler
         case missingServerEventsHandler
         
-        case missingLatencyThreshold
         case invalidLatencyThreshold
-        
-        case missingUpdateInterval
+        case invalidPerformanceSwitchMargin
         case invalidUpdateInterval
         
         case hasNotDoneFindCloudlet
