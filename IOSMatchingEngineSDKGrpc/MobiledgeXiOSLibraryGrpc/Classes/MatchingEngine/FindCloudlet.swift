@@ -249,36 +249,33 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         
         for cloudlet in reply.cloudlets {
             for appInstance in cloudlet.appinstances {
-                let appPort = appInstance.ports[0]
-                
-                switch(appPort.proto) {
-                case DistributedMatchEngine_LProto.tcp:
-                    var site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site?
-                    site = initTcpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
-                    site!.appInst = appInstance
-                    site!.cloudletLocation = cloudlet.gpsLocation
-                    sites.append(site!)
-                    break
-                    
-                case DistributedMatchEngine_LProto.udp:
-                    let site = initUdpSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
+                var foundTcpPort = false
+                for appPort in appInstance.ports {
+                    // Look for a TCP port to do connect/disconnect latency test
+                    if appPort.proto == DistributedMatchEngine_LProto.tcp {
+                        foundTcpPort = true
+                        var site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site?
+                        site = initConnectSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
+                        site!.appInst = appInstance
+                        site!.cloudletLocation = cloudlet.gpsLocation
+                        sites.append(site!)
+                        break
+                    }
+                }
+                if !foundTcpPort {
+                    // If no TCP ports, use PING
+                    let site = initPingSite(appPort: appInstance.ports[0], appInstance: appInstance, numSamples: 10)
                     site.appInst = appInstance
                     site.cloudletLocation = cloudlet.gpsLocation
                     sites.append(site)
-                    break
-                    
-                default:
-                    os_log("Unknown protocol %@ from appPort at %@%@.", log: OSLog.default, type: .debug, appPort.proto.rawValue, appPort.fqdnPrefix ?? "", appInstance.fqdn)
-                    break
                 }
-                
             }
         }
         return sites
     }
     
     @available(iOS 13.0, *)
-    private func initTcpSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
+    private func initConnectSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
         // initialize host, port, and testType
         let host = (appPort.fqdnPrefix ?? "") + appInstance.fqdn
         let port = appPort.publicPort
@@ -288,7 +285,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     @available(iOS 13.0, *)
-    private func initUdpSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
+    private func initPingSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
         // initialize host, port, and testType
         let host = (appPort.fqdnPrefix ?? "") + appInstance.fqdn
         let port = appPort.publicPort
