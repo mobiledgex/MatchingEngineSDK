@@ -226,6 +226,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                     return
                 }
                 
+                print("NetTest: host is \(site.host), port is \(site.port)")
+                
                 var ip: String?
                 if site.network != MobiledgeXiOSLibraryGrpc.NetworkInterface.WIFI {
                     // default to Cellular interface unless wifi specified
@@ -240,6 +242,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                     return
                 }
                 
+                print("NetTest: localip is to bind \(localIP)")
+                                
                 // initialize addrinfo fields
                 var addrInfo = addrinfo.init()
                 addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6

@@ -133,6 +133,7 @@ extension MobiledgeXiOSLibraryGrpc {
                                 &hostname, socklen_t(hostname.count),
                                 nil, socklen_t(0), NI_NUMERICHOST)
                     address = String(cString: hostname)
+                    print("interface: \(name), address \(address)")
                 }
             }
             freeifaddrs(ifaddr)

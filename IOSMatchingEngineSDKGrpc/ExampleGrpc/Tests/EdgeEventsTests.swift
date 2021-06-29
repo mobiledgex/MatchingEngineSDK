@@ -30,7 +30,8 @@ class EdgeEventsTests: XCTestCase {
     
     let appName =  "automation-sdk-porttest"
     let appVers = "1.0"
-    let orgName =  "MobiledgeX"
+    //let orgName =  "MobiledgeX"
+    let orgName = "automation_dev_org"
     let carrierName = "TDG"
 
     override func setUp() {
@@ -71,13 +72,13 @@ class EdgeEventsTests: XCTestCase {
                 XCTAssert(false, "Bad findcloudlet. Status is \(fcReply.status)")
             }
             MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: loc)
-            return self.matchingEngine.startEdgeEvents(dmeHost: self.dmeHost, dmePort: self.dmePort, newFindCloudletHandler: self.handleNewFindCloudlet, config: self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 30, locationUpdateIntervalSeconds: 30, latencyThresholdTriggerMs: 50))
+            return self.matchingEngine.startEdgeEvents(dmeHost: self.dmeHost, dmePort: self.dmePort, newFindCloudletHandler: self.handleNewFindCloudlet, config: self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 5, locationUpdateIntervalSeconds: 5, latencyThresholdTriggerMs: 50, latencyTestPort: 2016, latencyTestNetwork: MobiledgeXiOSLibraryGrpc.NetworkInterface.WIFI))
         }.catch { error in
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
         XCTAssert(waitForPromises(timeout: 20))
-        
+                
         guard let status = replyPromise.value else {
             XCTAssert(false, "startedgeevents did not return a value.")
             return

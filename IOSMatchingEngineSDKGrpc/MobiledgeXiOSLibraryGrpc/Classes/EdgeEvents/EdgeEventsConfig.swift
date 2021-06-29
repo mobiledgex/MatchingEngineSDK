@@ -33,6 +33,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         public var newFindCloudletEventTriggers: Set<FindCloudletEventTrigger> // events that application wants a new find cloudlet for
         public var latencyThresholdTriggerMs: Double? // latency threshold in ms when new FindCloudlet is triggered if eventLatencyProcessed is in newFindCloudletEvents
         public var performanceSwitchMargin: Double? // Values range from: 0.0-1.0, latency of a new cloudlet must be better than oldCloudlet.avg - (oldCloudlet.avg * performanceSwitchMargin) before switching to the new cloudlet
+        public var latencyTestNetwork: String?
         
         // Configure how to send events
         public var latencyTestPort: UInt16? // port information for latency testing, use 0 if you don't care which port is used
