@@ -29,6 +29,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
       case websocket
     }
     
+    //public func skipEdgeEnabledCheck()
+    
     /// Checks whether device will use cellular data path
     /// If using L4 getConnection protocol, GetConnection functions will bind local socket to cellular network interface. So as long as the device has a cellular interface up, it is edgeEnabled
     /// If using L7 getConnection protocol (where we cannot control the network interface), we must check to make sure the device will not default to wifi

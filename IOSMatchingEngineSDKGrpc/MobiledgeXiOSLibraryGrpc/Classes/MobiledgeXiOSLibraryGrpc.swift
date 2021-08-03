@@ -67,7 +67,8 @@ public enum MobiledgeXiOSLibraryGrpc {
     
     /// Socket struct returned by some GetConnection functions
     public struct Socket {
-        var addrInfo: UnsafeMutablePointer<addrinfo>
+        var localAddrInfo: UnsafeMutablePointer<addrinfo>?
+        var remoteAddrInfo: UnsafeMutablePointer<addrinfo>
         var sockfd: Int32
     }
     

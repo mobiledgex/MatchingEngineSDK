@@ -183,7 +183,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             //initialize urlRequest
             var urlRequest = URLRequest(url: url!)
             urlRequest.httpMethod = "HEAD"
-            if site.network == MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR {
+            if site.netInterfaceType == MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR {
                 urlRequest.allowsCellularAccess = true
             }
             
@@ -228,17 +228,11 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                 
                 print("NetTest: host is \(site.host), port is \(site.port)")
                 
-                var ip: String?
-                if site.network != MobiledgeXiOSLibraryGrpc.NetworkInterface.WIFI {
-                    // default to Cellular interface unless wifi specified
-                    ip = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR)
-                } else {
-                    ip = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.WIFI)
-                }
-                
-                guard let localIP = ip else {
-                    os_log("Could not get network interface to bind to", log: OSLog.default, type: .debug)
-                    promise.reject(NetTestErrors.unableToGetIpAddress(msg: "Could not get network interface to bind to"))
+                var localIP: String?
+                do {
+                    try localIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getClientIP(netInterfaceType: site.netInterfaceType, localEndpoint: site.localEndpoint)
+                } catch {
+                    promise.reject(error)
                     return
                 }
                 
@@ -246,7 +240,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                                 
                 // initialize addrinfo fields
                 var addrInfo = addrinfo.init()
-                addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+                addrInfo.ai_family = AF_INET // IPv4
                 addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets
                 
                 let err = self.bindAndConnectSocket(site: site, addrInfo: &addrInfo, localIP: localIP)
@@ -260,30 +254,34 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         }
         
         // Same function is in GetBSDSocketHelper (Create socket class outside of MatchingEngine?)
-        private func bindAndConnectSocket(site: Site, addrInfo: UnsafeMutablePointer<addrinfo>, localIP: String) -> Error? {
-            // Bind to client cellular interface
-            // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
-            var res: UnsafeMutablePointer<addrinfo>!
-            // getaddrinfo function makes ip + port conversion to sockaddr easy
-            let error = getaddrinfo(localIP, nil, addrInfo, &res)
-            if error != 0 {
-                let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(error, errno)
-                os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
-                return sysError
-            }
+        private func bindAndConnectSocket(site: Site, addrInfo: UnsafeMutablePointer<addrinfo>, localIP: String?) -> Error? {
             // socket returns a socket descriptor
-            let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
+            let s = socket(addrInfo.pointee.ai_family, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
                 let sysError = MobiledgeXiOSLibraryGrpc.SystemError.socket(s, errno)
                 os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return sysError
             }
-            // bind to socket to client cellular network interface
-            let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
-            if b == -1 {
-                let sysError = MobiledgeXiOSLibraryGrpc.SystemError.bind(b, errno)
-                os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
-                return sysError
+            
+            var clientRes: UnsafeMutablePointer<addrinfo>?
+            if localIP != nil {
+                // Bind to client cellular interface
+                // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
+                // getaddrinfo function makes ip + port conversion to sockaddr easy
+                let error = getaddrinfo(localIP, nil, addrInfo, &clientRes)
+                if error != 0 {
+                    let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(error, errno)
+                    os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
+                    return sysError
+                }
+                
+                // bind to socket
+                let b = bind(s, clientRes!.pointee.ai_addr, clientRes!.pointee.ai_addrlen)
+                if b == -1 {
+                    let sysError = MobiledgeXiOSLibraryGrpc.SystemError.bind(b, errno)
+                    os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
+                    return sysError
+                }
             }
 
             // Connect to server

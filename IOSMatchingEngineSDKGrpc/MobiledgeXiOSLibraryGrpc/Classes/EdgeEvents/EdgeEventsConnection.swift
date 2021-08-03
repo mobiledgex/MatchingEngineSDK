@@ -310,7 +310,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return promise
                 }
                 let host = try matchingEngine.getHost(findCloudletReply: fcReply, appPort: appPort)
-                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
+                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5, netInterfaceType: config!.latencyTestNetInterfaceType, localEndpoint: config!.latencyTestLocalEndpoint)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
                 return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
@@ -327,7 +327,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         /// Run a connect/disconnect socket latency test and send latency samples to DME
         /// Recommended test
         /// Only works for TCP port
-        func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc, testNetwork: String = MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR) -> Promise<EdgeEventsStatus> {
+        func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
                 guard let fcReply = currentFindCloudletReply else {
@@ -355,7 +355,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return promise
                 }
                 let host = try matchingEngine.getHost(findCloudletReply: fcReply, appPort: appPort)
-                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: testNetwork, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 5)
+                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 5, netInterfaceType: config!.latencyTestNetInterfaceType, localEndpoint: config!.latencyTestLocalEndpoint)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
                 return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
@@ -383,7 +383,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         os_log("latencyrequest", log: OSLog.default, type: .debug)
                         if self.config!.newFindCloudletEventTriggers.contains(.latencyTooHigh) {
                             self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc, testNetwork: self.config!.latencyTestNetwork!)
+                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
                             }.then { status in
                                 os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                             }.catch { error in
@@ -484,7 +484,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 // Do FindCloudlet ourself if newCloudlet is nil
                 getLastStoredLocation().then { loc -> Promise<MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletPerformanceReply> in
                     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc)
-                    return self.matchingEngine.findCloudletPerformance(host: self.host, port: self.port, request: req)
+                    return self.matchingEngine.findCloudletPerformance(host: self.host, port: self.port, request: req, netInterfaceType: self.config!.latencyTestNetInterfaceType, localEndpoint: self.config!.latencyTestLocalEndpoint)
                 }.then { performanceReply in
                     let reply = performanceReply.reply
                     self.matchingEngine.state.lastFindCloudletReply = reply
@@ -529,7 +529,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     matchingEngine.state.edgeEventsQueue.async {
                         if self.connectionReady && !self.connectionClosed {
                             self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc, testNetwork: self.config!.latencyTestNetwork!)
+                                return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
                             }.then { status in
                                 os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                             }.catch { error in
@@ -543,7 +543,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                         if self.connectionReady && !self.connectionClosed {
                             if self.currLatencyInterval < latencyConfig.maxNumberOfUpdates! || latencyConfig.maxNumberOfUpdates! <= 0 {
                                 self.getLastStoredLocation().then { loc -> Promise<EdgeEventsStatus> in
-                                    return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc, testNetwork: self.config!.latencyTestNetwork!)
+                                    return self.testConnectAndPostLatencyUpdate(testPort: self.config!.latencyTestPort!, loc: loc)
                                 }.then { status in
                                     os_log("successfully test connect and post latency update", log: OSLog.default, type: .debug)
                                     self.currLatencyInterval += 1
@@ -686,11 +686,6 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 if config!.latencyTestPort == nil {
                     os_log("latencyTestPort is required if .latencyTooHigh is in newFindCloudletEventTriggers. Using 0, which will test any port", log: OSLog.default, type: .debug)
                     config!.latencyTestPort = 0
-                }
-                // Validate latency test network
-                if config!.latencyTestNetwork == nil {
-                    os_log("latencyTestNetwork is required if .latencyTooHigh is in newFindCloudletEventTriggers. Using CELLULAR", log: OSLog.default, type: .debug)
-                    config!.latencyTestNetwork = MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
                 }
                 // Validate latencyUpdateConfig .onInterval
                 if latencyUpdateConfig.updatePattern == .onInterval {

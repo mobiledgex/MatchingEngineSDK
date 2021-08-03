@@ -99,7 +99,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             promise = findCloudletProximity(host: host, port: port, request: request)
         case FindCloudletMode.PERFORMANCE:
             promise = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
-            findCloudletPerformance(host: host, port: port, request: request).then { performanceReply in
+            findCloudletPerformance(host: host, port: port, request: request, netInterfaceType: self.state.getFcPerformanceNetInterfaceType(), localEndpoint: self.state.getFcPerformanceLocalEndpoint()).then { performanceReply in
                 promise.fulfill(performanceReply.reply)
             }.catch { error in
                 promise.reject(error)
@@ -135,7 +135,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - request: DistributedMatchEngine_FindCloudletRequest from createFindCloudletRequest.
     /// - Returns: FindCloudletPerformanceReply
     @available(iOS 13.0, *)
-    func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest) -> Promise<FindCloudletPerformanceReply> {
+    func findCloudletPerformance(host: String, port: UInt16, request: DistributedMatchEngine_FindCloudletRequest, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<FindCloudletPerformanceReply> {
         let promise: Promise<FindCloudletPerformanceReply> = Promise<FindCloudletPerformanceReply>.pending()
         var aiReply: DistributedMatchEngine_AppInstListReply? = nil
         
@@ -165,7 +165,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 return sitesPromise
             }
             // Initialize list of Sites from the given App instances
-            let sites = self.createSitesFromAppInstReply(reply: appInstListReply)
+            let sites = self.createSitesFromAppInstReply(reply: appInstListReply, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
             // Make sure sites is not empty
             if sites.count == 0 {
                 let sitesPromise = Promise<[MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site]>.init(MatchingEngineError.unknownAppInsts)
@@ -244,7 +244,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     /// Create a Site object per appInstance per CloudletLocation returned from AppInstListReply
     /// This will be used as the array of Sites for NetTest
     @available(iOS 13.0, *)
-    private func createSitesFromAppInstReply(reply: DistributedMatchEngine_AppInstListReply) -> [MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site] {
+    private func createSitesFromAppInstReply(reply: DistributedMatchEngine_AppInstListReply, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> [MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site] {
         var sites: [MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site] = []
         
         for cloudlet in reply.cloudlets {
@@ -255,7 +255,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                     if appPort.proto == DistributedMatchEngine_LProto.tcp {
                         foundTcpPort = true
                         var site: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site?
-                        site = initConnectSite(appPort: appPort, appInstance: appInstance, numSamples: 10)
+                        site = initConnectSite(appPort: appPort, appInstance: appInstance, numSamples: 10, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
                         site!.appInst = appInstance
                         site!.cloudletLocation = cloudlet.gpsLocation
                         sites.append(site!)
@@ -264,7 +264,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 }
                 if !foundTcpPort {
                     // If no TCP ports, use PING
-                    let site = initPingSite(appPort: appInstance.ports[0], appInstance: appInstance, numSamples: 10)
+                    let site = initPingSite(appPort: appInstance.ports[0], appInstance: appInstance, numSamples: 10, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
                     site.appInst = appInstance
                     site.cloudletLocation = cloudlet.gpsLocation
                     sites.append(site)
@@ -275,22 +275,22 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     @available(iOS 13.0, *)
-    private func initConnectSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
+    private func initConnectSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
         // initialize host, port, and testType
         let host = (appPort.fqdnPrefix ?? "") + appInstance.fqdn
         let port = appPort.publicPort
         let testType = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT
         
-        return MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: "", host: host, port: UInt16(port), testType: testType, numSamples: numSamples)
+        return MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: UInt16(port), testType: testType, numSamples: numSamples, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
     }
     
     @available(iOS 13.0, *)
-    private func initPingSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
+    private func initPingSite(appPort: DistributedMatchEngine_AppPort, appInstance: DistributedMatchEngine_Appinstance, numSamples: Int, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site {
         // initialize host, port, and testType
         let host = (appPort.fqdnPrefix ?? "") + appInstance.fqdn
         let port = appPort.publicPort
         let testType = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING
         
-        return MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: "", host: host, port: UInt16(port), testType: testType, numSamples: numSamples)
+        return MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: UInt16(port), testType: testType, numSamples: numSamples, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
     }
 }

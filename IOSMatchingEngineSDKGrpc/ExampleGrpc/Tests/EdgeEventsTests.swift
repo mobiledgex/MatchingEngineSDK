@@ -72,12 +72,12 @@ class EdgeEventsTests: XCTestCase {
                 XCTAssert(false, "Bad findcloudlet. Status is \(fcReply.status)")
             }
             MobiledgeXiOSLibraryGrpc.MobiledgeXLocation.setLastLocation(loc: loc)
-            return self.matchingEngine.startEdgeEvents(dmeHost: self.dmeHost, dmePort: self.dmePort, newFindCloudletHandler: self.handleNewFindCloudlet, config: self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 5, locationUpdateIntervalSeconds: 5, latencyThresholdTriggerMs: 50, latencyTestPort: 2016, latencyTestNetwork: MobiledgeXiOSLibraryGrpc.NetworkInterface.WIFI))
+            return self.matchingEngine.startEdgeEvents(dmeHost: self.dmeHost, dmePort: self.dmePort, newFindCloudletHandler: self.handleNewFindCloudlet, config: self.matchingEngine.createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: 5, locationUpdateIntervalSeconds: 5, latencyThresholdTriggerMs: 50, latencyTestPort: 2016))
         }.catch { error in
             XCTAssert(false, "EdgeEventsConnection encountered error: \(error)")
         }
         
-        XCTAssert(waitForPromises(timeout: 20))
+        XCTAssert(waitForPromises(timeout: 10))
                 
         guard let status = replyPromise.value else {
             XCTAssert(false, "startedgeevents did not return a value.")

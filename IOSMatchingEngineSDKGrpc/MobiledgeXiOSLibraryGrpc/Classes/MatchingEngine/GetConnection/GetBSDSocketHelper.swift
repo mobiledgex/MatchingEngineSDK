@@ -22,49 +22,27 @@ import Promises
 @available(iOS 13.0, *)
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
-    func getBSDTCPConnection(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
+    func getBSDTCPConnection(host: String, port: UInt16, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
     {
         let promise = Promise<MobiledgeXiOSLibraryGrpc.Socket>(on: .global(qos: .background)) { fulfill, reject in
-            
-            guard let clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR) else {
-                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
-                reject(GetConnectionError.invalidNetworkInterface)
-                return
-            }
 
             // initialize addrinfo fields
             var addrInfo = addrinfo.init()
-            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
+            addrInfo.ai_family = AF_INET // IPv4
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
-
-            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: String(describing: port))
-            .then { socket in
-                    fulfill(socket)
-            }.catch { error in
-                reject(error)
-            }
-        }
-        return promise
-    }
-
-    func getBSDUDPConnection(host: String, port: UInt16) -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
-    {
-        let promise = Promise<MobiledgeXiOSLibraryGrpc.Socket>(on: .global(qos: .background)) { fulfill, reject in
             
-            guard let clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR) else {
-                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
-                reject(GetConnectionError.invalidNetworkInterface)
+            // find clientIP if needed
+            var clientIP: String?
+            do {
+                try clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getClientIP(netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
+            } catch {
+                reject(error)
                 return
             }
 
-            // initialize addrinfo fields
-            var addrInfo = addrinfo.init()
-            addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
-            addrInfo.ai_socktype = SOCK_DGRAM // UDP
-
             self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: String(describing: port))
             .then { socket in
-                    fulfill(socket)
+                fulfill(socket)
             }.catch { error in
                 reject(error)
             }
@@ -72,36 +50,68 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return promise
     }
 
-    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String, serverFqdn: String, port: String)  -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
+    func getBSDUDPConnection(host: String, port: UInt16, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
+    {
+        let promise = Promise<MobiledgeXiOSLibraryGrpc.Socket>(on: .global(qos: .background)) { fulfill, reject in
+
+            // initialize addrinfo fields
+            var addrInfo = addrinfo.init()
+            addrInfo.ai_family = AF_INET // IPv4
+            addrInfo.ai_socktype = SOCK_DGRAM // UDP
+            
+            // find clientIP if needed
+            var clientIP: String?
+            do {
+                try clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getClientIP(netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
+            } catch {
+                reject(error)
+                return
+            }
+
+            self.bindBSDClientSocketAndConnectServerSocket(addrInfo: &addrInfo, clientIP: clientIP, serverFqdn: host, port: String(describing: port))
+            .then { socket in
+                fulfill(socket)
+            }.catch { error in
+                reject(error)
+            }
+        }
+        return promise
+    }
+
+    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String?, serverFqdn: String, port: String)  -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
     {
         let promiseInputs: Promise<MobiledgeXiOSLibraryGrpc.Socket> = Promise<MobiledgeXiOSLibraryGrpc.Socket>.pending()
 
-        // Bind to client cellular interface
-        // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
-        var res: UnsafeMutablePointer<addrinfo>!
-        // getaddrinfo function makes ip + port conversion to sockaddr easy
-        let error = getaddrinfo(clientIP, nil, addrInfo, &res)
-        if error != 0 {
-            let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(error, errno)
-            os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
-            promiseInputs.reject(sysError)
-            return promiseInputs
-        }
         // socket returns a socket descriptor
-        let s = socket(res.pointee.ai_family, res.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
+        let s = socket(addrInfo.pointee.ai_family, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
         if s == -1 {
             let sysError = MobiledgeXiOSLibraryGrpc.SystemError.socket(s, errno)
             os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
             return promiseInputs
         }
-        // bind to socket to client cellular network interface
-        let b = bind(s, res.pointee.ai_addr, res.pointee.ai_addrlen)
-        if b == -1 {
-            let sysError = MobiledgeXiOSLibraryGrpc.SystemError.bind(b, errno)
-            os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
-            promiseInputs.reject(sysError)
-            return promiseInputs
+        
+        var clientRes: UnsafeMutablePointer<addrinfo>?
+        if clientIP != nil {
+            // Bind to client cellular interface
+            // used to store addrinfo fields like sockaddr struct, socket type, protocol, and address length
+            // getaddrinfo function makes ip + port conversion to sockaddr easy
+            let error = getaddrinfo(clientIP, nil, addrInfo, &clientRes)
+            if error != 0 {
+                let sysError = MobiledgeXiOSLibraryGrpc.SystemError.getaddrinfo(error, errno)
+                os_log("Client get addrinfo error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
+                promiseInputs.reject(sysError)
+                return promiseInputs
+            }
+            
+            // bind to socket
+            let b = bind(s, clientRes!.pointee.ai_addr, clientRes!.pointee.ai_addrlen)
+            if b == -1 {
+                let sysError = MobiledgeXiOSLibraryGrpc.SystemError.bind(b, errno)
+                os_log("Client bind error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
+                promiseInputs.reject(sysError)
+                return promiseInputs
+            }
         }
 
         // Connect to server
@@ -129,7 +139,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             return promiseInputs
         }
             
-        let socket = MobiledgeXiOSLibraryGrpc.Socket(addrInfo: res, sockfd: s)
+        let socket = MobiledgeXiOSLibraryGrpc.Socket(localAddrInfo: clientRes, remoteAddrInfo: serverRes, sockfd: s)
         promiseInputs.fulfill(socket)
         return promiseInputs
     }

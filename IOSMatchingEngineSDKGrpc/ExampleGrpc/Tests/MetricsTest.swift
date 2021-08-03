@@ -21,10 +21,10 @@ import Network
 
 class MetricsTest: XCTestCase {
     
-    let host1 = "frankfurt-main.tdg.mobiledgex.net"
-    let host2 = "edmonton-main.telus.mobiledgex.net"
-    let host3 = "autoclusteredgemultiplay.hamburg-main.tdg.mobiledgex.net"
-    let host4 = "autoclusteredgemultiplay.toronto-hood2.telus.mobiledgex.net"
+    let host1 = "porttestcluster.automationhamburgcloudlet.tdg.mobiledgex.net"
+    let host2 = "porttestcluster.automationfrankfurtcloudlet.tdg.mobiledgex.net"
+    let host3 = "reservable1.frankfurt-main.tdg.mobiledgex.net"
+    let host4 = "reservable0.hamburg-main.tdg.mobiledgex.net"
 
     override func setUp() {
         super.setUp()
@@ -45,9 +45,9 @@ class MetricsTest: XCTestCase {
     func testNetTestLoop() {
         
         // Initialize sites
-        let site1 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, l7Path: "https://www.google.com", testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site2 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host1, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 10)
-        let site3 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: "google.com", port: 443, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site1 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(l7Path: "https://www.google.com", testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site2 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host1, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site3 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: "google.com", port: 443, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         
         // put sites in an array
         let sites = [site1, site2]
@@ -95,10 +95,10 @@ class MetricsTest: XCTestCase {
     @available(iOS 13.0, *)
     func testNetTest() {
         // Initialize sites
-        let site1 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host1, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site2 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host2, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site3 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host3, port: 3000, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
-        let site4 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host4, port: 3000, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site1 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host1, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site2 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host2, port: 2016, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site3 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host3, port: 3000, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
+        let site4 = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host4, port: 3000, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 10)
         
         
         // put sites in an array
@@ -111,7 +111,7 @@ class MetricsTest: XCTestCase {
             }
             
             // Make sure avg and stdDev are populated
-            if (site1.avg > 0 && site1.stdDev > 0) {
+            if (site1.avg > 0 && site1.stdDev >= 0) {
                 // Make sure avg is correct
                 XCTAssert(site1.avg - self.avg(arr: site1.samples) < 0.001, "Incorrect avg for site1")
                 // Make sure stdDev is correct
@@ -121,7 +121,7 @@ class MetricsTest: XCTestCase {
             }
             
             // Make sure avg and stdDev are populated
-            if (site2.avg > 0 && site2.stdDev > 0) {
+            if (site2.avg > 0 && site2.stdDev >= 0) {
                 // Make sure avg is correct
                 XCTAssert(site2.avg - self.avg(arr: site2.samples) < 0.001, "Incorrect avg for site2")
                 // Make sure stdDev is correct
@@ -131,7 +131,7 @@ class MetricsTest: XCTestCase {
             }
             
             // Make sure avg and stdDev are populated
-            if (site3.avg > 0 && site3.stdDev > 0) {
+            if (site3.avg > 0 && site3.stdDev >= 0) {
                 // Make sure avg is correct
                 XCTAssert(site3.avg - self.avg(arr: site3.samples) < 0.001, "Incorrect avg for site3")
                 // Make sure stdDev is correct
@@ -141,7 +141,7 @@ class MetricsTest: XCTestCase {
             }
             
             // Make sure avg and stdDev are populated
-            if (site4.avg > 0 && site4.stdDev > 0) {
+            if (site4.avg > 0 && site4.stdDev >= 0) {
                 // Make sure avg is correct
                 XCTAssert(site4.avg - self.avg(arr: site4.samples) < 0.001, "Incorrect avg for site4")
                 // Make sure stdDev is correct
@@ -159,7 +159,7 @@ class MetricsTest: XCTestCase {
     
     @available(iOS 13.0, *)
     func testPing() {
-        let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: "google.com", port: 443, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
+        let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: "google.com", port: 443, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
         
         let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
         netTest.runTest(numSamples: 5).then { sites in

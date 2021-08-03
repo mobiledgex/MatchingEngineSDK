@@ -89,12 +89,31 @@ extension MobiledgeXiOSLibraryGrpc {
         var verifyLocationResult: [String: AnyObject]?
         var location = [String: Any]()
         
+        var fcPerformanceNetInterfaceType: String?
+        var fcPerformanceLocalEndpoint: String?
+        
         public func setUseWifiOnly(enabled: Bool) {
             useWifiOnly = enabled
         }
         
         public func isUseWifiOnly() -> Bool {
             return useWifiOnly
+        }
+        
+        public func setFcPerformanceNetInterfaceType(netInterfaceType: String) {
+            fcPerformanceNetInterfaceType = netInterfaceType
+        }
+        
+        public func getFcPerformanceNetInterfaceType() -> String? {
+            return fcPerformanceNetInterfaceType
+        }
+        
+        public func setFcPerformanceLocalEndpoint(endpoint: String) {
+            fcPerformanceLocalEndpoint = endpoint
+        }
+        
+        public func getFcPerformanceLocalEndpoint() -> String? {
+            return fcPerformanceLocalEndpoint
         }
         
         func setSessionCookie(sessionCookie: String?) {
