@@ -24,12 +24,12 @@ import SocketIO
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     // Returns TCP CFSocket promise
-    func getTCPConnection(host: String, port: UInt16, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
+    func getTCPConnection(host: String, port: UInt16, callback: @escaping CFSocketCallBack, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
             // initialize CFSocket (no callbacks provided -> developer will implement)
-            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, nil, nil) else {
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, callback, nil) else {
                 reject(GetConnectionError.unableToCreateSocket)
                 return
             }
@@ -69,12 +69,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     // Returns UDP CFSocket promise
-    func getUDPConnection(host: String, port: UInt16, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
+    func getUDPConnection(host: String, port: UInt16, callback: @escaping CFSocketCallBack, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
         
             // initialize socket (no callbacks provided -> developer will implement)
-            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, nil, nil) else {
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, callback, nil) else {
                 reject(GetConnectionError.unableToCreateSocket)
                 return
             }

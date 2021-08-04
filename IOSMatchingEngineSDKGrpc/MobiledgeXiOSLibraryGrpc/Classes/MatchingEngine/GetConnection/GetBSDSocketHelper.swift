@@ -28,7 +28,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
             // initialize addrinfo fields
             var addrInfo = addrinfo.init()
-            addrInfo.ai_family = AF_INET // IPv4
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
             
             // find clientIP if needed
@@ -56,7 +55,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
 
             // initialize addrinfo fields
             var addrInfo = addrinfo.init()
-            addrInfo.ai_family = AF_INET // IPv4
             addrInfo.ai_socktype = SOCK_DGRAM // UDP
             
             // find clientIP if needed
@@ -78,13 +76,24 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return promise
     }
 
-    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String?, serverFqdn: String, port: String)  -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
+    private func bindBSDClientSocketAndConnectServerSocket(addrInfo: UnsafeMutablePointer<addrinfo>, clientIP: String?, serverFqdn: String, port: String, ipfamily: Int32? = AF_UNSPEC)  -> Promise<MobiledgeXiOSLibraryGrpc.Socket>
     {
         let promiseInputs: Promise<MobiledgeXiOSLibraryGrpc.Socket> = Promise<MobiledgeXiOSLibraryGrpc.Socket>.pending()
 
         // socket returns a socket descriptor
-        let s = socket(addrInfo.pointee.ai_family, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
+        let s = socket(ipfamily!, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
         if s == -1 {
+            if errno == 47 {
+                // try to find correct ip family
+                if ipfamily == AF_UNSPEC {
+                    return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET)
+                } else if ipfamily == AF_INET {
+                    return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET6)
+                } else {
+                    promiseInputs.reject(MobiledgeXiOSLibraryGrpc.SystemError.noValidIpFamily)
+                    return promiseInputs
+                }
+            }
             let sysError = MobiledgeXiOSLibraryGrpc.SystemError.socket(s, errno)
             os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)
@@ -133,6 +142,17 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         // connect our socket to the provisioned socket
         let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
         if c == -1 {
+            if errno == 47 {
+                // try to find correct ip family
+                if ipfamily == AF_UNSPEC {
+                    return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET)
+                } else if ipfamily == AF_INET {
+                    return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET6)
+                } else {
+                    promiseInputs.reject(MobiledgeXiOSLibraryGrpc.SystemError.noValidIpFamily)
+                    return promiseInputs
+                }
+            }
             let sysError = MobiledgeXiOSLibraryGrpc.SystemError.connect(c, errno)
             os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
             promiseInputs.reject(sysError)

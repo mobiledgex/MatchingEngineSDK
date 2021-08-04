@@ -51,6 +51,7 @@ public enum MobiledgeXiOSLibraryGrpc {
         case socket(Int32, Int32?)
         case bind(Int32, Int32?)
         case connect(Int32, Int32?)
+        case noValidIpFamily
     }
     
     /// Generic error from MobiledgeX SDK
@@ -68,7 +69,7 @@ public enum MobiledgeXiOSLibraryGrpc {
     /// Socket struct returned by some GetConnection functions
     public struct Socket {
         var localAddrInfo: UnsafeMutablePointer<addrinfo>?
-        var remoteAddrInfo: UnsafeMutablePointer<addrinfo>
+        var remoteAddrInfo: UnsafeMutablePointer<addrinfo>?
         var sockfd: Int32
     }
     

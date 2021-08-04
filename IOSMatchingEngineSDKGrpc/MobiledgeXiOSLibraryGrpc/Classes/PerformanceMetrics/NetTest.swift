@@ -240,7 +240,6 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
                                 
                 // initialize addrinfo fields
                 var addrInfo = addrinfo.init()
-                addrInfo.ai_family = AF_INET // IPv4
                 addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets
                 
                 let err = self.bindAndConnectSocket(site: site, addrInfo: &addrInfo, localIP: localIP)
@@ -254,10 +253,21 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         }
         
         // Same function is in GetBSDSocketHelper (Create socket class outside of MatchingEngine?)
-        private func bindAndConnectSocket(site: Site, addrInfo: UnsafeMutablePointer<addrinfo>, localIP: String?) -> Error? {
+        private func bindAndConnectSocket(site: Site, addrInfo: UnsafeMutablePointer<addrinfo>, localIP: String?, ipfamily: Int32? = AF_UNSPEC) -> Error? {
+            
             // socket returns a socket descriptor
-            let s = socket(addrInfo.pointee.ai_family, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
+            let s = socket(ipfamily!, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
+                if errno == 47 {
+                    // try to find correct ip family
+                    if ipfamily == AF_UNSPEC {
+                        return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
+                    } else if ipfamily == AF_INET {
+                        return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
+                    } else {
+                        return MobiledgeXiOSLibraryGrpc.SystemError.noValidIpFamily
+                    }
+                }
                 let sysError = MobiledgeXiOSLibraryGrpc.SystemError.socket(s, errno)
                 os_log("Client socket error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return sysError
@@ -303,6 +313,16 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
             let after = DispatchTime.now()
             if c == -1 {
+                if errno == 47 {
+                    // try to find correct ip family
+                    if ipfamily == AF_UNSPEC {
+                        return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
+                    } else if ipfamily == AF_INET {
+                        return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
+                    } else {
+                        return MobiledgeXiOSLibraryGrpc.SystemError.noValidIpFamily
+                    }
+                }
                 let sysError = MobiledgeXiOSLibraryGrpc.SystemError.connect(c, errno)
                 os_log("Connection error is %@", log: OSLog.default, type: .debug, sysError.localizedDescription)
                 return sysError

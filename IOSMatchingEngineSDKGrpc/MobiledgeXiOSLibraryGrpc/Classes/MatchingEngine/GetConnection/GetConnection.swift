@@ -36,7 +36,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<CFSocket>
-    public func getTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
+    public func getTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, callback: @escaping CFSocketCallBack, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -57,7 +57,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getTCPConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
+            return getTCPConnection(host: host, port: port, callback: callback, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -157,7 +157,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<CFSocket>
-    public func getUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
+    public func getUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, callback: @escaping CFSocketCallBack, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
         
@@ -178,7 +178,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getUDPConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
+            return getUDPConnection(host: host, port: port, callback: callback, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
