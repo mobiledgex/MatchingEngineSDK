@@ -83,7 +83,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         // socket returns a socket descriptor
         let s = socket(ipfamily!, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
         if s == -1 {
-            if errno == 47 {
+            if errno == EAFNOSUPPORT {
                 // try to find correct ip family
                 if ipfamily == AF_UNSPEC {
                     return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET)
@@ -142,7 +142,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         // connect our socket to the provisioned socket
         let c = connect(s, serverRes.pointee.ai_addr, serverRes.pointee.ai_addrlen)
         if c == -1 {
-            if errno == 47 {
+            if errno == EAFNOSUPPORT {
                 // try to find correct ip family
                 if ipfamily == AF_UNSPEC {
                     return bindBSDClientSocketAndConnectServerSocket(addrInfo: addrInfo, clientIP: clientIP, serverFqdn: serverFqdn, port: port, ipfamily: AF_INET)
