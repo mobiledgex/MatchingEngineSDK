@@ -197,7 +197,7 @@ class Tests: XCTestCase {
         let gpsStatus = val.gpsLocationStatus
         
         // The next value may change. Range of values are possible depending on location.
-        XCTAssert(gpsStatus == DistributedMatchEngine_VerifyLocationReply.GPSLocationStatus.locVerified, "VerifyLocation failed: \(gpsStatus)")
+        XCTAssert(gpsStatus == DistributedMatchEngine_VerifyLocationReply.GPSLocationStatus.locUnknown, "VerifyLocation failed: \(gpsStatus)")
         
         XCTAssertNil(replyPromise.error, "VerifyLocation Error is set: \(String(describing: replyPromise.error))")
     }

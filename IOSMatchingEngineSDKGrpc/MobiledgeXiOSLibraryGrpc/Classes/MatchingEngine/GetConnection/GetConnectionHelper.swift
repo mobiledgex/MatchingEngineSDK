@@ -24,19 +24,12 @@ import SocketIO
 extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     // Returns TCP CFSocket promise
-    func getTCPConnection(host: String, port: UInt16) -> Promise<CFSocket>
+    func getTCPConnection(host: String, port: UInt16, callback: @escaping CFSocketCallBack, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
             
-            // local ip bind to cellular network interface
-            guard let clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR) else {
-                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
-                reject(GetConnectionError.invalidNetworkInterface)
-                return
-            }
-        
             // initialize CFSocket (no callbacks provided -> developer will implement)
-            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, nil, nil) else {
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, callback, nil) else {
                 reject(GetConnectionError.unableToCreateSocket)
                 return
             }
@@ -44,10 +37,30 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             var addrInfo = addrinfo.init()
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_STREAM // TCP stream sockets (default)
+            
+            // find clientIP if needed
+            var clientIP: String?
+            do {
+                try clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getClientIP(netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
+            } catch {
+                reject(error)
+                return
+            }
         
-            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
+            self.connectCFSocket(serverHost: host, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                fulfill(socket)
+                if clientIP == nil {
+                    // return socket immediately
+                    fulfill(socket)
+                } else {
+                    // if clientIP is non-nil, we need to bind to it
+                    self.bindCFSocket(clientHost: clientIP!, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
+                    .then { socket in
+                        fulfill(socket)
+                    }.catch { error in
+                        reject(error)
+                    }
+                }
             }.catch { error in
                 reject(error)
             }
@@ -56,19 +69,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     }
     
     // Returns UDP CFSocket promise
-    func getUDPConnection(host: String, port: UInt16) -> Promise<CFSocket>
+    func getUDPConnection(host: String, port: UInt16, callback: @escaping CFSocketCallBack, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> Promise<CFSocket>
     {
         let promise = Promise<CFSocket>(on: .global(qos: .background)) { fulfill, reject in
-            
-            // local ip bind to cellular network interface
-            guard let clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getIPAddress(netInterfaceType: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR) else {
-                os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
-                reject(GetConnectionError.invalidNetworkInterface)
-                return
-            }
         
             // initialize socket (no callbacks provided -> developer will implement)
-            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, nil, nil) else {
+            guard let socket = CFSocketCreate(kCFAllocatorDefault, AF_UNSPEC, SOCK_DGRAM, IPPROTO_UDP, 0, callback, nil) else {
                 reject(GetConnectionError.unableToCreateSocket)
                 return
             }
@@ -76,10 +82,30 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             var addrInfo = addrinfo.init()
             addrInfo.ai_family = AF_UNSPEC // IPv4 or IPv6
             addrInfo.ai_socktype = SOCK_DGRAM // UDP datagrams
+            
+            // find clientIP if needed
+            var clientIP: String?
+            do {
+                try clientIP = MobiledgeXiOSLibraryGrpc.NetworkInterface.getClientIP(netInterfaceType: netInterfaceType, localEndpoint: localEndpoint)
+            } catch {
+                reject(error)
+                return
+            }
                         
-            self.connectAndBindCFSocket(serverHost: host, clientHost: clientIP, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
+            self.connectCFSocket(serverHost: host, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
             .then { socket in
-                fulfill(socket)
+                if clientIP == nil {
+                    // return socket immediately
+                    fulfill(socket)
+                } else {
+                    // if clientIP is non-nil, we need to bind to it
+                    self.bindCFSocket(clientHost: clientIP!, port: String(describing: port), addrInfo: &addrInfo, socket: socket)
+                    .then { socket in
+                        fulfill(socket)
+                    }.catch { error in
+                        reject(error)
+                    }
+                }
             }.catch { error in
                 reject(error)
             }
@@ -127,24 +153,16 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         return promise
     }
     
-    // Connect CFSocket to given host and port and bind to cellular interface
-    private func connectAndBindCFSocket(serverHost: String, clientHost: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>, socket: CFSocket) -> Promise<CFSocket>
+    // Connect CFSocket to given host and port
+    private func connectCFSocket(serverHost: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>, socket: CFSocket) -> Promise<CFSocket>
     {
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        return all (
-            getSockAddr(host: serverHost, port: port, addrInfo: addrInfo),
-            getSockAddr(host: clientHost, port: port, addrInfo: addrInfo)
-        ).then { serverSockAddr, clientSockAddr -> Promise<CFSocket> in // getSockAddr promises returns a pointer to sockaddr struct
+        return Promise<UnsafeMutablePointer<sockaddr>> {
+            return self.getSockAddr(host: serverHost, port: port, addrInfo: addrInfo)
+        }.then { serverSockAddr -> Promise<CFSocket> in // getSockAddr promises returns a pointer to sockaddr struct
             // connect to server
             let serverData = NSData(bytes: serverSockAddr, length: MemoryLayout<sockaddr>.size) as CFData
             let serverError = CFSocketConnectToAddress(socket, serverData, 5) // 5 second timeout
-            // bind to client cellular interface
-            let clientData = NSData(bytes: clientSockAddr, length: MemoryLayout<sockaddr>.size) as CFData
-            let clientError = CFSocketSetAddress(socket, clientData)
-            if clientError != CFSocketError.success {
-                promiseInputs.reject(GetConnectionError.unableToBind)
-                return promiseInputs
-            }
             
             switch serverError {
             case .success:
@@ -153,6 +171,27 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                 promiseInputs.reject(GetConnectionError.unableToConnectToServer)
             case .timeout:
                 promiseInputs.reject(GetConnectionError.connectionTimeout)
+            default:
+                promiseInputs.reject(GetConnectionError.unknownError(error: serverError.rawValue.description))
+            }
+            return promiseInputs
+        }.catch { error in
+            promiseInputs.reject(error)
+        }
+    }
+    
+    // Bind CFSocket to specified ip address
+    private func bindCFSocket(clientHost: String, port: String, addrInfo: UnsafeMutablePointer<addrinfo>, socket: CFSocket) -> Promise<CFSocket> {
+        let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
+        return Promise<UnsafeMutablePointer<sockaddr>> {
+            return self.getSockAddr(host: clientHost, port: port, addrInfo: addrInfo)
+        }.then { clientSockAddr -> Promise<CFSocket> in // getSockAddr promises returns a pointer to sockaddr struct
+            // bind to client cellular interface
+            let clientData = NSData(bytes: clientSockAddr, length: MemoryLayout<sockaddr>.size) as CFData
+            let clientError = CFSocketSetAddress(socket, clientData)
+            if clientError != CFSocketError.success {
+                promiseInputs.reject(GetConnectionError.unableToBind)
+                return promiseInputs
             }
             return promiseInputs
         }.catch { error in

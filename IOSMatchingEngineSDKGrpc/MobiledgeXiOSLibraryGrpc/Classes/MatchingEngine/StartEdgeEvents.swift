@@ -297,12 +297,12 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - latencyThresholdTriggerMs: Double: The latency threshold at which the application wants to look for a better cloudlet. For example, if latencyThresholdTriggerMs is set to 50 and if the SDK finds that latency is > 50ms, the SDK will check to see if there is a cloudlet with lower latency
     ///   - performanceSwitchMargin: Double: Values range from: 0.0-1.0, latency of a new cloudlet must be better than oldCloudlet.avg - (oldCloudlet.avg * performanceSwitchMargin) before switching to the new cloudlet
     /// - Returns: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig
-    public func createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: UInt = defaultLatencyUpdateIntervalSeconds, locationUpdateIntervalSeconds: UInt = defaultLocationUpdateIntervalSeconds, latencyThresholdTriggerMs: Double = defaultLatencyThresholdTriggerMs, performanceSwitchMargin: Double = defaultPerformanceSwitchMargin, latencyTestPort: UInt16 = 0) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+    public func createDefaultEdgeEventsConfig(latencyUpdateIntervalSeconds: UInt = defaultLatencyUpdateIntervalSeconds, locationUpdateIntervalSeconds: UInt = defaultLocationUpdateIntervalSeconds, latencyThresholdTriggerMs: Double = defaultLatencyThresholdTriggerMs, performanceSwitchMargin: Double = defaultPerformanceSwitchMargin, latencyTestPort: UInt16 = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
         let newFindCloudletEventTriggers: Set<MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEventTrigger> = [.error, .closerCloudlet, .cloudletStateChanged, .appInstHealthChanged, .cloudletMaintenanceStateChanged, .latencyTooHigh]
         let latencyUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig(updatePattern: .onInterval, updateIntervalSeconds: latencyUpdateIntervalSeconds, maxNumberOfUpdates: 0)
         let locationUpdateConfig = MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig(updatePattern: .onInterval, updateIntervalSeconds: locationUpdateIntervalSeconds, maxNumberOfUpdates: 0)
         
-        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEventTriggers: newFindCloudletEventTriggers, latencyThresholdTriggerMs: latencyThresholdTriggerMs, performanceSwitchMargin: performanceSwitchMargin, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEventTriggers: newFindCloudletEventTriggers, latencyThresholdTriggerMs: latencyThresholdTriggerMs, performanceSwitchMargin: performanceSwitchMargin, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, latencyTestNetInterfaceType: netInterfaceType, latencyTestLocalEndpoint: localEndpoint, locationUpdateConfig: locationUpdateConfig)
         return config
     }
     
@@ -318,8 +318,8 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig: Configures how often and when the SDK will test latency
     ///   - locationUpdateConfig; MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig: Configures how often and when the SDK will check gps location changes
     /// - Returns: MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig
-    public func createEdgeEventsConfig(newFindCloudletEventTriggers: Set<MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEventTrigger>, latencyThresholdTriggerMs: Double?, performanceSwitchMargin: Double?, latencyTestPort: UInt16?, latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig?, locationUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig?) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
-        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEventTriggers: newFindCloudletEventTriggers, latencyThresholdTriggerMs: latencyThresholdTriggerMs, performanceSwitchMargin: performanceSwitchMargin, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, locationUpdateConfig: locationUpdateConfig)
+    public func createEdgeEventsConfig(newFindCloudletEventTriggers: Set<MobiledgeXiOSLibraryGrpc.EdgeEvents.FindCloudletEventTrigger>, latencyThresholdTriggerMs: Double?, performanceSwitchMargin: Double?, latencyTestPort: UInt16?, latencyUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig?, locationUpdateConfig: MobiledgeXiOSLibraryGrpc.EdgeEvents.UpdateConfig?, latencyTestNetwork: String?, netInterfaceType: String? = nil, localEndpoint: String? = nil) -> MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig {
+        let config = MobiledgeXiOSLibraryGrpc.EdgeEvents.EdgeEventsConfig(newFindCloudletEventTriggers: newFindCloudletEventTriggers, latencyThresholdTriggerMs: latencyThresholdTriggerMs, performanceSwitchMargin: performanceSwitchMargin, latencyTestPort: latencyTestPort, latencyUpdateConfig: latencyUpdateConfig, latencyTestNetInterfaceType: netInterfaceType, latencyTestLocalEndpoint: localEndpoint, locationUpdateConfig: locationUpdateConfig)
         return config
     }
     
@@ -341,7 +341,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     
     /// Sets the autoMigrationEdgeEventsConnection variable
     /// If autoMigrationEdgeEventsConnection is true, the SDK will automatically stop the current EdgeEvents connection and then start a new EdgeEvents connection that will receive events from the new cloudlet
-    /// If autoMigrationEdgeEventsConnection is fale, it is up to the application to start a new EdgeEvents connection or call switchedToNewCloudlet() to notify the SDK to start a new EdgeEvents connection when/if the application switches
+    /// If autoMigrationEdgeEventsConnection is false, it is up to the application to start a new EdgeEvents connection or call switchedToNewCloudlet() to notify the SDK to start a new EdgeEvents connection when/if the application switches
     /// cloudlets.
     /// Default is true.
     ///

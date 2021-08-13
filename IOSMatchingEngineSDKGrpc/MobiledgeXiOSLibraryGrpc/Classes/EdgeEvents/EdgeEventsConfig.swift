@@ -37,6 +37,8 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         // Configure how to send events
         public var latencyTestPort: UInt16? // port information for latency testing, use 0 if you don't care which port is used
         public var latencyUpdateConfig: UpdateConfig? // config for latency updates
+        public var latencyTestNetInterfaceType: String? // network interface type to bind to (CELLULAR or WIFI if set)
+        public var latencyTestLocalEndpoint: String? // local endpoint to bind to
         public var locationUpdateConfig: UpdateConfig? // config for gps location updates
     }
     

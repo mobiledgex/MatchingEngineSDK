@@ -30,7 +30,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         public var host: String?
         public var port: UInt16?
         public var l7Path: String? // http path
-        public var network: String
+        public var netInterfaceType: String?
+        public var localEndpoint: String?
         public var testType: NetTest.TestType
 
         public var lastPingMs: Double?
@@ -49,8 +50,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         let DEFAULT_CAPACITY = 5
 
         /// initialize size with host and port
-        public init(network: String, host: String, port: UInt16, testType: NetTest.TestType?, numSamples: Int?) {
-            self.network = network
+        public init(host: String, port: UInt16, testType: NetTest.TestType?, numSamples: Int?, netInterfaceType: String? = nil, localEndpoint: String? = nil) {
             self.host = host
             self.port = port
             samples = [Double]()
@@ -61,11 +61,12 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
 
             self.testType = testType != nil ? testType! : NetTest.TestType.CONNECT // default
             self.capacity = numSamples != nil ? numSamples! : DEFAULT_CAPACITY
+            self.netInterfaceType = netInterfaceType
+            self.localEndpoint = localEndpoint
         }
 
         /// initialize http site
-        public init(network: String, l7Path: String, testType: NetTest.TestType?, numSamples: Int?) {
-            self.network = network
+        public init(l7Path: String, testType: NetTest.TestType?, numSamples: Int?, netInterfaceType: String? = nil, localEndpoint: String? = nil) {
             self.l7Path = l7Path
             samples = [Double]()
             avg = 0.0
@@ -75,6 +76,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
 
             self.testType = testType != nil ? testType! : NetTest.TestType.CONNECT // default
             self.capacity = numSamples != nil ? numSamples! : DEFAULT_CAPACITY
+            self.netInterfaceType = netInterfaceType
+            self.localEndpoint = localEndpoint
         }
 
         public func addSample(sample: Double) {

@@ -27,7 +27,10 @@ class ConnectionTests: XCTestCase {
     var connection: NWConnection!
     let queue = DispatchQueue.global(qos: .background)
     
-    let host = "fairview-main.gddt.mobiledgex.net"
+    let dmeHost = "eu-mexdemo.dme.mobiledgex.net"
+    let dmePort: UInt16 = 50051
+    
+    let host = "porttestcluster.automationhawkinscloudlet.gddt.mobiledgex.net"
     
     let orgName = "MobiledgeX-Samples"
     let appName = "sdktest"
@@ -61,7 +64,7 @@ class ConnectionTests: XCTestCase {
     }
     
     func testIsWifi() {
-        let wifiOn = false // tester specifies this
+        let wifiOn = true // tester specifies this
         let hasWifi = MobiledgeXiOSLibraryGrpc.NetworkInterface.hasWifiInterface()
         if hasWifi != wifiOn {
             XCTAssert(false, "Failed")
@@ -144,7 +147,7 @@ class ConnectionTests: XCTestCase {
         
         XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
-            XCTAssert(false, "GetTCPConnection did not return a value.")
+            XCTAssert(false, "GetTCPTLSConnection did not return a value.")
             return
         }
         
@@ -184,8 +187,8 @@ class ConnectionTests: XCTestCase {
         var manager: SocketManager!
         
         // SocketIO server
-        let wsHost = "autoclusterarshooter.hawkins-main.gddt.mobiledgex.net"
         let port = "3838"
+        let wsHost = "reservable2.paradise-main.gddt.mobiledgex.net"
         let uri = "ws://" + wsHost + ":" + port
         guard let url = URL(string: uri) else {
             XCTAssert(false, "Unable to create url")
@@ -276,7 +279,7 @@ class ConnectionTests: XCTestCase {
         loc.latitude = 37.459609
         loc.longitude = -122.149349
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "GDDT")
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "GDDT")
             
         .then { findCloudletReply -> Promise<MobiledgeXiOSLibraryGrpc.Socket> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary
@@ -319,7 +322,6 @@ class ConnectionTests: XCTestCase {
     private func readAndWriteBSDSocket(socket: MobiledgeXiOSLibraryGrpc.Socket) throws -> String {
         // returns Socket struct with fields: file descriptor and addrinfo struct
         let sockfd = socket.sockfd
-        let addrInfo = socket.addrInfo
 
         let post = "ping"
         // Convert string to data
@@ -364,7 +366,7 @@ class ConnectionTests: XCTestCase {
         loc.latitude = 37.459609
         loc.longitude = -122.149349
         
-        let replyPromise = matchingEngine.registerAndFindCloudlet(orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "GDDT")
+        let replyPromise = matchingEngine.registerAndFindCloudlet(host: dmeHost, port: dmePort, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: loc, carrierName: "GDDT")
             
         .then { findCloudletReply -> Promise<NWConnection> in
             // Get Dictionary: key -> internal port, value -> AppPort Dictionary

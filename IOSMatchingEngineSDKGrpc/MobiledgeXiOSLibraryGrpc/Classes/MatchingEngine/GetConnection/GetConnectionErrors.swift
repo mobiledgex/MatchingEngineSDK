@@ -43,6 +43,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         case portNotInAppPortRange(port: UInt16)
         case unableToValidatePort
         case unableToValidateAppPort(message: String)
+        case unknownError(error: String)
         
         public var errorDescription: String? {
             switch self {
@@ -50,6 +51,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             case .notValidPort(let port): return "\(port) specified is not a valid port number"
             case .portNotInAppPortRange(let port): return "\(port) specified is not in AppPort range"
             case .unableToValidateAppPort(let message): return message
+            case .unknownError(let error): return error
             default: return self.localizedDescription
             }
         }

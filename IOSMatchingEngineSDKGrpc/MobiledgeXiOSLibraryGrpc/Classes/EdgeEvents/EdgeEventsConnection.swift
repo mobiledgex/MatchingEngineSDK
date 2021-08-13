@@ -310,7 +310,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return promise
                 }
                 let host = try matchingEngine.getHost(findCloudletReply: fcReply, appPort: appPort)
-                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5)
+                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.PING, numSamples: 5, netInterfaceType: config!.latencyTestNetInterfaceType, localEndpoint: config!.latencyTestLocalEndpoint)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
                 return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
@@ -355,7 +355,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                     return promise
                 }
                 let host = try matchingEngine.getHost(findCloudletReply: fcReply, appPort: appPort)
-                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(network: MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR, host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 5)
+                let site = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.Site(host: host, port: port, testType: MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest.TestType.CONNECT, numSamples: 5, netInterfaceType: config!.latencyTestNetInterfaceType, localEndpoint: config!.latencyTestLocalEndpoint)
                 let netTest = MobiledgeXiOSLibraryGrpc.PerformanceMetrics.NetTest(sites: [site], qos: .background)
                 
                 return Promise<EdgeEventsStatus>(on: self.matchingEngine.state.edgeEventsQueue) { fulfill, reject in
@@ -484,7 +484,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                 // Do FindCloudlet ourself if newCloudlet is nil
                 getLastStoredLocation().then { loc -> Promise<MobiledgeXiOSLibraryGrpc.MatchingEngine.FindCloudletPerformanceReply> in
                     let req = try self.matchingEngine.createFindCloudletRequest(gpsLocation: loc)
-                    return self.matchingEngine.findCloudletPerformance(host: self.host, port: self.port, request: req)
+                    return self.matchingEngine.findCloudletPerformance(host: self.host, port: self.port, request: req, netInterfaceType: self.config!.latencyTestNetInterfaceType, localEndpoint: self.config!.latencyTestLocalEndpoint)
                 }.then { performanceReply in
                     let reply = performanceReply.reply
                     self.matchingEngine.state.lastFindCloudletReply = reply
@@ -574,7 +574,11 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                             }.then { status in
                                 os_log("successfully post location update", log: OSLog.default, type: .debug)
                             }.catch { error in
-                                os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                if case EdgeEventsError.gpsLocationDidNotChange = error {
+                                    os_log("location did not change, will not post location update", log: OSLog.default, type: .debug)
+                                } else {
+                                    os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                }
                             }
                         }
                     }
@@ -589,8 +593,13 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
                                     os_log("successfully post location update", log: OSLog.default, type: .debug)
                                     self.currLocationInterval += 1
                                 }.catch { error in
-                                    os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
-                                    self.sendErrorToHandler(error: error)
+                                    if case EdgeEventsError.gpsLocationDidNotChange = error {
+                                        os_log("location did not change, will not post location update", log: OSLog.default, type: .debug)
+                                    } else {
+                                        os_log("error posting location update: %@", log: OSLog.default, type: .debug, error.localizedDescription)
+                                        self.sendErrorToHandler(error: error)
+
+                                    }
                                 }
                             } else {
                                 self.locationTimer!.cancel()

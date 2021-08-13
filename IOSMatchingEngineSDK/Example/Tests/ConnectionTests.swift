@@ -144,7 +144,7 @@ class ConnectionTests: XCTestCase {
         
         XCTAssert(waitForPromises(timeout: 5))
         guard let promiseValue = replyPromise.value else {
-            XCTAssert(false, "GetTCPConnection did not return a value.")
+            XCTAssert(false, "GetTCPTLSConnection did not return a value.")
             return
         }
         

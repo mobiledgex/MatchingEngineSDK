@@ -19,6 +19,7 @@
 import Foundation
 import Promises
 import os.log
+import Network
 
 extension MobiledgeXiOSLibraryGrpc {
 
@@ -106,11 +107,9 @@ extension MobiledgeXiOSLibraryGrpc {
         // TODO: check for multiple cellular ip addresses (multiple SIM subscriptions possible)
         public static func getIPAddress(netInterfaceType: String?) -> String?
         {
-            var specifiedNetInterface: Bool
+            var netInterfaceType = netInterfaceType
             if netInterfaceType == nil {
-                specifiedNetInterface = false // default is cellular interface
-            } else {
-                specifiedNetInterface = true
+                netInterfaceType = MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR // default to cellular
             }
             var address : String?
             // Get list of all interfaces on the local machine:
@@ -124,19 +123,39 @@ extension MobiledgeXiOSLibraryGrpc {
                 
                 // Check interface name:
                 let name = String(cString: interface.ifa_name)
-                if  name == netInterfaceType || !specifiedNetInterface {     // Cellular interface
+                if  name == netInterfaceType {
                         
                     // return interface.ifa_addr.pointee
-                    let data = NSData(bytes: &interface.ifa_addr.pointee, length: MemoryLayout<sockaddr_in>.size) as CFData                 // Convert interface address to a human readable string:
+                    let data = NSData(bytes: &interface.ifa_addr.pointee, length: MemoryLayout<sockaddr_in>.size) as CFData // Convert interface address to a human readable string:
                     var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
                     getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len),
                                 &hostname, socklen_t(hostname.count),
                                 nil, socklen_t(0), NI_NUMERICHOST)
                     address = String(cString: hostname)
+                    print("interface: \(name), address \(address)")
+                    if let _ = IPv4Address(address!) {
+                        break
+                    }
                 }
             }
             freeifaddrs(ifaddr)
             return address
+        }
+        
+        // Helper function that gets the local ip address if networkinterface or clientip is specified
+        static func getClientIP(netInterfaceType: String? = nil, localEndpoint: String? = nil) throws -> String? {
+            if localEndpoint != nil {
+                // return localEndpoint if non-nil
+                return localEndpoint!
+            } else if netInterfaceType != nil {
+                // return found local endpoint for specified netInterfaceType if non-nil (Cellular or Wifi)
+                guard let boundIP = getIPAddress(netInterfaceType: netInterfaceType) else {
+                    os_log("Cannot get ip address with specified network interface", log: OSLog.default, type: .debug)
+                    throw(MobiledgeXiOSLibraryGrpc.MatchingEngine.GetConnectionError.invalidNetworkInterface)
+                }
+                return boundIP
+            }
+            return nil
         }
     }
 }
