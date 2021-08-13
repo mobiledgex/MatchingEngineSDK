@@ -32,17 +32,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<CFSocket>
-    public func getTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
+    public func getTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, callback: @escaping CFSocketCallBack, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -61,7 +57,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getTCPConnection(host: host, port: port, callback: callback, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -76,17 +72,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<MobiledgeXiOSLibrary.Socket>
-    public func getBSDTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibraryGrpc.Socket> {
+    public func getBSDTCPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibraryGrpc.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibraryGrpc.Socket> = Promise<MobiledgeXiOSLibraryGrpc.Socket>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -105,7 +97,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDTCPConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getBSDTCPConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -120,18 +112,14 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<NWConnection>
     @available(iOS 13.0, *)
-    public func getTCPTLSConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
+    public func getTCPTLSConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.tcp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
 
         if timeout <= 0 {
             os_log("Invalid timeout: %@", log: OSLog.default, type: .debug, timeout)
@@ -150,7 +138,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            return self.getTCPTLSConnection(host: host, port: port, timeout: timeout / 1000.0)
+            return self.getTCPTLSConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint, timeout: timeout / 1000.0)
         } catch { // catch getPort and contructHost errors
             promiseInputs.reject(error)
             return promiseInputs
@@ -165,17 +153,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<CFSocket>
-    public func getUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<CFSocket> {
+    public func getUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, callback: @escaping CFSocketCallBack, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<CFSocket> {
         
         let promiseInputs: Promise<CFSocket> = Promise<CFSocket>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -194,7 +178,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getUDPConnection(host: host, port: port, callback: callback, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -209,17 +193,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<MobiledgeXiOSLibrary.Socket>
-    public func getBSDUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibraryGrpc.Socket> {
+    public func getBSDUDPConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<MobiledgeXiOSLibraryGrpc.Socket> {
         
         let promiseInputs: Promise<MobiledgeXiOSLibraryGrpc.Socket> = Promise<MobiledgeXiOSLibraryGrpc.Socket>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -238,7 +218,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let host = try getHost(findCloudletReply: findCloudletReply, appPort: appPort)
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             // call helper function and timeout
-            return getBSDUDPConnection(host: host, port: port).timeout(timeout / 1000.0)
+            return getBSDUDPConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint).timeout(timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -253,18 +233,14 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<CFSocket>
     @available(iOS 13.0, *)
-    public func getUDPDTLSConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<NWConnection> {
+    public func getUDPDTLSConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, netInterfaceType: String? = nil, localEndpoint: String? = nil, timeout: Double = 10000) -> Promise<NWConnection> {
         
         let promiseInputs: Promise<NWConnection> = Promise<NWConnection>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.udp) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -284,7 +260,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
             let port = try getPort(appPort: appPort, desiredPort: desiredPort)
             
             // call helper function and timeout
-            return self.getUDPDTLSConnection(host: host, port: port, timeout: timeout / 1000.0)
+            return self.getUDPDTLSConnection(host: host, port: port, netInterfaceType: netInterfaceType, localEndpoint: localEndpoint, timeout: timeout / 1000.0)
         } catch {
             promiseInputs.reject(error)
             return promiseInputs
@@ -300,17 +276,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<URLRequest>
     public func getHTTPClient(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.http) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -349,17 +321,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<URLRequest>
     public func getHTTPSClient(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<URLRequest> {
         
         let promiseInputs: Promise<URLRequest> = Promise<URLRequest>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.http) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -398,17 +366,13 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<SocketManager>
     public func getWebsocketConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.websocket) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
@@ -447,18 +411,14 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - findCloudletReply: FindCloudletReply from findCloudlet
     ///   - appPort: Specific AppPort wanted from FindCloudletReply
     ///   - desiredPort: Optional desired port. If none specified, will use public port in given appPort
+    ///   - netInterfaceType: Optional network interface type (Cellular or Wifi) to bind to. For a true edgeconnection, set to MobiledgeXiOSLibraryGrpc.NetworkInterface.CELLULAR
+    ///   - localEndpoint: Optional local endpoint to bind to
     ///   - timeout: Optional timeout. Default is 10 seconds
     /// - Returns: Promse<SocketManager>
 
     public func getSecureWebsocketConnection(findCloudletReply: DistributedMatchEngine_FindCloudletReply, appPort: DistributedMatchEngine_AppPort, desiredPort: Int = 0, timeout: Double = 10000) -> Promise<SocketManager> {
         
         let promiseInputs: Promise<SocketManager> = Promise<SocketManager>.pending()
-        
-        // Make sure device is edge enabled (ie. cellular interface exists and will not default to wifi)
-        if let err = isEdgeEnabled(proto: GetConnectionProtocol.websocket) {
-            promiseInputs.reject(err)
-            return promiseInputs
-        }
         
         // Check if valid timeout
         if timeout <= 0 {
