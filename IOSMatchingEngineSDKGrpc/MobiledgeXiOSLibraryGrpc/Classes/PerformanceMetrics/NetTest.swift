@@ -258,7 +258,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             // socket returns a socket descriptor
             let s = socket(ipfamily!, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
-                if errno == EAFNOSUPPORT {
+                if errno == EAFNOSUPPORT || errno == EPERM {
                     // try to find correct ip family
                     if ipfamily == AF_UNSPEC {
                         return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
@@ -331,8 +331,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             close(s)
             close(serverSocket)
             
-            let elapsedTime = after.uptimeNanoseconds - before.uptimeNanoseconds
-            site.addSample(sample: Double(elapsedTime) * self.NANO_TO_MILLI) // convert to milliseconds
+            let elapsedTime = Double(after.uptimeNanoseconds - before.uptimeNanoseconds)
+            site.addSample(sample: elapsedTime * self.NANO_TO_MILLI) // convert to milliseconds
             return nil
         }
     }

@@ -93,7 +93,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             port = MobiledgeXiOSLibraryGrpc.MatchingEngine.DMEConstants.dmeGrpcPort
             appName =  "automation-sdk-porttest"
             appVers = "1.0"
-            orgName =  "MobiledgeX"
+            orgName =  "automation_dev_org"
             carrierName = "TDG"
             /*appName =  "sdktest"
             appVers = "9.0"
