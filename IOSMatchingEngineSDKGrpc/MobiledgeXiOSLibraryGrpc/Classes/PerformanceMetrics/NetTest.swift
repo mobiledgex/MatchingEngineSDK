@@ -36,7 +36,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         public var timeout = 5.0
         var interval: Int?
                 
-        let NANO_TO_MILLI = 1.0 / 1000000.0
+        let NANO_TO_MILLI = 0.000001
         let DEFAULT_NUM_SAMPLES = 3
         
         /// TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.
