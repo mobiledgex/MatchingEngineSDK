@@ -36,7 +36,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         public var timeout = 5.0
         var interval: Int?
                 
-        let NANO_TO_MILLI = 1.0 / 1000000.0
+        let NANO_TO_MILLI = 0.000001
         let DEFAULT_NUM_SAMPLES = 3
         
         /// TestType is either PING or CONNECT, where PING is ICMP Ping (not implemented) and CONNECT is is actually setting up a connection and then disconnecting immediately.
@@ -258,7 +258,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             // socket returns a socket descriptor
             let s = socket(ipfamily!, addrInfo.pointee.ai_socktype, 0)  // protocol set to 0 to choose proper protocol for given socktype
             if s == -1 {
-                if errno == EAFNOSUPPORT {
+                if errno == EAFNOSUPPORT || errno == EPERM {
                     // try to find correct ip family
                     if ipfamily == AF_UNSPEC {
                         return bindAndConnectSocket(site: site, addrInfo: addrInfo, localIP: localIP, ipfamily: AF_INET)
@@ -331,8 +331,8 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
             close(s)
             close(serverSocket)
             
-            let elapsedTime = after.uptimeNanoseconds - before.uptimeNanoseconds
-            site.addSample(sample: Double(elapsedTime) * self.NANO_TO_MILLI) // convert to milliseconds
+            let elapsedTime = Double(after.uptimeNanoseconds - before.uptimeNanoseconds)
+            site.addSample(sample: elapsedTime * self.NANO_TO_MILLI) // convert to milliseconds
             return nil
         }
     }
