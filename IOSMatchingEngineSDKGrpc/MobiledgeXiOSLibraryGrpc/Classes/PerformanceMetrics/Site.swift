@@ -40,6 +40,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
 
         public var samples: [Double]
         public var capacity: Int
+        private let samplesAccessQueue = DispatchQueue(label: "samplesaccessqueue") // serial queue to append and read from samples array because it is not thread safe
         
         public var appInst: DistributedMatchEngine_Appinstance?
         public var cloudletLocation: DistributedMatchEngine_Loc?
@@ -81,34 +82,40 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         }
 
         public func addSample(sample: Double) {
-            self.lastPingMs = sample
-            samples.append(sample)
-            lastPingMs = sample
+            samplesAccessQueue.sync {
+                self.lastPingMs = sample
+                samples.append(sample)
+                lastPingMs = sample
 
-            // rolling average
-            var removed: Double?
-            if samples.count > capacity {
-                removed = samples.remove(at: 0)
+                // rolling average
+                var removed: Double?
+                if samples.count > capacity {
+                    removed = samples.remove(at: 0)
+                }
+                updateStats(removedVal: removed)
             }
-            updateStats(removedVal: removed)
         }
         
         public func getDmeSamples() -> [DistributedMatchEngine_Sample] {
-            var dmeSamples: [DistributedMatchEngine_Sample] = []
-            for sample in self.samples {
-                var dmeSample = DistributedMatchEngine_Sample.init()
-                dmeSample.value = sample
-                dmeSamples.append(dmeSample)
+            samplesAccessQueue.sync {
+                var dmeSamples: [DistributedMatchEngine_Sample] = []
+                for sample in self.samples {
+                    var dmeSample = DistributedMatchEngine_Sample.init()
+                    dmeSample.value = sample
+                    dmeSamples.append(dmeSample)
+                }
+                return dmeSamples
             }
-            return dmeSamples
         }
 
+        // calling function must be in samplesAccessQueue
         private func updateStats(removedVal: Double?) {
             updateAvg(removedVal: removedVal)
             updateStdDev(removedVal: removedVal)
         }
 
         // constant time update to average
+        // calling function must be in samplesAccessQueue
         private func updateAvg(removedVal: Double?) {
             var sum: Double
             // check if adding to samples or replacing element in samples
@@ -128,6 +135,7 @@ extension MobiledgeXiOSLibraryGrpc.PerformanceMetrics {
         // 2) sum of samples multiplied by 2*mean
         // 3) squared mean multiplied by number of samples
         // (each of these terms are divided by n-1 for an unbiased sample standard deviation)
+        // calling function must be in samplesAccessQueue
         private func updateStdDev(removedVal: Double?) {
 
             // prevent dividing by 0, no stddev from sample size <= 1
