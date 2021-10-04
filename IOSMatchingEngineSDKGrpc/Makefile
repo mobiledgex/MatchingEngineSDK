@@ -21,8 +21,9 @@ PROTOC := protoc
 ABSOLUTEPATH := $(shell grealpath ../..)
 DME_PROTO_PATH = $(ABSOLUTEPATH)/edge-proto/dme
 THIRD_PARTY_PROTOS_PATH = $(ABSOLUTEPATH)/edge-proto/third_party
+EDGEPROTOGEN_PATH = $(ABSOLUTEPATH)/edge-proto/edgeprotogen
 
-PROTO_INCLUDE_DIRECTORIES := $(DME_PROTO_PATH) $(THIRD_PARTY_PROTOS_PATH)/googleapis
+PROTO_INCLUDE_DIRECTORIES := $(DME_PROTO_PATH) $(THIRD_PARTY_PROTOS_PATH)/googleapis $(EDGEPROTOGEN_PATH)
 PROTO_INCLUDE_FLAGS += $(addprefix --proto_path ,$(PROTO_INCLUDE_DIRECTORIES))
 
 all: build-proto gen-docs
