@@ -26,7 +26,7 @@ class Tests: XCTestCase {
     let TEST = true
     
     // Use hardcoded dme host and port if TEST is true
-    let dmeHost = "eu-mexdemo.dme.mobiledgex.net"
+    let dmeHost = "us-mexdemo.dme.mobiledgex.net"
     let dmePort: UInt16 = 50051
     
     var appName: String!
