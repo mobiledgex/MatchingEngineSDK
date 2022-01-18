@@ -38,7 +38,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt16 = 50051
-    var demoHost = "eu-qa.dme.mobiledgex.net"
+    var demoHost = "us-qa.dme.mobiledgex.net"
     //var demoHost = "wifi.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
@@ -76,16 +76,16 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         matchingEngine = appDelegate.matchingEngine
         
-        var hawkins = DistributedMatchEngine_Loc.init()
-        hawkins.latitude = 53.55
-        hawkins.longitude = 10
+        var buckhorn = DistributedMatchEngine_Loc.init()
+        buckhorn.latitude = 50.73438
+        buckhorn.longitude = 7.09549
         
-        var fairview = DistributedMatchEngine_Loc.init()
-        fairview.latitude = 50.110922
-        fairview.longitude = 8.682127
+        var packet = DistributedMatchEngine_Loc.init()
+        packet.latitude = 33.103
+        packet.longitude = -96.9655
         
-        locs.append(hawkins)
-        locs.append(fairview)
+        locs.append(buckhorn)
+        locs.append(packet)
 
         if demo
         {
