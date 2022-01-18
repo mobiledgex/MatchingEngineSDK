@@ -25,7 +25,7 @@ class EdgeEventsTests: XCTestCase {
     
     var matchingEngine: MobiledgeXiOSLibraryGrpc.MatchingEngine!
     
-    let dmeHost = "eu-qa.dme.mobiledgex.net"
+    let dmeHost = "us-qa.dme.mobiledgex.net"
     let dmePort: UInt16 = 50051
     
     let appName =  "automation-sdk-porttest"
