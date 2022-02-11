@@ -96,6 +96,9 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
 
   /// Health Check is ok
   case ok // = 3
+
+  /// Health Check failure due to Cloudlet Offline
+  case cloudletOffline // = 4
   case UNRECOGNIZED(Int)
 
   public init() {
@@ -108,6 +111,7 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
     case 1: self = .failRootlbOffline
     case 2: self = .failServerFail
     case 3: self = .ok
+    case 4: self = .cloudletOffline
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
@@ -118,6 +122,7 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
     case .failRootlbOffline: return 1
     case .failServerFail: return 2
     case .ok: return 3
+    case .cloudletOffline: return 4
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -133,6 +138,7 @@ extension DistributedMatchEngine_HealthCheck: CaseIterable {
     .failRootlbOffline,
     .failServerFail,
     .ok,
+    .cloudletOffline,
   ]
 }
 
@@ -350,8 +356,11 @@ public struct DistributedMatchEngine_AppPort {
   /// TLS termination for this port
   public var tls: Bool = false
 
-  /// use nginx proxy for this port if you really need a transparent proxy (udp only)
+  /// Use nginx proxy for this port if you really need a transparent proxy (udp only)
   public var nginx: Bool = false
+
+  /// Maximum datagram size (udp only)
+  public var maxPktSize: Int64 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -386,7 +395,7 @@ public struct DistributedMatchEngine_DeviceInfoDynamic {
   /// LTE, 5G, etc.
   public var dataNetworkType: String = String()
 
-  /// Device signal strength (0-5)
+  /// Device signal strength
   public var signalStrength: UInt64 = 0
 
   /// Carrier name (can be different from cloudlet org if using "")
@@ -396,57 +405,6 @@ public struct DistributedMatchEngine_DeviceInfoDynamic {
 
   public init() {}
 }
-
-// MARK: - Extension support defined in appcommon.proto.
-
-// MARK: - Extension Properties
-
-// Swift Extensions on the exteneded Messages to add easy access to the declared
-// extension fields. The names are based on the extension field name from the proto
-// declaration. To avoid naming collisions, the names are prefixed with the name of
-// the scope where the extend directive occurs.
-
-extension SwiftProtobuf.Google_Protobuf_EnumValueOptions {
-
-  /// Backend defines a field that is filled in by the back-end,
-  /// not by the user.
-  public var DistributedMatchEngine_enumBackend: Bool {
-    get {return getExtensionValue(ext: DistributedMatchEngine_Extensions_enum_backend) ?? false}
-    set {setExtensionValue(ext: DistributedMatchEngine_Extensions_enum_backend, value: newValue)}
-  }
-  /// Returns true if extension `DistributedMatchEngine_Extensions_enum_backend`
-  /// has been explicitly set.
-  public var hasDistributedMatchEngine_enumBackend: Bool {
-    return hasExtensionValue(ext: DistributedMatchEngine_Extensions_enum_backend)
-  }
-  /// Clears the value of extension `DistributedMatchEngine_Extensions_enum_backend`.
-  /// Subsequent reads from it will return its default value.
-  public mutating func clearDistributedMatchEngine_enumBackend() {
-    clearExtensionValue(ext: DistributedMatchEngine_Extensions_enum_backend)
-  }
-
-}
-
-// MARK: - File's ExtensionMap: DistributedMatchEngine_Appcommon_Extensions
-
-/// A `SwiftProtobuf.SimpleExtensionMap` that includes all of the extensions defined by
-/// this .proto file. It can be used any place an `SwiftProtobuf.ExtensionMap` is needed
-/// in parsing, or it can be combined with other `SwiftProtobuf.SimpleExtensionMap`s to create
-/// a larger `SwiftProtobuf.SimpleExtensionMap`.
-public let DistributedMatchEngine_Appcommon_Extensions: SwiftProtobuf.SimpleExtensionMap = [
-  DistributedMatchEngine_Extensions_enum_backend
-]
-
-// Extension Objects - The only reason these might be needed is when manually
-// constructing a `SimpleExtensionMap`, otherwise, use the above _Extension Properties_
-// accessors for the extension fields on the messages directly.
-
-/// Backend defines a field that is filled in by the back-end,
-/// not by the user.
-public let DistributedMatchEngine_Extensions_enum_backend = SwiftProtobuf.MessageExtension<SwiftProtobuf.OptionalExtensionField<SwiftProtobuf.ProtobufBool>, SwiftProtobuf.Google_Protobuf_EnumValueOptions>(
-  _protobuf_fieldNumber: 51042,
-  fieldName: "distributed_match_engine.enum_backend"
-)
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
@@ -466,6 +424,7 @@ extension DistributedMatchEngine_HealthCheck: SwiftProtobuf._ProtoNameProviding 
     1: .same(proto: "HEALTH_CHECK_FAIL_ROOTLB_OFFLINE"),
     2: .same(proto: "HEALTH_CHECK_FAIL_SERVER_FAIL"),
     3: .same(proto: "HEALTH_CHECK_OK"),
+    4: .same(proto: "HEALTH_CHECK_CLOUDLET_OFFLINE"),
   ]
 }
 
@@ -508,6 +467,7 @@ extension DistributedMatchEngine_AppPort: SwiftProtobuf.Message, SwiftProtobuf._
     6: .standard(proto: "end_port"),
     7: .same(proto: "tls"),
     8: .same(proto: "nginx"),
+    9: .standard(proto: "max_pkt_size"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -523,6 +483,7 @@ extension DistributedMatchEngine_AppPort: SwiftProtobuf.Message, SwiftProtobuf._
       case 6: try { try decoder.decodeSingularInt32Field(value: &self.endPort) }()
       case 7: try { try decoder.decodeSingularBoolField(value: &self.tls) }()
       case 8: try { try decoder.decodeSingularBoolField(value: &self.nginx) }()
+      case 9: try { try decoder.decodeSingularInt64Field(value: &self.maxPktSize) }()
       default: break
       }
     }
@@ -550,6 +511,9 @@ extension DistributedMatchEngine_AppPort: SwiftProtobuf.Message, SwiftProtobuf._
     if self.nginx != false {
       try visitor.visitSingularBoolField(value: self.nginx, fieldNumber: 8)
     }
+    if self.maxPktSize != 0 {
+      try visitor.visitSingularInt64Field(value: self.maxPktSize, fieldNumber: 9)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -561,6 +525,7 @@ extension DistributedMatchEngine_AppPort: SwiftProtobuf.Message, SwiftProtobuf._
     if lhs.endPort != rhs.endPort {return false}
     if lhs.tls != rhs.tls {return false}
     if lhs.nginx != rhs.nginx {return false}
+    if lhs.maxPktSize != rhs.maxPktSize {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
