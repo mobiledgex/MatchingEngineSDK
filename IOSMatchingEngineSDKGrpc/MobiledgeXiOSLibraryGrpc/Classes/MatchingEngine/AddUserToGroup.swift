@@ -38,7 +38,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.lgID = lg_id ?? 0 // Not implemented (1001)
         req.commType = commType ?? DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType.dlgSecure
         req.userData = userData ?? ""
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
         
         try validateDynamicLocGroupRequest(request: req)

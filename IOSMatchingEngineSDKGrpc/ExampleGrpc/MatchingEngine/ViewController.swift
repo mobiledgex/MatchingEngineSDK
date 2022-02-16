@@ -38,7 +38,7 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     
     var host = ""
     var port: UInt16 = 50051
-    var demoHost = "eu-qa.dme.mobiledgex.net"
+    var demoHost = "us-qa.dme.mobiledgex.net"
     //var demoHost = "wifi.dme.mobiledgex.net"
     
     var demo = true; // If true, use DEMO values as opposed to discoverable properties.
