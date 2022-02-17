@@ -42,7 +42,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.positions = requests
         req.lteCategory = lteCategory ?? 0
         req.bandSelection = bandSelection ?? DistributedMatchEngine_BandSelection.init()
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
         
         try validateQosKPIRequest(request: req)

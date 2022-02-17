@@ -54,7 +54,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.appName = appName ?? getAppName()
         req.appVers = appVers ?? getAppVersion()
         req.authToken = authToken ?? ""
-        req.cellID = cellID ?? 0
         req.uniqueIDType = ""
         req.uniqueID = ""
         req.tags = tags ?? [String: String]()

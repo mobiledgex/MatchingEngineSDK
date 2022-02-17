@@ -50,29 +50,29 @@ public struct DistributedMatchEngine_Loc {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  /// latitude in WGS 84 coordinates
+  /// Latitude in WGS 84 coordinates
   public var latitude: Double = 0
 
-  /// longitude in WGS 84 coordinates
+  /// Longitude in WGS 84 coordinates
   public var longitude: Double = 0
 
-  /// horizontal accuracy (radius in meters)
+  /// Horizontal accuracy (radius in meters)
   public var horizontalAccuracy: Double = 0
 
-  /// vertical accuracy (meters)
+  /// Vertical accuracy (meters)
   public var verticalAccuracy: Double = 0
 
   /// On android only lat and long are guaranteed to be supplied
-  /// altitude in meters
+  /// Altitude in meters
   public var altitude: Double = 0
 
-  /// course (IOS) / bearing (Android) (degrees east relative to true north)
+  /// Course (IOS) / bearing (Android) (degrees east relative to true north)
   public var course: Double = 0
 
-  /// speed (IOS) / velocity (Android) (meters/sec)
+  /// Speed (IOS) / velocity (Android) (meters/sec)
   public var speed: Double = 0
 
-  /// timestamp
+  /// Timestamp
   public var timestamp: DistributedMatchEngine_Timestamp {
     get {return _timestamp ?? DistributedMatchEngine_Timestamp()}
     set {_timestamp = newValue}
@@ -96,10 +96,10 @@ public struct DistributedMatchEngine_Sample {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  /// latency value
+  /// Latency value
   public var value: Double = 0
 
-  /// timestamp
+  /// Timestamp
   public var timestamp: DistributedMatchEngine_Timestamp {
     get {return _timestamp ?? DistributedMatchEngine_Timestamp()}
     set {_timestamp = newValue}
@@ -125,25 +125,25 @@ public struct DistributedMatchEngine_Statistics {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  /// average
+  /// Average
   public var avg: Double = 0
 
-  /// minimum
+  /// Minimum
   public var min: Double = 0
 
-  /// maximum
+  /// Maximum
   public var max: Double = 0
 
-  /// square root of unbiased variance
+  /// Square root of unbiased variance
   public var stdDev: Double = 0
 
-  /// unbiased variance
+  /// Unbiased variance
   public var variance: Double = 0
 
-  /// number of samples to create stats
+  /// Number of samples to create stats
   public var numSamples: UInt64 = 0
 
-  /// timestamp
+  /// Timestamp
   public var timestamp: DistributedMatchEngine_Timestamp {
     get {return _timestamp ?? DistributedMatchEngine_Timestamp()}
     set {_timestamp = newValue}
@@ -235,6 +235,10 @@ extension DistributedMatchEngine_Loc: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.latitude != 0 {
       try visitor.visitSingularDoubleField(value: self.latitude, fieldNumber: 1)
     }
@@ -256,9 +260,9 @@ extension DistributedMatchEngine_Loc: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if self.speed != 0 {
       try visitor.visitSingularDoubleField(value: self.speed, fieldNumber: 7)
     }
-    if let v = self._timestamp {
+    try { if let v = self._timestamp {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
-    }
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -299,12 +303,16 @@ extension DistributedMatchEngine_Sample: SwiftProtobuf.Message, SwiftProtobuf._M
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.value != 0 {
       try visitor.visitSingularDoubleField(value: self.value, fieldNumber: 1)
     }
-    if let v = self._timestamp {
+    try { if let v = self._timestamp {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }
+    } }()
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -351,6 +359,10 @@ extension DistributedMatchEngine_Statistics: SwiftProtobuf.Message, SwiftProtobu
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.avg != 0 {
       try visitor.visitSingularDoubleField(value: self.avg, fieldNumber: 1)
     }
@@ -369,9 +381,9 @@ extension DistributedMatchEngine_Statistics: SwiftProtobuf.Message, SwiftProtobu
     if self.numSamples != 0 {
       try visitor.visitSingularUInt64Field(value: self.numSamples, fieldNumber: 6)
     }
-    if let v = self._timestamp {
+    try { if let v = self._timestamp {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-    }
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 

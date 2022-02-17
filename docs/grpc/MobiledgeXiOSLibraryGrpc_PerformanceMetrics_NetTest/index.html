@@ -14,7 +14,6 @@
             </strong>
             <span>Documentation</span>
         </a>
-        <sup>Beta</sup>
     </header>
 
     <!--
@@ -37,7 +36,10 @@
     <code class="name">Mobiledge​XiOSLibrary​Grpc.​Performance​Metrics.​Net​Test</code>
 </h1>
 
-<html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *) <span class="keyword">public</span> <span class="keyword">class</span> <span class="type">NetTest</span></code></pre></body></html>
+<div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.0</span>, *)
+    <span class="keyword">public</span> <span class="keyword">class</span> <span class="type">NetTest</span>  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Class that allows developers to easily test latency of their various backend servers.
 This is used in the implementation of FindCloudlet Performance Mode.</p>
@@ -64,9 +66,11 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 
         <div role="article" class="initializer" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.init(sites:qos:)">
     <h3>
-        <code>init(sites:​qos:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.init(sites:qos:)">init(sites:​qos:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">sites</span>: [<span class="type">Site</span>], <span class="variable">qos</span>: <span class="type">DispatchQoS</span>)</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">sites</span>: [<span class="type">Site</span>], <span class="variable">qos</span>: <span class="type">DispatchQoS</span>)  </body></html></code></pre>
+</div>
 </div>
     </section>
     <section id="properties">
@@ -74,21 +78,27 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 
         <div role="article" class="variable" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.sites">
     <h3>
-        <code>sites</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.sites">sites</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">sites</span>: [<span class="type">Site</span>]</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">sites</span>: [<span class="type">Site</span>] </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="variable" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.tests">
     <h3>
-        <code>tests</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.tests">tests</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">tests</span>: [<span class="type">AnyCancellable</span>]</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">tests</span>: [<span class="type">AnyCancellable</span>] </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="variable" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.timeout">
     <h3>
-        <code>timeout</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.timeout">timeout</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">timeout</span> = <span class="number literal">5.0</span></code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">timeout</span> = <span class="number literal">5.0</span></body></html></code></pre>
+</div>
 </div>
     </section>
     <section id="methods">
@@ -96,9 +106,11 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 
         <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.runtest(interval:)">
     <h3>
-        <code>run​Test(interval:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.runtest(interval:)">run​Test(interval:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">interval</span>: <span class="type">Int</span>)</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">interval</span>: <span class="type">Int</span>)  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Run tests at interval (milliseconds) indefinitely until call to cancelTest</p>
 
@@ -106,9 +118,11 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.runtest(numsamples:)">
     <h3>
-        <code>run​Test(num​Samples:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.runtest(numsamples:)">run​Test(num​Samples:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">numSamples</span>: <span class="type">Int</span>? = <span class="keyword">nil</span>) -&gt; <span class="type">Promise</span>&lt;[<span class="type">Site</span>]&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">runTest</span>(<span class="variable">numSamples</span>: <span class="type">Int</span>? = <span class="keyword">nil</span>) -&gt; <span class="type">Promise</span>&lt;[<span class="type">Site</span>]&gt;  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Run NetTest for numSamples per site</p>
 
@@ -116,9 +130,11 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.returnsortedsites()">
     <h3>
-        <code>return​Sorted​Sites()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.returnsortedsites()">return​Sorted​Sites()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">returnSortedSites</span>() -&gt; [<span class="type">Site</span>]</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">returnSortedSites</span>() -&gt; [<span class="type">Site</span>]  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Sorted list of Sites from best to worst</p>
 
@@ -126,39 +142,51 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.canceltest()">
     <h3>
-        <code>cancel​Test()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.canceltest()">cancel​Test()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">cancelTest</span>()</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">cancelTest</span>()  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.addsite(site:)">
     <h3>
-        <code>add​Site(site:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.addsite(site:)">add​Site(site:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">addSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">addSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.removesite(site:)">
     <h3>
-        <code>remove​Site(site:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.removesite(site:)">remove​Site(site:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">removeSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">removeSite</span>(<span class="variable">site</span>: <span class="type">Site</span>)  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.ping(site:)">
     <h3>
-        <code>ping(site:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.ping(site:)">ping(site:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">ping</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">ping</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.connectanddisconnect(site:)">
     <h3>
-        <code>connect​And​Disconnect(site:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.connectanddisconnect(site:)">connect​And​Disconnect(site:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnect</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnect</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.performancemetrics.nettest.connectanddisconnectsocket(site:)">
     <h3>
-        <code>connect​And​Disconnect​Socket(site:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.performancemetrics.nettest.connectanddisconnectsocket(site:)">connect​And​Disconnect​Socket(site:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnectSocket</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">connectAndDisconnectSocket</span>(<span class="variable">site</span>: <span class="type">Site</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Site</span>&gt;  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Allows bind to cellular interface</p>
 
@@ -173,7 +201,7 @@ This is used in the implementation of FindCloudlet Performance Mode.</p>
 
     <footer>
         <p>
-    Generated on <time datetime="2021-06-17T13:43:54-0700">June 17, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2022-02-11T09:50:09-0800">February 11, 2022</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>

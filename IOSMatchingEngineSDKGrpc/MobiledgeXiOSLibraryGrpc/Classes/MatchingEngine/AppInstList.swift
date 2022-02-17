@@ -40,7 +40,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.sessionCookie = state.getSessionCookie() ?? ""
         req.carrierName = carrierName ?? getCarrierName()
         req.gpsLocation = gpsLocation
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
         
         try validateAppInstListRequest(request: req)
