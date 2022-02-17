@@ -114,6 +114,113 @@ extension DistributedMatchEngine_ReplyStatus: CaseIterable {
 
 #endif  // swift(>=4.2)
 
+public enum DistributedMatchEngine_QosSessionProfile: SwiftProtobuf.Enum {
+  public typealias RawValue = Int
+
+  /// Specifies that no priority session should be created
+  case qosNoPriority // = 0
+
+  /// Corresponds to a specific set of network parameters for low latency that will be 
+  /// negotiated with the network provider in advance
+  case qosLowLatency // = 1
+
+  /// Downlink traffic from AppInst to client is prioritized up to 20Mbps
+  case qosThroughputDownS // = 2
+
+  /// Downlink traffic from AppInst to client is prioritized up to 50Mbps
+  case qosThroughputDownM // = 3
+
+  /// Downlink traffic from AppInst to client is prioritized up to 100Mbps
+  case qosThroughputDownL // = 4
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .qosNoPriority
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .qosNoPriority
+    case 1: self = .qosLowLatency
+    case 2: self = .qosThroughputDownS
+    case 3: self = .qosThroughputDownM
+    case 4: self = .qosThroughputDownL
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .qosNoPriority: return 0
+    case .qosLowLatency: return 1
+    case .qosThroughputDownS: return 2
+    case .qosThroughputDownM: return 3
+    case .qosThroughputDownL: return 4
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension DistributedMatchEngine_QosSessionProfile: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static var allCases: [DistributedMatchEngine_QosSessionProfile] = [
+    .qosNoPriority,
+    .qosLowLatency,
+    .qosThroughputDownS,
+    .qosThroughputDownM,
+    .qosThroughputDownL,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
+public enum DistributedMatchEngine_QosSessionProtocol: SwiftProtobuf.Enum {
+  public typealias RawValue = Int
+  case tcp // = 0
+  case udp // = 1
+  case any // = 2
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .tcp
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .tcp
+    case 1: self = .udp
+    case 2: self = .any
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .tcp: return 0
+    case .udp: return 1
+    case .any: return 2
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension DistributedMatchEngine_QosSessionProtocol: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static var allCases: [DistributedMatchEngine_QosSessionProtocol] = [
+    .tcp,
+    .udp,
+    .any,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
 public struct DistributedMatchEngine_RegisterClientRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -154,12 +261,6 @@ public struct DistributedMatchEngine_RegisterClientRequest {
   ///
   /// _(optional)_ An authentication token supplied by the application.
   public var authToken: String = String()
-
-  ///
-  /// Cell ID
-  ///
-  /// _(optional)_ Cellular ID of where the client is connected.
-  public var cellID: UInt32 = 0
 
   ///
   /// Unique ID Type
@@ -280,12 +381,6 @@ public struct DistributedMatchEngine_FindCloudletRequest {
   public mutating func clearGpsLocation() {self._gpsLocation = nil}
 
   ///
-  /// Cell ID
-  ///
-  /// _(optional)_ Cell ID where the client is
-  public var cellID: UInt32 = 0
-
-  ///
   /// Tags
   ///
   /// _(optional)_ Vendor specific data
@@ -348,32 +443,62 @@ public struct DistributedMatchEngine_FindCloudletReply {
   /// API version
   ///
   /// _(hidden)_ Reserved for future use
-  public var ver: UInt32 = 0
+  public var ver: UInt32 {
+    get {return _storage._ver}
+    set {_uniqueStorage()._ver = newValue}
+  }
 
   /// Status return
-  public var status: DistributedMatchEngine_FindCloudletReply.FindStatus = .findUnknown
+  public var status: DistributedMatchEngine_FindCloudletReply.FindStatus {
+    get {return _storage._status}
+    set {_uniqueStorage()._status = newValue}
+  }
 
   /// Fully Qualified Domain Name of the Closest App instance
-  public var fqdn: String = String()
+  public var fqdn: String {
+    get {return _storage._fqdn}
+    set {_uniqueStorage()._fqdn = newValue}
+  }
 
   /// List of Service Endpoints for AppInst
-  public var ports: [DistributedMatchEngine_AppPort] = []
+  public var ports: [DistributedMatchEngine_AppPort] {
+    get {return _storage._ports}
+    set {_uniqueStorage()._ports = newValue}
+  }
 
   /// Location of the cloudlet
   public var cloudletLocation: DistributedMatchEngine_Loc {
-    get {return _cloudletLocation ?? DistributedMatchEngine_Loc()}
-    set {_cloudletLocation = newValue}
+    get {return _storage._cloudletLocation ?? DistributedMatchEngine_Loc()}
+    set {_uniqueStorage()._cloudletLocation = newValue}
   }
   /// Returns true if `cloudletLocation` has been explicitly set.
-  public var hasCloudletLocation: Bool {return self._cloudletLocation != nil}
+  public var hasCloudletLocation: Bool {return _storage._cloudletLocation != nil}
   /// Clears the value of `cloudletLocation`. Subsequent reads from it will return its default value.
-  public mutating func clearCloudletLocation() {self._cloudletLocation = nil}
+  public mutating func clearCloudletLocation() {_uniqueStorage()._cloudletLocation = nil}
 
   /// Session Cookie for specific EdgeEvents for specific AppInst
-  public var edgeEventsCookie: String = String()
+  public var edgeEventsCookie: String {
+    get {return _storage._edgeEventsCookie}
+    set {_uniqueStorage()._edgeEventsCookie = newValue}
+  }
+
+  /// Result of QOS priority session creation attempt
+  public var qosResult: DistributedMatchEngine_FindCloudletReply.QosSessionResult {
+    get {return _storage._qosResult}
+    set {_uniqueStorage()._qosResult = newValue}
+  }
+
+  /// Error message in case of QOS_SESSION_FAILED
+  public var qosErrorMsg: String {
+    get {return _storage._qosErrorMsg}
+    set {_uniqueStorage()._qosErrorMsg = newValue}
+  }
 
   /// _(optional)_ Vendor specific data
-  public var tags: Dictionary<String,String> = [:]
+  public var tags: Dictionary<String,String> {
+    get {return _storage._tags}
+    set {_uniqueStorage()._tags = newValue}
+  }
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -408,9 +533,40 @@ public struct DistributedMatchEngine_FindCloudletReply {
 
   }
 
+  public enum QosSessionResult: SwiftProtobuf.Enum {
+    public typealias RawValue = Int
+    case qosNotAttempted // = 0
+    case qosSessionCreated // = 1
+    case qosSessionFailed // = 2
+    case UNRECOGNIZED(Int)
+
+    public init() {
+      self = .qosNotAttempted
+    }
+
+    public init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .qosNotAttempted
+      case 1: self = .qosSessionCreated
+      case 2: self = .qosSessionFailed
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    public var rawValue: Int {
+      switch self {
+      case .qosNotAttempted: return 0
+      case .qosSessionCreated: return 1
+      case .qosSessionFailed: return 2
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+  }
+
   public init() {}
 
-  fileprivate var _cloudletLocation: DistributedMatchEngine_Loc? = nil
+  fileprivate var _storage = _StorageClass.defaultInstance
 }
 
 #if swift(>=4.2)
@@ -421,6 +577,222 @@ extension DistributedMatchEngine_FindCloudletReply.FindStatus: CaseIterable {
     .findUnknown,
     .findFound,
     .findNotfound,
+  ]
+}
+
+extension DistributedMatchEngine_FindCloudletReply.QosSessionResult: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static var allCases: [DistributedMatchEngine_FindCloudletReply.QosSessionResult] = [
+    .qosNotAttempted,
+    .qosSessionCreated,
+    .qosSessionFailed,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
+public struct DistributedMatchEngine_QosPrioritySessionCreateRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  ///
+  /// API version
+  ///
+  /// _(hidden)_ Reserved for future use
+  public var ver: UInt32 = 0
+
+  ///
+  /// Session Cookie from RegisterClientRequest
+  public var sessionCookie: String = String()
+
+  ///
+  /// _(optional)_ QOS Priority Session duration in seconds
+  public var sessionDuration: UInt32 = 0
+
+  ///
+  /// IP address of mobile device
+  public var ipUserEquipment: String = String()
+
+  ///
+  /// IP address of the application server
+  public var ipApplicationServer: String = String()
+
+  ///
+  /// _(optional)_ A list of single ports or port ranges on the user equipment.
+  public var portUserEquipment: String = String()
+
+  ///
+  /// _(optional)_ A list of single ports or port ranges on the application server
+  public var portApplicationServer: String = String()
+
+  ///
+  /// _(optional)_ The used transport protocol for the uplink
+  public var protocolIn: DistributedMatchEngine_QosSessionProtocol = .tcp
+
+  ///
+  /// _(optional)_ The used transport protocol for the downlink
+  public var protocolOut: DistributedMatchEngine_QosSessionProtocol = .tcp
+
+  ///
+  /// QOS Priority Session profile name
+  public var profile: DistributedMatchEngine_QosSessionProfile = .qosNoPriority
+
+  ///
+  ///  _(optional)_ URI of the callback receiver. Allows asynchronous delivery of session related events.
+  public var notificationUri: String = String()
+
+  ///
+  /// _(optional)_ Authentification token for callback API
+  public var notificationAuthToken: String = String()
+
+  ///
+  /// _(optional)_ Vendor specific data
+  public var tags: Dictionary<String,String> = [:]
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct DistributedMatchEngine_QosPrioritySessionReply {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  ///
+  /// API version
+  ///
+  /// _(hidden)_ Reserved for future use
+  public var ver: UInt32 = 0
+
+  ///
+  /// QOS Priority Session duration in seconds
+  public var sessionDuration: UInt32 = 0
+
+  ///
+  /// QOS Priority Session profile name
+  public var profile: DistributedMatchEngine_QosSessionProfile = .qosNoPriority
+
+  ///
+  /// Session ID in UUID format
+  public var sessionID: String = String()
+
+  ///
+  /// Timestamp of session start in seconds since unix epoch
+  public var startedAt: UInt32 = 0
+
+  ///
+  /// Timestamp of session expiration if the session was not deleted in seconds since unix epoch
+  public var expiresAt: UInt32 = 0
+
+  ///
+  /// HTTP Status Code of call to operator's API server.
+  public var httpStatus: UInt32 = 0
+
+  ///
+  /// _(optional)_ Vendor specific data
+  public var tags: Dictionary<String,String> = [:]
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct DistributedMatchEngine_QosPrioritySessionDeleteRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  ///
+  /// API version
+  ///
+  /// _(hidden)_ Reserved for future use
+  public var ver: UInt32 = 0
+
+  ///
+  /// Session Cookie from RegisterClientRequest
+  public var sessionCookie: String = String()
+
+  ///
+  /// QOS Priority Session profile name
+  public var profile: DistributedMatchEngine_QosSessionProfile = .qosNoPriority
+
+  ///
+  /// QOS Priority Session ID to be deleted
+  public var sessionID: String = String()
+
+  ///
+  /// _(optional)_ Vendor specific data
+  public var tags: Dictionary<String,String> = [:]
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct DistributedMatchEngine_QosPrioritySessionDeleteReply {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  ///
+  /// API version
+  ///
+  /// _(hidden)_ Reserved for future use
+  public var ver: UInt32 = 0
+
+  /// Status return.
+  public var status: DistributedMatchEngine_QosPrioritySessionDeleteReply.DeleteStatus = .qdelUnknown
+
+  ///
+  /// _(optional)_ Vendor specific data
+  public var tags: Dictionary<String,String> = [:]
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public enum DeleteStatus: SwiftProtobuf.Enum {
+    public typealias RawValue = Int
+    case qdelUnknown // = 0
+    case qdelDeleted // = 1
+    case qdelNotFound // = 2
+    case UNRECOGNIZED(Int)
+
+    public init() {
+      self = .qdelUnknown
+    }
+
+    public init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .qdelUnknown
+      case 1: self = .qdelDeleted
+      case 2: self = .qdelNotFound
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    public var rawValue: Int {
+      switch self {
+      case .qdelUnknown: return 0
+      case .qdelDeleted: return 1
+      case .qdelNotFound: return 2
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+  }
+
+  public init() {}
+}
+
+#if swift(>=4.2)
+
+extension DistributedMatchEngine_QosPrioritySessionDeleteReply.DeleteStatus: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static var allCases: [DistributedMatchEngine_QosPrioritySessionDeleteReply.DeleteStatus] = [
+    .qdelUnknown,
+    .qdelDeleted,
+    .qdelNotFound,
   ]
 }
 
@@ -467,12 +839,6 @@ public struct DistributedMatchEngine_VerifyLocationRequest {
   ///
   /// Must be retrieved from TokenServerURI
   public var verifyLocToken: String = String()
-
-  ///
-  /// Cell ID
-  ///
-  /// _(optional)_ Cell ID where the client is
-  public var cellID: UInt32 = 0
 
   ///
   /// Tags
@@ -637,9 +1003,6 @@ public struct DistributedMatchEngine_GetLocationRequest {
   /// Unique carrier identification (typically MCC + MNC)
   public var carrierName: String = String()
 
-  /// _(optional)_ Cell id where the client is
-  public var cellID: UInt32 = 0
-
   /// _(optional)_ Vendor specific data
   public var tags: Dictionary<String,String> = [:]
 
@@ -764,9 +1127,6 @@ public struct DistributedMatchEngine_AppInstListRequest {
   public var hasGpsLocation: Bool {return self._gpsLocation != nil}
   /// Clears the value of `gpsLocation`. Subsequent reads from it will return its default value.
   public mutating func clearGpsLocation() {self._gpsLocation = nil}
-
-  /// _(optional)_ Cell id where the client is
-  public var cellID: UInt32 = 0
 
   /// _(optional)_ Limit the number of results, defaults to 3
   public var limit: UInt32 = 0
@@ -924,9 +1284,6 @@ public struct DistributedMatchEngine_FqdnListRequest {
 
   /// Session Cookie from RegisterClientRequest
   public var sessionCookie: String = String()
-
-  /// _(optional)_ Cell id where the client is
-  public var cellID: UInt32 = 0
 
   /// _(optional)_ Vendor specific data
   public var tags: Dictionary<String,String> = [:]
@@ -1160,9 +1517,6 @@ public struct DistributedMatchEngine_DynamicLocGroupRequest {
   /// Unused
   public var userData: String = String()
 
-  /// _(optional)_ Cell id where the client is
-  public var cellID: UInt32 = 0
-
   /// _(optional)_ Vendor specific data
   public var tags: Dictionary<String,String> = [:]
 
@@ -1320,9 +1674,6 @@ public struct DistributedMatchEngine_QosPositionRequest {
   /// Clears the value of `bandSelection`. Subsequent reads from it will return its default value.
   public mutating func clearBandSelection() {self._bandSelection = nil}
 
-  /// _(optional)_ Cell id where the client is
-  public var cellID: UInt32 = 0
-
   /// _(optional)_ Vendor specific data
   public var tags: Dictionary<String,String> = [:]
 
@@ -1455,7 +1806,7 @@ public struct DistributedMatchEngine_ClientEdgeEvent {
     set {_uniqueStorage()._eventType = newValue}
   }
 
-  /// GPS Location info if event_type is EVENT_LOCATION_UPDATE or EVENT_LATENCY_SAMPLES. Also must be sent on EVENT_INIT_CONNECTION.
+  /// GPS Location info if event_type is EVENT_LOCATION_UPDATE or EVENT_LATENCY_SAMPLES
   public var gpsLocation: DistributedMatchEngine_Loc {
     get {return _storage._gpsLocation ?? DistributedMatchEngine_Loc()}
     set {_uniqueStorage()._gpsLocation = newValue}
@@ -1578,64 +1929,47 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType {
-    get {return _storage._eventType}
-    set {_uniqueStorage()._eventType = newValue}
-  }
+  public var eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType = .eventUnknown
 
-  /// Cloudlet state information
-  public var cloudletState: DistributedMatchEngine_CloudletState {
-    get {return _storage._cloudletState}
-    set {_uniqueStorage()._cloudletState = newValue}
-  }
+  /// Cloudlet state information if cloudlet state is not CLOUDLET_STATE_READY
+  public var cloudletState: DistributedMatchEngine_CloudletState = .unknown
 
-  /// Cloudlet maintenance state information
-  public var maintenanceState: DistributedMatchEngine_MaintenanceState {
-    get {return _storage._maintenanceState}
-    set {_uniqueStorage()._maintenanceState = newValue}
-  }
+  /// Cloudlet maintenance state information if maintenance state is not NORMAL_OPERATION
+  public var maintenanceState: DistributedMatchEngine_MaintenanceState = .normalOperation
 
-  /// AppInst health state information
-  public var healthCheck: DistributedMatchEngine_HealthCheck {
-    get {return _storage._healthCheck}
-    set {_uniqueStorage()._healthCheck = newValue}
-  }
+  /// AppInst health state information if health check is not HEALTH_CHECK_OK
+  public var healthCheck: DistributedMatchEngine_HealthCheck = .unknown
 
   /// Summarized RTT Latency stats from samples provided from client if event_type is EVENT_LATENCY
   public var statistics: DistributedMatchEngine_Statistics {
-    get {return _storage._statistics ?? DistributedMatchEngine_Statistics()}
-    set {_uniqueStorage()._statistics = newValue}
+    get {return _statistics ?? DistributedMatchEngine_Statistics()}
+    set {_statistics = newValue}
   }
   /// Returns true if `statistics` has been explicitly set.
-  public var hasStatistics: Bool {return _storage._statistics != nil}
+  public var hasStatistics: Bool {return self._statistics != nil}
   /// Clears the value of `statistics`. Subsequent reads from it will return its default value.
-  public mutating func clearStatistics() {_uniqueStorage()._statistics = nil}
+  public mutating func clearStatistics() {self._statistics = nil}
 
   /// 
-  /// New and closer cloudlet if event_type is EVENT_CLOUDLET_UPDATE. 
-  /// Also sent on EVENT_CLOUDLET_STATE, if cloudlet_state != CLOUDLET_STATE_READY
-  /// Also sent on EVENT_CLOUDLET_MAINTENANCE, if maintenance_state == UNDER_MAINTENANCE
-  /// Also sent on EVENT_APPINST_HEALTH, if health_check != HEALTH_CHECK_OK && health_check != HEALTH_CHECK_UNKNOWN
+  /// New and closer cloudlet if event_type is EVENT_CLOUDLET_UPDATE.
+  /// (EVENT_CLOUDLET_UPDATE occurs if the client is closer to a different cloudlet, or a new closer appinst is created, or a previously down appinst/cloudlet that is closest to the client is now operational)
+  /// Also sent on EVENT_CLOUDLET_STATE if another cloudlet is available
+  /// Also sent on EVENT_CLOUDLET_MAINTENANCE, if another cloudlet is available and maintenance_state == UNDER_MAINTENANCE
+  /// Also sent on EVENT_APPINST_HEALTH, if another cloudlet is available and health_check != HEALTH_CHECK_UNKNOWN
   public var newCloudlet: DistributedMatchEngine_FindCloudletReply {
-    get {return _storage._newCloudlet ?? DistributedMatchEngine_FindCloudletReply()}
-    set {_uniqueStorage()._newCloudlet = newValue}
+    get {return _newCloudlet ?? DistributedMatchEngine_FindCloudletReply()}
+    set {_newCloudlet = newValue}
   }
   /// Returns true if `newCloudlet` has been explicitly set.
-  public var hasNewCloudlet: Bool {return _storage._newCloudlet != nil}
+  public var hasNewCloudlet: Bool {return self._newCloudlet != nil}
   /// Clears the value of `newCloudlet`. Subsequent reads from it will return its default value.
-  public mutating func clearNewCloudlet() {_uniqueStorage()._newCloudlet = nil}
+  public mutating func clearNewCloudlet() {self._newCloudlet = nil}
 
   /// Error message if event_type is EVENT_ERROR
-  public var errorMsg: String {
-    get {return _storage._errorMsg}
-    set {_uniqueStorage()._errorMsg = newValue}
-  }
+  public var errorMsg: String = String()
 
   /// _(optional)_ Vendor specific data
-  public var tags: Dictionary<String,String> {
-    get {return _storage._tags}
-    set {_uniqueStorage()._tags = newValue}
-  }
+  public var tags: Dictionary<String,String> = [:]
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1690,7 +2024,8 @@ public struct DistributedMatchEngine_ServerEdgeEvent {
 
   public init() {}
 
-  fileprivate var _storage = _StorageClass.defaultInstance
+  fileprivate var _statistics: DistributedMatchEngine_Statistics? = nil
+  fileprivate var _newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil
 }
 
 #if swift(>=4.2)
@@ -1733,6 +2068,24 @@ extension DistributedMatchEngine_ReplyStatus: SwiftProtobuf._ProtoNameProviding 
   ]
 }
 
+extension DistributedMatchEngine_QosSessionProfile: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "QOS_NO_PRIORITY"),
+    1: .same(proto: "QOS_LOW_LATENCY"),
+    2: .same(proto: "QOS_THROUGHPUT_DOWN_S"),
+    3: .same(proto: "QOS_THROUGHPUT_DOWN_M"),
+    4: .same(proto: "QOS_THROUGHPUT_DOWN_L"),
+  ]
+}
+
+extension DistributedMatchEngine_QosSessionProtocol: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "TCP"),
+    1: .same(proto: "UDP"),
+    2: .same(proto: "ANY"),
+  ]
+}
+
 extension DistributedMatchEngine_RegisterClientRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".RegisterClientRequest"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1742,7 +2095,6 @@ extension DistributedMatchEngine_RegisterClientRequest: SwiftProtobuf.Message, S
     4: .standard(proto: "app_vers"),
     5: .standard(proto: "carrier_name"),
     6: .standard(proto: "auth_token"),
-    7: .standard(proto: "cell_id"),
     8: .standard(proto: "unique_id_type"),
     9: .standard(proto: "unique_id"),
     100: .same(proto: "tags"),
@@ -1760,7 +2112,6 @@ extension DistributedMatchEngine_RegisterClientRequest: SwiftProtobuf.Message, S
       case 4: try { try decoder.decodeSingularStringField(value: &self.appVers) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 6: try { try decoder.decodeSingularStringField(value: &self.authToken) }()
-      case 7: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 8: try { try decoder.decodeSingularStringField(value: &self.uniqueIDType) }()
       case 9: try { try decoder.decodeSingularStringField(value: &self.uniqueID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
@@ -1788,9 +2139,6 @@ extension DistributedMatchEngine_RegisterClientRequest: SwiftProtobuf.Message, S
     if !self.authToken.isEmpty {
       try visitor.visitSingularStringField(value: self.authToken, fieldNumber: 6)
     }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 7)
-    }
     if !self.uniqueIDType.isEmpty {
       try visitor.visitSingularStringField(value: self.uniqueIDType, fieldNumber: 8)
     }
@@ -1810,7 +2158,6 @@ extension DistributedMatchEngine_RegisterClientRequest: SwiftProtobuf.Message, S
     if lhs.appVers != rhs.appVers {return false}
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs.authToken != rhs.authToken {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.uniqueIDType != rhs.uniqueIDType {return false}
     if lhs.uniqueID != rhs.uniqueID {return false}
     if lhs.tags != rhs.tags {return false}
@@ -1894,7 +2241,6 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
     2: .standard(proto: "session_cookie"),
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "gps_location"),
-    8: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -1908,7 +2254,6 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 4: try { try decoder.decodeSingularMessageField(value: &self._gpsLocation) }()
-      case 8: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -1916,6 +2261,10 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
@@ -1925,12 +2274,9 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
     if !self.carrierName.isEmpty {
       try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 8)
-    }
+    } }()
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -1942,7 +2288,6 @@ extension DistributedMatchEngine_FindCloudletRequest: SwiftProtobuf.Message, Swi
     if lhs.sessionCookie != rhs.sessionCookie {return false}
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs._gpsLocation != rhs._gpsLocation {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -2014,60 +2359,124 @@ extension DistributedMatchEngine_FindCloudletReply: SwiftProtobuf.Message, Swift
     4: .same(proto: "ports"),
     5: .standard(proto: "cloudlet_location"),
     6: .standard(proto: "edge_events_cookie"),
+    7: .standard(proto: "qos_result"),
+    8: .standard(proto: "qos_error_msg"),
     100: .same(proto: "tags"),
   ]
 
+  fileprivate class _StorageClass {
+    var _ver: UInt32 = 0
+    var _status: DistributedMatchEngine_FindCloudletReply.FindStatus = .findUnknown
+    var _fqdn: String = String()
+    var _ports: [DistributedMatchEngine_AppPort] = []
+    var _cloudletLocation: DistributedMatchEngine_Loc? = nil
+    var _edgeEventsCookie: String = String()
+    var _qosResult: DistributedMatchEngine_FindCloudletReply.QosSessionResult = .qosNotAttempted
+    var _qosErrorMsg: String = String()
+    var _tags: Dictionary<String,String> = [:]
+
+    static let defaultInstance = _StorageClass()
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _ver = source._ver
+      _status = source._status
+      _fqdn = source._fqdn
+      _ports = source._ports
+      _cloudletLocation = source._cloudletLocation
+      _edgeEventsCookie = source._edgeEventsCookie
+      _qosResult = source._qosResult
+      _qosErrorMsg = source._qosErrorMsg
+      _tags = source._tags
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
+
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
-      case 2: try { try decoder.decodeSingularEnumField(value: &self.status) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.fqdn) }()
-      case 4: try { try decoder.decodeRepeatedMessageField(value: &self.ports) }()
-      case 5: try { try decoder.decodeSingularMessageField(value: &self._cloudletLocation) }()
-      case 6: try { try decoder.decodeSingularStringField(value: &self.edgeEventsCookie) }()
-      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
-      default: break
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularUInt32Field(value: &_storage._ver) }()
+        case 2: try { try decoder.decodeSingularEnumField(value: &_storage._status) }()
+        case 3: try { try decoder.decodeSingularStringField(value: &_storage._fqdn) }()
+        case 4: try { try decoder.decodeRepeatedMessageField(value: &_storage._ports) }()
+        case 5: try { try decoder.decodeSingularMessageField(value: &_storage._cloudletLocation) }()
+        case 6: try { try decoder.decodeSingularStringField(value: &_storage._edgeEventsCookie) }()
+        case 7: try { try decoder.decodeSingularEnumField(value: &_storage._qosResult) }()
+        case 8: try { try decoder.decodeSingularStringField(value: &_storage._qosErrorMsg) }()
+        case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &_storage._tags) }()
+        default: break
+        }
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.ver != 0 {
-      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
-    }
-    if self.status != .findUnknown {
-      try visitor.visitSingularEnumField(value: self.status, fieldNumber: 2)
-    }
-    if !self.fqdn.isEmpty {
-      try visitor.visitSingularStringField(value: self.fqdn, fieldNumber: 3)
-    }
-    if !self.ports.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.ports, fieldNumber: 4)
-    }
-    if let v = self._cloudletLocation {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }
-    if !self.edgeEventsCookie.isEmpty {
-      try visitor.visitSingularStringField(value: self.edgeEventsCookie, fieldNumber: 6)
-    }
-    if !self.tags.isEmpty {
-      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
+      if _storage._ver != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._ver, fieldNumber: 1)
+      }
+      if _storage._status != .findUnknown {
+        try visitor.visitSingularEnumField(value: _storage._status, fieldNumber: 2)
+      }
+      if !_storage._fqdn.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._fqdn, fieldNumber: 3)
+      }
+      if !_storage._ports.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._ports, fieldNumber: 4)
+      }
+      try { if let v = _storage._cloudletLocation {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+      } }()
+      if !_storage._edgeEventsCookie.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._edgeEventsCookie, fieldNumber: 6)
+      }
+      if _storage._qosResult != .qosNotAttempted {
+        try visitor.visitSingularEnumField(value: _storage._qosResult, fieldNumber: 7)
+      }
+      if !_storage._qosErrorMsg.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._qosErrorMsg, fieldNumber: 8)
+      }
+      if !_storage._tags.isEmpty {
+        try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: _storage._tags, fieldNumber: 100)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: DistributedMatchEngine_FindCloudletReply, rhs: DistributedMatchEngine_FindCloudletReply) -> Bool {
-    if lhs.ver != rhs.ver {return false}
-    if lhs.status != rhs.status {return false}
-    if lhs.fqdn != rhs.fqdn {return false}
-    if lhs.ports != rhs.ports {return false}
-    if lhs._cloudletLocation != rhs._cloudletLocation {return false}
-    if lhs.edgeEventsCookie != rhs.edgeEventsCookie {return false}
-    if lhs.tags != rhs.tags {return false}
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._ver != rhs_storage._ver {return false}
+        if _storage._status != rhs_storage._status {return false}
+        if _storage._fqdn != rhs_storage._fqdn {return false}
+        if _storage._ports != rhs_storage._ports {return false}
+        if _storage._cloudletLocation != rhs_storage._cloudletLocation {return false}
+        if _storage._edgeEventsCookie != rhs_storage._edgeEventsCookie {return false}
+        if _storage._qosResult != rhs_storage._qosResult {return false}
+        if _storage._qosErrorMsg != rhs_storage._qosErrorMsg {return false}
+        if _storage._tags != rhs_storage._tags {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2081,6 +2490,300 @@ extension DistributedMatchEngine_FindCloudletReply.FindStatus: SwiftProtobuf._Pr
   ]
 }
 
+extension DistributedMatchEngine_FindCloudletReply.QosSessionResult: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "QOS_NOT_ATTEMPTED"),
+    1: .same(proto: "QOS_SESSION_CREATED"),
+    2: .same(proto: "QOS_SESSION_FAILED"),
+  ]
+}
+
+extension DistributedMatchEngine_QosPrioritySessionCreateRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".QosPrioritySessionCreateRequest"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "ver"),
+    2: .standard(proto: "session_cookie"),
+    3: .standard(proto: "session_duration"),
+    4: .standard(proto: "ip_user_equipment"),
+    5: .standard(proto: "ip_application_server"),
+    6: .standard(proto: "port_user_equipment"),
+    7: .standard(proto: "port_application_server"),
+    8: .standard(proto: "protocol_in"),
+    9: .standard(proto: "protocol_out"),
+    10: .same(proto: "profile"),
+    11: .standard(proto: "notification_uri"),
+    12: .standard(proto: "notification_auth_token"),
+    100: .same(proto: "tags"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
+      case 3: try { try decoder.decodeSingularUInt32Field(value: &self.sessionDuration) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.ipUserEquipment) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.ipApplicationServer) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self.portUserEquipment) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self.portApplicationServer) }()
+      case 8: try { try decoder.decodeSingularEnumField(value: &self.protocolIn) }()
+      case 9: try { try decoder.decodeSingularEnumField(value: &self.protocolOut) }()
+      case 10: try { try decoder.decodeSingularEnumField(value: &self.profile) }()
+      case 11: try { try decoder.decodeSingularStringField(value: &self.notificationUri) }()
+      case 12: try { try decoder.decodeSingularStringField(value: &self.notificationAuthToken) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.ver != 0 {
+      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
+    }
+    if !self.sessionCookie.isEmpty {
+      try visitor.visitSingularStringField(value: self.sessionCookie, fieldNumber: 2)
+    }
+    if self.sessionDuration != 0 {
+      try visitor.visitSingularUInt32Field(value: self.sessionDuration, fieldNumber: 3)
+    }
+    if !self.ipUserEquipment.isEmpty {
+      try visitor.visitSingularStringField(value: self.ipUserEquipment, fieldNumber: 4)
+    }
+    if !self.ipApplicationServer.isEmpty {
+      try visitor.visitSingularStringField(value: self.ipApplicationServer, fieldNumber: 5)
+    }
+    if !self.portUserEquipment.isEmpty {
+      try visitor.visitSingularStringField(value: self.portUserEquipment, fieldNumber: 6)
+    }
+    if !self.portApplicationServer.isEmpty {
+      try visitor.visitSingularStringField(value: self.portApplicationServer, fieldNumber: 7)
+    }
+    if self.protocolIn != .tcp {
+      try visitor.visitSingularEnumField(value: self.protocolIn, fieldNumber: 8)
+    }
+    if self.protocolOut != .tcp {
+      try visitor.visitSingularEnumField(value: self.protocolOut, fieldNumber: 9)
+    }
+    if self.profile != .qosNoPriority {
+      try visitor.visitSingularEnumField(value: self.profile, fieldNumber: 10)
+    }
+    if !self.notificationUri.isEmpty {
+      try visitor.visitSingularStringField(value: self.notificationUri, fieldNumber: 11)
+    }
+    if !self.notificationAuthToken.isEmpty {
+      try visitor.visitSingularStringField(value: self.notificationAuthToken, fieldNumber: 12)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: DistributedMatchEngine_QosPrioritySessionCreateRequest, rhs: DistributedMatchEngine_QosPrioritySessionCreateRequest) -> Bool {
+    if lhs.ver != rhs.ver {return false}
+    if lhs.sessionCookie != rhs.sessionCookie {return false}
+    if lhs.sessionDuration != rhs.sessionDuration {return false}
+    if lhs.ipUserEquipment != rhs.ipUserEquipment {return false}
+    if lhs.ipApplicationServer != rhs.ipApplicationServer {return false}
+    if lhs.portUserEquipment != rhs.portUserEquipment {return false}
+    if lhs.portApplicationServer != rhs.portApplicationServer {return false}
+    if lhs.protocolIn != rhs.protocolIn {return false}
+    if lhs.protocolOut != rhs.protocolOut {return false}
+    if lhs.profile != rhs.profile {return false}
+    if lhs.notificationUri != rhs.notificationUri {return false}
+    if lhs.notificationAuthToken != rhs.notificationAuthToken {return false}
+    if lhs.tags != rhs.tags {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension DistributedMatchEngine_QosPrioritySessionReply: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".QosPrioritySessionReply"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "ver"),
+    2: .standard(proto: "session_duration"),
+    3: .same(proto: "profile"),
+    4: .standard(proto: "session_id"),
+    5: .standard(proto: "started_at"),
+    6: .standard(proto: "expires_at"),
+    7: .standard(proto: "http_status"),
+    100: .same(proto: "tags"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
+      case 2: try { try decoder.decodeSingularUInt32Field(value: &self.sessionDuration) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self.profile) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.sessionID) }()
+      case 5: try { try decoder.decodeSingularUInt32Field(value: &self.startedAt) }()
+      case 6: try { try decoder.decodeSingularUInt32Field(value: &self.expiresAt) }()
+      case 7: try { try decoder.decodeSingularUInt32Field(value: &self.httpStatus) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.ver != 0 {
+      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
+    }
+    if self.sessionDuration != 0 {
+      try visitor.visitSingularUInt32Field(value: self.sessionDuration, fieldNumber: 2)
+    }
+    if self.profile != .qosNoPriority {
+      try visitor.visitSingularEnumField(value: self.profile, fieldNumber: 3)
+    }
+    if !self.sessionID.isEmpty {
+      try visitor.visitSingularStringField(value: self.sessionID, fieldNumber: 4)
+    }
+    if self.startedAt != 0 {
+      try visitor.visitSingularUInt32Field(value: self.startedAt, fieldNumber: 5)
+    }
+    if self.expiresAt != 0 {
+      try visitor.visitSingularUInt32Field(value: self.expiresAt, fieldNumber: 6)
+    }
+    if self.httpStatus != 0 {
+      try visitor.visitSingularUInt32Field(value: self.httpStatus, fieldNumber: 7)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: DistributedMatchEngine_QosPrioritySessionReply, rhs: DistributedMatchEngine_QosPrioritySessionReply) -> Bool {
+    if lhs.ver != rhs.ver {return false}
+    if lhs.sessionDuration != rhs.sessionDuration {return false}
+    if lhs.profile != rhs.profile {return false}
+    if lhs.sessionID != rhs.sessionID {return false}
+    if lhs.startedAt != rhs.startedAt {return false}
+    if lhs.expiresAt != rhs.expiresAt {return false}
+    if lhs.httpStatus != rhs.httpStatus {return false}
+    if lhs.tags != rhs.tags {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension DistributedMatchEngine_QosPrioritySessionDeleteRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".QosPrioritySessionDeleteRequest"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "ver"),
+    2: .standard(proto: "session_cookie"),
+    3: .same(proto: "profile"),
+    4: .standard(proto: "session_id"),
+    100: .same(proto: "tags"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self.profile) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.sessionID) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.ver != 0 {
+      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
+    }
+    if !self.sessionCookie.isEmpty {
+      try visitor.visitSingularStringField(value: self.sessionCookie, fieldNumber: 2)
+    }
+    if self.profile != .qosNoPriority {
+      try visitor.visitSingularEnumField(value: self.profile, fieldNumber: 3)
+    }
+    if !self.sessionID.isEmpty {
+      try visitor.visitSingularStringField(value: self.sessionID, fieldNumber: 4)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: DistributedMatchEngine_QosPrioritySessionDeleteRequest, rhs: DistributedMatchEngine_QosPrioritySessionDeleteRequest) -> Bool {
+    if lhs.ver != rhs.ver {return false}
+    if lhs.sessionCookie != rhs.sessionCookie {return false}
+    if lhs.profile != rhs.profile {return false}
+    if lhs.sessionID != rhs.sessionID {return false}
+    if lhs.tags != rhs.tags {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension DistributedMatchEngine_QosPrioritySessionDeleteReply: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".QosPrioritySessionDeleteReply"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "ver"),
+    2: .same(proto: "status"),
+    100: .same(proto: "tags"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.status) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.ver != 0 {
+      try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
+    }
+    if self.status != .qdelUnknown {
+      try visitor.visitSingularEnumField(value: self.status, fieldNumber: 2)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: DistributedMatchEngine_QosPrioritySessionDeleteReply, rhs: DistributedMatchEngine_QosPrioritySessionDeleteReply) -> Bool {
+    if lhs.ver != rhs.ver {return false}
+    if lhs.status != rhs.status {return false}
+    if lhs.tags != rhs.tags {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension DistributedMatchEngine_QosPrioritySessionDeleteReply.DeleteStatus: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "QDEL_UNKNOWN"),
+    1: .same(proto: "QDEL_DELETED"),
+    2: .same(proto: "QDEL_NOT_FOUND"),
+  ]
+}
+
 extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".VerifyLocationRequest"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -2089,7 +2792,6 @@ extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, S
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "gps_location"),
     5: .standard(proto: "verify_loc_token"),
-    6: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -2104,7 +2806,6 @@ extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, S
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 4: try { try decoder.decodeSingularMessageField(value: &self._gpsLocation) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.verifyLocToken) }()
-      case 6: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2112,6 +2813,10 @@ extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, S
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
@@ -2121,14 +2826,11 @@ extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, S
     if !self.carrierName.isEmpty {
       try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }
+    } }()
     if !self.verifyLocToken.isEmpty {
       try visitor.visitSingularStringField(value: self.verifyLocToken, fieldNumber: 5)
-    }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 6)
     }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
@@ -2142,7 +2844,6 @@ extension DistributedMatchEngine_VerifyLocationRequest: SwiftProtobuf.Message, S
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs._gpsLocation != rhs._gpsLocation {return false}
     if lhs.verifyLocToken != rhs.verifyLocToken {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -2232,7 +2933,6 @@ extension DistributedMatchEngine_GetLocationRequest: SwiftProtobuf.Message, Swif
     1: .same(proto: "ver"),
     2: .standard(proto: "session_cookie"),
     3: .standard(proto: "carrier_name"),
-    4: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -2245,7 +2945,6 @@ extension DistributedMatchEngine_GetLocationRequest: SwiftProtobuf.Message, Swif
       case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
-      case 4: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2262,9 +2961,6 @@ extension DistributedMatchEngine_GetLocationRequest: SwiftProtobuf.Message, Swif
     if !self.carrierName.isEmpty {
       try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
     }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 4)
-    }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2275,7 +2971,6 @@ extension DistributedMatchEngine_GetLocationRequest: SwiftProtobuf.Message, Swif
     if lhs.ver != rhs.ver {return false}
     if lhs.sessionCookie != rhs.sessionCookie {return false}
     if lhs.carrierName != rhs.carrierName {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -2311,6 +3006,10 @@ extension DistributedMatchEngine_GetLocationReply: SwiftProtobuf.Message, SwiftP
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
@@ -2323,9 +3022,9 @@ extension DistributedMatchEngine_GetLocationReply: SwiftProtobuf.Message, SwiftP
     if self.tower != 0 {
       try visitor.visitSingularUInt64Field(value: self.tower, fieldNumber: 4)
     }
-    if let v = self._networkLocation {
+    try { if let v = self._networkLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }
+    } }()
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2359,7 +3058,6 @@ extension DistributedMatchEngine_AppInstListRequest: SwiftProtobuf.Message, Swif
     2: .standard(proto: "session_cookie"),
     3: .standard(proto: "carrier_name"),
     4: .standard(proto: "gps_location"),
-    5: .standard(proto: "cell_id"),
     6: .same(proto: "limit"),
     100: .same(proto: "tags"),
   ]
@@ -2374,7 +3072,6 @@ extension DistributedMatchEngine_AppInstListRequest: SwiftProtobuf.Message, Swif
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.carrierName) }()
       case 4: try { try decoder.decodeSingularMessageField(value: &self._gpsLocation) }()
-      case 5: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 6: try { try decoder.decodeSingularUInt32Field(value: &self.limit) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
@@ -2383,6 +3080,10 @@ extension DistributedMatchEngine_AppInstListRequest: SwiftProtobuf.Message, Swif
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
@@ -2392,12 +3093,9 @@ extension DistributedMatchEngine_AppInstListRequest: SwiftProtobuf.Message, Swif
     if !self.carrierName.isEmpty {
       try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 3)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 5)
-    }
+    } }()
     if self.limit != 0 {
       try visitor.visitSingularUInt32Field(value: self.limit, fieldNumber: 6)
     }
@@ -2412,7 +3110,6 @@ extension DistributedMatchEngine_AppInstListRequest: SwiftProtobuf.Message, Swif
     if lhs.sessionCookie != rhs.sessionCookie {return false}
     if lhs.carrierName != rhs.carrierName {return false}
     if lhs._gpsLocation != rhs._gpsLocation {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.limit != rhs.limit {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -2509,15 +3206,19 @@ extension DistributedMatchEngine_CloudletLocation: SwiftProtobuf.Message, SwiftP
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.carrierName.isEmpty {
       try visitor.visitSingularStringField(value: self.carrierName, fieldNumber: 1)
     }
     if !self.cloudletName.isEmpty {
       try visitor.visitSingularStringField(value: self.cloudletName, fieldNumber: 2)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }
+    } }()
     if self.distance != 0 {
       try visitor.visitSingularDoubleField(value: self.distance, fieldNumber: 4)
     }
@@ -2601,7 +3302,6 @@ extension DistributedMatchEngine_FqdnListRequest: SwiftProtobuf.Message, SwiftPr
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "ver"),
     2: .standard(proto: "session_cookie"),
-    3: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -2613,7 +3313,6 @@ extension DistributedMatchEngine_FqdnListRequest: SwiftProtobuf.Message, SwiftPr
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularUInt32Field(value: &self.ver) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.sessionCookie) }()
-      case 3: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2627,9 +3326,6 @@ extension DistributedMatchEngine_FqdnListRequest: SwiftProtobuf.Message, SwiftPr
     if !self.sessionCookie.isEmpty {
       try visitor.visitSingularStringField(value: self.sessionCookie, fieldNumber: 2)
     }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 3)
-    }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2639,7 +3335,6 @@ extension DistributedMatchEngine_FqdnListRequest: SwiftProtobuf.Message, SwiftPr
   public static func ==(lhs: DistributedMatchEngine_FqdnListRequest, rhs: DistributedMatchEngine_FqdnListRequest) -> Bool {
     if lhs.ver != rhs.ver {return false}
     if lhs.sessionCookie != rhs.sessionCookie {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -2785,15 +3480,19 @@ extension DistributedMatchEngine_AppOfficialFqdnRequest: SwiftProtobuf.Message, 
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
     if !self.sessionCookie.isEmpty {
       try visitor.visitSingularStringField(value: self.sessionCookie, fieldNumber: 2)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }
+    } }()
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2888,7 +3587,6 @@ extension DistributedMatchEngine_DynamicLocGroupRequest: SwiftProtobuf.Message, 
     3: .standard(proto: "lg_id"),
     11: .standard(proto: "comm_type"),
     12: .standard(proto: "user_data"),
-    13: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -2903,7 +3601,6 @@ extension DistributedMatchEngine_DynamicLocGroupRequest: SwiftProtobuf.Message, 
       case 3: try { try decoder.decodeSingularUInt64Field(value: &self.lgID) }()
       case 11: try { try decoder.decodeSingularEnumField(value: &self.commType) }()
       case 12: try { try decoder.decodeSingularStringField(value: &self.userData) }()
-      case 13: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -2926,9 +3623,6 @@ extension DistributedMatchEngine_DynamicLocGroupRequest: SwiftProtobuf.Message, 
     if !self.userData.isEmpty {
       try visitor.visitSingularStringField(value: self.userData, fieldNumber: 12)
     }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 13)
-    }
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -2941,7 +3635,6 @@ extension DistributedMatchEngine_DynamicLocGroupRequest: SwiftProtobuf.Message, 
     if lhs.lgID != rhs.lgID {return false}
     if lhs.commType != rhs.commType {return false}
     if lhs.userData != rhs.userData {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -3033,12 +3726,16 @@ extension DistributedMatchEngine_QosPosition: SwiftProtobuf.Message, SwiftProtob
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.positionid != 0 {
       try visitor.visitSingularInt64Field(value: self.positionid, fieldNumber: 1)
     }
-    if let v = self._gpsLocation {
+    try { if let v = self._gpsLocation {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3108,7 +3805,6 @@ extension DistributedMatchEngine_QosPositionRequest: SwiftProtobuf.Message, Swif
     3: .same(proto: "positions"),
     4: .standard(proto: "lte_category"),
     5: .standard(proto: "band_selection"),
-    6: .standard(proto: "cell_id"),
     100: .same(proto: "tags"),
   ]
 
@@ -3123,7 +3819,6 @@ extension DistributedMatchEngine_QosPositionRequest: SwiftProtobuf.Message, Swif
       case 3: try { try decoder.decodeRepeatedMessageField(value: &self.positions) }()
       case 4: try { try decoder.decodeSingularInt32Field(value: &self.lteCategory) }()
       case 5: try { try decoder.decodeSingularMessageField(value: &self._bandSelection) }()
-      case 6: try { try decoder.decodeSingularUInt32Field(value: &self.cellID) }()
       case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
       default: break
       }
@@ -3131,6 +3826,10 @@ extension DistributedMatchEngine_QosPositionRequest: SwiftProtobuf.Message, Swif
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if self.ver != 0 {
       try visitor.visitSingularUInt32Field(value: self.ver, fieldNumber: 1)
     }
@@ -3143,12 +3842,9 @@ extension DistributedMatchEngine_QosPositionRequest: SwiftProtobuf.Message, Swif
     if self.lteCategory != 0 {
       try visitor.visitSingularInt32Field(value: self.lteCategory, fieldNumber: 4)
     }
-    if let v = self._bandSelection {
+    try { if let v = self._bandSelection {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }
-    if self.cellID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.cellID, fieldNumber: 6)
-    }
+    } }()
     if !self.tags.isEmpty {
       try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
@@ -3161,7 +3857,6 @@ extension DistributedMatchEngine_QosPositionRequest: SwiftProtobuf.Message, Swif
     if lhs.positions != rhs.positions {return false}
     if lhs.lteCategory != rhs.lteCategory {return false}
     if lhs._bandSelection != rhs._bandSelection {return false}
-    if lhs.cellID != rhs.cellID {return false}
     if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -3250,12 +3945,16 @@ extension DistributedMatchEngine_QosPositionKpiResult: SwiftProtobuf.Message, Sw
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
       if _storage._positionid != 0 {
         try visitor.visitSingularInt64Field(value: _storage._positionid, fieldNumber: 1)
       }
-      if let v = _storage._gpsLocation {
+      try { if let v = _storage._gpsLocation {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-      }
+      } }()
       if _storage._dluserthroughputMin != 0 {
         try visitor.visitSingularFloatField(value: _storage._dluserthroughputMin, fieldNumber: 3)
       }
@@ -3436,6 +4135,10 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
       if !_storage._sessionCookie.isEmpty {
         try visitor.visitSingularStringField(value: _storage._sessionCookie, fieldNumber: 1)
       }
@@ -3445,18 +4148,18 @@ extension DistributedMatchEngine_ClientEdgeEvent: SwiftProtobuf.Message, SwiftPr
       if _storage._eventType != .eventUnknown {
         try visitor.visitSingularEnumField(value: _storage._eventType, fieldNumber: 3)
       }
-      if let v = _storage._gpsLocation {
+      try { if let v = _storage._gpsLocation {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-      }
+      } }()
       if !_storage._samples.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._samples, fieldNumber: 5)
       }
-      if let v = _storage._deviceInfoStatic {
+      try { if let v = _storage._deviceInfoStatic {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-      }
-      if let v = _storage._deviceInfoDynamic {
+      } }()
+      try { if let v = _storage._deviceInfoDynamic {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-      }
+      } }()
       if !_storage._customEvent.isEmpty {
         try visitor.visitSingularStringField(value: _storage._customEvent, fieldNumber: 8)
       }
@@ -3514,108 +4217,66 @@ extension DistributedMatchEngine_ServerEdgeEvent: SwiftProtobuf.Message, SwiftPr
     100: .same(proto: "tags"),
   ]
 
-  fileprivate class _StorageClass {
-    var _eventType: DistributedMatchEngine_ServerEdgeEvent.ServerEventType = .eventUnknown
-    var _cloudletState: DistributedMatchEngine_CloudletState = .unknown
-    var _maintenanceState: DistributedMatchEngine_MaintenanceState = .normalOperation
-    var _healthCheck: DistributedMatchEngine_HealthCheck = .unknown
-    var _statistics: DistributedMatchEngine_Statistics? = nil
-    var _newCloudlet: DistributedMatchEngine_FindCloudletReply? = nil
-    var _errorMsg: String = String()
-    var _tags: Dictionary<String,String> = [:]
-
-    static let defaultInstance = _StorageClass()
-
-    private init() {}
-
-    init(copying source: _StorageClass) {
-      _eventType = source._eventType
-      _cloudletState = source._cloudletState
-      _maintenanceState = source._maintenanceState
-      _healthCheck = source._healthCheck
-      _statistics = source._statistics
-      _newCloudlet = source._newCloudlet
-      _errorMsg = source._errorMsg
-      _tags = source._tags
-    }
-  }
-
-  fileprivate mutating func _uniqueStorage() -> _StorageClass {
-    if !isKnownUniquelyReferenced(&_storage) {
-      _storage = _StorageClass(copying: _storage)
-    }
-    return _storage
-  }
-
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    _ = _uniqueStorage()
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      while let fieldNumber = try decoder.nextFieldNumber() {
-        // The use of inline closures is to circumvent an issue where the compiler
-        // allocates stack space for every case branch when no optimizations are
-        // enabled. https://github.com/apple/swift-protobuf/issues/1034
-        switch fieldNumber {
-        case 1: try { try decoder.decodeSingularEnumField(value: &_storage._eventType) }()
-        case 2: try { try decoder.decodeSingularEnumField(value: &_storage._cloudletState) }()
-        case 3: try { try decoder.decodeSingularEnumField(value: &_storage._maintenanceState) }()
-        case 4: try { try decoder.decodeSingularEnumField(value: &_storage._healthCheck) }()
-        case 5: try { try decoder.decodeSingularMessageField(value: &_storage._statistics) }()
-        case 6: try { try decoder.decodeSingularMessageField(value: &_storage._newCloudlet) }()
-        case 7: try { try decoder.decodeSingularStringField(value: &_storage._errorMsg) }()
-        case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &_storage._tags) }()
-        default: break
-        }
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.eventType) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.cloudletState) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self.maintenanceState) }()
+      case 4: try { try decoder.decodeSingularEnumField(value: &self.healthCheck) }()
+      case 5: try { try decoder.decodeSingularMessageField(value: &self._statistics) }()
+      case 6: try { try decoder.decodeSingularMessageField(value: &self._newCloudlet) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self.errorMsg) }()
+      case 100: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: &self.tags) }()
+      default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if _storage._eventType != .eventUnknown {
-        try visitor.visitSingularEnumField(value: _storage._eventType, fieldNumber: 1)
-      }
-      if _storage._cloudletState != .unknown {
-        try visitor.visitSingularEnumField(value: _storage._cloudletState, fieldNumber: 2)
-      }
-      if _storage._maintenanceState != .normalOperation {
-        try visitor.visitSingularEnumField(value: _storage._maintenanceState, fieldNumber: 3)
-      }
-      if _storage._healthCheck != .unknown {
-        try visitor.visitSingularEnumField(value: _storage._healthCheck, fieldNumber: 4)
-      }
-      if let v = _storage._statistics {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-      }
-      if let v = _storage._newCloudlet {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-      }
-      if !_storage._errorMsg.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._errorMsg, fieldNumber: 7)
-      }
-      if !_storage._tags.isEmpty {
-        try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: _storage._tags, fieldNumber: 100)
-      }
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if self.eventType != .eventUnknown {
+      try visitor.visitSingularEnumField(value: self.eventType, fieldNumber: 1)
+    }
+    if self.cloudletState != .unknown {
+      try visitor.visitSingularEnumField(value: self.cloudletState, fieldNumber: 2)
+    }
+    if self.maintenanceState != .normalOperation {
+      try visitor.visitSingularEnumField(value: self.maintenanceState, fieldNumber: 3)
+    }
+    if self.healthCheck != .unknown {
+      try visitor.visitSingularEnumField(value: self.healthCheck, fieldNumber: 4)
+    }
+    try { if let v = self._statistics {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    } }()
+    try { if let v = self._newCloudlet {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+    } }()
+    if !self.errorMsg.isEmpty {
+      try visitor.visitSingularStringField(value: self.errorMsg, fieldNumber: 7)
+    }
+    if !self.tags.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMap<SwiftProtobuf.ProtobufString,SwiftProtobuf.ProtobufString>.self, value: self.tags, fieldNumber: 100)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: DistributedMatchEngine_ServerEdgeEvent, rhs: DistributedMatchEngine_ServerEdgeEvent) -> Bool {
-    if lhs._storage !== rhs._storage {
-      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
-        let _storage = _args.0
-        let rhs_storage = _args.1
-        if _storage._eventType != rhs_storage._eventType {return false}
-        if _storage._cloudletState != rhs_storage._cloudletState {return false}
-        if _storage._maintenanceState != rhs_storage._maintenanceState {return false}
-        if _storage._healthCheck != rhs_storage._healthCheck {return false}
-        if _storage._statistics != rhs_storage._statistics {return false}
-        if _storage._newCloudlet != rhs_storage._newCloudlet {return false}
-        if _storage._errorMsg != rhs_storage._errorMsg {return false}
-        if _storage._tags != rhs_storage._tags {return false}
-        return true
-      }
-      if !storagesAreEqual {return false}
-    }
+    if lhs.eventType != rhs.eventType {return false}
+    if lhs.cloudletState != rhs.cloudletState {return false}
+    if lhs.maintenanceState != rhs.maintenanceState {return false}
+    if lhs.healthCheck != rhs.healthCheck {return false}
+    if lhs._statistics != rhs._statistics {return false}
+    if lhs._newCloudlet != rhs._newCloudlet {return false}
+    if lhs.errorMsg != rhs.errorMsg {return false}
+    if lhs.tags != rhs.tags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
