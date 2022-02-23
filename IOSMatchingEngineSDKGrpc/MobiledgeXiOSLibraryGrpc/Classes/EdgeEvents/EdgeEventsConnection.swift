@@ -327,7 +327,7 @@ extension MobiledgeXiOSLibraryGrpc.EdgeEvents {
         /// Run a connect/disconnect socket latency test and send latency samples to DME
         /// Recommended test
         /// Only works for TCP port
-        func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
+        public func testConnectAndPostLatencyUpdate(testPort: UInt16, loc: DistributedMatchEngine_Loc) -> Promise<EdgeEventsStatus> {
             let promise = Promise<EdgeEventsStatus>.pending()
             do {
                 guard let fcReply = currentFindCloudletReply else {
