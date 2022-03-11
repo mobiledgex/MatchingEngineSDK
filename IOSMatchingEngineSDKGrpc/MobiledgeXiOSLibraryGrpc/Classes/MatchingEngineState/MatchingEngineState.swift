@@ -74,7 +74,7 @@ extension MobiledgeXiOSLibraryGrpc {
         
         var uniqueIDType: String {
             get {
-                return "\(deviceManufacturer):\(device.model):HASHED_ID"
+                return "\(device.model)"
             }
         }
         
