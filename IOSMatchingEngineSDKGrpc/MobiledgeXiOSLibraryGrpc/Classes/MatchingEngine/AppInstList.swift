@@ -33,7 +33,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - tags: Optional dict
     ///
     /// - Returns: DistributedMatchEngine_AppInstListRequest
-    public func createGetAppInstListRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil,  cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_AppInstListRequest {
+    public func createGetAppInstListRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_AppInstListRequest {
         
         var req = DistributedMatchEngine_AppInstListRequest.init()
         req.ver = 1
