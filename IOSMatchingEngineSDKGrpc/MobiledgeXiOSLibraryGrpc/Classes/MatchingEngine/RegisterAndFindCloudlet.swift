@@ -41,7 +41,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - mode: Optional FindCloudletMode (default to Proximity)
     /// - Returns: Promise<DistributedMatchEngine_FindCloudletReply>
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
+    public func registerAndFindCloudlet(orgName: String, appName: String?, appVers: String?, gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, authToken: String? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         
         let promiseInputs: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
         
@@ -54,16 +54,16 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         }
         let port = DMEConstants.dmeGrpcPort
         
-        return registerAndFindCloudlet(host: host, port: port, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: gpsLocation,  carrierName: carrierName, authToken: authToken, cellID: cellID, tags: tags, mode: mode)
+        return registerAndFindCloudlet(host: host, port: port, orgName: orgName, appName: appName, appVers: appVers, gpsLocation: gpsLocation,  carrierName: carrierName, authToken: authToken, tags: tags, mode: mode)
     }
     
     /// registerAndFindCloudlet overload with hardcoded DME host and port. Only use for testing. This API cannot be used for Non-Platform APPs.
     @available(iOS 13.0, *)
-    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
+    public func registerAndFindCloudlet(host: String, port: UInt16, orgName: String, appName: String?, appVers: String?, gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, authToken: String? = nil, tags: [String: String]? = nil, mode: FindCloudletMode = FindCloudletMode.PROXIMITY) -> Promise<DistributedMatchEngine_FindCloudletReply> {
         
         var promiseInputs: Promise<DistributedMatchEngine_FindCloudletReply> = Promise<DistributedMatchEngine_FindCloudletReply>.pending()
         
-        let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, authToken: authToken, cellID: cellID, tags: tags)
+        let registerRequest = self.createRegisterClientRequest(orgName: orgName, appName: appName, appVers: appVers, authToken: authToken, tags: tags)
         
         promiseInputs = self.registerClient(host: host, port: port, request: registerRequest)
         .then { registerClientReply -> Promise<DistributedMatchEngine_FindCloudletReply> in
@@ -75,7 +75,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
                     return promiseInputs
             }
                 
-            let findCloudletRequest = try self.createFindCloudletRequest(gpsLocation: gpsLocation, carrierName: carrierName, cellID: cellID, tags: tags)
+            let findCloudletRequest = try self.createFindCloudletRequest(gpsLocation: gpsLocation, carrierName: carrierName, tags: tags)
                 
             return self.findCloudlet(host: host, port: port, request: findCloudletRequest, mode: mode)
         }.catch { error in

@@ -34,7 +34,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - cellID: Optional cellID
     ///   - tags: Optional dict
     /// - Returns: DistributedMatchEngine_QosPositionRequest
-    public func createQosKPIRequest(requests: [DistributedMatchEngine_QosPosition], lteCategory: Int32? = nil, bandSelection: DistributedMatchEngine_BandSelection? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_QosPositionRequest {
+    public func createQosKPIRequest(requests: [DistributedMatchEngine_QosPosition], lteCategory: Int32? = nil, bandSelection: DistributedMatchEngine_BandSelection? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_QosPositionRequest {
         
         var req = DistributedMatchEngine_QosPositionRequest.init()
         req.ver = 1

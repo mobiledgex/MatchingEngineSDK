@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: DistributedMatchEngine_DynamicLocGroupRequest
-    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_DynamicLocGroupRequest {
+    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_DynamicLocGroupRequest {
         
         var req = DistributedMatchEngine_DynamicLocGroupRequest.init()
         req.ver = 1
