@@ -45,7 +45,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - appVers: Version of the application.
     ///   - authToken: An optional opaque string to authenticate the client.
     /// - Returns: DistributedMatchEngine_RegisterClientRequest
-    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, cellID: UInt32? = nil, tags: [String: String]? = nil)
+    public func createRegisterClientRequest(orgName: String, appName: String?, appVers: String?, authToken: String? = nil, tags: [String: String]? = nil)
         -> DistributedMatchEngine_RegisterClientRequest { // Dictionary/json
             
         var req = DistributedMatchEngine_RegisterClientRequest.init()
@@ -54,7 +54,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.appName = appName ?? getAppName()
         req.appVers = appVers ?? getAppVersion()
         req.authToken = authToken ?? ""
-        req.cellID = cellID ?? 0
         req.uniqueIDType = ""
         req.uniqueID = ""
         req.tags = tags ?? [String: String]()

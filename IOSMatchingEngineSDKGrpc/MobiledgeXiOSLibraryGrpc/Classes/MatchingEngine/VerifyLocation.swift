@@ -33,7 +33,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - tags: Optional dict
     /// - Returns: DistributedMatchEngine_VerifyLocationRequest
     public func createVerifyLocationRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil,
-                                            cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_VerifyLocationRequest {
+                                            tags: [String: String]? = nil) throws -> DistributedMatchEngine_VerifyLocationRequest {
             
         var req = DistributedMatchEngine_VerifyLocationRequest.init()
         req.ver = 1
@@ -41,7 +41,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.carrierName = carrierName ?? getCarrierName()
         req.gpsLocation = gpsLocation
         req.verifyLocToken = ""
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
         
         try validateVerifyLocationRequest(request: req)

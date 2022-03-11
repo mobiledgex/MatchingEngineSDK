@@ -50,7 +50,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
     var authToken: String? = nil
     var uniqueID: String?
     var uniqueIDType: DistributedMatchEngine_IDTypes?
-    var cellID: UInt32?
     var tags: [String: String]?
     
     var locs: [DistributedMatchEngine_Loc] = []
@@ -102,7 +101,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             authToken = nil
             uniqueID = nil
             uniqueIDType = nil
-            cellID = nil
             tags = nil
         }
         else
@@ -117,7 +115,6 @@ class ViewController: UIViewController, GMSMapViewDelegate, UIAdaptivePresentati
             authToken = nil // opaque developer specific String? value.
             uniqueID = nil
             uniqueIDType = nil
-            cellID = nil
             tags = nil
         }
     }
