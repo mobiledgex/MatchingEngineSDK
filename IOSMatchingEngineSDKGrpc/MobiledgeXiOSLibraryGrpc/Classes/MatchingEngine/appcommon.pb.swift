@@ -89,10 +89,10 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
   case unknown // = 0
 
   /// Health Check failure due to RootLB being offline
-  case failRootlbOffline // = 1
+  case rootlbOffline // = 1
 
   /// Health Check failure due to Backend server being unavailable
-  case failServerFail // = 2
+  case serverFail // = 2
 
   /// Health Check is ok
   case ok // = 3
@@ -108,8 +108,8 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
   public init?(rawValue: Int) {
     switch rawValue {
     case 0: self = .unknown
-    case 1: self = .failRootlbOffline
-    case 2: self = .failServerFail
+    case 1: self = .rootlbOffline
+    case 2: self = .serverFail
     case 3: self = .ok
     case 4: self = .cloudletOffline
     default: self = .UNRECOGNIZED(rawValue)
@@ -119,8 +119,8 @@ public enum DistributedMatchEngine_HealthCheck: SwiftProtobuf.Enum {
   public var rawValue: Int {
     switch self {
     case .unknown: return 0
-    case .failRootlbOffline: return 1
-    case .failServerFail: return 2
+    case .rootlbOffline: return 1
+    case .serverFail: return 2
     case .ok: return 3
     case .cloudletOffline: return 4
     case .UNRECOGNIZED(let i): return i
@@ -135,8 +135,8 @@ extension DistributedMatchEngine_HealthCheck: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
   public static var allCases: [DistributedMatchEngine_HealthCheck] = [
     .unknown,
-    .failRootlbOffline,
-    .failServerFail,
+    .rootlbOffline,
+    .serverFail,
     .ok,
     .cloudletOffline,
   ]
@@ -421,8 +421,8 @@ extension DistributedMatchEngine_LProto: SwiftProtobuf._ProtoNameProviding {
 extension DistributedMatchEngine_HealthCheck: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "HEALTH_CHECK_UNKNOWN"),
-    1: .same(proto: "HEALTH_CHECK_FAIL_ROOTLB_OFFLINE"),
-    2: .same(proto: "HEALTH_CHECK_FAIL_SERVER_FAIL"),
+    1: .same(proto: "HEALTH_CHECK_ROOTLB_OFFLINE"),
+    2: .same(proto: "HEALTH_CHECK_SERVER_FAIL"),
     3: .same(proto: "HEALTH_CHECK_OK"),
     4: .same(proto: "HEALTH_CHECK_CLOUDLET_OFFLINE"),
   ]

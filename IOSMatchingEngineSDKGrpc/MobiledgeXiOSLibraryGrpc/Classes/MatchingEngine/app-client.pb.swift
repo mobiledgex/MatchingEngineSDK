@@ -3750,10 +3750,10 @@ extension DistributedMatchEngine_QosPosition: SwiftProtobuf.Message, SwiftProtob
 extension DistributedMatchEngine_BandSelection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".BandSelection"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "rat_2g"),
-    2: .standard(proto: "rat_3g"),
-    3: .standard(proto: "rat_4g"),
-    4: .standard(proto: "rat_5g"),
+    1: .same(proto: "rat2g"),
+    2: .same(proto: "rat3g"),
+    3: .same(proto: "rat4g"),
+    4: .same(proto: "rat5g"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
