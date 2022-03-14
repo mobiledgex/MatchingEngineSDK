@@ -156,7 +156,7 @@ Second is Performance. This mode will test all cloudlets with application instan
     <section id="methods">
         <h2>Methods</h2>
 
-        <div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.creategetappinstlistrequest(gpslocation:carriername:cellid:tags:)">
+        <div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.creategetappinstlistrequest(gpslocation:carriername:tags:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.creategetappinstlistrequest(gpslocation:carriername:cellid:tags:)">create​Get​App​Inst​List​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></code>
     </h3>
@@ -193,7 +193,7 @@ Creates the AppInstListRequest object that will be used in GetAppInstList</p>
 </tr>
 <tr>
     <th>cell​ID</th>
-    <td><code class="type">uint?</code></td>
+    <td></td>
     <td><p>Optional cellID</p>
 </td>
 </tr>
@@ -259,7 +259,7 @@ This is used internally in FindCloudlet Performance mode to grab the list of clo
 
 </div>
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createfindcloudletrequest(gpslocation:carriername:cellid:tags:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createfindcloudletrequest(gpslocation:carriername:tags:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.createfindcloudletrequest(gpslocation:carriername:cellid:tags:)">create​Find​Cloudlet​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></code>
     </h3>
@@ -936,7 +936,7 @@ DNS Lookup</p>
 
 </div>
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createqoskpirequest(requests:ltecategory:bandselection:cellid:tags:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createqoskpirequest(requests:ltecategory:bandselection:tags:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.createqoskpirequest(requests:ltecategory:bandselection:cellid:tags:)">create​Qos​KPIRequest(requests:​lte​Category:​band​Selection:​cell​ID:​tags:​)</a></code>
     </h3>
@@ -979,7 +979,7 @@ Creates the QosPositionRequest object that will be used in CreateQosPositionRequ
 </tr>
 <tr>
     <th>cell​ID</th>
-    <td><code class="type">uint?</code></td>
+    <td></td>
     <td><p>Optional cellID</p>
 </td>
 </tr>
@@ -1081,7 +1081,7 @@ GetQosPositionKpi overload with hardcoded DME host and port. Only use for testin
   <p>Promise&lt;DistributedMatchEngine_QosPositionKpiReply&gt;</p>
 
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(orgname:appname:appvers:gpslocation:carriername:authtoken:tags:mode:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">register​And​Find​Cloudlet(org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</a></code>
     </h3>
@@ -1150,7 +1150,7 @@ for the current carrier, if any.</p>
 </tr>
 <tr>
     <th>cell​ID</th>
-    <td><code class="type">UInt32?</code></td>
+    <td></td>
     <td><p>Optional cellID</p>
 </td>
 </tr>
@@ -1172,7 +1172,7 @@ for the current carrier, if any.</p>
   <p>Promise&lt;DistributedMatchEngine_FindCloudletReply&gt;</p>
 
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(host:port:orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(host:port:orgname:appname:appvers:gpslocation:carriername:authtoken:tags:mode:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.registerandfindcloudlet(host:port:orgname:appname:appvers:gpslocation:carriername:authtoken:cellid:tags:mode:)">register​And​Find​Cloudlet(host:​port:​org​Name:​app​Name:​app​Vers:​gps​Location:​carrier​Name:​auth​Token:​cell​ID:​tags:​mode:​)</a></code>
     </h3>
@@ -1185,7 +1185,7 @@ for the current carrier, if any.</p>
 
 </div>
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createregisterclientrequest(orgname:appname:appvers:authtoken:cellid:tags:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createregisterclientrequest(orgname:appname:appvers:authtoken:tags:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.createregisterclientrequest(orgname:appname:appvers:authtoken:cellid:tags:)">create​Register​Client​Request(org​Name:​app​Name:​app​Vers:​auth​Token:​cell​ID:​tags:​)</a></code>
     </h3>
@@ -1939,7 +1939,7 @@ Default is true.</p>
   </tbody>
 </table>
 </div>
-<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createverifylocationrequest(gpslocation:carriername:cellid:tags:)">
+<div role="article" class="function" id="mobiledgexioslibrarygrpc.matchingengine.createverifylocationrequest(gpslocation:carriername:tags:)">
     <h3>
         <code><a href="#mobiledgexioslibrarygrpc.matchingengine.createverifylocationrequest(gpslocation:carriername:cellid:tags:)">create​Verify​Location​Request(gps​Location:​carrier​Name:​cell​ID:​tags:​)</a></code>
     </h3>
@@ -1977,7 +1977,7 @@ Creates the VerifyLocationRequest object that will be used in VerifyLocation</p>
 </tr>
 <tr>
     <th>cell​ID</th>
-    <td><code class="type">uint?</code></td>
+    <td></td>
     <td><p>Optional cellID</p>
 </td>
 </tr>
