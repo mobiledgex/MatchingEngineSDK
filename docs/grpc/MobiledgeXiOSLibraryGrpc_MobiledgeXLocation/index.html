@@ -14,7 +14,6 @@
             </strong>
             <span>Documentation</span>
         </a>
-        <sup>Beta</sup>
     </header>
 
     <!--
@@ -37,7 +36,9 @@
     <code class="name">Mobiledge​XiOSLibrary​Grpc.​Mobiledge​XLocation</code>
 </h1>
 
-<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">MobiledgeXLocation</span></code></pre></body></html>
+<div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">MobiledgeXLocation</span>  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>MobiledgeX Location Services for easy location service integration with application</p>
 
@@ -70,9 +71,11 @@ Standard: For real time location updates (requires most power)</p>
 
         <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.startlocationservices(servicetype:)">
     <h3>
-        <code>start​Location​Services(service​Type:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.startlocationservices(servicetype:)">start​Location​Services(service​Type:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">startLocationServices</span>(<span class="variable">serviceType</span>: <span class="type">ServiceType</span> = <span class="variable">ServiceType</span>.<span class="type">SignificantChange</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Bool</span>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">startLocationServices</span>(<span class="variable">serviceType</span>: <span class="type">ServiceType</span> = <span class="variable">ServiceType</span>.<span class="type">SignificantChange</span>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Bool</span>&gt;  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Begin monitoring location services. Default serviceType is SignificantChange</p>
 
@@ -80,15 +83,19 @@ Standard: For real time location updates (requires most power)</p>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.stoplocationservices()">
     <h3>
-        <code>stop​Location​Services()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.stoplocationservices()">stop​Location​Services()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">stopLocationServices</span>()</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">stopLocationServices</span>()  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.checklocationpermissions()">
     <h3>
-        <code>check​Location​Permissions()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.checklocationpermissions()">check​Location​Permissions()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">checkLocationPermissions</span>() -&gt; <span class="type">Bool</span></code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">checkLocationPermissions</span>() -&gt; <span class="type">Bool</span>  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Checks to see what Location Permissions user has accepted (called before Location Services is started)
 Will only return true (ie. that location services can start) if user has authorized location services always or when in app use
@@ -98,15 +105,20 @@ Otherwise the user has not accepted valid location permissions and we cannot sta
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.setlastlocation(loc:)">
     <h3>
-        <code>set​Last​Location(loc:​)</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.setlastlocation(loc:)">set​Last​Location(loc:​)</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.4</span>, *) <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">setLastLocation</span>(<span class="variable">loc</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Bool</span>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="keyword">iOS</span> <span class="number literal">13.4</span>, *)
+        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">setLastLocation</span>(<span class="variable">loc</span>: <a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>) -&gt; <span class="type">Promise</span>&lt;<span class="type">Bool</span>&gt;  </body></html></code></pre>
+</div>
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.getlastlocation()">
     <h3>
-        <code>get​Last​Location()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.getlastlocation()">get​Last​Location()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastLocation</span>() -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>&gt;</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastLocation</span>() -&gt; <span class="type">Promise</span>&lt;<a href="./DistributedMatchEngine_Loc"><span class="type">DistributedMatchEngine_Loc</span></a>&gt;  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Returns the last location in the form of a MobiledgeXiOSLibrary.MatchingEngine.Loc object</p>
 
@@ -114,9 +126,11 @@ Otherwise the user has not accepted valid location permissions and we cannot sta
 </div>
 <div role="article" class="function" id="mobiledgexioslibrarygrpc.mobiledgexlocation.getlastisocountrycode()">
     <h3>
-        <code>get​Last​ISOCountry​Code()</code>
+        <code><a href="#mobiledgexioslibrarygrpc.mobiledgexlocation.getlastisocountrycode()">get​Last​ISOCountry​Code()</a></code>
     </h3>
-    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastISOCountryCode</span>() -&gt; <span class="type">String</span>?</code></pre></body></html>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="function">getLastISOCountryCode</span>() -&gt; <span class="type">String</span>?  </body></html></code></pre>
+</div>
 <div class="summary" role="doc-abstract">
     <p>Returns the ISO country code of the last location</p>
 
@@ -131,7 +145,7 @@ Otherwise the user has not accepted valid location permissions and we cannot sta
 
     <footer>
         <p>
-    Generated on <time datetime="2021-06-17T13:43:53-0700">June 17, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2022-03-14T16:24:54-0700">March 14, 2022</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>
