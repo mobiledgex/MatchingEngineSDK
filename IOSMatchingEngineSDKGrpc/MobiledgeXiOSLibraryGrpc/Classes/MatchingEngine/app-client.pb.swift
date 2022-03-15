@@ -2047,6 +2047,56 @@ extension DistributedMatchEngine_ServerEdgeEvent.ServerEventType: CaseIterable {
 
 #endif  // swift(>=4.2)
 
+#if swift(>=5.5) && canImport(_Concurrency)
+extension DistributedMatchEngine_IDTypes: @unchecked Sendable {}
+extension DistributedMatchEngine_ReplyStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_QosSessionProfile: @unchecked Sendable {}
+extension DistributedMatchEngine_QosSessionProtocol: @unchecked Sendable {}
+extension DistributedMatchEngine_RegisterClientRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_RegisterClientReply: @unchecked Sendable {}
+extension DistributedMatchEngine_FindCloudletRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_PlatformFindCloudletRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_FindCloudletReply: @unchecked Sendable {}
+extension DistributedMatchEngine_FindCloudletReply.FindStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_FindCloudletReply.QosSessionResult: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPrioritySessionCreateRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPrioritySessionReply: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPrioritySessionDeleteRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPrioritySessionDeleteReply: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPrioritySessionDeleteReply.DeleteStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_VerifyLocationRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_VerifyLocationReply: @unchecked Sendable {}
+extension DistributedMatchEngine_VerifyLocationReply.TowerStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_VerifyLocationReply.GPSLocationStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_GetLocationRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_GetLocationReply: @unchecked Sendable {}
+extension DistributedMatchEngine_GetLocationReply.LocStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_AppInstListRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_Appinstance: @unchecked Sendable {}
+extension DistributedMatchEngine_CloudletLocation: @unchecked Sendable {}
+extension DistributedMatchEngine_AppInstListReply: @unchecked Sendable {}
+extension DistributedMatchEngine_AppInstListReply.AIStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_FqdnListRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_AppFqdn: @unchecked Sendable {}
+extension DistributedMatchEngine_FqdnListReply: @unchecked Sendable {}
+extension DistributedMatchEngine_FqdnListReply.FLStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_AppOfficialFqdnRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_AppOfficialFqdnReply: @unchecked Sendable {}
+extension DistributedMatchEngine_AppOfficialFqdnReply.AOFStatus: @unchecked Sendable {}
+extension DistributedMatchEngine_DynamicLocGroupRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType: @unchecked Sendable {}
+extension DistributedMatchEngine_DynamicLocGroupReply: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPosition: @unchecked Sendable {}
+extension DistributedMatchEngine_BandSelection: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPositionRequest: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPositionKpiResult: @unchecked Sendable {}
+extension DistributedMatchEngine_QosPositionKpiReply: @unchecked Sendable {}
+extension DistributedMatchEngine_ClientEdgeEvent: @unchecked Sendable {}
+extension DistributedMatchEngine_ClientEdgeEvent.ClientEventType: @unchecked Sendable {}
+extension DistributedMatchEngine_ServerEdgeEvent: @unchecked Sendable {}
+extension DistributedMatchEngine_ServerEdgeEvent.ServerEventType: @unchecked Sendable {}
+#endif  // swift(>=5.5) && canImport(_Concurrency)
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "distributed_match_engine"

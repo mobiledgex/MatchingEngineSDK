@@ -406,6 +406,16 @@ public struct DistributedMatchEngine_DeviceInfoDynamic {
   public init() {}
 }
 
+#if swift(>=5.5) && canImport(_Concurrency)
+extension DistributedMatchEngine_LProto: @unchecked Sendable {}
+extension DistributedMatchEngine_HealthCheck: @unchecked Sendable {}
+extension DistributedMatchEngine_CloudletState: @unchecked Sendable {}
+extension DistributedMatchEngine_MaintenanceState: @unchecked Sendable {}
+extension DistributedMatchEngine_AppPort: @unchecked Sendable {}
+extension DistributedMatchEngine_DeviceInfoStatic: @unchecked Sendable {}
+extension DistributedMatchEngine_DeviceInfoDynamic: @unchecked Sendable {}
+#endif  // swift(>=5.5) && canImport(_Concurrency)
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "distributed_match_engine"
