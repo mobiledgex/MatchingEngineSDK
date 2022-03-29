@@ -19,6 +19,7 @@ target 'MatchingEngine_Example' do
 
   pod 'SPPermissions/Camera', '= 5.2.5'
   pod 'SPPermissions/Location', '= 5.2.5'
+  pod 'SwiftLocation', '= 5.1.0'
   
   target 'MatchingEngine_Tests' do
     inherit! :search_paths

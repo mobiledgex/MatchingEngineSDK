@@ -30,10 +30,11 @@ import GoogleMaps
 import os.log
 import Promises
 import MobiledgeXiOSLibraryGrpc
+import SwiftLocation
 
 // ----------------------------------------
 //
-private var locationRequest: LocationRequest? // so we can stop updates
+private var locationRequest: GPSLocationRequest? // so we can stop updates
 
 // --------
 // face servers
@@ -370,33 +371,42 @@ func processFindCloudletResult(_ d: [String: Any])
 func resetUserLocation(_ show: Bool) // called by "Reset user location" menu
 {
     // Swift.print("\(#function)")
-    locationRequest = Locator.subscribePosition(accuracy: .house, onUpdate:
-        { newLocation in
+    locationRequest = SwiftLocation.gpsLocationWith {
+        // configure everything about your request
+        $0.subscription = .continous // continous updated until you stop it
+        $0.accuracy = .house
+        $0.timeout = .delayed(5) // 5 seconds of timeout after auth granted
+    }
+    locationRequest?.then { result in // you can attach one or more subscriptions via `then`.
+        switch result {
+        case .success(let newLocation):
+            print("New location: \(newLocation)")
             // print("New location received: \(newLocation)")
             if userMarker == nil
             {
                 doUserMarker(newLocation.coordinate)
             }
             userMarker!.position = newLocation.coordinate
-            
             DispatchQueue.main.async
-                {
-                    stopGPS()
+            {
+                stopGPS()
             }
-            
             if show
             {
                 theMap!.animate(toLocation: userMarker!.position)
             }
-            
-    }, onFail: { err, _ in
-        print("subscribePosition: Failed with error: \(err)")
-    })
+        case .failure(let error):
+            print("subscribePosition: Failed with error: \(error)")
+        }
+    }
 }
 
 private func stopGPS()
 {
-    Locator.stopRequest(locationRequest!)
+    guard let req = locationRequest else {
+        return
+    }
+    SwiftLocation.cancel(request: req)
 }
 
 

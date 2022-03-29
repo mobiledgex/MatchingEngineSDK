@@ -1,11 +1,12 @@
 PODS:
   - _NIODataStructures (2.38.0)
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
-  - CGRPCZlib (1.7.1)
+  - AppAuth (1.5.0):
+    - AppAuth/Core (= 1.5.0)
+    - AppAuth/ExternalUserAgent (= 1.5.0)
+  - AppAuth/Core (1.5.0)
+  - AppAuth/ExternalUserAgent (1.5.0):
+    - AppAuth/Core
+  - CGRPCZlib (1.7.3)
   - CNIOAtomics (2.38.0)
   - CNIOBoringSSL (2.15.1)
   - CNIOBoringSSLShims (2.15.1):
@@ -25,8 +26,8 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - gRPC-Swift (1.7.1):
-    - CGRPCZlib (= 1.7.1)
+  - gRPC-Swift (1.7.3):
+    - CGRPCZlib (= 1.7.3)
     - Logging (< 2.0.0, >= 1.4.0)
     - SwiftNIO (< 3.0.0, >= 2.32.0)
     - SwiftNIOExtras (< 2.0.0, >= 1.4.0)
@@ -34,10 +35,10 @@ PODS:
     - SwiftNIOSSL (< 3.0.0, >= 2.14.0)
     - SwiftNIOTransportServices (< 2.0.0, >= 1.11.1)
     - SwiftProtobuf (< 2.0.0, >= 1.9.0)
-  - GTMAppAuth (1.2.2):
+  - GTMAppAuth (1.2.3):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.7.0)
+  - GTMSessionFetcher/Core (1.7.1)
   - Logging (1.4.0)
   - MobiledgeXiOSLibraryGrpc (3.0):
     - gRPC-Swift (~> 1.7.1)
@@ -57,6 +58,12 @@ PODS:
   - SPPermissions/Location (5.2.5):
     - SPPermissions/Core
   - Starscream (4.0.4)
+  - SwiftLocation (5.1.0):
+    - SwiftLocation/BeaconBroadcaster (= 5.1.0)
+    - SwiftLocation/Core (= 5.1.0)
+  - SwiftLocation/BeaconBroadcaster (5.1.0):
+    - SwiftLocation/Core
+  - SwiftLocation/Core (5.1.0)
   - SwiftNIO (2.38.0):
     - SwiftNIOCore (= 2.38.0)
     - SwiftNIOEmbedded (= 2.38.0)
@@ -74,23 +81,23 @@ PODS:
   - SwiftNIOFoundationCompat (2.38.0):
     - SwiftNIO (= 2.38.0)
     - SwiftNIOCore (= 2.38.0)
-  - SwiftNIOHPACK (1.19.2):
-    - SwiftNIO (< 3, >= 2.32.0)
-    - SwiftNIOConcurrencyHelpers (< 3, >= 2.32.0)
-    - SwiftNIOCore (< 3, >= 2.32.0)
-    - SwiftNIOHTTP1 (< 3, >= 2.32.0)
+  - SwiftNIOHPACK (1.20.1):
+    - SwiftNIO (< 3, >= 2.35.0)
+    - SwiftNIOConcurrencyHelpers (< 3, >= 2.35.0)
+    - SwiftNIOCore (< 3, >= 2.35.0)
+    - SwiftNIOHTTP1 (< 3, >= 2.35.0)
   - SwiftNIOHTTP1 (2.38.0):
     - CNIOHTTPParser (= 2.38.0)
     - SwiftNIO (= 2.38.0)
     - SwiftNIOConcurrencyHelpers (= 2.38.0)
     - SwiftNIOCore (= 2.38.0)
-  - SwiftNIOHTTP2 (1.19.2):
-    - SwiftNIO (< 3, >= 2.32.0)
-    - SwiftNIOConcurrencyHelpers (< 3, >= 2.32.0)
-    - SwiftNIOCore (< 3, >= 2.32.0)
-    - SwiftNIOHPACK (= 1.19.2)
-    - SwiftNIOHTTP1 (< 3, >= 2.32.0)
-    - SwiftNIOTLS (< 3, >= 2.32.0)
+  - SwiftNIOHTTP2 (1.20.1):
+    - SwiftNIO (< 3, >= 2.35.0)
+    - SwiftNIOConcurrencyHelpers (< 3, >= 2.35.0)
+    - SwiftNIOCore (< 3, >= 2.35.0)
+    - SwiftNIOHPACK (= 1.20.1)
+    - SwiftNIOHTTP1 (< 3, >= 2.35.0)
+    - SwiftNIOTLS (< 3, >= 2.35.0)
   - SwiftNIOPosix (2.38.0):
     - _NIODataStructures (= 2.38.0)
     - CNIODarwin (= 2.38.0)
@@ -124,6 +131,7 @@ DEPENDENCIES:
   - MobiledgeXiOSLibraryGrpc (from `../`)
   - SPPermissions/Camera (= 5.2.5)
   - SPPermissions/Location (= 5.2.5)
+  - SwiftLocation (= 5.1.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -151,6 +159,7 @@ SPEC REPOS:
     - SPLPing
     - SPPermissions
     - Starscream
+    - SwiftLocation
     - SwiftNIO
     - SwiftNIOConcurrencyHelpers
     - SwiftNIOCore
@@ -173,8 +182,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   _NIODataStructures: d8175e5ca5a34ec19b7ff21de298dd2a4d30818d
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  CGRPCZlib: 8b4c1074399f6ba2db3361862d4340d57d7b77f0
+  AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
+  CGRPCZlib: 30d7ed7cd286bf929605052dd64075a694d86d0c
   CNIOAtomics: 00b638e1b0dac91d06d4bb089ea9126c117c6650
   CNIOBoringSSL: c99129423da079a9eb74bcfc7cfec41a6775cf94
   CNIOBoringSSLShims: 902ae35fea0b6be5eefb4fdce906751886cfa46f
@@ -186,9 +195,9 @@ SPEC CHECKSUMS:
   Eureka: 49239596c9d2eed9ab523990c34de62b6feac9f0
   GoogleMaps: 82f8fe307193bb4de6ef6bf9e88f1d624b718f9d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  gRPC-Swift: c5541e5fed500f45d31bf1369cecec753d1007e2
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  gRPC-Swift: 910b685f0527f496c39751d1f1add981287e8b9d
+  GTMAppAuth: 987526d41b07efb1bedda5e936fe0cb718a03113
+  GTMSessionFetcher: 4577a4cc914a5a07c40a8a0ad0acc22080418c2d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MobiledgeXiOSLibraryGrpc: b4cc39600e46f9b1cbc313307226e4b4c0e06789
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
@@ -197,15 +206,16 @@ SPEC CHECKSUMS:
   SPLPing: 420837fae1e19bba0a8360e91e7a384f22509663
   SPPermissions: d3ec7baf5865e152057a2352cff075333e19042f
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
+  SwiftLocation: 83e0ea75a1969cee3a1197e2b7095603fc23fde5
   SwiftNIO: 9bc23fada7254a38f1417533a4514aabdcb7cf31
   SwiftNIOConcurrencyHelpers: ec57adfc490604a341904994fbf98de61a8b5497
   SwiftNIOCore: 156fd84c03dc877a5f22d0ba575745cafe4a83ca
   SwiftNIOEmbedded: b5625cb78841ad4daa50d71a930c768531233770
   SwiftNIOExtras: 70f09aa8eca3ab6baeaf1993da9c855b6e95e97f
   SwiftNIOFoundationCompat: 98de7f9d7c70510cbe1d1b0faf843b29926da520
-  SwiftNIOHPACK: 5692b7d669e954adf9920432a8a3e279aceee55e
+  SwiftNIOHPACK: 73074b776ec3950049bcd03c4be7d2d233416492
   SwiftNIOHTTP1: 2ec5bf1a511b8c04b5da3d9803374dc6077eff57
-  SwiftNIOHTTP2: f6dd22df6f4463d4f5bf310cb2f43e52f4e79ce2
+  SwiftNIOHTTP2: c916c2e6383446bc1f3da61eb1036fd8943f994a
   SwiftNIOPosix: b9cee2136fcb51223bf63b00795089c6928dd876
   SwiftNIOSSL: 7c2ddcbcbb2a8188468b7fe9c2bc6124df4b3772
   SwiftNIOTLS: 0182f05297af9faa8e03f63be3fed637523496d4
@@ -213,6 +223,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: 48f4e50697e05138f77235d4e8dbb99557f6d76d
+PODFILE CHECKSUM: f131bf4f1e432aa5836d69fd0e8a1d55666cbd89
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

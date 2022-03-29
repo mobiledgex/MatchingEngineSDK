@@ -63,12 +63,6 @@
 		40779D8E229770AF002EF03B /* RFAboutViewCloseX.png in Resources */ = {isa = PBXBuildFile; fileRef = 40779D86229770AF002EF03B /* RFAboutViewCloseX.png */; };
 		40779D9022977105002EF03B /* CMSampleBufferExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D8F22977105002EF03B /* CMSampleBufferExtension.swift */; };
 		40779D922297713D002EF03B /* ExtensionVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D912297713D002EF03B /* ExtensionVars.swift */; };
-		40779D9C229771EC002EF03B /* FindPlaceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D95229771EC002EF03B /* FindPlaceRequest.swift */; };
-		40779D9D229771EC002EF03B /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D96229771EC002EF03B /* Shared.swift */; };
-		40779D9E229771EC002EF03B /* LocationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D97229771EC002EF03B /* LocationRequest.swift */; };
-		40779DA0229771EC002EF03B /* HeadingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D99229771EC002EF03B /* HeadingRequest.swift */; };
-		40779DA1229771EC002EF03B /* IPLocationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D9A229771EC002EF03B /* IPLocationRequest.swift */; };
-		40779DA2229771EC002EF03B /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40779D9B229771EC002EF03B /* Locator.swift */; };
 		407D56DF22A73DA2009CF705 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 407D56DE22A73DA2009CF705 /* Images.xcassets */; };
 		5939A976260BD1C600036585 /* EdgeEventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5939A975260BD1C600036585 /* EdgeEventsTests.swift */; };
 		59A324D9237DB7EF00145D30 /* ConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A324D7237DB7EF00145D30 /* ConnectionTests.swift */; };
@@ -154,12 +148,6 @@
 		40779D86229770AF002EF03B /* RFAboutViewCloseX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RFAboutViewCloseX.png; sourceTree = "<group>"; };
 		40779D8F22977105002EF03B /* CMSampleBufferExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CMSampleBufferExtension.swift; path = "AppleFaceDetection-master/VisionDetection/CMSampleBufferExtension.swift"; sourceTree = "<group>"; };
 		40779D912297713D002EF03B /* ExtensionVars.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionVars.swift; sourceTree = "<group>"; };
-		40779D95229771EC002EF03B /* FindPlaceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPlaceRequest.swift; sourceTree = "<group>"; };
-		40779D96229771EC002EF03B /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
-		40779D97229771EC002EF03B /* LocationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRequest.swift; sourceTree = "<group>"; };
-		40779D99229771EC002EF03B /* HeadingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadingRequest.swift; sourceTree = "<group>"; };
-		40779D9A229771EC002EF03B /* IPLocationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPLocationRequest.swift; sourceTree = "<group>"; };
-		40779D9B229771EC002EF03B /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
 		407D56DE22A73DA2009CF705 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		52089AED26098AB15949A569 /* Pods-MatchingEngine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MatchingEngine_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MatchingEngine_Tests/Pods-MatchingEngine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		554544867A48F54828025417 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -301,7 +289,6 @@
 		40779AA122975CF0002EF03B /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				40779D93229771D1002EF03B /* SwfitLocation */,
 				40779D912297713D002EF03B /* ExtensionVars.swift */,
 				40779D8F22977105002EF03B /* CMSampleBufferExtension.swift */,
 				40779D7B229770AF002EF03B /* RFAboutView-Swift */,
@@ -408,28 +395,6 @@
 			);
 			path = Assets;
 			sourceTree = "<group>";
-		};
-		40779D93229771D1002EF03B /* SwfitLocation */ = {
-			isa = PBXGroup;
-			children = (
-				40779D94229771EC002EF03B /* Sources */,
-			);
-			path = SwfitLocation;
-			sourceTree = "<group>";
-		};
-		40779D94229771EC002EF03B /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				40779D95229771EC002EF03B /* FindPlaceRequest.swift */,
-				40779D96229771EC002EF03B /* Shared.swift */,
-				40779D97229771EC002EF03B /* LocationRequest.swift */,
-				40779D99229771EC002EF03B /* HeadingRequest.swift */,
-				40779D9A229771EC002EF03B /* IPLocationRequest.swift */,
-				40779D9B229771EC002EF03B /* Locator.swift */,
-			);
-			name = Sources;
-			path = "MatchingEngine/ThirdParty/SwiftLocation-master/Sources";
-			sourceTree = SOURCE_ROOT;
 		};
 		44E83C71CCF18B323B1C03BF /* Frameworks */ = {
 			isa = PBXGroup;
@@ -741,6 +706,7 @@
 				"${BUILT_PRODUCTS_DIR}/SPPermissions/SPPermissions.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftNIO/NIO.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftNIOConcurrencyHelpers/NIOConcurrencyHelpers.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftNIOCore/NIOCore.framework",
@@ -782,6 +748,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SPPermissions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIOConcurrencyHelpers.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIOCore.framework",
@@ -813,10 +780,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40779D7722976F7D002EF03B /* SKToastView.swift in Sources */,
-				40779D9D229771EC002EF03B /* Shared.swift in Sources */,
-				40779D9E229771EC002EF03B /* LocationRequest.swift in Sources */,
 				40779D5E22976CFC002EF03B /* SwiftyPing.swift in Sources */,
-				40779DA0229771EC002EF03B /* HeadingRequest.swift in Sources */,
 				40779A9122974992002EF03B /* CloudletListHolder.swift in Sources */,
 				40779A9C22974992002EF03B /* GeneralSettingsViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
@@ -826,7 +790,6 @@
 				40779A9222974992002EF03B /* FaceDetectionViewController.swift in Sources */,
 				40779A9F22974992002EF03B /* SettingsViewController.swift in Sources */,
 				40779A9422974992002EF03B /* FaceDectectionSettingsViewController.swift in Sources */,
-				40779DA2229771EC002EF03B /* Locator.swift in Sources */,
 				40779D9022977105002EF03B /* CMSampleBufferExtension.swift in Sources */,
 				40779AA022974992002EF03B /* PermissionViewController.swift in Sources */,
 				40779D8B229770AF002EF03B /* RFAboutViewDetailViewController.swift in Sources */,
@@ -839,8 +802,6 @@
 				40779A9022974992002EF03B /* CloudletDetailsViewController.swift in Sources */,
 				40779D922297713D002EF03B /* ExtensionVars.swift in Sources */,
 				407799B0229744B5002EF03B /* Sample_client.swift in Sources */,
-				40779DA1229771EC002EF03B /* IPLocationRequest.swift in Sources */,
-				40779D9C229771EC002EF03B /* FindPlaceRequest.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				40779A8F22974992002EF03B /* Cloudlet.swift in Sources */,
 			);
