@@ -160,6 +160,13 @@ public struct DistributedMatchEngine_Statistics {
   fileprivate var _timestamp: DistributedMatchEngine_Timestamp? = nil
 }
 
+#if swift(>=5.5) && canImport(_Concurrency)
+extension DistributedMatchEngine_Timestamp: @unchecked Sendable {}
+extension DistributedMatchEngine_Loc: @unchecked Sendable {}
+extension DistributedMatchEngine_Sample: @unchecked Sendable {}
+extension DistributedMatchEngine_Statistics: @unchecked Sendable {}
+#endif  // swift(>=5.5) && canImport(_Concurrency)
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "distributed_match_engine"

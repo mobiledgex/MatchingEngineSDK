@@ -39,5 +39,5 @@ ifeq (, $(shell which swift-doc))
 endif
 	@echo Generating gRPC documentation...
 	$(shell rm -rf $(REPOROOT)/docs/grpc)
-	$(shell swift doc generate $(SOURCE) --module-name "Swift Grpc SDK" --output $(REPOROOT)/docs/grpc --format html --base-url .)
+	$(shell swift-doc generate $(SOURCE) --module-name "Swift Grpc SDK" --output $(REPOROOT)/docs/grpc --format html --base-url .)
 
