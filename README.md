@@ -1,9 +1,16 @@
 # MatchingEngineSDK
 
-[![CI Status](https://img.shields.io/travis/lgarner/MatchingEngine.svg?style=flat)](https://travis-ci.org/lgarner/MatchingEngine)
-[![Version](https://img.shields.io/cocoapods/v/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
-[![License](https://img.shields.io/cocoapods/l/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
-[![Platform](https://img.shields.io/cocoapods/p/MatchingEngine.svg?style=flat)](https://cocoapods.org/pods/MatchingEngine)
+
+<img alt="preview badge" src="https://img.shields.io/github/v/release/mobiledgex/MatchingEngineSDK?include_prereleases&amp;style=flat-square"><a href="https://twitter.com/intent/follow?screen_name=mobiledgex">
+<img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/mobiledgex?style=social">
+</a>
+ <a href="https://discord.gg/k22WcfMFZ3">
+<img src="https://img.shields.io/discord/779074183551385620?logo=discord" alt="chat on Discord">
+</a>
+
+
+
+Download Instructions: https://developers.mobiledgex.com/sdks/ios-sdk/ios-sdk-download/
 
 
 The MobiledgeX Client Library enables an application to register and then locate the nearest edge cloudlet backend server for use. The client library also allows verification of a device's location for all location-specific tasks. Because these APIs involve networking, most functions will run asynchronously, and in a background thread, utilizing the Google Promises framework and iOS DispatchQueue.
