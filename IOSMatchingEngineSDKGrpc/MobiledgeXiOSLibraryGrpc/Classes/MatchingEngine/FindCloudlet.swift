@@ -41,7 +41,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - carrierName: carrierName
     ///   - gpslocation: gpslocation
     /// - Returns: DistributedMatchEngine_FindCloudletRequest
-    public func createFindCloudletRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws
+    public func createFindCloudletRequest(gpsLocation: DistributedMatchEngine_Loc, carrierName: String? = nil, tags: [String: String]? = nil) throws
         -> DistributedMatchEngine_FindCloudletRequest {
             
         var req = DistributedMatchEngine_FindCloudletRequest.init()
@@ -49,7 +49,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.sessionCookie = state.getSessionCookie() ?? ""
         req.carrierName = carrierName ?? getCarrierName()
         req.gpsLocation = gpsLocation
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
             
         try validateFindCloudletRequest(request: req)

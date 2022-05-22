@@ -45,6 +45,16 @@ internal protocol DistributedMatchEngine_MatchEngineApiClientProtocol: GRPCClien
     callOptions: CallOptions?
   ) -> UnaryCall<DistributedMatchEngine_PlatformFindCloudletRequest, DistributedMatchEngine_FindCloudletReply>
 
+  func qosPrioritySessionCreate(
+    _ request: DistributedMatchEngine_QosPrioritySessionCreateRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<DistributedMatchEngine_QosPrioritySessionCreateRequest, DistributedMatchEngine_QosPrioritySessionReply>
+
+  func qosPrioritySessionDelete(
+    _ request: DistributedMatchEngine_QosPrioritySessionDeleteRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<DistributedMatchEngine_QosPrioritySessionDeleteRequest, DistributedMatchEngine_QosPrioritySessionDeleteReply>
+
   func verifyLocation(
     _ request: DistributedMatchEngine_VerifyLocationRequest,
     callOptions: CallOptions?
@@ -159,6 +169,50 @@ extension DistributedMatchEngine_MatchEngineApiClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makePlatformFindCloudletInterceptors() ?? []
+    )
+  }
+
+  ///
+  /// QosPrioritySessionCreate
+  ///
+  /// Creates a QOS priority session (latency or throughput priority) from the client
+  /// to the app inst by making a call to the operator's priority session API server.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to QosPrioritySessionCreate.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func qosPrioritySessionCreate(
+    _ request: DistributedMatchEngine_QosPrioritySessionCreateRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<DistributedMatchEngine_QosPrioritySessionCreateRequest, DistributedMatchEngine_QosPrioritySessionReply> {
+    return self.makeUnaryCall(
+      path: "/distributed_match_engine.MatchEngineApi/QosPrioritySessionCreate",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeQosPrioritySessionCreateInterceptors() ?? []
+    )
+  }
+
+  ///
+  /// QosPrioritySessionDelete
+  ///
+  /// Deletes a previously created QOS priority session by making a call to the operator's 
+  /// priority session API server.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to QosPrioritySessionDelete.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func qosPrioritySessionDelete(
+    _ request: DistributedMatchEngine_QosPrioritySessionDeleteRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<DistributedMatchEngine_QosPrioritySessionDeleteRequest, DistributedMatchEngine_QosPrioritySessionDeleteReply> {
+    return self.makeUnaryCall(
+      path: "/distributed_match_engine.MatchEngineApi/QosPrioritySessionDelete",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeQosPrioritySessionDeleteInterceptors() ?? []
     )
   }
 
@@ -327,6 +381,12 @@ internal protocol DistributedMatchEngine_MatchEngineApiClientInterceptorFactoryP
   /// - Returns: Interceptors to use when invoking 'platformFindCloudlet'.
   func makePlatformFindCloudletInterceptors() -> [ClientInterceptor<DistributedMatchEngine_PlatformFindCloudletRequest, DistributedMatchEngine_FindCloudletReply>]
 
+  /// - Returns: Interceptors to use when invoking 'qosPrioritySessionCreate'.
+  func makeQosPrioritySessionCreateInterceptors() -> [ClientInterceptor<DistributedMatchEngine_QosPrioritySessionCreateRequest, DistributedMatchEngine_QosPrioritySessionReply>]
+
+  /// - Returns: Interceptors to use when invoking 'qosPrioritySessionDelete'.
+  func makeQosPrioritySessionDeleteInterceptors() -> [ClientInterceptor<DistributedMatchEngine_QosPrioritySessionDeleteRequest, DistributedMatchEngine_QosPrioritySessionDeleteReply>]
+
   /// - Returns: Interceptors to use when invoking 'verifyLocation'.
   func makeVerifyLocationInterceptors() -> [ClientInterceptor<DistributedMatchEngine_VerifyLocationRequest, DistributedMatchEngine_VerifyLocationReply>]
 
@@ -404,6 +464,20 @@ internal protocol DistributedMatchEngine_MatchEngineApiProvider: CallHandlerProv
   func platformFindCloudlet(request: DistributedMatchEngine_PlatformFindCloudletRequest, context: StatusOnlyCallContext) -> EventLoopFuture<DistributedMatchEngine_FindCloudletReply>
 
   ///
+  /// QosPrioritySessionCreate
+  ///
+  /// Creates a QOS priority session (latency or throughput priority) from the client
+  /// to the app inst by making a call to the operator's priority session API server.
+  func qosPrioritySessionCreate(request: DistributedMatchEngine_QosPrioritySessionCreateRequest, context: StatusOnlyCallContext) -> EventLoopFuture<DistributedMatchEngine_QosPrioritySessionReply>
+
+  ///
+  /// QosPrioritySessionDelete
+  ///
+  /// Deletes a previously created QOS priority session by making a call to the operator's 
+  /// priority session API server.
+  func qosPrioritySessionDelete(request: DistributedMatchEngine_QosPrioritySessionDeleteRequest, context: StatusOnlyCallContext) -> EventLoopFuture<DistributedMatchEngine_QosPrioritySessionDeleteReply>
+
+  ///
   /// VerifyLocation
   ///
   /// Verifies that the GPS coordinates accurately report the actual location of the device.
@@ -459,6 +533,24 @@ extension DistributedMatchEngine_MatchEngineApiProvider {
         responseSerializer: ProtobufSerializer<DistributedMatchEngine_FindCloudletReply>(),
         interceptors: self.interceptors?.makePlatformFindCloudletInterceptors() ?? [],
         userFunction: self.platformFindCloudlet(request:context:)
+      )
+
+    case "QosPrioritySessionCreate":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<DistributedMatchEngine_QosPrioritySessionCreateRequest>(),
+        responseSerializer: ProtobufSerializer<DistributedMatchEngine_QosPrioritySessionReply>(),
+        interceptors: self.interceptors?.makeQosPrioritySessionCreateInterceptors() ?? [],
+        userFunction: self.qosPrioritySessionCreate(request:context:)
+      )
+
+    case "QosPrioritySessionDelete":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<DistributedMatchEngine_QosPrioritySessionDeleteRequest>(),
+        responseSerializer: ProtobufSerializer<DistributedMatchEngine_QosPrioritySessionDeleteReply>(),
+        interceptors: self.interceptors?.makeQosPrioritySessionDeleteInterceptors() ?? [],
+        userFunction: self.qosPrioritySessionDelete(request:context:)
       )
 
     case "VerifyLocation":
@@ -552,6 +644,14 @@ internal protocol DistributedMatchEngine_MatchEngineApiServerInterceptorFactoryP
   /// - Returns: Interceptors to use when handling 'platformFindCloudlet'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makePlatformFindCloudletInterceptors() -> [ServerInterceptor<DistributedMatchEngine_PlatformFindCloudletRequest, DistributedMatchEngine_FindCloudletReply>]
+
+  /// - Returns: Interceptors to use when handling 'qosPrioritySessionCreate'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeQosPrioritySessionCreateInterceptors() -> [ServerInterceptor<DistributedMatchEngine_QosPrioritySessionCreateRequest, DistributedMatchEngine_QosPrioritySessionReply>]
+
+  /// - Returns: Interceptors to use when handling 'qosPrioritySessionDelete'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeQosPrioritySessionDeleteInterceptors() -> [ServerInterceptor<DistributedMatchEngine_QosPrioritySessionDeleteRequest, DistributedMatchEngine_QosPrioritySessionDeleteReply>]
 
   /// - Returns: Interceptors to use when handling 'verifyLocation'.
   ///   Defaults to calling `self.makeInterceptors()`.

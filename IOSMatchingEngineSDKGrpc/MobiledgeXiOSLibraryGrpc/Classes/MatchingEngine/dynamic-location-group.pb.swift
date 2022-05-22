@@ -111,6 +111,12 @@ public struct DistributedMatchEngine_DlgReply {
   public init() {}
 }
 
+#if swift(>=5.5) && canImport(_Concurrency)
+extension DistributedMatchEngine_DlgMessage: @unchecked Sendable {}
+extension DistributedMatchEngine_DlgMessage.DlgAck: @unchecked Sendable {}
+extension DistributedMatchEngine_DlgReply: @unchecked Sendable {}
+#endif  // swift(>=5.5) && canImport(_Concurrency)
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "distributed_match_engine"

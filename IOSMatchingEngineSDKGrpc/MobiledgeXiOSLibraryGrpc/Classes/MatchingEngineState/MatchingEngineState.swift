@@ -67,14 +67,14 @@ extension MobiledgeXiOSLibraryGrpc {
         // App specific UUID
         var uuid: String {
             get {
-                let uuid = ASIdentifierManager.shared().advertisingIdentifier
-                return uuid.uuidString.utf8.description
+                let uuid =  device.identifierForVendor
+                return uuid?.uuidString.utf8.description ?? "iosUniqueId"
             }
         }
         
         var uniqueIDType: String {
             get {
-                return "\(deviceManufacturer):\(device.model):HASHED_ID"
+                return "\(device.model)"
             }
         }
         

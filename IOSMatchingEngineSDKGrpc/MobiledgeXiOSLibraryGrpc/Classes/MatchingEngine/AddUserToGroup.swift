@@ -30,7 +30,7 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
     ///   - user_data
     ///
     /// - Returns: DistributedMatchEngine_DynamicLocGroupRequest
-    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, cellID: uint? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_DynamicLocGroupRequest {
+    func createDynamicLocGroupRequest(lg_id: UInt64? = nil, commType: DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType? = nil, userData: String? = nil, tags: [String: String]? = nil) throws -> DistributedMatchEngine_DynamicLocGroupRequest {
         
         var req = DistributedMatchEngine_DynamicLocGroupRequest.init()
         req.ver = 1
@@ -38,7 +38,6 @@ extension MobiledgeXiOSLibraryGrpc.MatchingEngine {
         req.lgID = lg_id ?? 0 // Not implemented (1001)
         req.commType = commType ?? DistributedMatchEngine_DynamicLocGroupRequest.DlgCommType.dlgSecure
         req.userData = userData ?? ""
-        req.cellID = cellID ?? 0
         req.tags = tags ?? [String: String]()
         
         try validateDynamicLocGroupRequest(request: req)
